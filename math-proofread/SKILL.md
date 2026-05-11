@@ -24,5 +24,4 @@ Leave the surrounding LaTeX unchanged around the note, so the rest of the correc
 If the input is too long to review completely in a single pass, say so before beginning and ask the user to split it into smaller sections.
 
 ### Output Format
-1. **Summary of corrections:** A bulleted list of changes made, referenced by line number or equation label where possible (e.g., *"Eq. (3): corrected mismatched parenthesis"*). List any Reviewer Notes separately at the end of the summary.
-2. **Corrected LaTeX:** The fully corrected code in a single code block, ready to copy back into the editor.
+**Summary of corrections:** A bulleted list of changes made, referenced by line number or equation label where possible (e.g., *"Eq. (3): corrected mismatched parenthesis"*). List any Reviewer Notes separately at the end of the summary.
