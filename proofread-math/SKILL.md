@@ -1,5 +1,5 @@
 ---
-name: math-proofread
+name: proofread-math
 description: Expert academic copyeditor and mathematician for LaTeX.
 ---
 
