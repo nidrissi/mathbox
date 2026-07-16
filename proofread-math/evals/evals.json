@@ -1,0 +1,58 @@
+{
+  "skill_name": "proofread-math",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Proofread the following pasted LaTeX. Return corrected LaTeX and notes. Do not guess about the displayed sign.\n\nLet $f\\colon X \\to Y$ be a continuous maps. Thus, $f(x) \\in Y$ for every $x \\in X$. We therefore have\n\\[\n  d(f(x),f(y)) = -d(x,y).\n\\]\nThis proves the claim",
+      "expected_output": "Corrects the grammar and terminal punctuation, preserves the questionable minus sign, and reports that sign as an unresolved mathematical issue outside the LaTeX block.",
+      "assertions": [
+        "The corrected source changes 'a continuous maps' to a grammatical singular phrase",
+        "The displayed minus sign is not silently changed",
+        "The missing final punctuation is corrected",
+        "The possible sign problem is reported outside the corrected LaTeX",
+        "No rendered reviewer note is inserted into the manuscript"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Proofread this snippet conservatively. The symbol j is not defined anywhere else.\n\nLet $x_1,\\ldots,x_n \\in R$. Set $s=\\sum_{i=1}^n x_j$. Then $s$ is called their sum.",
+      "expected_output": "Changes x_j to x_i because the correction is uniquely forced by the bound index and reports the mathematical-token change explicitly.",
+      "assertions": [
+        "The summand is corrected from x_j to x_i",
+        "The x_j to x_i edit is explicitly listed as a mathematical-token change",
+        "The surrounding mathematical statement is not otherwise rewritten"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Proofread this LaTeX but preserve project-specific commands you cannot resolve from the snippet.\n\nBy \\mystable{A} we denotes the stable envelope of $A$. Hence \\mystable{A}\\subseteq B$.",
+      "expected_output": "Corrects the grammar while leaving the custom command unchanged and does not claim it is invalid.",
+      "assertions": [
+        "The verb phrase 'we denotes' is corrected",
+        "Both occurrences of \\mystable{A} remain unchanged",
+        "The output does not replace the custom macro with a guessed standard command"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review only; do not edit. Find issues in: 'For every $i\\in I$, choose $x_i\\in X_i$. Then $x_j$ is nonzero.' No symbol j is defined.",
+      "expected_output": "Reports the unbound j as a potentially meaning-changing issue and suggests checking whether i was intended, without rewriting the source.",
+      "assertions": [
+        "The output is findings-only rather than a rewritten snippet",
+        "The unbound j is identified precisely",
+        "The output does not assert with certainty that j must be i"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "You just edited a theorem in a large paper. Perform the skill's self-review workflow on only the changed hunk and adjacent definitions; do not rewrite unrelated sections. No repository build command is documented.",
+      "expected_output": "Limits review to the changed scope and relevant context, makes only objective corrections, and reports that validation was not run because no documented command was available.",
+      "assertions": [
+        "The reported coverage is limited to the changed hunk and necessary context",
+        "Unrelated sections are not reformatted or rewritten",
+        "Validation is reported as not run with a reason",
+        "The response does not ask the user to split the manuscript"
+      ]
+    }
+  ]
+}
