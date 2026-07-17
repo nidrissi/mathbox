@@ -1,9 +1,6 @@
 interface:
   display_name: "Proofread mathematics"
-policy:
-  products:
-    - "chatgpt"
-    - "codex"
-    - "api"
-    - "atlas"
   allow_implicit_invocation: true
+  short_description: "Conservative proofreading for mathematical LaTeX"
+  default_prompt:
+    "Use $proofread-math to proofread this mathematical LaTeX conservatively."
