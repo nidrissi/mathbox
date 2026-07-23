@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Audit this proof and isolate the first gap.",
+    "should_trigger": true
+  },
+  {
+    "query": "Are the signs and variance in Proposition 3.2 correct?",
+    "should_trigger": true
+  },
+  {
+    "query": "Find a new proof of the theorem from scratch.",
+    "should_trigger": false
+  },
+  {
+    "query": "Copyedit this theorem statement.",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "skill_name": "research-retrospective",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The status file says Claim C3 is proved, the proof obligations call it conditional, and the log records a counterexample to the old formulation. Review the project and recommend the next route.",
+      "expected_output": "Exposes the authority conflict, reconstructs the strongest safe claim, and recommends a bounded next check rather than averaging the summaries.",
+      "assertions": [
+        "Does not trust the newest or strongest summary automatically",
+        "Identifies the counterexample and conditional dependency",
+        "States the strongest safe current claim",
+        "Recommends at most three bounded routes"
+      ]
+    }
+  ]
+}

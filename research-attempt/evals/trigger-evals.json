@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Attack the next unresolved lemma and record a bounded route.",
+    "should_trigger": true
+  },
+  {
+    "query": "Try to find the smallest counterexample to this conjecture.",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain the definition of a spectral sequence.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix the grammar in this paragraph.",
+    "should_trigger": false
+  }
+]

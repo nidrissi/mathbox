@@ -1,0 +1,6 @@
+interface:
+  display_name: "Manuscript Integrate"
+  short_description: "Integrate validated mathematics into LaTeX"
+  default_prompt: "Use $manuscript-integrate to transfer this validated result into the live manuscript."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Integrate the validated lemma into article.tex.",
+    "should_trigger": true
+  },
+  {
+    "query": "Update the theorem and introduction after the proof correction.",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft a new proof for the missing lemma.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix typos in the introduction.",
+    "should_trigger": false
+  }
+]

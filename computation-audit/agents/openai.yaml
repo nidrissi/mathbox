@@ -1,0 +1,6 @@
+interface:
+  display_name: "Computation Audit"
+  short_description: "Audit claim-supporting mathematical computation"
+  default_prompt: "Use $computation-audit to validate this mathematical computation and its scope."
+policy:
+  allow_implicit_invocation: true

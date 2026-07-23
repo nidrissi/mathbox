@@ -1,100 +1,59 @@
-# Research-init interview guide
+# Adaptive interview guide
 
-Ask only questions not already answered by repository evidence. Use short batches
-and summarize the answers after each batch. The researcher may defer a choice;
-record it as unresolved rather than guessing.
+Ask only unresolved material questions, in batches of at most five.
 
-## Batch A — mathematical target
+## Research target
 
-1. State the research question as a falsifiable mathematical claim or decision.
-2. What is the next artifact another mathematician can review: lemma note,
-   counterexample, computation, preprint section, software result, or formal proof?
-3. What is the strongest target, the intermediate theorem, and an acceptable
-   obstruction/counterexample/reduction if the strong target fails?
-4. Which hypotheses are fixed for this phase, and which are intended to be relaxed?
-5. Which distinctions must never be conflated (for example chain vs homology,
-   ordered vs unordered, connected vs disconnected, strict vs homotopy coherent)?
-6. What would conclusively show that the active route is unproductive?
+- What is the exact main question and current deliverable?
+- What counts as success, and what negative result or obstruction is valuable?
+- What is explicitly out of scope for this phase?
+- What is the current strongest evidence and principal blocker?
 
-## Batch B — conventions and evidence
+## Authority and provenance
 
-1. Coefficient ring/field, characteristic, completion, finiteness, connectivity,
-   or model-category assumptions?
-2. Grading, suspension, Koszul sign, variance, symmetric-group action, duality,
-   orientation, and naming conventions?
-3. Which results are currently proved, externally proved, computationally
-   verified, heuristic, conjectural, conditional, or failed?
-4. Which files contain durable proofs, and which merely report status?
-5. What qualifies as a substantive attempt worth logging?
-6. Which minimal examples, edge cases, or counterexample families are mandatory?
+- Which file is the live dashboard?
+- Where do durable proofs, claim obligations, conventions, literature checks,
+  computations, and historical attempts live?
+- What review is required before “proved” or manuscript integration?
+- Which old files are historical rather than authoritative?
 
-## Batch C — literature and novelty
+## Mathematical conventions
 
-1. Which sources or researchers are indispensable, and which databases should be
-   searched?
-2. Must exact theorem versions, coefficients, and notation translations be logged?
-3. What novelty language is acceptable before expert review?
-4. Are local PDFs licensed or private, and may their contents be quoted or only
-   cited/summarized?
-5. Is network access allowed for literature searches and package metadata?
+- Coefficient rings/fields and characteristic?
+- Homological/cohomological grading and differential degree?
+- Variance, left/right actions, duals, invariants/coinvariants, completions?
+- Sign, orientation, normalization, indexing, and canonical low-dimensional
+  examples?
+- Finiteness, connectedness, smoothness, tangential, or equivariance assumptions?
 
-## Batch D — repository operations
+## Autonomy and protection
 
-1. Canonical code, proof, manuscript, data, archive, and generated-output paths?
-2. Protected paths and files requiring explicit approval?
-3. Setup command and fast, targeted, full, and document checks?
-4. Resource caps: time, RAM, core count, arity/weight/degree, disk, or API budget?
-5. Are dependencies pinned? May agents install or upgrade them?
-6. May agents create branches/worktrees, commit, push, open pull requests, publish,
-   email, or use external services?
-7. For a suspected semantic bug, should the agent diagnose and propose only, or
-   may it apply a fix after producing a failing test/counterexample?
-8. Which generated artifacts are versioned, ignored, or immutable?
+- Which semantic files may be edited autonomously?
+- Which paths are read-only or historical?
+- Which convention changes require explicit approval?
+- May the agent update status/log automatically at route checkpoints?
+- What Git actions are authorized?
 
-## Batch E — completion and collaboration
+## Verification and resources
 
-1. What exact evidence must appear in the final report?
-2. Which checks are mandatory for which risk classes?
-3. Should an independent agent/reviewer try to refute important results?
-4. Will multiple agents work concurrently? Which tasks are read-heavy versus
-   write-heavy, and how will worktrees/ownership prevent collisions?
-5. How often should status and logs be updated: per route checkpoint, daily,
-   milestone, or before handoff?
+- What are the fast, targeted, full, and manuscript commands?
+- Which canonical examples catch mathematical regressions?
+- What runtime, memory, core, network, and storage limits apply?
+- Which computation outputs must receive manifests/checksums?
 
-## Profile-specific follow-ups
+## Confidentiality and literature
 
-### Proof-first
+- Is the repository unpublished, private, licensed, embargoed, or public?
+- May public sources be browsed and PDFs retained locally?
+- May repository content be uploaded to external tools?
+- Are private correspondence or collaborator notes available, and who may see
+  them?
 
-- Is a computer-assisted proof admissible, and what certificate or replay is
-  required?
-- What is the theorem dependency graph?
-- Which local sign/convention failure should trigger a global review?
-- Which proof obligations need independent checking?
+## Skill layer
 
-### Manuscript
+- Are the canonical user-wide math skills installed for both tools?
+- Is local-only use sufficient, or must collaborators/cloud sessions receive
+  exact vendored copies?
+- Is there any recurring procedure truly unique to this repository?
 
-- Which source is the assembled live paper?
-- Which sections/results are submission-ready, provisional, or excluded?
-- Citation/style/build commands and journal constraints?
-- May the agent rewrite mathematical prose, or only propose edits?
-- Must the current paper remain independent of an open flagship theorem?
-
-### Computation/software
-
-- Exact arithmetic versus numerical approximation?
-- Canonicalization, cache, serialization, and parallelism invariants?
-- Expected output schemas and filename contracts?
-- Which small cases have trusted answers?
-- When is the full test suite required despite its cost?
-
-### Formalization
-
-- Target prover and pinned toolchain?
-- Trusted axioms, classical principles, quotient constructions, and library style?
-- Is the objective executable formalization, theorem statement design, or porting?
-- What counts as proof completion: no `sorry`, no new axioms, linter clean, or CI?
-
-### Mixed
-
-- Which profile controls conflicts and final completion?
-- Which artifacts are primary evidence and which are explanatory mirrors?
+Default recommendation: user-wide canonical skills, no project copies.

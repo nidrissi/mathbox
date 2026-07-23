@@ -1,0 +1,16 @@
+{
+  "skill_name": "computation-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A Sage script checks d^2=0 for all examples through weight 7. Audit whether this proves d^2=0 in every weight.",
+      "expected_output": "Separates the finite assertion from the universal theorem, checks implementation invariants, and labels the result computationally verified only through weight 7.",
+      "assertions": [
+        "States the exact tested range",
+        "Does not call the universal theorem proved",
+        "Requests or identifies an independent structural argument",
+        "Reports provenance and non-claims"
+      ]
+    }
+  ]
+}

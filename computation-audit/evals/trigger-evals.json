@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Audit the Sage calculation supporting Claim C7.",
+    "should_trigger": true
+  },
+  {
+    "query": "Run the finite-field experiment and state exactly what it proves.",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain what a Gr\u00f6bner basis is.",
+    "should_trigger": false
+  },
+  {
+    "query": "Refactor this unrelated CLI.",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Set up this repository for AI-assisted mathematical research.",
+    "should_trigger": true
+  },
+  {
+    "query": "Refresh AGENTS.md and the research workflow architecture.",
+    "should_trigger": true
+  },
+  {
+    "query": "Work on the main theorem.",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the tests.",
+    "should_trigger": false
+  }
+]

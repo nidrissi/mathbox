@@ -1,0 +1,16 @@
+{
+  "skill_name": "proof-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this claim in a commutative ring: if ab=ac then b=c. The proof cancels a from both sides without another hypothesis.",
+      "expected_output": "Rejects the claim as written, identifies the missing cancellability/non-zero-divisor condition, and supplies a small counterexample.",
+      "assertions": [
+        "Normalizes the ring claim",
+        "Identifies invalid cancellation",
+        "Returns a refuted or restricted verdict",
+        "Gives a valid small counterexample or exact missing hypothesis"
+      ]
+    }
+  ]
+}

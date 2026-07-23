@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "claim_id": "",
+  "repository": {
+    "commit": "",
+    "dirty": true
+  },
+  "command": "",
+  "environment": {
+    "software": [],
+    "hardware": ""
+  },
+  "mathematics": {
+    "assertion_tested": "",
+    "coefficient_domain": "",
+    "conventions": "",
+    "inputs": [],
+    "bounds": {},
+    "non_claims": []
+  },
+  "randomness": {
+    "used": false,
+    "generator": "",
+    "seed": null
+  },
+  "run": {
+    "started_at": "",
+    "runtime_seconds": null,
+    "exit_status": null
+  },
+  "outputs": [
+    {
+      "path": "",
+      "sha256": ""
+    }
+  ],
+  "checks": [],
+  "result": "",
+  "residual_risks": []
+}

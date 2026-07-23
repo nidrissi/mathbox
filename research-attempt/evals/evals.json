@@ -1,0 +1,16 @@
+{
+  "skill_name": "research-attempt",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Attack the conjecture that every differential in this filtered complex vanishes. The only current evidence is a computation through arity 5. Work on one bounded route and do not claim the conjecture from the computation.",
+      "expected_output": "Normalizes the claim, chooses one decisive route or counterexample search, distinguishes finite evidence from proof, and records a bounded outcome.",
+      "assertions": [
+        "States exact success and failure criteria",
+        "Uses the arity-5 computation only as bounded evidence",
+        "Does not broaden to multiple unrelated routes",
+        "Reports the first unresolved implication and next check"
+      ]
+    }
+  ]
+}

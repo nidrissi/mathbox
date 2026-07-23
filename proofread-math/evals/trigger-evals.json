@@ -1,106 +1,42 @@
 [
   {
-    "query": "I just added a proof of Proposition 4.7 to paper.tex. Proofread the diff before you finish.",
+    "query": "Proofread the new proof in paper.tex conservatively.",
     "should_trigger": true
   },
   {
-    "query": "Please copyedit this theorem and proof in LaTeX, but do not change the argument.",
+    "query": "Check these equations for dropped indices and LaTeX mistakes.",
     "should_trigger": true
   },
   {
-    "query": "Check the new equations in sections/spectral-sequence.tex for notation consistency and LaTeX mistakes.",
+    "query": "Do a final copyedit of the changed theorem hunks.",
     "should_trigger": true
   },
   {
-    "query": "I rewrote the introduction of my topology paper. Give the changed .tex hunks a final mathematical proofreading pass.",
+    "query": "Review this proof as a copyeditor; flag logical concerns instead of fixing them.",
     "should_trigger": true
   },
   {
-    "query": "Can you clean up the grammar and equation punctuation in this lemma?",
-    "should_trigger": true
-  },
-  {
-    "query": "Review this LaTeX paragraph for dropped indices, mismatched delimiters, and bad cross-references.",
-    "should_trigger": true
-  },
-  {
-    "query": "Before returning the section you just wrote, check it for mathematical typos without rewriting the proof.",
-    "should_trigger": true
-  },
-  {
-    "query": "Do a conservative final pass over theorem-environments.tex; preserve all custom macros.",
-    "should_trigger": true
-  },
-  {
-    "query": "Read this proof as a copyeditor. Flag any possible logical issue rather than repairing it.",
-    "should_trigger": true
-  },
-  {
-    "query": "The paper compiles, but I want a final check of prose, labels, and local notation in Section 6.",
-    "should_trigger": true
-  },
-  {
-    "query": "Prove that every finite subgroup of the multiplicative group of a field is cyclic.",
-    "should_trigger": false
-  },
-  {
-    "query": "Solve the integral and explain every step: \\int_0^1 x^x\\,dx.",
+    "query": "Prove that every finite subgroup of a field multiplicative group is cyclic.",
     "should_trigger": false
   },
   {
     "query": "Write a new LaTeX proof of the snake lemma from scratch.",
-    "should_trigger": true
-  },
-  {
-    "query": "Refactor our custom theorem package and replace amsthm throughout the repository.",
     "should_trigger": false
   },
   {
-    "query": "Why does the sign in the Koszul differential have this convention?",
+    "query": "Convert these handwritten notes into a polished chapter.",
     "should_trigger": false
   },
   {
-    "query": "Give a referee report assessing whether the main theorem is correct and novel.",
+    "query": "Shorten this proof by replacing the spectral-sequence argument.",
     "should_trigger": false
   },
   {
-    "query": "Translate this mathematical abstract from French to English.",
+    "query": "Search the literature to see whether this theorem is known.",
     "should_trigger": false
   },
   {
-    "query": "Convert these handwritten notes into a polished LaTeX chapter.",
-    "should_trigger": true
-  },
-  {
-    "query": "Fix the CI job that cannot find latexmk.",
-    "should_trigger": false
-  },
-  {
-    "query": "Shorten this proof by replacing the spectral-sequence argument with a direct proof.",
-    "should_trigger": true
-  },
-  {
-    "query": "Build a notation glossary from every symbol used in manuscript.tex.",
-    "should_trigger": false
-  },
-  {
-    "query": "Fix the capitalization and page ranges in references.bib for my mathematics paper.",
-    "should_trigger": false
-  },
-  {
-    "query": "Explain how \\left and \\right choose delimiter sizes in TeX.",
-    "should_trigger": false
-  },
-  {
-    "query": "Write a Python parser that extracts theorem environments from .tex files.",
-    "should_trigger": false
-  },
-  {
-    "query": "Reformat every displayed equation in the repository from equation to align.",
-    "should_trigger": false
-  },
-  {
-    "query": "Search the literature to determine whether this theorem is already known.",
+    "query": "Audit the correctness of the main theorem and find gaps.",
     "should_trigger": false
   }
 ]

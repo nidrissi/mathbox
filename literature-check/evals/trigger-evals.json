@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Verify that Theorem 4.3 of this paper has the hypotheses we need.",
+    "should_trigger": true
+  },
+  {
+    "query": "Search whether this result is known and bound the novelty claim.",
+    "should_trigger": true
+  },
+  {
+    "query": "Prove the lemma directly without literature.",
+    "should_trigger": false
+  },
+  {
+    "query": "Format this BibTeX entry.",
+    "should_trigger": false
+  }
+]

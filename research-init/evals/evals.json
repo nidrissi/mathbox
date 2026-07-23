@@ -1,0 +1,16 @@
+{
+  "skill_name": "research-init",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Refresh this research repository. It already has user-wide proof-audit and research-attempt skills, plus local copies under .agents/skills and two more under a root skills directory.",
+      "expected_output": "Proposes removal or archival of duplicate/misplaced local skills, creates no replacement copies, and moves local mathematical content into project files.",
+      "assertions": [
+        "Defaults to no project skills",
+        "Flags root skills as misplaced",
+        "Does not regenerate canonical skills",
+        "Presents a proposal before writing"
+      ]
+    }
+  ]
+}

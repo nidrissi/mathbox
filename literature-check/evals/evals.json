@@ -1,0 +1,16 @@
+{
+  "skill_name": "literature-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A draft cites an abstract as proving an integral theorem, but the available theorem statement may only be rational. Verify the exact implication and report what remains conditional.",
+      "expected_output": "Seeks the primary theorem statement, records coefficient hypotheses and version, and refuses to let an abstract supply the integral implication.",
+      "assertions": [
+        "Distinguishes primary source from abstract",
+        "Checks coefficient regime explicitly",
+        "Does not invent the missing integral statement",
+        "Returns a conditional or incompatible verdict if needed"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Review the whole project and tell me the best next three routes.",
+    "should_trigger": true
+  },
+  {
+    "query": "Prepare a weekly research handoff from status, claims, and log.",
+    "should_trigger": true
+  },
+  {
+    "query": "Prove the current lemma.",
+    "should_trigger": false
+  },
+  {
+    "query": "Compile the paper.",
+    "should_trigger": false
+  }
+]

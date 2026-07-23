@@ -1,0 +1,6 @@
+interface:
+  display_name: "Proof Audit"
+  short_description: "Adversarially audit a mathematical proof"
+  default_prompt: "Use $proof-audit to stress-test this claim and isolate the exact gap."
+policy:
+  allow_implicit_invocation: true
