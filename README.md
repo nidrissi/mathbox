@@ -158,7 +158,7 @@ git -C "$HOME/.local/share/mathbox" pull --ff-only
 ```
 
 For a reproducible setup, check out a release tag or commit before linking the
-skills. Each skill declares its contract version in `SKILL.md`.
+skills.
 
 ## Repository structure
 
@@ -190,9 +190,9 @@ remains independently installable. Relative resource links therefore continue
 to work when a skill is copied, linked, loaded by Claude, or converted by
 OpenAI.
 
-The `SKILL.md` frontmatter uses only portable Agent Skills fields: `name`,
-`description`, and `metadata`. OpenAI uses `agents/openai.yaml` for
-host-specific presentation and invocation policy; other hosts ignore it.
+The `SKILL.md` frontmatter uses only the portable required Agent Skills fields
+`name` and `description`. OpenAI uses `agents/openai.yaml` for host-specific
+presentation and invocation policy; other hosts ignore it.
 
 ## Contributing
 

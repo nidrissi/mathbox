@@ -2,9 +2,6 @@
 name: literature-check
 description: >-
   Verify an external mathematical theorem, citation, notation translation, source-dependent implication, or bounded novelty claim. Use when a proof relies on a named paper/result, when exact hypotheses or versions matter, or when the user asks whether a claim is known. Prefer primary sources and record the search scope. Do not treat snippets or failed searches as proof or global novelty.
-metadata:
-  suite: math-research-skills
-  version: "2.0.0"
 ---
 
 # Mathematical literature check

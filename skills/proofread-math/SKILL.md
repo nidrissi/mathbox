@@ -2,9 +2,6 @@
 name: proofread-math
 description: >-
   Conservatively proofread mathematical prose and LaTeX for grammar, typography, syntax, notation consistency, cross-references, and uniquely forced local mathematical typos. Use for explicit math-proofreading requests and final self-review of theorem-, proof-, or equation-heavy edits. Do not invent, replace, shorten, or substantively repair proofs.
-metadata:
-  suite: math-research-skills
-  version: "2.0.0"
 ---
 
 # Conservative mathematical proofreading

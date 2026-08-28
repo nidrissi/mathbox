@@ -2,9 +2,6 @@
 name: computation-audit
 description: >-
   Design, run, or audit a mathematical computation that supports a research claim, including symbolic, exact, finite-field, representation-theoretic, homological, or numerical experiments. Use when correctness, provenance, tested range, reproducibility, or interpretation matters. Do not present bounded output as a universal proof.
-metadata:
-  suite: math-research-skills
-  version: "2.0.0"
 ---
 
 # Mathematical computation audit

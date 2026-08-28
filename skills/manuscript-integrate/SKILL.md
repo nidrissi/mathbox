@@ -2,9 +2,6 @@
 name: manuscript-integrate
 description: >-
   Integrate an already validated mathematical result, correction, citation, or referee response into an authoritative LaTeX manuscript while preserving hypotheses, evidence status, notation, and dependencies. Use only when the user explicitly requests manuscript integration. Do not use to invent a proof or to perform routine copyediting.
-metadata:
-  suite: math-research-skills
-  version: "2.0.0"
 ---
 
 # Manuscript integration

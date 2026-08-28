@@ -2,9 +2,6 @@
 name: research-init
 description: >-
   Initialize, retrofit, or refresh an AI-assisted mathematical research repository. Use only when the user explicitly asks to set up or substantially revise AGENTS.md, CLAUDE.md, research workflow files, or the repository's agent architecture. Inspect first, interview adaptively, propose a reviewed file plan, and default to no repository-local skills because canonical workflows are user-wide.
-metadata:
-  suite: math-research-skills
-  version: "2.0.0"
 ---
 
 # Mathematical research repository initializer

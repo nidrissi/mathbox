@@ -50,9 +50,9 @@ convert during submission. Keep the skills portable across both hosts.
 
 ## Cross-agent compatibility
 
-- Keep `SKILL.md` frontmatter portable. The current skills use only the Agent
-  Skills fields `name`, `description`, and `metadata`; do not put host-specific
-  invocation controls there.
+- Keep `SKILL.md` frontmatter portable. The current skills use only the required
+  Agent Skills fields `name` and `description`; do not put host-specific
+  interface or invocation settings there.
 - Express shared routing boundaries in `description` and the skill body. Keep
   OpenAI-specific presentation and invocation policy in `agents/openai.yaml`.
 - Use a precise `description` with positive triggers and exclusions. Update
