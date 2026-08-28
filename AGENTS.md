@@ -15,6 +15,8 @@ submission. Keep the skills portable across both hosts.
   must be referenced with paths relative to the skill directory.
 - `agents/openai.yaml` contains OpenAI-specific presentation and invocation
   metadata; do not duplicate the workflow there.
+- `.codex-plugin/plugin.json` contains Codex package and presentation metadata;
+  keep its identity and version aligned with the Claude plugin manifest.
 - `.claude-plugin/plugin.json` contains the package metadata and explicit list
   of top-level skill directories used by Claude and by OpenAI's skills-only
   conversion path.
@@ -66,6 +68,7 @@ files changed. At minimum, run:
 
 ```bash
 for file in \
+  .codex-plugin/*.json \
   .claude-plugin/*.json \
   */evals/*.json \
   */assets/*.json; do

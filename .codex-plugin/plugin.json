@@ -1,0 +1,37 @@
+{
+  "name": "mathbox",
+  "version": "2.0.0",
+  "description": "Rigorous workflows for AI-assisted mathematical research",
+  "author": {
+    "name": "Najib Idrissi-Kaïtouni",
+    "url": "https://github.com/nidrissi"
+  },
+  "homepage": "https://github.com/nidrissi/mathbox",
+  "repository": "https://github.com/nidrissi/mathbox",
+  "license": "MIT",
+  "keywords": [
+    "mathematics",
+    "research",
+    "proof-audit",
+    "literature",
+    "latex"
+  ],
+  "interface": {
+    "displayName": "Mathbox",
+    "shortDescription": "Rigorous workflows for mathematical research",
+    "longDescription": "Audit proofs, verify literature, design reproducible computations, and manage rigorous AI-assisted mathematical research workflows.",
+    "developerName": "Najib Idrissi-Kaïtouni",
+    "category": "Research",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/nidrissi/mathbox",
+    "defaultPrompt": [
+      "Audit this proof and isolate the first unproved implication.",
+      "Verify the exact hypotheses and conclusion of this cited theorem.",
+      "Design a reproducible computation to test this mathematical claim."
+    ]
+  }
+}

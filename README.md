@@ -1,8 +1,7 @@
 # Research Toolbox
 
 Eight reusable Agent Skills for rigorous AI-assisted mathematical research,
-packaged as the `mathbox` Claude Code plugin and an OpenAI-compatible skills
-bundle.
+packaged as the `mathbox` plugin for Codex and Claude Code.
 
 The toolbox separates research, verification, computation, literature work,
 manuscript integration, and proofreading so that each workflow has a clear
@@ -40,10 +39,13 @@ claude --plugin-dir ./mathbox
 
 ### Codex: install the skills now
 
-OpenAI accepts this skills-only Claude plugin as a direct upload and converts
-its manifest during submission. Until the bundle is published in the OpenAI
-plugin directory, ask Codex's built-in installer to install the same skills
-directly from the repository:
+The repository includes Codex-native package and presentation metadata in
+`.codex-plugin/plugin.json`. The existing Claude manifest remains the explicit
+inventory for OpenAI's skills-only conversion path, so both hosts use the same
+canonical top-level skill directories without duplicated packages.
+
+Until the bundle is published in the OpenAI plugin directory, ask Codex's
+built-in installer to install the same skills directly from the repository:
 
 ```text
 $skill-installer Install every skill from https://github.com/nidrissi/mathbox.
@@ -162,6 +164,8 @@ skills. Each skill declares its contract version in `SKILL.md`.
 
 ```text
 mathbox/
+├── .codex-plugin/
+│   └── plugin.json                       # Codex package and presentation metadata
 ├── .claude-plugin/
 │   ├── marketplace.json                  # Claude marketplace catalog
 │   └── plugin.json                       # root plugin metadata and skill list
