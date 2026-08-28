@@ -21,13 +21,16 @@
     "shortDescription": "Rigorous workflows for mathematical research",
     "longDescription": "Audit proofs, verify literature, design reproducible computations, and manage rigorous AI-assisted mathematical research workflows.",
     "developerName": "Najib Idrissi-Kaïtouni",
-    "category": "Research",
+    "category": "Education & Research",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
     "websiteURL": "https://github.com/nidrissi/mathbox",
+    "brandColor": "#0F172A",
+    "composerIcon": "./assets/mathbox.svg",
+    "logo": "./assets/mathbox.svg",
     "defaultPrompt": [
       "Audit this proof and isolate the first unproved implication.",
       "Verify the exact hypotheses and conclusion of this cited theorem.",

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Mathbox</title>
+  <desc id="description">A white geometric M inside a dark blue rounded square.</desc>
+  <rect width="512" height="512" rx="96" fill="#0F172A"/>
+  <rect x="52" y="52" width="408" height="408" rx="68" fill="none" stroke="#60A5FA" stroke-width="24"/>
+  <path d="M140 352V168L256 292L372 168V352" fill="none" stroke="#F8FAFC" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
