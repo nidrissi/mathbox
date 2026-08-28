@@ -1,98 +1,124 @@
-# Math Research Skills
+# Research Toolbox
 
-A coherent, user-wide skill suite for AI-assisted mathematical research with
-OpenAI Codex and Claude Code.
+Reusable agent skills for rigorous AI-assisted mathematical research, designed
+to work with both OpenAI Codex and Claude Code.
 
-The suite uses one canonical installed copy and exposes it to both tools with
-symlinks:
-
-```text
-~/.local/share/math-research-skills/current/skills/<name>/
-        ├── ~/.agents/skills/<name>          # Codex
-        └── ~/.claude/skills/<name>          # Claude Code
-```
-
-This prevents the two installations—and different repositories—from drifting.
-Both tools can follow symlinked skill directories. Repository-local skills are
-reserved for genuinely repository-specific procedures, not copies of these
-common workflows.
+Each top-level directory is an independently installable
+[Agent Skill](https://agentskills.io/). The suite separates research,
+verification, computation, literature work, manuscript integration, and
+proofreading so that each workflow has a clear evidence standard and stopping
+condition.
 
 ## Included skills
 
-| Skill | Purpose | Default invocation |
+| Skill | Purpose | Invocation |
 |---|---|---|
-| `research-init` | Configure or refresh a mathematical research repository | explicit only |
-| `research-attempt` | Run one bounded proof/counterexample/reduction route | explicit only |
-| `proof-audit` | Adversarially audit a claim or proof | explicit or automatic |
-| `literature-check` | Verify an external theorem, citation, or bounded novelty claim | explicit or automatic |
-| `computation-audit` | Design or audit claim-supporting mathematical computation | explicit or automatic |
-| `manuscript-integrate` | Move validated mathematics into a live manuscript | explicit only |
-| `proofread-math` | Conservatively proofread mathematical LaTeX | explicit or automatic |
-| `research-retrospective` | Reconcile project state and select the next bounded routes | explicit only |
+| [`research-init`](research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit only |
+| [`research-attempt`](research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit only |
+| [`proof-audit`](proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | explicit or automatic |
+| [`literature-check`](literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | explicit or automatic |
+| [`computation-audit`](computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | explicit or automatic |
+| [`manuscript-integrate`](manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit only |
+| [`proofread-math`](proofread-math/) | Conservatively proofread mathematical prose and LaTeX | explicit or automatic |
+| [`research-retrospective`](research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit only |
 
-## Routing cheatsheet
+“Automatic” means that the host may select the skill when a request matches its
+description. Every skill can still be invoked explicitly: use `$skill-name` in
+Codex or `/skill-name` in Claude Code.
 
-| The task is primarily… | Invoke |
+## Choosing a skill
+
+| The task is primarily… | Use |
 |---|---|
-| setting up or repairing the repository’s research operating system | `research-init` |
-| discovering a new proof, counterexample, reduction, or route | `research-attempt` |
-| deciding whether an existing proof is correct as written | `proof-audit` |
+| setting up the research repository or revising its agent architecture | `research-init` |
+| developing new mathematics along one controlled route | `research-attempt` |
+| deciding whether an existing argument is correct as written | `proof-audit` |
 | checking exactly what an external source proves | `literature-check` |
-| running a nontrivial claim-supporting calculation or search | `research-compute` |
-| transferring an already validated result into the live paper | `manuscript-integrate` |
-| reorganizing or clarifying already established mathematics | `revise-math` |
-| grammar, typography, LaTeX, references, and forced local typos | `proofread-math` |
+| obtaining or assessing finite computational evidence | `computation-audit` |
+| transferring a validated result into the live paper | `manuscript-integrate` |
+| correcting grammar, typography, LaTeX, references, or forced local typos | `proofread-math` |
+| reviewing the project portfolio and deciding what to try next | `research-retrospective` |
 
-### Boundary questions
+Some important boundaries:
 
-- **Does the argument itself change?** Use `research-attempt`, not proofreading or revision.
-- **Is the task to judge rather than create?** Use `proof-audit`.
-- **Does the conclusion depend on what a paper actually says?** Use `literature-check`.
-- **Does a finite run support the claim?** Use `research-compute` and state the tested range.
-- **Is the result still unresolved?** Do not use `manuscript-integrate` to make it look settled.
-- **Is the mathematics complete but presentation poor?** Use `revise-math`, then `proofread-math`.
+- A bounded computation is evidence only for its stated range, not a universal
+  proof.
+- Proofreading does not authorize changing an argument. Use `proof-audit` to
+  diagnose an existing proof or `research-attempt` to develop a new one.
+- `manuscript-integrate` transfers mathematics that has already been validated;
+  it does not make conjectural work publication-ready.
+- A failed literature search supports only a bounded search report, not a claim
+  of global novelty.
 
-## Workflow examples and routing tests
+## Installation
 
-### Example: attack a conjectural sign identity
+Clone the repository somewhere stable, then link the skills you want into the
+personal skill directories used by Codex and Claude Code:
 
-1. Invoke `research-attempt` with the exact identity and convention version.
-2. The route card identifies source/target, degree, action order, and smallest graph.
-3. If a named theorem supplies a comparison map, use `literature-check`.
-4. If a finite sweep is decisive evidence, use `research-compute` with exact arithmetic and a manifest.
-5. Ask a fresh `proof-audit` pass to reverse operation orders and test sign-reversing automorphisms.
-6. Only after the verdict is proved/externally proved should `manuscript-integrate` update the paper.
+```bash
+git clone https://github.com/nidrissi/research-toolbox.git \
+  "$HOME/.local/share/research-toolbox"
 
-### Example: coauthor asks for “proofreading” but the proof changes
+toolbox_dir="$HOME/.local/share/research-toolbox"
+mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
 
-Request: “Shorten this proof by replacing the spectral sequence with a direct argument.”
+for skill_file in "$toolbox_dir"/*/SKILL.md; do
+  skill_dir=${skill_file%/SKILL.md}
+  skill_name=${skill_dir##*/}
+  ln -s "$skill_dir" "$HOME/.agents/skills/$skill_name"
+  ln -s "$skill_dir" "$HOME/.claude/skills/$skill_name"
+done
+```
 
-Routing:
+The commands deliberately do not overwrite an existing skill with the same
+name. To install only one skill, run the corresponding two `ln -s` commands for
+that directory. To update linked skills later, pull the repository:
 
-- not `proofread-math`;
-- invoke `research-attempt` to develop and validate the new proof;
-- then `revise-math` to fit it into the exposition;
-- finally `proofread-math` for local QA.
+```bash
+git -C "$HOME/.local/share/research-toolbox" pull --ff-only
+```
 
-### Example: source may not apply in characteristic 3
+Codex can also install skills from a GitHub repository through its built-in
+`$skill-installer` workflow.
 
-Use `literature-check`, not a general web summary. Record the exact version, coefficient hypotheses, notation translation, and every implication between the source theorem and the project claim. If the characteristic-3 step is absent, the result is conditional/unverified rather than “probably standard.”
+## Repository structure
 
-### Example: computation finds no counterexample
+```text
+research-toolbox/
+├── AGENTS.md                 # shared contributor and agent instructions
+├── CLAUDE.md                 # imports AGENTS.md for Claude Code
+├── README.md
+└── <skill-name>/
+    ├── SKILL.md              # canonical workflow and trigger description
+    ├── agents/openai.yaml    # Codex/OpenAI UI and invocation metadata
+    ├── evals/
+    │   ├── evals.json        # behavioral examples and assertions
+    │   └── trigger-evals.json # positive and negative routing probes
+    ├── references/           # supporting material loaded when needed
+    ├── assets/               # optional templates or data files
+    └── scripts/              # optional deterministic helpers
+```
 
-`research-compute` reports the encoded model, exhaustive range, command, environment, assertions, and non-claims. “No counterexample in arity at most 8” is not a proof of the universal claim. The route may still be useful for selecting a proof strategy.
+Not every skill needs every optional directory. References inside a skill are
+relative to that skill directory, so packages remain portable when installed by
+copying or symlinking.
 
-### Example: theorem proof already established, section is unreadable
+The common `SKILL.md` format follows the open Agent Skills standard. Codex uses
+`agents/openai.yaml` for host-specific presentation and invocation policy;
+Claude Code ignores that file and uses compatible fields in `SKILL.md`.
 
-Use `revise-math` for structural rewrite. It may move definitions, expose existing transitions, and remove redundancy, but it must isolate any step that would require new mathematics. Then invoke `proofread-math`.
+## Development
 
-### Negative trigger probes
+Keep each skill focused on one job. Update its instructions, supporting files,
+behavioral evals, and routing evals together when its contract changes. If a
+skill is added, renamed, or removed, update the tables in this README in the
+same change.
 
-The following should not invoke the indicated skill implicitly:
+Repository-wide contribution and validation instructions are in
+[`AGENTS.md`](AGENTS.md).
 
-- `proofread-math`: “write a proof from scratch”; “replace this proof”; “assess novelty.”
-- `proof-audit`: “fix the grammar”; “develop a new route after the proof fails.”
-- `literature-check`: “explain this standard definition” when no source claim is at issue.
-- `research-compute`: trivial arithmetic or a routine unchanged test rerun.
-- `manuscript-integrate`: unresolved scratch notes or a conjectural calculation.
-- `research-init`: ordinary work in an already configured repository.
+Useful upstream references:
+
+- [Build skills for ChatGPT and Codex](https://developers.openai.com/codex/skills)
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills)
+- [Agent Skills specification](https://agentskills.io/specification)
