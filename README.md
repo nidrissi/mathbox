@@ -1,30 +1,126 @@
 # Research Toolbox
 
-Reusable agent skills for rigorous AI-assisted mathematical research, designed
-to work with both OpenAI Codex and Claude Code.
+Eight reusable Agent Skills for rigorous AI-assisted mathematical research,
+packaged as the `mathbox` Claude Code plugin and an OpenAI-compatible skills
+bundle.
 
-Each top-level directory is an independently installable
-[Agent Skill](https://agentskills.io/). The suite separates research,
-verification, computation, literature work, manuscript integration, and
-proofreading so that each workflow has a clear evidence standard and stopping
-condition.
+The toolbox separates research, verification, computation, literature work,
+manuscript integration, and proofreading so that each workflow has a clear
+evidence standard and stopping condition. The skills can be installed as one
+plugin or individually.
+
+These are research workflows and safeguards, not a computer algebra system or
+a replacement for mathematical review.
+
+## Quick start
+
+### Claude Code: install the plugin
+
+From a Claude Code session, add this repository as a marketplace and install
+the bundle:
+
+```text
+/plugin marketplace add nidrissi/research-toolbox
+/plugin install mathbox@research-toolbox
+```
+
+Start a new session, run `/skills`, and try:
+
+```text
+/mathbox:proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
+```
+
+Claude namespaces plugin skills with the plugin name. The repository root is
+also the plugin root, so a source checkout can be tested without installation:
+
+```bash
+git clone https://github.com/nidrissi/research-toolbox.git
+claude --plugin-dir ./research-toolbox
+```
+
+### Codex: install the skills now
+
+OpenAI accepts this skills-only Claude plugin as a direct upload and converts
+its manifest during submission. Until the bundle is published in the OpenAI
+plugin directory, ask Codex's built-in installer to install the same skills
+directly from the repository:
+
+```text
+$skill-installer Install every skill from https://github.com/nidrissi/research-toolbox.
+```
+
+Start a new session, run `/skills`, and try:
+
+```text
+$proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
+```
+
+### Manual or single-skill installation
+
+Requirements are Git, a host with Agent Skills support, and Python 3 only for
+the optional bundled helper scripts. The helpers use the standard library.
+
+Clone the repository somewhere stable:
+
+```bash
+git clone https://github.com/nidrissi/research-toolbox.git \
+  "$HOME/.local/share/research-toolbox"
+toolbox_dir="$HOME/.local/share/research-toolbox"
+skills_dir="$toolbox_dir"
+```
+
+To install only `proof-audit`, link it into the host you use:
+
+```bash
+# Codex
+mkdir -p "$HOME/.agents/skills"
+ln -s "$skills_dir/proof-audit" "$HOME/.agents/skills/proof-audit"
+
+# Claude Code
+mkdir -p "$HOME/.claude/skills"
+ln -s "$skills_dir/proof-audit" "$HOME/.claude/skills/proof-audit"
+```
+
+To link all eight skills for both hosts:
+
+```bash
+mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
+
+for skill_file in "$skills_dir"/*/SKILL.md; do
+  skill_dir=${skill_file%/SKILL.md}
+  skill_name=${skill_dir##*/}
+  ln -s "$skill_dir" "$HOME/.agents/skills/$skill_name"
+  ln -s "$skill_dir" "$HOME/.claude/skills/$skill_name"
+done
+```
+
+These commands do not overwrite an existing skill with the same name. On
+native Windows, use WSL or copy the selected directories instead of creating
+symlinks. Standalone Claude skills use `/proof-audit`; plugin-installed Claude
+skills use `/mathbox:proof-audit`.
+
+The skills use the mathematical software already available in your project.
+Installing this repository does not install SageMath, LaTeX, or other project
+dependencies.
 
 ## Included skills
 
-| Skill | Purpose | Invocation |
+| Skill | Purpose | Selection |
 |---|---|---|
-| [`research-init`](research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit only |
-| [`research-attempt`](research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit only |
-| [`proof-audit`](proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | explicit or automatic |
-| [`literature-check`](literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | explicit or automatic |
-| [`computation-audit`](computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | explicit or automatic |
-| [`manuscript-integrate`](manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit only |
-| [`proofread-math`](proofread-math/) | Conservatively proofread mathematical prose and LaTeX | explicit or automatic |
-| [`research-retrospective`](research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit only |
+| [`research-init`](research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
+| [`research-attempt`](research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
+| [`proof-audit`](proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
+| [`literature-check`](literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | automatic |
+| [`computation-audit`](computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
+| [`manuscript-integrate`](manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
+| [`proofread-math`](proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
+| [`research-retrospective`](research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit request |
 
-“Automatic” means that the host may select the skill when a request matches its
-description. Every skill can still be invoked explicitly: use `$skill-name` in
-Codex or `/skill-name` in Claude Code.
+“Explicit request” is a portable routing boundary expressed in the skill's
+description and body, not a host-specific frontmatter switch. “Automatic” means
+that a matching task may select the skill without naming it. Every skill can
+still be invoked by name: use `$skill-name` in Codex, `/skill-name` for a
+standalone Claude skill, or `/mathbox:skill-name` for the plugin.
 
 ## Choosing a skill
 
@@ -39,7 +135,7 @@ Codex or `/skill-name` in Claude Code.
 | correcting grammar, typography, LaTeX, references, or forced local typos | `proofread-math` |
 | reviewing the project portfolio and deciding what to try next | `research-retrospective` |
 
-Some important boundaries:
+Important boundaries:
 
 - A bounded computation is evidence only for its stated range, not a universal
   proof.
@@ -50,64 +146,47 @@ Some important boundaries:
 - A failed literature search supports only a bounded search report, not a claim
   of global novelty.
 
-## Installation
+## Updating and pinning
 
-Clone the repository somewhere stable, then link the skills you want into the
-personal skill directories used by Codex and Claude Code:
-
-```bash
-git clone https://github.com/nidrissi/research-toolbox.git \
-  "$HOME/.local/share/research-toolbox"
-
-toolbox_dir="$HOME/.local/share/research-toolbox"
-mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
-
-for skill_file in "$toolbox_dir"/*/SKILL.md; do
-  skill_dir=${skill_file%/SKILL.md}
-  skill_name=${skill_dir##*/}
-  ln -s "$skill_dir" "$HOME/.agents/skills/$skill_name"
-  ln -s "$skill_dir" "$HOME/.claude/skills/$skill_name"
-done
-```
-
-The commands deliberately do not overwrite an existing skill with the same
-name. To install only one skill, run the corresponding two `ln -s` commands for
-that directory. To update linked skills later, pull the repository:
+Claude marketplace installations can be updated from `/plugin`. For a manual
+or linked installation, pull the checkout:
 
 ```bash
 git -C "$HOME/.local/share/research-toolbox" pull --ff-only
 ```
 
-Codex can also install skills from a GitHub repository through its built-in
-`$skill-installer` workflow.
+For a reproducible setup, check out a release tag or commit before linking the
+skills. Each skill declares its contract version in `SKILL.md`.
 
 ## Repository structure
 
 ```text
 research-toolbox/
-├── AGENTS.md                 # shared contributor and agent instructions
-├── CLAUDE.md                 # imports AGENTS.md for Claude Code
+├── .claude-plugin/
+│   ├── marketplace.json                  # Claude marketplace catalog
+│   └── plugin.json                       # root plugin metadata and skill list
+├── AGENTS.md                             # shared contributor instructions
+├── CLAUDE.md                             # imports AGENTS.md for Claude Code
 ├── README.md
 └── <skill-name>/
-    ├── SKILL.md              # canonical workflow and trigger description
-    ├── agents/openai.yaml    # Codex/OpenAI UI and invocation metadata
-    ├── evals/
-    │   ├── evals.json        # behavioral examples and assertions
-    │   └── trigger-evals.json # positive and negative routing probes
-    ├── references/           # supporting material loaded when needed
-    ├── assets/               # optional templates or data files
-    └── scripts/              # optional deterministic helpers
+    ├── SKILL.md                           # canonical workflow contract
+    ├── agents/openai.yaml                 # OpenAI presentation metadata
+    ├── evals/                             # behavior and routing probes
+    ├── references/                        # supporting material
+    ├── assets/                            # optional templates or data
+    └── scripts/                           # optional deterministic helpers
 ```
 
-Not every skill needs every optional directory. References inside a skill are
-relative to that skill directory, so packages remain portable when installed by
-copying or symlinking.
+There is only one copy of each skill. The plugin manifest lists the top-level
+directories explicitly, and every skill remains independently installable.
+Relative resource links therefore continue to work when a skill is copied,
+linked, loaded by Claude, or converted by OpenAI.
 
-The common `SKILL.md` format follows the open Agent Skills standard. Codex uses
-`agents/openai.yaml` for host-specific presentation and invocation policy;
-Claude Code ignores that file and uses compatible fields in `SKILL.md`.
+The `SKILL.md` frontmatter uses only portable Agent Skills fields: `name`,
+`description`, and `metadata`. OpenAI uses `agents/openai.yaml` for
+host-specific presentation and invocation policy; other hosts ignore it.
 
-## Development
+## Contributing
 
 Keep each skill focused on one job. Update its instructions, supporting files,
 behavioral evals, and routing evals together when its contract changes. If a
@@ -119,6 +198,11 @@ Repository-wide contribution and validation instructions are in
 
 Useful upstream references:
 
-- [Build skills for ChatGPT and Codex](https://developers.openai.com/codex/skills)
-- [Extend Claude with skills](https://code.claude.com/docs/en/skills)
+- [Build plugins for ChatGPT and Codex](https://learn.chatgpt.com/docs/build-plugins)
+- [Submit a Claude Code plugin to OpenAI](https://developers.openai.com/plugins/guides/submit-claude-plugin)
+- [Create plugins for Claude Code](https://code.claude.com/docs/en/plugins)
 - [Agent Skills specification](https://agentskills.io/specification)
+
+## License
+
+[MIT](LICENSE) © 2026 Najib Idrissi-Kaïtouni.

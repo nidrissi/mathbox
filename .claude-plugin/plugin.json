@@ -1,0 +1,29 @@
+{
+  "name": "mathbox",
+  "description": "Rigorous workflows for AI-assisted mathematical research",
+  "version": "2.0.0",
+  "author": {
+    "name": "Najib Idrissi-Kaïtouni",
+    "url": "https://github.com/nidrissi"
+  },
+  "homepage": "https://github.com/nidrissi/research-toolbox",
+  "repository": "https://github.com/nidrissi/research-toolbox",
+  "license": "MIT",
+  "keywords": [
+    "mathematics",
+    "research",
+    "proof-audit",
+    "literature",
+    "latex"
+  ],
+  "skills": [
+    "./computation-audit",
+    "./literature-check",
+    "./manuscript-integrate",
+    "./proof-audit",
+    "./proofread-math",
+    "./research-attempt",
+    "./research-init",
+    "./research-retrospective"
+  ]
+}

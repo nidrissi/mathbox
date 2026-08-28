@@ -2,7 +2,6 @@
 name: research-retrospective
 description: >-
   Reconcile a mathematical research repository's current claims, proofs, computations, status, literature dependencies, and failed routes, then recommend the next bounded research moves. Use only when the user asks for a project review, handoff, weekly/monthly retrospective, prioritization, or “what should I do next?”. Default to read-only.
-disable-model-invocation: true
 metadata:
   suite: math-research-skills
   version: "2.0.0"
