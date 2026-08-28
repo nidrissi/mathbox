@@ -1,5 +1,5 @@
 {
-  "name": "research-toolbox",
+  "name": "mathbox",
   "owner": {
     "name": "Najib Idrissi-Kaïtouni",
     "url": "https://github.com/nidrissi"
@@ -15,8 +15,8 @@
         "name": "Najib Idrissi-Kaïtouni",
         "url": "https://github.com/nidrissi"
       },
-      "homepage": "https://github.com/nidrissi/research-toolbox",
-      "repository": "https://github.com/nidrissi/research-toolbox",
+      "homepage": "https://github.com/nidrissi/mathbox",
+      "repository": "https://github.com/nidrissi/mathbox",
       "license": "MIT",
       "category": "Research",
       "tags": [

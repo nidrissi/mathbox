@@ -20,8 +20,8 @@ From a Claude Code session, add this repository as a marketplace and install
 the bundle:
 
 ```text
-/plugin marketplace add nidrissi/research-toolbox
-/plugin install mathbox@research-toolbox
+/plugin marketplace add nidrissi/mathbox
+/plugin install mathbox@mathbox
 ```
 
 Start a new session, run `/skills`, and try:
@@ -34,8 +34,8 @@ Claude namespaces plugin skills with the plugin name. The repository root is
 also the plugin root, so a source checkout can be tested without installation:
 
 ```bash
-git clone https://github.com/nidrissi/research-toolbox.git
-claude --plugin-dir ./research-toolbox
+git clone https://github.com/nidrissi/mathbox.git
+claude --plugin-dir ./mathbox
 ```
 
 ### Codex: install the skills now
@@ -46,7 +46,7 @@ plugin directory, ask Codex's built-in installer to install the same skills
 directly from the repository:
 
 ```text
-$skill-installer Install every skill from https://github.com/nidrissi/research-toolbox.
+$skill-installer Install every skill from https://github.com/nidrissi/mathbox.
 ```
 
 Start a new session, run `/skills`, and try:
@@ -63,9 +63,9 @@ the optional bundled helper scripts. The helpers use the standard library.
 Clone the repository somewhere stable:
 
 ```bash
-git clone https://github.com/nidrissi/research-toolbox.git \
-  "$HOME/.local/share/research-toolbox"
-toolbox_dir="$HOME/.local/share/research-toolbox"
+git clone https://github.com/nidrissi/mathbox.git \
+  "$HOME/.local/share/mathbox"
+toolbox_dir="$HOME/.local/share/mathbox"
 skills_dir="$toolbox_dir"
 ```
 
@@ -152,7 +152,7 @@ Claude marketplace installations can be updated from `/plugin`. For a manual
 or linked installation, pull the checkout:
 
 ```bash
-git -C "$HOME/.local/share/research-toolbox" pull --ff-only
+git -C "$HOME/.local/share/mathbox" pull --ff-only
 ```
 
 For a reproducible setup, check out a release tag or commit before linking the
@@ -161,7 +161,7 @@ skills. Each skill declares its contract version in `SKILL.md`.
 ## Repository structure
 
 ```text
-research-toolbox/
+mathbox/
 ├── .claude-plugin/
 │   ├── marketplace.json                  # Claude marketplace catalog
 │   └── plugin.json                       # root plugin metadata and skill list

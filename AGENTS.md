@@ -83,7 +83,7 @@ compatibility shim, and keep all plugin behavior in the top-level skills.
 For Python helper changes, also run:
 
 ```bash
-PYTHONPYCACHEPREFIX=/tmp/research-toolbox-pycache \
+PYTHONPYCACHEPREFIX=/tmp/mathbox-pycache \
   python3 -m py_compile */scripts/*.py
 ```
 
