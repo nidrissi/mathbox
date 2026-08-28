@@ -42,13 +42,13 @@ claude --plugin-dir ./mathbox
 The repository includes Codex-native package and presentation metadata in
 `.codex-plugin/plugin.json`. The existing Claude manifest remains the explicit
 inventory for OpenAI's skills-only conversion path, so both hosts use the same
-canonical top-level skill directories without duplicated packages.
+canonical skill directories under `skills/` without duplicated packages.
 
 Until the bundle is published in the OpenAI plugin directory, ask Codex's
 built-in installer to install the same skills directly from the repository:
 
 ```text
-$skill-installer Install every skill from https://github.com/nidrissi/mathbox.
+$skill-installer Install every skill under skills/ from https://github.com/nidrissi/mathbox.
 ```
 
 Start a new session, run `/skills`, and try:
@@ -68,7 +68,7 @@ Clone the repository somewhere stable:
 git clone https://github.com/nidrissi/mathbox.git \
   "$HOME/.local/share/mathbox"
 toolbox_dir="$HOME/.local/share/mathbox"
-skills_dir="$toolbox_dir"
+skills_dir="$toolbox_dir/skills"
 ```
 
 To install only `proof-audit`, link it into the host you use:
@@ -109,14 +109,14 @@ dependencies.
 
 | Skill | Purpose | Selection |
 |---|---|---|
-| [`research-init`](research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
-| [`research-attempt`](research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
-| [`proof-audit`](proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
-| [`literature-check`](literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | automatic |
-| [`computation-audit`](computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
-| [`manuscript-integrate`](manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
-| [`proofread-math`](proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
-| [`research-retrospective`](research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit request |
+| [`research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
+| [`research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
+| [`proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
+| [`literature-check`](skills/literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | automatic |
+| [`computation-audit`](skills/computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
+| [`manuscript-integrate`](skills/manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
+| [`proofread-math`](skills/proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
+| [`research-retrospective`](skills/research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit request |
 
 “Explicit request” is a portable routing boundary expressed in the skill's
 description and body, not a host-specific frontmatter switch. “Automatic” means
@@ -174,19 +174,21 @@ mathbox/
 ├── AGENTS.md                             # shared contributor instructions
 ├── CLAUDE.md                             # imports AGENTS.md for Claude Code
 ├── README.md
-└── <skill-name>/
-    ├── SKILL.md                           # canonical workflow contract
-    ├── agents/openai.yaml                 # OpenAI presentation metadata
-    ├── evals/                             # behavior and routing probes
-    ├── references/                        # supporting material
-    ├── assets/                            # optional templates or data
-    └── scripts/                           # optional deterministic helpers
+└── skills/
+    └── <skill-name>/
+        ├── SKILL.md                       # canonical workflow contract
+        ├── agents/openai.yaml             # OpenAI presentation metadata
+        ├── evals/                         # behavior and routing probes
+        ├── references/                    # supporting material
+        ├── assets/                        # optional templates or data
+        └── scripts/                       # optional deterministic helpers
 ```
 
-There is only one copy of each skill. The plugin manifest lists the top-level
-directories explicitly, and every skill remains independently installable.
-Relative resource links therefore continue to work when a skill is copied,
-linked, loaded by Claude, or converted by OpenAI.
+There is only one copy of each skill. The Codex manifest points to `skills/`,
+the Claude manifest lists each directory beneath it explicitly, and every skill
+remains independently installable. Relative resource links therefore continue
+to work when a skill is copied, linked, loaded by Claude, or converted by
+OpenAI.
 
 The `SKILL.md` frontmatter uses only portable Agent Skills fields: `name`,
 `description`, and `metadata`. OpenAI uses `agents/openai.yaml` for

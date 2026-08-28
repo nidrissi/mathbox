@@ -16,6 +16,7 @@
     "literature",
     "latex"
   ],
+  "skills": "./skills/",
   "interface": {
     "displayName": "Mathbox",
     "shortDescription": "Rigorous workflows for mathematical research",

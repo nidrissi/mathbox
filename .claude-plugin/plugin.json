@@ -17,13 +17,13 @@
     "latex"
   ],
   "skills": [
-    "./computation-audit",
-    "./literature-check",
-    "./manuscript-integrate",
-    "./proof-audit",
-    "./proofread-math",
-    "./research-attempt",
-    "./research-init",
-    "./research-retrospective"
+    "./skills/computation-audit",
+    "./skills/literature-check",
+    "./skills/manuscript-integrate",
+    "./skills/proof-audit",
+    "./skills/proofread-math",
+    "./skills/research-attempt",
+    "./skills/research-init",
+    "./skills/research-retrospective"
   ]
 }
