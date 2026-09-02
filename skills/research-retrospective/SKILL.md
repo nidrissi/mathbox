@@ -36,11 +36,13 @@ information, and mutable facts incorrectly embedded in instructions.
 
 ## Select next routes
 
-Recommend at most three bounded actions. Each must include:
+Recommend at most three bounded research routes. Each must include:
 
-- exact target;
+- exact unresolved mathematical question;
 - why it dominates nearby alternatives;
-- cheapest decisive test;
+- when current evidence is bounded, the uniform route or obstruction it
+  suggests;
+- cheapest decisive test and, when bounded, the alternatives it distinguishes;
 - success and failure criteria;
 - expected durable output;
 - dependencies and resource needs;
@@ -56,6 +58,12 @@ Note recurring guidance failures, false skill triggers, context sinks, duplicate
 records, non-reproducible computations, or verification gaps. General skill
 bugs belong in the user-wide suite feedback ledger; project rules belong in the
 repository.
+
+Treat a live status dashboard as current state, not verification history. Flag
+stacked dated verification narratives as a context sink. When reconciliation
+edits are requested, keep the latest full current summary and replace older
+narratives with links to the immutable log or computation manifests; do not
+rewrite append-only records.
 
 ## Output
 

@@ -70,6 +70,11 @@ Return one of:
 If a failure occurs, distinguish mathematical counterexample, implementation
 bug, environment/configuration failure, and insufficient resources.
 
+After a successful bounded run, identify which observed features are structural
+and which may be case-specific. Recommend a larger bound only when it tests a
+named alternative, audits the implementation, or enters a genuinely new
+regime; accumulating another success is not by itself a research decision.
+
 ## Persist and report
 
 Store reusable scripts in the project's designated checks/computation area, not
@@ -78,4 +83,6 @@ checksums and a regeneration command. Update claims/status only when the result
 changes research state.
 
 Report the contract, code paths, command, provenance, checks performed, exact
-result, non-claims, residual risks, and cheapest independent next check.
+result, non-claims, residual risks, structural features implicated, and either
+a candidate uniform argument or the cheapest check that discriminates named
+alternatives.

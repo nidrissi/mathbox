@@ -11,6 +11,17 @@
         "Requests or identifies an independent structural argument",
         "Reports provenance and non-claims"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Validated manifests record exact successful runs of the same recurrence for bounds 4, 5, 6, and 7. The latest note proposes running bound 8. Audit the evidence and recommend the next research move.",
+      "expected_output": "Preserves the valid provenance, identifies the structural features shared by the bounded successes, and recommends bound 8 only if it discriminates named explanations, audits a distinct code path, or enters a new regime; otherwise it points to a uniform argument or obstruction.",
+      "assertions": [
+        "Keeps the existing validated manifests as provenance",
+        "Does not recommend bound 8 merely to extend the successful range",
+        "Distinguishes structural features from possible bounded coincidences",
+        "Names a uniform route or the alternatives a further check would discriminate"
+      ]
     }
   ]
 }

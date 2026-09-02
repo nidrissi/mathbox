@@ -9,7 +9,18 @@
         "States exact success and failure criteria",
         "Uses the arity-5 computation only as bounded evidence",
         "Does not broaden to multiple unrelated routes",
-        "Reports the first unresolved implication and next check"
+        "Reports the first unresolved implication and a uniform route or discriminating check"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Three consecutive attempts verified the same scalar identity in arities 2, 3, and 4. The current handoff says the next step is to compute arity 5. Run one bounded research attempt and decide what should happen next.",
+      "expected_output": "Pauses the case ladder, identifies which structural properties the successful cases used, formulates a candidate uniform lemma or obstruction, and permits arity 5 only if it distinguishes named alternatives or tests a genuinely new regime.",
+      "assertions": [
+        "Does not recommend arity 5 merely because arity 4 succeeded",
+        "Separates uniform structural features from case-specific coincidences",
+        "Formulates the next item as a mathematical question with a uniform route or obstruction",
+        "Names what an additional finite case would discriminate if one is proposed"
       ]
     }
   ]

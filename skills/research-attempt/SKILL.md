@@ -47,6 +47,11 @@ entry will be needed.
 - For computation, separate the mathematical claim from the finite assertion
   implemented. Record domain, bounds, seed, versions, inputs, runtime, and
   non-claims; use the `computation-audit` protocol when appropriate.
+- After any bounded success, pause before extending the arity, range, or case
+  ladder. Identify the minimal structural features used, separate uniform
+  features from case-specific coincidences, and formulate the candidate
+  uniform lemma or obstruction. Run another finite case only if it
+  discriminates between named alternatives or enters a genuinely new regime.
 - A timeout, failed search, or bounded computation is not a universal negative
   result.
 - A change to a registered convention requires explicit owner approval unless
@@ -78,6 +83,8 @@ material blocker, a convention decision, or a claim-supporting computation.
   location.
 - Append one route-level log entry; do not record every command or dead end.
 - Update live status or claim obligations only when project state changed.
+- Treat live status as current state, not chronology. Keep its latest full
+  verification summary and link the route log or manifests for older runs.
 - Keep historical entries immutable; append corrections.
 - Do not integrate into a manuscript unless that is separately requested.
 
@@ -94,4 +101,5 @@ risk trigger applies. Report:
 3. decisive derivation, source, counterexample, or computation;
 4. durable files changed;
 5. commands run and exact scope;
-6. unresolved assumptions and the smallest useful next step.
+6. unresolved assumptions and the next mathematical question; when evidence is
+   bounded, include its uniform route or discriminating check.
