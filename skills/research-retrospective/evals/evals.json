@@ -11,6 +11,17 @@
         "States the strongest safe current claim",
         "Recommends at most three bounded routes"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Reconcile this research repository. Its live handoff contains five dated full-verification narratives. The latest is current, and each older run already has an immutable research-log entry and a validated computation manifest. The next-action field says only 'test the next arity'.",
+      "expected_output": "Treats the handoff as current state rather than chronology, retains the latest full verification summary, links older runs through their logs or manifests without rewriting them, and replaces the command-like next action with an unresolved mathematical question and a uniform route or discriminating check.",
+      "assertions": [
+        "Identifies the stacked verification narratives as a context sink",
+        "Keeps only the latest full verification summary in the live handoff",
+        "Preserves and links the immutable logs and validated manifests",
+        "Rephrases the next action as a question with a uniform alternative or named discriminator"
+      ]
     }
   ]
 }

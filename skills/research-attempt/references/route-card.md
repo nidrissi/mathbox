@@ -17,5 +17,7 @@
 - **First unresolved or failed implication:**
 - **Strongest surviving statement:**
 - **Artifacts and commands:**
-- **Smallest next step:**
+- **Next unresolved question:**
+- **Uniform route or obstruction, when evidence is bounded:**
+- **What another bounded case would discriminate, if applicable:**
 ```
