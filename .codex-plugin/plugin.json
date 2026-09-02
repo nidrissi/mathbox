@@ -19,7 +19,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Mathbox",
-    "shortDescription": "Rigorous workflows for mathematical research",
+    "shortDescription": "Rigorous AI-assisted research",
     "longDescription": "The Mathbox plugin provides skills to audit proofs, verify literature, design reproducible computations, and manage rigorous AI-assisted mathematical research workflows.",
     "developerName": "Najib Idrissi-Kaïtouni",
     "category": "Education & Research",
