@@ -38,8 +38,8 @@
 
 ## Skills
 
-- Canonical user skills were detected or their absence reported.
-- No canonical workflow was recreated locally.
+- The `mathbox` plugin was detected or its absence reported.
+- No `mathbox` plugin workflow was recreated locally.
 - No skill exists under root `skills/`.
 - Any project skill has a distinct name, justification, correct tool path, and
   evals.

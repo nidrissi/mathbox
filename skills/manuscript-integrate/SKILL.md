@@ -60,8 +60,8 @@ actually occurred.
 
 ## Verify
 
-1. Perform a conservative `proofread-math` pass over the changed TeX and needed
-   context.
+1. Perform a conservative pass with the `mathbox:proofread-math` plugin skill
+   over the changed TeX and needed context.
 2. Run the documented targeted mathematical verifier.
 3. Run the appropriate out-of-tree or canonical manuscript build.
 4. Inspect undefined references/citations, warnings in the changed region,

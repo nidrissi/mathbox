@@ -54,10 +54,10 @@ open flagship problem.
 
 ## Review the AI workflow
 
-Note recurring guidance failures, false skill triggers, context sinks, duplicated
-records, non-reproducible computations, or verification gaps. General skill
-bugs belong in the user-wide suite feedback ledger; project rules belong in the
-repository.
+Note recurring guidance failures, false `mathbox` plugin skill triggers,
+context sinks, duplicated records, non-reproducible computations, or
+verification gaps. General plugin-skill bugs belong in the `mathbox` feedback
+ledger; project rules belong in the repository.
 
 Treat a live status dashboard as current state, not verification history. Flag
 stacked dated verification narratives as a context sink. When reconciliation
@@ -74,4 +74,4 @@ Lead with a concise project verdict. Then provide:
 3. critical path and principal blocker;
 4. recommended routes in priority order;
 5. files to reconcile, only if edits were requested;
-6. the single best next prompt for `research-attempt`.
+6. the single best next prompt for the `mathbox:research-attempt` plugin skill.

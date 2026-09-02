@@ -16,7 +16,8 @@ Determine the repository root first. Read the applicable `AGENTS.md` and only
 the current files relevant to the target. Resolve project roles from the paths
 named there. When not explicit, look for the standard alternatives in
 [project-context.md](references/project-context.md). Interpret every project
-path relative to the repository root, never relative to this installed skill.
+path relative to the repository root, never relative to this installed
+`mathbox:research-attempt` plugin skill (or its standalone installation).
 
 ## Open the route
 
@@ -43,10 +44,11 @@ entry will be needed.
 - Do not repair a failed type, sign, variance, normalization, or completion
   check by silently changing the statement or convention.
 - Verify every load-bearing external theorem in its exact needed form. Follow
-  the `literature-check` protocol when available.
+  the `mathbox:literature-check` plugin skill when available.
 - For computation, separate the mathematical claim from the finite assertion
   implemented. Record domain, bounds, seed, versions, inputs, runtime, and
-  non-claims; use the `computation-audit` protocol when appropriate.
+  non-claims; use the `mathbox:computation-audit` plugin skill when
+  appropriate.
 - After any bounded success, pause before extending the arity, range, or case
   ladder. Identify the minimal structural features used, separate uniform
   features from case-specific coincidences, and formulate the candidate

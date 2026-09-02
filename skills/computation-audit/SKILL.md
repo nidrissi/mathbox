@@ -52,7 +52,8 @@ For reusable or claim-supporting runs, create a manifest from
 python3 <skill-directory>/scripts/validate_manifest.py <manifest.json>
 ```
 
-The exact skill-directory syntax is tool-specific; locate this installed skill
+The exact skill-directory syntax is tool-specific; locate this installed
+`mathbox:computation-audit` plugin skill (or its standalone installation)
 rather than guessing a repository-relative path.
 
 ## Interpret conservatively

@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Use the mathbox plugin to initialize this mathematical research repository.",
+    "should_trigger": true
+  },
+  {
     "query": "Work on the main theorem.",
     "should_trigger": false
   },

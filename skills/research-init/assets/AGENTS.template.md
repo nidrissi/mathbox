@@ -65,8 +65,9 @@ rule. External/destructive actions require explicit approval.
 6. Update durable records only at natural route checkpoints.
 7. Obtain fresh adversarial review for material new claims.
 
-Reusable personal workflows may be available as user-wide skills. Do not create
-repository copies of common skills unless explicitly approved for portability.
+Reusable mathematical research workflows may be available through the
+`mathbox` plugin. Do not create repository copies of its skills unless
+explicitly approved for portability.
 
 ## Verification
 

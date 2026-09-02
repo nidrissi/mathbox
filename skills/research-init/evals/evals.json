@@ -3,12 +3,12 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Refresh this research repository. It already has user-wide proof-audit and research-attempt skills, plus local copies under .agents/skills and two more under a root skills directory.",
-      "expected_output": "Proposes removal or archival of duplicate/misplaced local skills, creates no replacement copies, and moves local mathematical content into project files.",
+      "prompt": "Refresh this research repository. The mathbox plugin already provides proof-audit and research-attempt, but the repository also has local copies under .agents/skills and two more under a root skills directory.",
+      "expected_output": "Recognizes proof-audit and research-attempt as mathbox plugin skills, proposes removal or archival of duplicate/misplaced local copies, creates no replacements, and moves local mathematical content into project files.",
       "assertions": [
         "Defaults to no project skills",
         "Flags root skills as misplaced",
-        "Does not regenerate canonical skills",
+        "Does not regenerate mathbox plugin skills",
         "Presents a proposal before writing"
       ]
     }

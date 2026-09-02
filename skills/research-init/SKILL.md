@@ -1,13 +1,13 @@
 ---
 name: research-init
 description: >-
-  Initialize, retrofit, or refresh an AI-assisted mathematical research repository. Use only when the user explicitly asks to set up or substantially revise AGENTS.md, CLAUDE.md, research workflow files, or the repository's agent architecture. Inspect first, interview adaptively, propose a reviewed file plan, and default to no repository-local skills because canonical workflows are user-wide.
+  Initialize, retrofit, or refresh an AI-assisted mathematical research repository. Use only when the user explicitly asks to set up or substantially revise AGENTS.md, CLAUDE.md, research workflow files, or the repository's agent architecture. Inspect first, interview adaptively, propose a reviewed file plan, and default to no repository-local skills because canonical workflows come from the mathbox plugin.
 ---
 
 # Mathematical research repository initializer
 
 Configure the repository as a durable research environment. Do not regenerate
-common skills inside it.
+skills supplied by the `mathbox` plugin inside it.
 
 ## Non-negotiable behavior
 
@@ -23,8 +23,9 @@ common skills inside it.
   permissions.
 - Preserve unrelated work. Do not commit, push, install dependencies, upload
   content, or contact third parties without authorization.
-- Keep stable rules in instructions, recurring procedures in canonical skills,
-  mutable facts in research records, and deterministic enforcement in code.
+- Keep stable rules in instructions, recurring procedures in `mathbox` plugin
+  skills, mutable facts in research records, and deterministic enforcement in
+  code.
 
 ## Phase 1 — inspect read-only
 
@@ -33,16 +34,16 @@ common skills inside it.
    and any unrecognized `skills/` folders.
 3. Locate likely charter, status, claims, conventions, proof/manuscript,
    literature, log, computation, tests, CI, and build artifacts.
-4. Detect duplicate canonical skill names and paths hard-coded relative to a
-   skill installation.
+4. Detect duplicate `mathbox` plugin skill names and paths hard-coded relative
+   to a skill installation.
 5. Run the bundled read-only inspector when available:
 
 ```bash
-python3 <research-init-skill-directory>/scripts/inspect_repo.py --root <repo>
+python3 <mathbox-research-init-directory>/scripts/inspect_repo.py --root <repo>
 ```
 
-Locate the installed skill directory; do not substitute a guessed relative
-path.
+Locate the installed `mathbox:research-init` plugin skill directory (or its
+standalone installation); do not substitute a guessed relative path.
 
 Produce a fact sheet with observed facts, tentative inferences, conflicts, and
 missing information.
@@ -87,19 +88,22 @@ Do not duplicate mutable state in persistent instructions.
 
 ## Skill-layer rule
 
-The default output is **no project skills**.
+The default output is **no project skills**: use the installed `mathbox` plugin
+for its canonical research workflows.
 
-Never synthesize local copies of `research-attempt`, `proof-audit`,
-`literature-check`, `computation-audit`, `manuscript-integrate`,
-`proofread-math`, `research-retrospective`, or `research-init`.
+Never synthesize local copies of the `mathbox` plugin components
+`research-attempt`, `proof-audit`, `literature-check`, `computation-audit`,
+`manuscript-integrate`, `proofread-math`, `research-retrospective`, or
+`research-init`.
 Never write a skill to a root `skills/` directory.
 
 A repository skill is allowed only after explicit approval and only if its
 procedure is genuinely project-specific, recurring, distinct from the canonical
 catalog, and given a project-qualified name. Project facts, file paths,
 mathematical hazards, and benchmark examples belong in project files instead.
-If remote/team portability requires common skills, vendor exact versioned copies
-rather than rewriting them.
+If remote/team portability requires common workflows, install and pin the
+`mathbox` plugin. If that host cannot load plugins, vendor exact versioned
+component skills rather than rewriting them.
 
 ## Phase 5 — validate
 
@@ -108,8 +112,8 @@ rather than rewriting them.
 3. Confirm every command was discovered or supplied.
 4. Check authority, evidence labels, Git/network rules, and edit boundaries for
    contradictions.
-5. Confirm that no canonical skill was duplicated locally and no skill was put
-   under `skills/`.
+5. Confirm that no `mathbox` plugin skill was duplicated locally and no skill
+   was put under `skills/`.
 6. Check instruction size and static links/paths.
 7. Run the cheapest verified project check when authorized.
 8. Inspect `git diff --check` and the full diff.
@@ -120,8 +124,8 @@ Do not commit unless explicitly authorized.
 ## Final report
 
 Report files changed, hierarchy rationale, rules moved and destinations,
-validation, unresolved questions/commands, global skill availability, any
-archived duplicate skills, and one recommended first invocation.
+validation, unresolved questions/commands, `mathbox` plugin availability, any
+archived duplicate skills, and one recommended namespaced plugin invocation.
 
 Use [output-contract.md](references/output-contract.md) as the acceptance
 checklist.

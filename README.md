@@ -1,12 +1,13 @@
-# Research Toolbox
+# Mathbox
 
-Eight reusable Agent Skills for rigorous AI-assisted mathematical research,
-packaged as the `mathbox` plugin for Codex and Claude Code.
+`mathbox` is a plugin for Codex and Claude Code containing eight reusable Agent
+Skills for rigorous AI-assisted mathematical research.
 
 The toolbox separates research, verification, computation, literature work,
 manuscript integration, and proofreading so that each workflow has a clear
-evidence standard and stopping condition. The skills can be installed as one
-plugin or individually.
+evidence standard and stopping condition. The canonical distribution is the
+`mathbox` plugin; each bundled skill remains independently installable for
+hosts or environments that need a standalone Agent Skill.
 
 These are research workflows and safeguards, not a computer algebra system or
 a replacement for mathematical review.
@@ -37,30 +38,36 @@ git clone https://github.com/nidrissi/mathbox.git
 claude --plugin-dir ./mathbox
 ```
 
-### Codex: install the skills now
+### Codex: install the plugin
 
-The repository includes Codex-native package and presentation metadata in
-`.codex-plugin/plugin.json`. The existing Claude manifest remains the explicit
-inventory for OpenAI's skills-only conversion path, so both hosts use the same
-canonical skill directories under `skills/` without duplicated packages.
+Install `mathbox` from Codex's plugin directory. The repository is a native
+Codex plugin through `.codex-plugin/plugin.json`; the Claude manifest also
+provides the explicit skill inventory used by OpenAI's skills-only conversion
+path. Both hosts therefore load the same canonical directories under `skills/`
+without duplicated packages.
 
-Until the bundle is published in the OpenAI plugin directory, ask Codex's
-built-in installer to install the same skills directly from the repository:
+Start a new session, run `/skills`, and try the namespaced plugin skill:
+
+```text
+$mathbox:proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
+```
+
+If the plugin directory listing is not yet available, Codex's built-in skill
+installer can install the component skills directly from the repository:
 
 ```text
 $skill-installer Install every skill under skills/ from https://github.com/nidrissi/mathbox.
 ```
 
-Start a new session, run `/skills`, and try:
+That fallback is a standalone skill installation, not a `mathbox` plugin
+installation, so its explicit invocations use bare names such as
+`$proof-audit`.
 
-```text
-$proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
-```
-
-### Manual or single-skill installation
+### Standalone or single-skill installation
 
 Requirements are Git, a host with Agent Skills support, and Python 3 only for
-the optional bundled helper scripts. The helpers use the standard library.
+the optional bundled helper scripts. This compatibility path installs bare
+skills rather than the `mathbox` plugin. The helpers use the standard library.
 
 Clone the repository somewhere stable:
 
@@ -98,60 +105,64 @@ done
 
 These commands do not overwrite an existing skill with the same name. On
 native Windows, use WSL or copy the selected directories instead of creating
-symlinks. Standalone Claude skills use `/proof-audit`; plugin-installed Claude
-skills use `/mathbox:proof-audit`.
+symlinks. Standalone invocations use `$proof-audit` in Codex and `/proof-audit`
+in Claude Code; plugin-installed invocations use `$mathbox:proof-audit` in
+Codex and `/mathbox:proof-audit` in Claude Code.
 
-The skills use the mathematical software already available in your project.
-Installing this repository does not install SageMath, LaTeX, or other project
-dependencies.
+The `mathbox` plugin skills use the mathematical software already available in
+your project. Installing the plugin or its standalone component skills does not
+install SageMath, LaTeX, or other project dependencies.
 
-## Included skills
+## Included plugin skills
 
-| Skill | Purpose | Selection |
+| Plugin skill | Purpose | Selection |
 |---|---|---|
-| [`research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
-| [`research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
-| [`proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
-| [`literature-check`](skills/literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | automatic |
-| [`computation-audit`](skills/computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
-| [`manuscript-integrate`](skills/manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
-| [`proofread-math`](skills/proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
-| [`research-retrospective`](skills/research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit request |
+| [`mathbox:research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
+| [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
+| [`mathbox:proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
+| [`mathbox:literature-check`](skills/literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | automatic |
+| [`mathbox:computation-audit`](skills/computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
+| [`mathbox:manuscript-integrate`](skills/manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
+| [`mathbox:proofread-math`](skills/proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
+| [`mathbox:research-retrospective`](skills/research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit request |
 
 “Explicit request” is a portable routing boundary expressed in the skill's
 description and body, not a host-specific frontmatter switch. “Automatic” means
-that a matching task may select the skill without naming it. Every skill can
-still be invoked by name: use `$skill-name` in Codex, `/skill-name` for a
-standalone Claude skill, or `/mathbox:skill-name` for the plugin.
+that a matching task may select the skill without naming it. Every plugin skill
+can still be invoked by name: use `$mathbox:skill-name` in Codex or
+`/mathbox:skill-name` in Claude Code. Bare `$skill-name` and `/skill-name`
+forms refer only to standalone installations.
 
 ## Choosing a skill
 
 | The task is primarily… | Use |
 |---|---|
-| setting up the research repository or revising its agent architecture | `research-init` |
-| developing new mathematics along one controlled route | `research-attempt` |
-| deciding whether an existing argument is correct as written | `proof-audit` |
-| checking exactly what an external source proves | `literature-check` |
-| obtaining or assessing finite computational evidence | `computation-audit` |
-| transferring a validated result into the live paper | `manuscript-integrate` |
-| correcting grammar, typography, LaTeX, references, or forced local typos | `proofread-math` |
-| reviewing the project portfolio and deciding what to try next | `research-retrospective` |
+| setting up the research repository or revising its agent architecture | `mathbox:research-init` |
+| developing new mathematics along one controlled route | `mathbox:research-attempt` |
+| deciding whether an existing argument is correct as written | `mathbox:proof-audit` |
+| checking exactly what an external source proves | `mathbox:literature-check` |
+| obtaining or assessing finite computational evidence | `mathbox:computation-audit` |
+| transferring a validated result into the live paper | `mathbox:manuscript-integrate` |
+| correcting grammar, typography, LaTeX, references, or forced local typos | `mathbox:proofread-math` |
+| reviewing the project portfolio and deciding what to try next | `mathbox:research-retrospective` |
 
 Important boundaries:
 
 - A bounded computation is evidence only for its stated range, not a universal
   proof.
-- Proofreading does not authorize changing an argument. Use `proof-audit` to
-  diagnose an existing proof or `research-attempt` to develop a new one.
-- `manuscript-integrate` transfers mathematics that has already been validated;
-  it does not make conjectural work publication-ready.
+- Proofreading does not authorize changing an argument. Use the
+  `mathbox:proof-audit` plugin skill to diagnose an existing proof or
+  `mathbox:research-attempt` to develop a new one.
+- The `mathbox:manuscript-integrate` plugin skill transfers mathematics that
+  has already been validated; it does not make conjectural work
+  publication-ready.
 - A failed literature search supports only a bounded search report, not a claim
   of global novelty.
 
 ## Updating and pinning
 
-Claude marketplace installations can be updated from `/plugin`. For a manual
-or linked installation, pull the checkout:
+The `mathbox` plugin can be updated through the host's plugin manager. For a
+manual standalone installation, pull the checkout:
 
 ```bash
 git -C "$HOME/.local/share/mathbox" pull --ff-only
@@ -189,6 +200,10 @@ the Claude manifest lists each directory beneath it explicitly, and every skill
 remains independently installable. Relative resource links therefore continue
 to work when a skill is copied, linked, loaded by Claude, or converted by
 OpenAI.
+
+Canonical skill folders and `SKILL.md` names are intentionally bare (for
+example, `proof-audit`) so they remain portable Agent Skills. Installing the
+bundle as a plugin exposes them under the `mathbox:` namespace.
 
 The `SKILL.md` frontmatter uses only the portable required Agent Skills fields
 `name` and `description`. OpenAI uses `agents/openai.yaml` for host-specific

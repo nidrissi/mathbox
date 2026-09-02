@@ -1,6 +1,6 @@
 interface:
-  display_name: "Research Init"
+  display_name: "Mathbox: Research Init"
   short_description: "Configure a mathematical research repository"
-  default_prompt: "Use $research-init to inspect and configure this mathematical research repository."
+  default_prompt: "Use $mathbox:research-init to inspect and configure this mathematical research repository."
 policy:
   allow_implicit_invocation: false
