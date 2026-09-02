@@ -53,8 +53,8 @@ alter downstream reasoning. List every such change explicitly.
 
 Otherwise leave the source unchanged and report the issue. A repeated pattern
 alone does not justify changing a sign or index. An unbound symbol may signal a
-missing definition. A proof gap is not a proofreading error; escalate it to
-`proof-audit` when the caller wants investigation.
+missing definition. A proof gap is not a proofreading error; use the
+`mathbox:proof-audit` plugin skill when the caller wants investigation.
 
 ## Reviewer notes
 

@@ -1,6 +1,6 @@
 interface:
-  display_name: "Research Attempt"
+  display_name: "Mathbox: Research Attempt"
   short_description: "Run one bounded mathematical research route"
-  default_prompt: "Use $research-attempt to pursue one bounded, auditable mathematical route."
+  default_prompt: "Use $mathbox:research-attempt to pursue one bounded, auditable mathematical route."
 policy:
   allow_implicit_invocation: false

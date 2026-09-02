@@ -4,12 +4,13 @@
     {
       "id": 1,
       "prompt": "The status file says Claim C3 is proved, the proof obligations call it conditional, and the log records a counterexample to the old formulation. Review the project and recommend the next route.",
-      "expected_output": "Exposes the authority conflict, reconstructs the strongest safe claim, and recommends a bounded next check rather than averaging the summaries.",
+      "expected_output": "Exposes the authority conflict, reconstructs the strongest safe claim, recommends a bounded next check rather than averaging the summaries, and provides a next prompt for the mathbox:research-attempt plugin skill.",
       "assertions": [
         "Does not trust the newest or strongest summary automatically",
         "Identifies the counterexample and conditional dependency",
         "States the strongest safe current claim",
-        "Recommends at most three bounded routes"
+        "Recommends at most three bounded routes",
+        "Names the mathbox:research-attempt plugin skill for the next prompt"
       ]
     },
     {

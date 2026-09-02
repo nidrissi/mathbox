@@ -1,6 +1,6 @@
 interface:
-  display_name: "Research Retrospective"
+  display_name: "Mathbox: Research Retrospective"
   short_description: "Reconcile project state and choose next routes"
-  default_prompt: "Use $research-retrospective to review this mathematics project and prioritize the next bounded routes."
+  default_prompt: "Use $mathbox:research-retrospective to review this mathematics project and prioritize the next bounded routes."
 policy:
   allow_implicit_invocation: false

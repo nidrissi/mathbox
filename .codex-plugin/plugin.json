@@ -1,7 +1,7 @@
 {
   "name": "mathbox",
   "version": "2.0.0",
-  "description": "Rigorous workflows for AI-assisted mathematical research",
+  "description": "Mathbox plugin skills for rigorous AI-assisted mathematical research",
   "author": {
     "name": "Najib Idrissi-Kaïtouni",
     "url": "https://github.com/nidrissi"
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Mathbox",
     "shortDescription": "Rigorous workflows for mathematical research",
-    "longDescription": "Audit proofs, verify literature, design reproducible computations, and manage rigorous AI-assisted mathematical research workflows.",
+    "longDescription": "The Mathbox plugin provides skills to audit proofs, verify literature, design reproducible computations, and manage rigorous AI-assisted mathematical research workflows.",
     "developerName": "Najib Idrissi-Kaïtouni",
     "category": "Education & Research",
     "capabilities": [

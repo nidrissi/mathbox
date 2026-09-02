@@ -1,6 +1,6 @@
 interface:
-  display_name: "Computation Audit"
+  display_name: "Mathbox: Computation Audit"
   short_description: "Audit claim-supporting mathematical computation"
-  default_prompt: "Use $computation-audit to validate this mathematical computation and its scope."
+  default_prompt: "Use $mathbox:computation-audit to validate this mathematical computation and its scope."
 policy:
   allow_implicit_invocation: true

@@ -51,9 +51,10 @@ Ask only unresolved material questions, in batches of at most five.
 
 ## Skill layer
 
-- Are the canonical user-wide math skills installed for both tools?
+- Is the `mathbox` plugin installed for each host in use?
 - Is local-only use sufficient, or must collaborators/cloud sessions receive
   exact vendored copies?
 - Is there any recurring procedure truly unique to this repository?
 
-Default recommendation: user-wide canonical skills, no project copies.
+Default recommendation: install the `mathbox` plugin and create no project
+copies of its skills.
