@@ -49,6 +49,11 @@ standalone installation); do not substitute a guessed relative path.
 Produce a fact sheet with observed facts, tentative inferences, conflicts, and
 missing information.
 
+Initialization may inventory literature records and cache policy, but it does
+not establish what cited mathematics proves. Do not perform substantive source
+lookups during setup; record them as follow-up work for the available
+`literature-check` skill (`mathbox:literature-check` in plugin installations).
+
 ## Phase 2 — interview adaptively
 
 Use [interview.md](references/interview.md). Resolve only material ambiguity:

@@ -170,6 +170,12 @@ checks effective Git ignore coverage before ingesting content and uses
 `pdftotext` opportunistically when it is installed. It never fetches sources or
 handles credentials itself.
 
+Other research-facing skills route any new question about what an external
+mathematical source proves through `literature-check`; this ensures they share
+the same exact-version, cache-first, and evidence rules. Proofreading checks
+citation syntax only, and repository initialization inventories literature
+policy without performing substantive source verification.
+
 ## Updating and pinning
 
 The `mathbox` plugin can be updated through the host's plugin manager. For a

@@ -22,6 +22,17 @@
         "Does not inspect or commit cached PDF or extracted-text content",
         "Makes source retention conditional on project authorization"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Initialize this repository and determine whether every theorem cited in its literature ledger has the hypotheses needed by the proofs.",
+      "expected_output": "Inventories the ledger and configures the research workflow, but does not perform substantive theorem lookups during initialization; it records bounded follow-up tasks for the available literature-check skill.",
+      "assertions": [
+        "Keeps repository initialization separate from source verification",
+        "Does not read cached source content merely to initialize the repository",
+        "Routes substantive theorem questions to literature-check",
+        "Records unresolved source checks without claiming they passed"
+      ]
     }
   ]
 }

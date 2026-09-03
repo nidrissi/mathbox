@@ -11,6 +11,17 @@
         "Returns a refuted or restricted verdict",
         "Gives a valid small counterexample or exact missing hypothesis"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Audit this proof. Its decisive leaf cites Theorem 4.3 for an equivariant integral statement, but the literature record has no exact theorem or version.",
+      "expected_output": "Marks the external leaf conditional and routes the bounded theorem question through the available literature-check skill, including its authorized cache-first acquisition workflow, rather than relying on citation metadata or memory.",
+      "assertions": [
+        "Identifies the unverified external-source leaf",
+        "Uses literature-check for the exact source question",
+        "Checks the authorized local cache before fetching",
+        "Does not pass the proof obligation from a snippet, citation, or memory"
+      ]
     }
   ]
 }

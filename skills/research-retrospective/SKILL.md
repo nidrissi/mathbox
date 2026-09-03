@@ -19,6 +19,13 @@ Default to no edits unless the user asks to reconcile files.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
    authority conflicts.
 
+Do not start a broad literature search merely to complete a retrospective. If
+the requested review cannot be decided without establishing what a load-bearing
+external mathematical source says, route that bounded source question through
+the available `literature-check` skill (`mathbox:literature-check` in plugin
+installations), which checks an authorized project-local cache before fetching.
+Otherwise record the unresolved source check as a candidate next route.
+
 ## Build the portfolio
 
 For each active claim or work package, record:

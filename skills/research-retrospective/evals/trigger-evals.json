@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Search the literature for the exact version of this theorem.",
+    "should_trigger": false
+  },
+  {
     "query": "Prove the current lemma.",
     "should_trigger": false
   },

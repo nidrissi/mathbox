@@ -22,6 +22,17 @@
         "Formulates the next item as a mathematical question with a uniform route or obstruction",
         "Names what an additional finite case would discriminate if one is proposed"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Attack the next implication in the proof. It depends on the exact integral statement of a cited theorem, but the literature ledger records only an abstract and the project permits caching public PDFs.",
+      "expected_output": "Routes the external-source question through the available literature-check skill, which checks the authorized local cache before fetching, and keeps the research implication conditional until the exact integral theorem is verified.",
+      "assertions": [
+        "Uses literature-check for the external theorem rather than reconstructing it from the abstract",
+        "Checks the authorized project-local cache before fetching",
+        "Works with standalone or mathbox plugin skill naming",
+        "Keeps the implication conditional until exact source verification succeeds"
+      ]
     }
   ]
 }

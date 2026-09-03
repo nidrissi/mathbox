@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Look up what the cited paper proves over integral coefficients.",
+    "should_trigger": false
+  },
+  {
     "query": "Find a new proof of the theorem from scratch.",
     "should_trigger": false
   },
