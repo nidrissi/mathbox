@@ -10,6 +10,8 @@
 - Protected, read-only, and routine paths are explicit.
 - Commands are verified and concrete.
 - Git, network, confidentiality, and handoff policies are explicit.
+- Any authorized local literature cache has an explicit retention policy and a
+  verified `/.research-cache/` Git ignore rule.
 - No unexplained residue from another repository remains.
 - Root instructions are concise; detailed procedures are not copied into them.
 

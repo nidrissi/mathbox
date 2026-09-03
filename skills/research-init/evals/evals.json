@@ -11,6 +11,17 @@
         "Does not regenerate mathbox plugin skills",
         "Presents a proposal before writing"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Set up this mathematical research repository so agents can retain public papers locally without committing them and can avoid indexing copyrighted cache contents during repository inspection.",
+      "expected_output": "Proposes the standard .research-cache/literature convention, a tracked root ignore rule, an explicit retention policy, and leaves cached source content outside repository inspection and tracked research records.",
+      "assertions": [
+        "Proposes /.research-cache/ in the project Git ignore rules",
+        "Records only metadata and hashes in the tracked literature ledger",
+        "Does not inspect or commit cached PDF or extracted-text content",
+        "Makes source retention conditional on project authorization"
+      ]
     }
   ]
 }

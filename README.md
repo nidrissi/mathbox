@@ -120,7 +120,7 @@ install SageMath, LaTeX, or other project dependencies.
 | [`mathbox:research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
 | [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
 | [`mathbox:proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
-| [`mathbox:literature-check`](skills/literature-check/) | Verify an external result, citation, notation translation, or bounded novelty claim | automatic |
+| [`mathbox:literature-check`](skills/literature-check/) | Verify or locally cache an external result, citation, notation translation, or bounded novelty claim | automatic |
 | [`mathbox:computation-audit`](skills/computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
 | [`mathbox:manuscript-integrate`](skills/manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
 | [`mathbox:proofread-math`](skills/proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
@@ -158,6 +158,17 @@ Important boundaries:
   publication-ready.
 - A failed literature search supports only a bounded search report, not a claim
   of global novelty.
+
+### Local literature cache
+
+When a research repository authorizes retaining source material,
+`literature-check` can reuse PDFs and extracted text from the project's ignored
+`.research-cache/literature/` directory. Records are content-addressed by the
+PDF's SHA-256 and searchable without a database; tracked literature ledgers keep
+only bibliographic metadata, hashes, and extraction status. The bundled helper
+checks effective Git ignore coverage before ingesting content and uses
+`pdftotext` opportunistically when it is installed. It never fetches sources or
+handles credentials itself.
 
 ## Updating and pinning
 

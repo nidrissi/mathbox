@@ -45,6 +45,8 @@ Ask only unresolved material questions, in batches of at most five.
 
 - Is the repository unpublished, private, licensed, embargoed, or public?
 - May public sources be browsed and PDFs retained locally?
+- If sources may be retained, should the standard ignored
+  `.research-cache/literature/` cache be enabled for repeated checks?
 - May repository content be uploaded to external tools?
 - Are private correspondence or collaborator notes available, and who may see
   them?

@@ -12,7 +12,8 @@ from pathlib import Path
 
 EXCLUDE = {
     '.git', '.hg', '.svn', '.venv', 'venv', 'node_modules', '__pycache__',
-    'build', 'dist', 'target', '.tox', '.nox', '.pytest_cache', '.mypy_cache'
+    'build', 'dist', 'target', '.tox', '.nox', '.pytest_cache', '.mypy_cache',
+    '.research-cache'
 }
 CANONICAL = {
     'research-init', 'research-attempt', 'proof-audit', 'literature-check',
@@ -65,6 +66,13 @@ def info(root: Path, path: Path) -> dict:
 
 
 def inspect(root: Path, depth: int) -> dict:
+    cache_path = Path('.research-cache/literature')
+    cache_probe = cache_path / '.ignore-probe'
+    literature_cache = {
+        'path': str(cache_path),
+        'exists': (root / cache_path).is_dir(),
+        'git_ignored': git(root, 'check-ignore', str(cache_probe)) is not None,
+    }
     files = list(walk(root, depth))
     instructions = []
     roles = []
@@ -105,6 +113,7 @@ def inspect(root: Path, depth: int) -> dict:
         'misplaced_root_skills': misplaced,
         'canonical_name_overrides': duplicates,
         'build_manifests': manifests,
+        'literature_cache': literature_cache,
     }
 
 
@@ -127,6 +136,13 @@ def markdown(obj: dict) -> str:
         lines.append('')
     lines += ['## Canonical-name project overrides', '']
     lines.append(', '.join(f'`{x}`' for x in obj['canonical_name_overrides']) or 'None.')
+    lines.append('')
+    cache = obj['literature_cache']
+    lines += ['## Local literature cache', '']
+    lines.append(
+        f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; "
+        f"Git ignored: {'yes' if cache['git_ignored'] else 'no'}"
+    )
     lines.append('')
     return '\n'.join(lines)
 
