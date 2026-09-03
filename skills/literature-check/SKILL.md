@@ -81,7 +81,8 @@ state changes.
 
 Report:
 
-1. exact source and version;
+1. exact source and version, plus the cache content hash and extraction
+   status when the source was retained locally;
 2. exact result used;
 3. notation/hypothesis translation;
 4. whether the implication is valid;

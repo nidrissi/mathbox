@@ -8,7 +8,7 @@
 - **Version or revision date:**
 - **Date checked:**
 - **Local cache SHA-256 (optional):**
-- **Cached extraction status:** available, unavailable, failed, not requested
+- **Cached extraction status:** available, unavailable, failed, not-requested
 - **Exact theorem/definition/pages:**
 - **Source status:** proves, sketches, states, conjectures, motivates
 - **Project claim supported:**

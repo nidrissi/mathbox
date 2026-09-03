@@ -125,8 +125,9 @@ component skills rather than rewriting them.
 5. Confirm that no `mathbox` plugin skill was duplicated locally and no skill
    was put under `skills/`.
 6. Check instruction size and static links/paths.
-7. Confirm that any literature cache is ignored and excluded from inspection;
-   do not open its source content during repository initialization.
+7. Confirm that any literature cache is excluded from inspection and ignored
+   by a tracked project rule rather than only by the cache's own internal
+   rule; do not open its source content during repository initialization.
 8. Run the cheapest verified project check when authorized.
 9. Inspect `git diff --check` and the full diff.
 10. Tell the user how to verify loaded instructions and skills in a fresh session.

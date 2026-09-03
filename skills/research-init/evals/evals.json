@@ -18,6 +18,7 @@
       "expected_output": "Proposes the standard .research-cache/literature convention, a tracked root ignore rule, an explicit retention policy, and leaves cached source content outside repository inspection and tracked research records.",
       "assertions": [
         "Proposes /.research-cache/ in the project Git ignore rules",
+        "Treats the cache's own internal ignore rule as a fallback, not as the project rule",
         "Records only metadata and hashes in the tracked literature ledger",
         "Does not inspect or commit cached PDF or extracted-text content",
         "Makes source retention conditional on project authorization"

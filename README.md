@@ -159,16 +159,22 @@ Important boundaries:
 - A failed literature search supports only a bounded search report, not a claim
   of global novelty.
 
-### Local literature cache
+## Local literature cache
 
 When a research repository authorizes retaining source material,
 `literature-check` can reuse PDFs and extracted text from the project's ignored
 `.research-cache/literature/` directory. Records are content-addressed by the
 PDF's SHA-256 and searchable without a database; tracked literature ledgers keep
 only bibliographic metadata, hashes, and extraction status. The bundled helper
-checks effective Git ignore coverage before ingesting content and uses
-`pdftotext` opportunistically when it is installed. It never fetches sources or
-handles credentials itself.
+uses `pdftotext` opportunistically when it is installed, and never fetches
+sources or handles credentials itself.
+
+Keep a tracked `/.research-cache/` rule in the project's own `.gitignore`. The
+helper also writes an internal ignore rule as a fallback, refuses to write any
+artifact Git would track — including one already in the index — and reports
+whether coverage comes from a project rule or only from its own, so a missing
+project rule stays visible rather than silently satisfied. Lookups
+(`find`, `show`, `verify`) never create or modify the cache.
 
 Other research-facing skills route any new question about what an external
 mathematical source proves through `literature-check`; this ensures they share

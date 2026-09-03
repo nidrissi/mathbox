@@ -38,6 +38,15 @@ def git(root: Path, *args: str) -> str | None:
     return p.stdout.strip() if p.returncode == 0 else None
 
 
+def ignore_rule_source(root: Path, path: Path) -> str | None:
+    """Return the ignore-rule file excluding path, or None if Git does not ignore it."""
+    out = git(root, 'check-ignore', '-v', '--', str(path))
+    if out is None:
+        return None
+    lines = out.splitlines()
+    return lines[0].split(':', 1)[0] if lines else ''
+
+
 def root_of(path: Path) -> Path:
     path = path.expanduser().resolve()
     found = git(path, 'rev-parse', '--show-toplevel')
@@ -66,12 +75,20 @@ def info(root: Path, path: Path) -> dict:
 
 
 def inspect(root: Path, depth: int) -> dict:
-    cache_path = Path('.research-cache/literature')
-    cache_probe = cache_path / '.ignore-probe'
+    # The cache writes its own `.research-cache/.gitignore`, so a bare ignore
+    # check cannot tell a project rule from the cache excluding itself. Report
+    # the rule's source, and treat a match on the cache root — which its own
+    # `.gitignore` cannot produce — as evidence of a project-supplied rule.
+    cache_root = Path('.research-cache')
+    cache_path = cache_root / 'literature'
+    source = ignore_rule_source(root, cache_path / 'pdf' / f"{'0' * 64}.pdf")
     literature_cache = {
         'path': str(cache_path),
         'exists': (root / cache_path).is_dir(),
-        'git_ignored': git(root, 'check-ignore', str(cache_probe)) is not None,
+        'git_ignored': source is not None,
+        'ignore_rule_source': source,
+        'repository_ignore_rule': bool(ignore_rule_source(root, cache_root))
+        or (source is not None and not source.startswith(f'{cache_root.as_posix()}/')),
     }
     files = list(walk(root, depth))
     instructions = []
@@ -139,10 +156,14 @@ def markdown(obj: dict) -> str:
     lines.append('')
     cache = obj['literature_cache']
     lines += ['## Local literature cache', '']
-    lines.append(
-        f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; "
-        f"Git ignored: {'yes' if cache['git_ignored'] else 'no'}"
-    )
+    if cache['git_ignored'] and not cache['repository_ignore_rule']:
+        coverage = (f"ignored only by `{cache['ignore_rule_source']}` "
+                    '(the cache\'s own rule); add `/.research-cache/` to the project .gitignore')
+    elif cache['git_ignored']:
+        coverage = f"ignored by a project rule in `{cache['ignore_rule_source']}`"
+    else:
+        coverage = 'not ignored; add `/.research-cache/` to the project .gitignore'
+    lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {coverage}")
     lines.append('')
     return '\n'.join(lines)
 
