@@ -15,13 +15,25 @@
     },
     {
       "id": 2,
-      "prompt": "Reconcile this research repository. Its live handoff contains five dated full-verification narratives. The latest is current, and each older run already has an immutable research-log entry and a validated computation manifest. The next-action field says only 'test the next arity'.",
-      "expected_output": "Treats the handoff as current state rather than chronology, retains the latest full verification summary, links older runs through their logs or manifests without rewriting them, and replaces the command-like next action with an unresolved mathematical question and a uniform route or discriminating check.",
+      "prompt": "Reconcile this research repository. Its live handoff contains five dated full-verification narratives. The latest is current, and each older run already has an indexed immutable research record and a validated computation manifest. The next-action field says only 'test the next arity'.",
+      "expected_output": "Treats the handoff as current state rather than chronology, retains the latest full verification summary, links older runs through their research records or manifests without rewriting them, and replaces the command-like next action with an unresolved mathematical question and a uniform route or discriminating check.",
       "assertions": [
         "Identifies the stacked verification narratives as a context sink",
         "Keeps only the latest full verification summary in the live handoff",
-        "Preserves and links the immutable logs and validated manifests",
+        "Preserves and links the immutable research records and validated manifests",
         "Rephrases the next action as a question with a uniform alternative or named discriminator"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review a project whose RESEARCH_LOG.md mixes old long-form entries with new compact links into research/records/. The relevant counterexample is in one linked record; unrelated entries span hundreds of lines.",
+      "expected_output": "Reads the index and only the relevant linked or embedded records, reports the pending migration without rewriting history, and bases the verdict on the counterexample's actual evidence.",
+      "assertions": [
+        "Does not read all historical records indiscriminately",
+        "Supports mixed legacy prose and compact linked entries",
+        "Reports migration as pending rather than performing it",
+        "Does not treat migration as a prerequisite for the retrospective",
+        "Does not rewrite existing records or index entries"
       ]
     }
   ]

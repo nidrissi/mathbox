@@ -13,7 +13,7 @@ Ask only unresolved material questions, in batches of at most five.
 
 - Which file is the live dashboard?
 - Where do durable proofs, claim obligations, conventions, literature checks,
-  computations, and historical attempts live?
+  computations, the history index, and standalone research records live?
 - What review is required before “proved” or manuscript integration?
 - Which old files are historical rather than authoritative?
 
@@ -31,7 +31,8 @@ Ask only unresolved material questions, in batches of at most five.
 - Which semantic files may be edited autonomously?
 - Which paths are read-only or historical?
 - Which convention changes require explicit approval?
-- May the agent update status/log automatically at route checkpoints?
+- May the agent create standalone records and append history-index entries
+  automatically at route checkpoints?
 - What Git actions are authorized?
 
 ## Verification and resources

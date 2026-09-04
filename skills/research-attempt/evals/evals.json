@@ -22,6 +22,28 @@
         "Formulates the next item as a mathematical question with a uniform route or obstruction",
         "Names what an additional finite case would discriminate if one is proposed"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "A bounded counterexample search found a smallest counterexample and the project uses RESEARCH_LOG.md with no custom history paths. Persist the result at a natural checkpoint.",
+      "expected_output": "Creates one dated standalone record under research/records and appends only a compact linked outcome line to RESEARCH_LOG.md, while leaving detailed evidence in its authoritative artifact.",
+      "assertions": [
+        "Uses a lowercase ASCII YYYY-MM-DD-normalized-title.md filename",
+        "Includes the title, date, kind, evidence label, strongest surviving statement, artifacts, and unresolved question in the record",
+        "Keeps the RESEARCH_LOG.md entry to a link, evidence label, and one-sentence result or blocker",
+        "Does not duplicate detailed proof or computation content in the index"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Correct yesterday's indexed research finding. A record with today's normalized title already exists, and RESEARCH_LOG.md also contains older long-form legacy entries. Do not undertake a repository retrofit.",
+      "expected_output": "Writes a separately indexed correction record with a Corrects link and collision suffix, preserves existing records and legacy log text, and reports that migration remains pending.",
+      "assertions": [
+        "Creates a new correction record rather than editing the old finding",
+        "Uses the next numeric filename suffix on collision",
+        "Appends a new compact index entry without rewriting existing entries",
+        "Does not migrate legacy log prose as a side effect of the attempt"
+      ]
     }
   ]
 }
