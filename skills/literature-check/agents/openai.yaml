@@ -1,6 +1,6 @@
 interface:
   display_name: "Mathbox: Literature Check"
-  short_description: "Verify a mathematical source and implication"
+  short_description: "Verify or cache a mathematical source"
   default_prompt: "Use $mathbox:literature-check to verify the exact source, hypotheses, and implication."
 policy:
   allow_implicit_invocation: true

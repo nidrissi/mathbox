@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Check whether the paper states its recurrence over integers.",
+    "should_trigger": false
+  },
+  {
     "query": "Explain what a Gr\u00f6bner basis is.",
     "should_trigger": false
   },

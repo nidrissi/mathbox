@@ -22,6 +22,17 @@
         "Distinguishes structural features from possible bounded coincidences",
         "Names a uniform route or the alternatives a further check would discriminate"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Audit this implementation of a published recurrence. The code reproduces its examples, but the project has not checked whether the paper proves the recurrence over integers or only over rationals.",
+      "expected_output": "Audits the executable finite assertion separately, routes the coefficient question through the available literature-check skill and its authorized cache-first workflow, and keeps the mathematical interpretation conditional until the exact source is verified.",
+      "assertions": [
+        "Does not infer the published theorem from working code",
+        "Uses literature-check for the source-dependent coefficient question",
+        "Checks the authorized local cache before fetching",
+        "Separates computation validity from conditional source interpretation"
+      ]
     }
   ]
 }

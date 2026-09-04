@@ -12,6 +12,14 @@
     "should_trigger": true
   },
   {
+    "query": "Set up a Git-ignored local literature cache for this research repository.",
+    "should_trigger": true
+  },
+  {
+    "query": "Verify whether this cited theorem has the hypotheses we need.",
+    "should_trigger": false
+  },
+  {
     "query": "Work on the main theorem.",
     "should_trigger": false
   },

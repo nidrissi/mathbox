@@ -39,6 +39,12 @@ If coverage is partial, state the exact scope reviewed.
 8. Run documented, proportionate validation when available; never invent a
    build or install dependencies.
 
+Checking citation syntax, keys, and local consistency does not authorize a
+substantive source lookup. If the caller asks whether a cited mathematical
+source actually supports a claim, treat that question as outside proofreading
+and route it through the available `literature-check` skill
+(`mathbox:literature-check` in plugin installations).
+
 The detailed checklist is in [checklist.md](references/checklist.md).
 
 ## Mathematical-token policy
@@ -54,7 +60,8 @@ alter downstream reasoning. List every such change explicitly.
 Otherwise leave the source unchanged and report the issue. A repeated pattern
 alone does not justify changing a sign or index. An unbound symbol may signal a
 missing definition. A proof gap is not a proofreading error; use the
-`mathbox:proof-audit` plugin skill when the caller wants investigation.
+available `proof-audit` skill (`mathbox:proof-audit` in plugin installations)
+when the caller wants investigation.
 
 ## Reviewer notes
 

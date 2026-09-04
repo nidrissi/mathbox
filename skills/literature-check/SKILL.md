@@ -1,7 +1,7 @@
 ---
 name: literature-check
 description: >-
-  Verify an external mathematical theorem, citation, notation translation, source-dependent implication, or bounded novelty claim. Use when a proof relies on a named paper/result, when exact hypotheses or versions matter, or when the user asks whether a claim is known. Prefer primary sources and record the search scope. Do not treat snippets or failed searches as proof or global novelty.
+  Verify an external mathematical theorem, citation, notation translation, source-dependent implication, or bounded novelty claim, reusing authorized project-local source copies when available. Use when a proof relies on a named paper/result, when exact hypotheses or versions matter, when the user asks whether a claim is known, or when an authenticated mathematical source should be cached for later checks. Prefer primary sources and record the search scope. Do not treat snippets or failed searches as proof or global novelty.
 ---
 
 # Mathematical literature check
@@ -24,16 +24,25 @@ searching when they exist.
 
 ## Acquire and authenticate
 
-1. Prefer the published paper, official preprint, author manuscript, formal
+1. When the project permits local source retention, query its literature cache
+   by exact DOI, arXiv version, ISBN, or other stable identifier before fetching.
+   A different or unversioned arXiv copy is only a discovery candidate.
+2. Prefer the published paper, official preprint, author manuscript, formal
    documentation, or another primary source.
-2. Record title, authors, publication/preprint identifier, exact version or
+3. Record title, authors, publication/preprint identifier, exact version or
    revision date, stable locator, and date checked.
-3. Use abstracts, reviews, search snippets, lecture notes, and citation chains
+4. Use abstracts, reviews, search snippets, lecture notes, and citation chains
    only as discovery aids unless they are themselves the result being cited.
-4. For a changing preprint, verify that theorem numbering and hypotheses belong
+5. For a changing preprint, verify that theorem numbering and hypotheses belong
    to the version actually used by the project.
-5. Respect confidentiality and copyright; do not upload or reproduce licensed
+6. Respect confidentiality and copyright; do not upload or reproduce licensed
    or private material without authorization.
+
+After acquiring an authorized source, add it to the cache at a natural
+checkpoint so later agents can reuse both the PDF and any extracted text. Read
+[source-cache.md](references/source-cache.md) before initializing or modifying
+the cache. Cache hits save acquisition work; they do not authenticate the
+source or verify its mathematical content.
 
 ## Extract and translate
 
@@ -72,7 +81,8 @@ state changes.
 
 Report:
 
-1. exact source and version;
+1. exact source and version, plus the cache content hash and extraction
+   status when the source was retained locally;
 2. exact result used;
 3. notation/hypothesis translation;
 4. whether the implication is valid;

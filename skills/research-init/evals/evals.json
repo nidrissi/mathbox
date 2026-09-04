@@ -14,6 +14,29 @@
     },
     {
       "id": 2,
+      "prompt": "Set up this mathematical research repository so agents can retain public papers locally without committing them and can avoid indexing copyrighted cache contents during repository inspection.",
+      "expected_output": "Proposes the standard .research-cache/literature convention, a tracked root ignore rule, an explicit retention policy, and leaves cached source content outside repository inspection and tracked research records.",
+      "assertions": [
+        "Proposes /.research-cache/ in the project Git ignore rules",
+        "Treats the cache's own internal ignore rule as a fallback, not as the project rule",
+        "Records only metadata and hashes in the tracked literature ledger",
+        "Does not inspect or commit cached PDF or extracted-text content",
+        "Makes source retention conditional on project authorization"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Initialize this repository and determine whether every theorem cited in its literature ledger has the hypotheses needed by the proofs.",
+      "expected_output": "Inventories the ledger and configures the research workflow, but does not perform substantive theorem lookups during initialization; it records bounded follow-up tasks for the available literature-check skill.",
+      "assertions": [
+        "Keeps repository initialization separate from source verification",
+        "Does not read cached source content merely to initialize the repository",
+        "Routes substantive theorem questions to literature-check",
+        "Records unresolved source checks without claiming they passed"
+      ]
+    },
+    {
+      "id": 4,
       "prompt": "Refresh this Git-backed research repository. RESEARCH_LOG.md contains several long-form route entries, one has no date, and a preamble does not belong to any entry. Convert it to the current research-record architecture.",
       "expected_output": "Treats the long-form structure as requiring a migration proposal, maps each route to a standalone research/records file, preserves unmatched context, and waits for approval before replacing the log with a compact index.",
       "assertions": [

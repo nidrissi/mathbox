@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Cache this authenticated arXiv PDF so later source checks can reuse it.",
+    "should_trigger": true
+  },
+  {
     "query": "Prove the lemma directly without literature.",
     "should_trigger": false
   },

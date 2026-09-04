@@ -16,8 +16,14 @@ supply mathematical validation or human review.
 2. Resolve the authoritative manuscript, proof source, current status/claims,
    conventions, literature ledger, bibliography, and verification commands.
 3. Identify the exact validated result and its evidence/review status.
-4. Stop if the source proof conflicts with current status, the required external
-   theorem has not been checked, or the target manuscript is ambiguous.
+4. Stop if the source proof conflicts with current status or the target
+   manuscript is ambiguous.
+5. If a required external theorem has not been checked, pause integration and
+   route that source question through the available `literature-check` skill
+   (`mathbox:literature-check` in plugin installations). That workflow checks an
+   authorized project-local cache before fetching. Resume only after the exact
+   source implication is verified; if the skill or source is unavailable,
+   leave integration blocked rather than supplying validation here.
 
 ## Build the integration map
 

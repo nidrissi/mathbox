@@ -22,6 +22,13 @@ Default to read-only audit when the user asks to review an existing computation.
 3. Locate the authoritative code, data, prior outputs, and documented command.
    Do not invent a build or execution procedure.
 
+When the computation contract or its interpretation depends on what an
+external mathematical source proves, route that source question through the
+available `literature-check` skill (`mathbox:literature-check` in plugin
+installations). That workflow checks an authorized project-local cache before
+fetching. If the skill or exact source is unavailable, label the interpretation
+conditional; executable code does not authenticate the theorem it implements.
+
 ## Audit the implementation
 
 Check the relevant items in [checklist.md](references/checklist.md), especially:

@@ -33,7 +33,8 @@ skills supplied by the `mathbox` plugin inside it.
 2. Locate root/nested `AGENTS.md`, Claude memory/rules, current skill folders,
    and any unrecognized `skills/` folders.
 3. Locate likely charter, status, claims, conventions, proof/manuscript,
-   literature, log, computation, tests, CI, and build artifacts.
+   literature, log, computation, tests, CI, and build artifacts. Detect a
+   `.research-cache/` convention without reading cached source content.
 4. Classify `RESEARCH_LOG.md`, when present, as a compact linked index,
    long-form legacy history, or a mixture. Locate any separate research-record
    directory and check whether the log links to it.
@@ -50,6 +51,11 @@ standalone installation); do not substitute a guessed relative path.
 
 Produce a fact sheet with observed facts, tentative inferences, conflicts, and
 missing information.
+
+Initialization may inventory literature records and cache policy, but it does
+not establish what cited mathematics proves. Do not perform substantive source
+lookups during setup; record them as follow-up work for the available
+`literature-check` skill (`mathbox:literature-check` in plugin installations).
 
 ## Phase 2 — interview adaptively
 
@@ -74,6 +80,8 @@ Present:
 6. verified fast, targeted, full, and manuscript checks;
 7. migration risks and stale/conflicting instructions;
 8. skill-layer decision from [skill-layer.md](references/skill-layer.md).
+9. whether authorized literature retention needs a project-local cache and a
+   tracked `/.research-cache/` ignore rule.
 
 When this explicitly requested setup, retrofit, or refresh finds route-level
 prose in `RESEARCH_LOG.md`, the proposed plan must include the legacy migration
@@ -111,6 +119,8 @@ placeholder. A normal setup has:
 - at most one live dashboard;
 - optional claims, conventions, literature, a compact append-only research
   index, and immutable standalone route records;
+- when local source retention is authorized, a documented
+  `.research-cache/literature/` convention and tracked Git ignore rule;
 - nested instructions only for genuinely local invariants;
 - documented verification commands and benchmark cases.
 
@@ -145,9 +155,12 @@ component skills rather than rewriting them.
 5. Confirm that no `mathbox` plugin skill was duplicated locally and no skill
    was put under `skills/`.
 6. Check instruction size and static links/paths.
-7. Run the cheapest verified project check when authorized.
-8. Inspect `git diff --check` and the full diff.
-9. Tell the user how to verify loaded instructions and skills in a fresh session.
+7. Confirm that any literature cache is excluded from inspection and ignored
+   by a tracked project rule rather than only by the cache's own internal
+   rule; do not open its source content during repository initialization.
+8. Run the cheapest verified project check when authorized.
+9. Inspect `git diff --check` and the full diff.
+10. Tell the user how to verify loaded instructions and skills in a fresh session.
 
 Do not commit unless explicitly authorized.
 

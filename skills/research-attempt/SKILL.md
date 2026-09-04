@@ -44,8 +44,12 @@ entry will be needed.
   circularity, and missing hypotheses.
 - Do not repair a failed type, sign, variance, normalization, or completion
   check by silently changing the statement or convention.
-- Verify every load-bearing external theorem in its exact needed form. Follow
-  the `mathbox:literature-check` plugin skill when available.
+- Route every load-bearing question about what an external mathematical source
+  proves through the available `literature-check` skill
+  (`mathbox:literature-check` in plugin installations). That workflow checks an
+  authorized project-local cache before fetching. If the skill is unavailable,
+  leave the input conditional rather than reconstructing it from snippets or
+  memory.
 - For computation, separate the mathematical claim from the finite assertion
   implemented. Record domain, bounds, seed, versions, inputs, runtime, and
   non-claims; use the `mathbox:computation-audit` plugin skill when

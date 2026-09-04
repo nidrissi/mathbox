@@ -30,6 +30,17 @@
         "Does not rewrite unrelated sections",
         "Reports validation not run with reason"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Proofread this theorem and also confirm that the cited paper proves it over integers.",
+      "expected_output": "Keeps syntax and prose proofreading separate, treats the substantive source claim as outside proofreading, and routes that claim through the available literature-check skill rather than attempting source verification under the proofreading contract.",
+      "assertions": [
+        "Proofreads only within the conservative editing boundary",
+        "Distinguishes citation syntax from mathematical source verification",
+        "Routes the integral source question to literature-check",
+        "Does not silently alter the theorem based on an unchecked citation"
+      ]
     }
   ]
 }

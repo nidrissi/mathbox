@@ -44,6 +44,13 @@ For every applicable obligation:
   theorem statement;
 - search prior logs or archived claims for a known failed version.
 
+When an external-source leaf is not already verified in the project's durable
+literature record, route the source question through the available
+`literature-check` skill (`mathbox:literature-check` in plugin installations).
+That workflow checks an authorized project-local cache before fetching. If the
+skill is unavailable or the exact source cannot be checked, mark the leaf
+**conditional**; do not fill it from a snippet, secondary citation, or memory.
+
 Load the relevant domain sections of
 [obligation-checklists.md](references/obligation-checklists.md); do not apply
 irrelevant checklists mechanically.

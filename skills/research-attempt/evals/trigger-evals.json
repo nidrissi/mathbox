@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Look up the exact hypotheses of Theorem 4.3 in the cited paper.",
+    "should_trigger": false
+  },
+  {
     "query": "Explain the definition of a spectral sequence.",
     "should_trigger": false
   },

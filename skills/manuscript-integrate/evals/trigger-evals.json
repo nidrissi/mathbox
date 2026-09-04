@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Verify the exact hypotheses of this cited theorem.",
+    "should_trigger": false
+  },
+  {
     "query": "Draft a new proof for the missing lemma.",
     "should_trigger": false
   },

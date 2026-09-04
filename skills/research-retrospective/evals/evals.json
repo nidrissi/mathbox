@@ -26,6 +26,17 @@
     },
     {
       "id": 3,
+      "prompt": "Review the project portfolio. Whether Claim C8 is ready depends on the exact hypotheses of one cited theorem, and no durable literature check exists.",
+      "expected_output": "Does not launch an unbounded literature survey; if the source question is necessary to decide the requested review, routes that bounded check through the available literature-check skill and its authorized cache-first workflow, otherwise records it as a next route.",
+      "assertions": [
+        "Recognizes the unresolved external-source dependency",
+        "Uses literature-check if the source fact is required for the retrospective verdict",
+        "Otherwise records a bounded source-check route",
+        "Does not infer the theorem from project summaries"
+      ]
+    },
+    {
+      "id": 4,
       "prompt": "Review a project whose RESEARCH_LOG.md mixes old long-form entries with new compact links into research/records/. The relevant counterexample is in one linked record; unrelated entries span hundreds of lines.",
       "expected_output": "Reads the index and only the relevant linked or embedded records, reports the pending migration without rewriting history, and bases the verdict on the counterexample's actual evidence.",
       "assertions": [

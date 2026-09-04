@@ -36,6 +36,10 @@
     "should_trigger": false
   },
   {
+    "query": "Confirm the cited paper proves this over integers.",
+    "should_trigger": false
+  },
+  {
     "query": "Audit the correctness of the main theorem and find gaps.",
     "should_trigger": false
   }

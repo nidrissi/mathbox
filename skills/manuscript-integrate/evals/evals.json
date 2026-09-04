@@ -12,6 +12,17 @@
         "Keeps human review status explicit",
         "Records the substantive state change in a standalone record with only a compact linked history-index entry"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Integrate this theorem into the paper. The durable proof depends on a cited rational comparison theorem whose exact source statement has never been checked.",
+      "expected_output": "Pauses manuscript integration, routes the external theorem through the available literature-check skill and its authorized cache-first workflow, and resumes only if the exact source implication is verified.",
+      "assertions": [
+        "Does not treat manuscript integration as source validation",
+        "Uses literature-check for the unchecked theorem",
+        "Checks the authorized local cache before fetching",
+        "Leaves integration blocked if the source remains unavailable or unverified"
+      ]
     }
   ]
 }

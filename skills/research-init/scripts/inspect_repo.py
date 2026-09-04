@@ -12,7 +12,8 @@ from pathlib import Path
 
 EXCLUDE = {
     '.git', '.hg', '.svn', '.venv', 'venv', 'node_modules', '__pycache__',
-    'build', 'dist', 'target', '.tox', '.nox', '.pytest_cache', '.mypy_cache'
+    'build', 'dist', 'target', '.tox', '.nox', '.pytest_cache', '.mypy_cache',
+    '.research-cache'
 }
 CANONICAL = {
     'research-init', 'research-attempt', 'proof-audit', 'literature-check',
@@ -35,6 +36,15 @@ def git(root: Path, *args: str) -> str | None:
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return None
     return p.stdout.strip() if p.returncode == 0 else None
+
+
+def ignore_rule_source(root: Path, path: Path) -> str | None:
+    """Return the ignore-rule file excluding path, or None if Git does not ignore it."""
+    out = git(root, 'check-ignore', '-v', '--', str(path))
+    if out is None:
+        return None
+    lines = out.splitlines()
+    return lines[0].split(':', 1)[0] if lines else ''
 
 
 def root_of(path: Path) -> Path:
@@ -65,6 +75,21 @@ def info(root: Path, path: Path) -> dict:
 
 
 def inspect(root: Path, depth: int) -> dict:
+    # The cache writes its own `.research-cache/.gitignore`, so a bare ignore
+    # check cannot tell a project rule from the cache excluding itself. Report
+    # the rule's source, and treat a match on the cache root — which its own
+    # `.gitignore` cannot produce — as evidence of a project-supplied rule.
+    cache_root = Path('.research-cache')
+    cache_path = cache_root / 'literature'
+    source = ignore_rule_source(root, cache_path / 'pdf' / f"{'0' * 64}.pdf")
+    literature_cache = {
+        'path': str(cache_path),
+        'exists': (root / cache_path).is_dir(),
+        'git_ignored': source is not None,
+        'ignore_rule_source': source,
+        'repository_ignore_rule': bool(ignore_rule_source(root, cache_root))
+        or (source is not None and not source.startswith(f'{cache_root.as_posix()}/')),
+    }
     files = list(walk(root, depth))
     instructions = []
     roles = []
@@ -105,6 +130,7 @@ def inspect(root: Path, depth: int) -> dict:
         'misplaced_root_skills': misplaced,
         'canonical_name_overrides': duplicates,
         'build_manifests': manifests,
+        'literature_cache': literature_cache,
     }
 
 
@@ -127,6 +153,17 @@ def markdown(obj: dict) -> str:
         lines.append('')
     lines += ['## Canonical-name project overrides', '']
     lines.append(', '.join(f'`{x}`' for x in obj['canonical_name_overrides']) or 'None.')
+    lines.append('')
+    cache = obj['literature_cache']
+    lines += ['## Local literature cache', '']
+    if cache['git_ignored'] and not cache['repository_ignore_rule']:
+        coverage = (f"ignored only by `{cache['ignore_rule_source']}` "
+                    '(the cache\'s own rule); add `/.research-cache/` to the project .gitignore')
+    elif cache['git_ignored']:
+        coverage = f"ignored by a project rule in `{cache['ignore_rule_source']}`"
+    else:
+        coverage = 'not ignored; add `/.research-cache/` to the project .gitignore'
+    lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {coverage}")
     lines.append('')
     return '\n'.join(lines)
 

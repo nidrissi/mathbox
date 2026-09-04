@@ -11,6 +11,27 @@
         "Does not invent the missing integral statement",
         "Returns a conditional or incompatible verdict if needed"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Verify Theorem 2.7 of arXiv:2401.00001v3. This repository permits public PDFs to be retained, and its local literature cache already contains v2 of the preprint.",
+      "expected_output": "Queries the project-local cache before fetching, treats the cached v2 as a version candidate rather than an exact hit, obtains or requests v3 through the normal authorized workflow, and caches the authenticated v3 PDF and extracted text when available.",
+      "assertions": [
+        "Checks the cache before fetching",
+        "Does not silently reuse the wrong arXiv version",
+        "Keeps network acquisition outside the cache helper",
+        "Records a content hash and extraction status without treating the cache hit as theorem verification"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Cache this licensed book PDF so future agents can search it. The repository does not state whether licensed sources may be retained.",
+      "expected_output": "Requests or identifies the missing retention authorization before ingesting the book and does not upload it to an external service.",
+      "assertions": [
+        "Does not cache licensed material without authorization",
+        "Does not upload the PDF",
+        "Distinguishes local retention permission from ordinary source verification"
+      ]
     }
   ]
 }
