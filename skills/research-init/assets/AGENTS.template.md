@@ -19,7 +19,8 @@ may add genuinely local rules for its subtree.
 - **Conventions:** `{{CONVENTIONS_FILE}}`
 - **Durable proofs:** {{PROOF_LOCATIONS}}
 - **Literature ledger:** `{{LITERATURE_FILE}}`
-- **Research history:** `{{RESEARCH_LOG}}`
+- **Research-history index:** `{{RESEARCH_LOG}}`
+- **Detailed research records:** `{{RESEARCH_RECORDS}}`
 - **Verification:** `{{VERIFICATION_FILE}}`
 
 Authority: exact durable proof or checked computation > claims/status summary >

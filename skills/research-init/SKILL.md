@@ -34,9 +34,12 @@ skills supplied by the `mathbox` plugin inside it.
    and any unrecognized `skills/` folders.
 3. Locate likely charter, status, claims, conventions, proof/manuscript,
    literature, log, computation, tests, CI, and build artifacts.
-4. Detect duplicate `mathbox` plugin skill names and paths hard-coded relative
+4. Classify `RESEARCH_LOG.md`, when present, as a compact linked index,
+   long-form legacy history, or a mixture. Locate any separate research-record
+   directory and check whether the log links to it.
+5. Detect duplicate `mathbox` plugin skill names and paths hard-coded relative
    to a skill installation.
-5. Run the bundled read-only inspector when available:
+6. Run the bundled read-only inspector when available:
 
 ```bash
 python3 <mathbox-research-init-directory>/scripts/inspect_repo.py --root <repo>
@@ -72,6 +75,32 @@ Present:
 7. migration risks and stale/conflicting instructions;
 8. skill-layer decision from [skill-layer.md](references/skill-layer.md).
 
+When this explicitly requested setup, retrofit, or refresh finds route-level
+prose in `RESEARCH_LOG.md`, the proposed plan must include the legacy migration
+below. Trigger on the log's structure, not its line count. Detection does not
+authorize the rewrite.
+
+## Legacy research-log migration
+
+Perform the migration only after the user approves the exact mapping and file
+plan. An ordinary research attempt or retrospective does not trigger it.
+
+1. Split every recognizable route-level entry into a standalone record under
+   the project-designated directory, or `research/records/` by default. Preserve
+   its substantive text and chronological order; do not strengthen its evidence
+   label or status.
+2. Use an entry's recorded date when available. Otherwise infer the earliest
+   date from Git history that contains the entry and mark `Date provenance:
+   inferred from Git history`. If Git cannot supply a date, use the migration
+   date and mark that the original date was unavailable.
+3. Put unmatched preamble or unstructured historical material in a dated
+   `legacy-context` record rather than discarding it.
+4. Build a compact `RESEARCH_LOG.md` index with one chronological linked line
+   per record. Verify that every substantive part of the old log is represented
+   before replacing its body.
+5. After migration, treat records and index entries as immutable. Append a new
+   correction record and index entry instead of rewriting history.
+
 ## Phase 4 — write the approved project layer
 
 Use the assets selectively; delete unused sections and replace every
@@ -80,7 +109,8 @@ placeholder. A normal setup has:
 - concise root `AGENTS.md`;
 - `CLAUDE.md` importing `@AGENTS.md` plus genuine Claude-specific additions;
 - at most one live dashboard;
-- optional claims, conventions, literature, and append-only route records;
+- optional claims, conventions, literature, a compact append-only research
+  index, and immutable standalone route records;
 - nested instructions only for genuinely local invariants;
 - documented verification commands and benchmark cases.
 

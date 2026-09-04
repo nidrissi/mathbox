@@ -28,7 +28,8 @@ path relative to the repository root, never relative to this installed
    - hypotheses, coefficient domain, grading, variance, signs, finiteness,
      completion, equivariance, and range;
    - current evidence status and dependencies.
-3. Find the nearest prior attempt and its first failed or unproved implication.
+3. Read the research-history index, then open only the nearest relevant record
+   needed to find the first failed or unproved implication.
 4. State a falsifiable success criterion, a failure/no-go criterion, and the
    cheapest decisive example, source check, or computation.
 5. Choose one route. Do not silently broaden to a second work package.
@@ -83,11 +84,19 @@ material blocker, a convention decision, or a claim-supporting computation.
 
 - Put reusable proof or obstruction details in the project's durable proof
   location.
-- Append one route-level log entry; do not record every command or dead end.
+- Write one self-contained route record in the project-designated research
+  records directory, or `research/records/` when none is designated. Use the
+  format and filename rules in [route-card.md](references/route-card.md).
+- Append one compact linked entry to the research-history index, normally
+  `RESEARCH_LOG.md`; do not put route details, commands, or dead ends there.
 - Update live status or claim obligations only when project state changed.
 - Treat live status as current state, not chronology. Keep its latest full
-  verification summary and link the route log or manifests for older runs.
-- Keep historical entries immutable; append corrections.
+  verification summary and link the route record or manifests for older runs.
+- Once indexed, keep the record and index entry immutable. Record a correction
+  in a new file with a `Corrects:` link and append a new index entry.
+- If the index still contains legacy long-form entries, do not rewrite them as
+  a side effect of this attempt. Use the new format prospectively and report
+  that a `mathbox:research-init` migration remains pending.
 - Do not integrate into a manuscript unless that is separately requested.
 
 Evidence labels and promotion rules are summarized in

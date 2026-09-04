@@ -7,7 +7,8 @@ Use explicit paths in the applicable `AGENTS.md` first. Otherwise prefer:
 - claims: `PROOF_OBLIGATIONS.md`, then `CLAIMS.md`;
 - conventions: `CONVENTION_REGISTRY.md`, then `CONVENTIONS.md`;
 - literature: `LITERATURE_LEDGER.md`, then `LITERATURE.md`;
-- history: `RESEARCH_LOG.md`;
+- history index: `RESEARCH_LOG.md`;
+- detailed history: `research/records/`;
 - verification: `VERIFICATION.md`;
 - repository map: `README.md` or `CODE_MAP.md`.
 

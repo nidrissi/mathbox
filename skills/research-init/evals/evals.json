@@ -11,6 +11,19 @@
         "Does not regenerate mathbox plugin skills",
         "Presents a proposal before writing"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Refresh this Git-backed research repository. RESEARCH_LOG.md contains several long-form route entries, one has no date, and a preamble does not belong to any entry. Convert it to the current research-record architecture.",
+      "expected_output": "Treats the long-form structure as requiring a migration proposal, maps each route to a standalone research/records file, preserves unmatched context, and waits for approval before replacing the log with a compact index.",
+      "assertions": [
+        "Triggers on route-level prose rather than a size threshold",
+        "Presents the exact migration mapping and obtains approval before rewriting the log",
+        "Uses the earliest supporting Git date for the undated entry and labels that date as inferred",
+        "Preserves unmatched text in a legacy-context record",
+        "Verifies lossless representation before replacing RESEARCH_LOG.md",
+        "Does not strengthen legacy evidence labels or statuses"
+      ]
     }
   ]
 }

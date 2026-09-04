@@ -54,9 +54,11 @@ load-bearing theorem changes.
 ## Synchronize durable state
 
 When the mathematical state changes, update the durable proof, claims/status,
-and one substantive research-log entry together. Do not log routine prose or
-formatting. Keep any specialist or human-review obligation open until it has
-actually occurred.
+one standalone research record, and its compact history-index entry together.
+Use the project-designated paths, or `research/records/` and `RESEARCH_LOG.md`
+by default. Do not put route details in the index, rewrite indexed history, or
+log routine prose or formatting. Keep any specialist or human-review obligation
+open until it has actually occurred.
 
 ## Verify
 
