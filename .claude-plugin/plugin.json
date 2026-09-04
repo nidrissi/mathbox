@@ -1,7 +1,7 @@
 {
   "name": "mathbox",
   "description": "Mathbox plugin skills for rigorous AI-assisted mathematical research",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": {
     "name": "Najib Idrissi-Kaïtouni",
     "url": "https://github.com/nidrissi"
