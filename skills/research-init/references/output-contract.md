@@ -28,7 +28,13 @@
 - Computations state exact range and provenance.
 - Blockers name the missing implication.
 - Logging threshold is route-level, not command-level.
-- Historical entries are append-only.
+- `RESEARCH_LOG.md` is a compact index whose entries link to standalone records.
+- Standalone records have a title, date, normalized filename, outcome/evidence
+  label, decisive evidence, and next unresolved question.
+- Indexed records and historical entries are append-only; corrections are new
+  linked records.
+- Any detected long-form legacy log has an approved, lossless migration mapping
+  or is explicitly reported as pending.
 
 ## Verification
 

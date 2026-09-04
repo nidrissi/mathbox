@@ -13,9 +13,11 @@ Default to no edits unless the user asks to reconcile files.
 
 1. Determine repository root and applicable instructions.
 2. Resolve charter, live status, claims, conventions, literature ledger, durable
-   proofs, computations, verification, and research log.
-3. Read current summaries first, then inspect only the proof/log entries needed
-   to verify conflicts or load-bearing claims.
+   proofs, computations, verification, research-history index, and detailed
+   record directory.
+3. Read current summaries and the compact history index first, then open only
+   the proof or research records needed to verify conflicts or load-bearing
+   claims.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
    authority conflicts.
 
@@ -25,6 +27,11 @@ external mathematical source says, route that bounded source question through
 the available `literature-check` skill (`mathbox:literature-check` in plugin
 installations), which checks an authorized project-local cache before fetching.
 Otherwise record the unresolved source check as a candidate next route.
+
+If `RESEARCH_LOG.md` still contains long-form legacy entries, read only the
+relevant embedded entries and support a mixture of legacy prose and new links.
+Report the pending `mathbox:research-init` migration, but do not perform or
+require it as a precondition for the retrospective.
 
 ## Build the portfolio
 
@@ -69,8 +76,9 @@ ledger; project rules belong in the repository.
 Treat a live status dashboard as current state, not verification history. Flag
 stacked dated verification narratives as a context sink. When reconciliation
 edits are requested, keep the latest full current summary and replace older
-narratives with links to the immutable log or computation manifests; do not
-rewrite append-only records.
+narratives with links to immutable research records or computation manifests.
+Do not rewrite indexed records or their history-index entries; append a linked
+correction record when history itself needs correction.
 
 ## Output
 

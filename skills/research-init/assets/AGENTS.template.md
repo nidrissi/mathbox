@@ -20,7 +20,8 @@ may add genuinely local rules for its subtree.
 - **Durable proofs:** {{PROOF_LOCATIONS}}
 - **Literature ledger:** `{{LITERATURE_FILE}}`
 - **Local literature cache:** {{LITERATURE_CACHE_POLICY}}
-- **Research history:** `{{RESEARCH_LOG}}`
+- **Research-history index:** `{{RESEARCH_LOG}}`
+- **Detailed research records:** `{{RESEARCH_RECORDS}}`
 - **Verification:** `{{VERIFICATION_FILE}}`
 
 Authority: exact durable proof or checked computation > claims/status summary >

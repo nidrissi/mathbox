@@ -4,12 +4,13 @@
     {
       "id": 1,
       "prompt": "Integrate a validated theorem into the paper. The durable proof assumes characteristic zero, but the old introduction says arbitrary coefficients.",
-      "expected_output": "Carries the characteristic-zero hypothesis into the theorem and corrects downstream prose rather than preserving the stronger old claim.",
+      "expected_output": "Carries the characteristic-zero hypothesis into the theorem, corrects downstream prose rather than preserving the stronger old claim, and synchronizes the durable state through a standalone research record and compact index entry.",
       "assertions": [
         "Reads the durable proof before editing",
         "Preserves the characteristic-zero restriction",
         "Updates affected introduction/comparison claims",
-        "Keeps human review status explicit"
+        "Keeps human review status explicit",
+        "Records the substantive state change in a standalone record with only a compact linked history-index entry"
       ]
     },
     {
