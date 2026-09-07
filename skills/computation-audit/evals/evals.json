@@ -33,6 +33,16 @@
         "Checks the authorized local cache before fetching",
         "Separates computation validity from conditional source interpretation"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "The supplied computation manifest is the unfilled template. A second run exited zero through arity 7 but used a modified input file. Can we promote the universal conjecture?",
+      "expected_output": "Rejects the template as evidence, identifies the changed-input provenance problem and keeps any finite result separate from a universal proof.",
+      "assertions": [
+        "Uses strict evidence validation instead of template mode",
+        "Reports exact finite range and changed inputs",
+        "Requires a separate mathematical reduction for universal promotion"
+      ]
     }
   ]
 }

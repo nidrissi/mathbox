@@ -23,6 +23,16 @@
         "Checks the authorized local cache before fetching",
         "Leaves integration blocked if the source remains unavailable or unverified"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Integrate two validated lemmas. One has current proof evidence, while the other depends on an unavailable external theorem and has stale ledger artifacts.",
+      "expected_output": "Integrates the independently validated material within scope and leaves the unsupported lemma conditional, with explicit remaining checks.",
+      "assertions": [
+        "Checks freshness and raw proof",
+        "Does not promote the blocked lemma",
+        "Continues independent authorized integration work"
+      ]
     }
   ]
 }

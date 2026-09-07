@@ -1,0 +1,147 @@
+[
+  {
+    "type": "claim",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "id": "C_BASE",
+      "statement": "For every integer n, n(n+1) is even.",
+      "hypotheses": [
+        "n is an integer"
+      ],
+      "regime": "Exact integer arithmetic; even means membership in 2Z",
+      "level": "Divisibility",
+      "dependencies": []
+    },
+    "event_id": "E000001",
+    "created_at": "2026-09-07T21:09:22.826125+00:00",
+    "previous": null,
+    "sha256": "4f17e7ff04a0a7171638e14fb7679d40423c4d01682a3ab83d4c32973adab2d3"
+  },
+  {
+    "type": "claim",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "id": "C_GOAL",
+      "statement": "For every integer n, n(n+1)(n+2) is divisible by 6.",
+      "hypotheses": [
+        "n is an integer"
+      ],
+      "regime": "Exact integer arithmetic",
+      "level": "Divisibility",
+      "dependencies": [
+        "C_BASE"
+      ]
+    },
+    "event_id": "E000002",
+    "created_at": "2026-09-07T21:09:23.229558+00:00",
+    "previous": "4f17e7ff04a0a7171638e14fb7679d40423c4d01682a3ab83d4c32973adab2d3",
+    "sha256": "1e5e0f82666c42d8cb27f07caa8f8502f08ab49a09da2ae487862362a7eac7b2"
+  },
+  {
+    "type": "evidence",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "claim": "C_BASE",
+      "kind": "proof",
+      "summary": "The two integer residue classes modulo 2 each give an explicit integer half of n(n+1).",
+      "artifacts": [
+        {
+          "path": "proofs/c_base_integer.md",
+          "sha256": "697748f9ef5f30e7af005f041df7141a7d62f250f716294229c3c1b7f229fe01"
+        }
+      ],
+      "snapshot": {
+        "C_BASE": 1
+      }
+    },
+    "event_id": "E000003",
+    "created_at": "2026-09-07T21:09:23.637079+00:00",
+    "previous": "1e5e0f82666c42d8cb27f07caa8f8502f08ab49a09da2ae487862362a7eac7b2",
+    "sha256": "24f70d8666e5e74634c6c23d6e2a9b587e69ba4c6bd43dd97a7a6e417a9ba9d8"
+  },
+  {
+    "type": "evidence",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "claim": "C_GOAL",
+      "kind": "proof",
+      "summary": "C_BASE supplies a factor of 2; residue classes modulo 3 supply a factor of 3; N=3N-2N gives a factor of 6.",
+      "artifacts": [
+        {
+          "path": "proofs/c_goal_integer.md",
+          "sha256": "db87f1679a284d06fc52c4f7f458d5a84be9e626425fcbed4021396558fc430d"
+        }
+      ],
+      "snapshot": {
+        "C_BASE": 1,
+        "C_GOAL": 1
+      }
+    },
+    "event_id": "E000004",
+    "created_at": "2026-09-07T21:09:24.043893+00:00",
+    "previous": "24f70d8666e5e74634c6c23d6e2a9b587e69ba4c6bd43dd97a7a6e417a9ba9d8",
+    "sha256": "94dfa63e4c0404a0126d60d63751a5e997048ef3661989d479700749df9b4ef8"
+  },
+  {
+    "type": "claim",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "id": "C_BASE",
+      "statement": "For every rational n, n(n+1) is even.",
+      "hypotheses": [
+        "n is a rational number"
+      ],
+      "regime": "Exact rational arithmetic; even means membership in 2Z, as in revision 1",
+      "level": "Divisibility",
+      "dependencies": [],
+      "reason": "Explore a stronger domain"
+    },
+    "event_id": "E000005",
+    "created_at": "2026-09-07T21:10:59.359824+00:00",
+    "previous": "94dfa63e4c0404a0126d60d63751a5e997048ef3661989d479700749df9b4ef8",
+    "sha256": "36f6fe6c02edf5603cf8d62d20fb9abac2a66ec749466f6693ab79ea5d542ca0"
+  },
+  {
+    "type": "evidence",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "claim": "C_BASE",
+      "kind": "counterexample",
+      "summary": "At n=1/2, n(n+1)=3/4 is not in 2Z, so the rational-domain extension is false.",
+      "hypothesis_check": "The witness n=1/2 is rational. The unchanged convention for evenness is membership in 2Z. Exact evaluation yields 3/4; an integer half would have to equal 3/8, which lies strictly between 0 and 1.",
+      "artifacts": [
+        {
+          "path": "counterexamples/c_base_rational.md",
+          "sha256": "e090c2fbff40549eb42c476b85def7a8cd86ccfebc8292bc3768b4de3d68706b"
+        }
+      ],
+      "snapshot": {
+        "C_BASE": 2
+      }
+    },
+    "event_id": "E000006",
+    "created_at": "2026-09-07T21:11:23.375144+00:00",
+    "previous": "36f6fe6c02edf5603cf8d62d20fb9abac2a66ec749466f6693ab79ea5d542ca0",
+    "sha256": "2b600d3ac837537b63263cebfccc0d8ba27f988d31559d5eb1b9291d96267ab4"
+  },
+  {
+    "type": "route",
+    "actor": "state-evaluation-author",
+    "payload": {
+      "id": "R_GOAL_INTEGER_PARITY",
+      "claim": "C_GOAL",
+      "mechanism": "Register a separate integer-only parity claim C_PARITY_INT with a proof, revise C_GOAL to depend on that exact claim, and revalidate the existing parity-plus-modulo-3 argument.",
+      "question": "Can the unchanged integer-domain C_GOAL be supported using only integer parity, without the refuted rational-domain C_BASE?",
+      "discriminator": "Inspect every use of C_BASE in proofs/c_goal_integer.md. Confirm that n is integer at that use, prove the new integer-only claim, and verify all three residue cases modulo 3 and the identity N=3N-2N.",
+      "success": "C_PARITY_INT is registered and supported by a durable proof; C_GOAL has an explicitly revised dependency contract and newly revalidated proof evidence; current evidence supports both without requiring rational parity.",
+      "failure": "The proposed proof requires a rational-domain parity assertion or another unproved hypothesis, or fails in any integer residue case. Record the exact failed step rather than refreshing the old evidence snapshot.",
+      "prerequisites": [],
+      "gain": 4,
+      "cost": 1
+    },
+    "event_id": "E000007",
+    "created_at": "2026-09-07T21:11:23.786185+00:00",
+    "previous": "2b600d3ac837537b63263cebfccc0d8ba27f988d31559d5eb1b9291d96267ab4",
+    "sha256": "bf4376122c4f60a336233a5f89a5ac6dd31dca54fe2d9252b81eecafd82b5844"
+  }
+]

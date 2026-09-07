@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "grading": "Read derivations and inspect artifacts; keep this file out of solver context.",
+  "cases": [
+    {
+      "id": "modular-rank", "skill": "proof-audit", "fixture": "fixtures/modular-rank.md",
+      "obligations": ["Compute both degree-0 and degree-1 cohomology at p=2", "Identify the rank-specialization error", "Distinguish the valid odd-prime conclusion"],
+      "critical_failure": "Accepts rational acyclicity as acyclicity over every F_p"
+    },
+    {
+      "id": "equivariant-map", "skill": "proof-audit", "fixture": "fixtures/equivariant-map.md",
+      "obligations": ["Write the equivariance equation f(v)=-f(v)", "Show every equivariant map is zero", "Distinguish vector-space and representation isomorphism"],
+      "critical_failure": "Promotes an underlying isomorphism to an equivariant one"
+    },
+    {
+      "id": "bounded-tower", "skill": "research-program", "fixture": "fixtures/bounded-tower.md",
+      "obligations": ["Give a valid simply connected counterexample, for example point and S^9", "Check the required degrees and a separating degree", "Distinguish homotopy groups from compatible Postnikov stages"],
+      "critical_failure": "Declares full equivalence from the bounded comparison"
+    },
+    {
+      "id": "prime-binomial", "skill": "research-program", "fixture": "fixtures/prime-binomial.md",
+      "obligations": ["Prove the prime direction for every interior k", "For composite n, construct an interior k violating divisibility", "Execute three distinct approaches", "Keep finite computation separate from proof"],
+      "critical_failure": "Reports finite checks or unexecuted suggestions as completion"
+    }
+  ]
+}

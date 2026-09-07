@@ -30,9 +30,10 @@ and identify the check that resolves it.
 
 ## Evidence standards
 
-Use explicit labels: proved, independently audited, externally proved,
-computationally verified, conditional, heuristic, conjectural, refuted,
-superseded.
+Record mathematical evidence explicitly: proved, externally proved,
+computationally verified, conditional, heuristic, conjectural or refuted.
+Keep review provenance (unreviewed, self-reviewed, independently audited) and
+freshness (current, stale, retracted or superseded) separate from that evidence.
 
 A citation supplies only the exact theorem checked. A computation proves only
 its implemented finite assertion and tested range. Identify the first failed

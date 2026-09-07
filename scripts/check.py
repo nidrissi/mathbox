@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""Package, local-link, syntax and executable regression gate; no keyword grading."""
+import argparse
+import ast
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--static", action="store_true", help="skip executable regression suites")
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[1]
+    errors = []
+    skills = sorted((root / "skills").glob("*/SKILL.md"))
+    names = [s.parent.name for s in skills]
+    try:
+        codex = json.loads((root / ".codex-plugin/plugin.json").read_text())
+        claude = json.loads((root / ".claude-plugin/plugin.json").read_text())
+        market = json.loads((root / ".claude-plugin/marketplace.json").read_text())
+        if codex["version"] != claude["version"] or claude["version"] != market["plugins"][0]["version"]:
+            errors.append("package versions disagree")
+        if codex["name"] != claude["name"] or codex["name"] != market["plugins"][0]["name"]:
+            errors.append("package identities disagree")
+        if codex.get("skills") != "./skills/" or sorted(claude["skills"]) != ["./skills/" + n for n in names]:
+            errors.append("manifest inventory differs from canonical skills")
+        for path in [*root.glob("skills/**/*.json"), *root.glob("evals/**/*.json")]:
+            json.loads(path.read_text(encoding="utf-8"))
+        for path in [*root.glob("skills/**/*.py"), *root.glob("scripts/*.py"), *root.glob("evals/**/*.py")]:
+            ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for skill in skills:
+            body = skill.read_text(encoding="utf-8")
+            parts = body.split("---", 2)
+            if len(parts) != 3 or not re.search(r"^name: " + re.escape(skill.parent.name) + r"\s*$", parts[1], re.M) or "description:" not in parts[1]:
+                errors.append(f"invalid frontmatter: {skill.relative_to(root)}")
+            for name in ("evals/evals.json", "evals/trigger-evals.json", "agents/openai.yaml"):
+                if not (skill.parent / name).is_file():
+                    errors.append(f"missing {name}: {skill.parent.name}")
+            behavior = json.loads((skill.parent / "evals/evals.json").read_text())
+            if behavior.get("skill_name") != skill.parent.name or not behavior.get("evals"):
+                errors.append(f"invalid behavior evals: {skill.parent.name}")
+            ids = [e["id"] for e in behavior["evals"]]
+            if len(ids) != len(set(ids)):
+                errors.append(f"duplicate eval IDs: {skill.parent.name}")
+            for path in [skill, *skill.parent.glob("references/*.md")]:
+                prose = re.sub(r"^```[^\n]*\n.*?^```[^\n]*$", "", path.read_text(encoding="utf-8"), flags=re.M | re.S)
+                for link in re.findall(r"\]\(([^)\s]+)\)", prose):
+                    if ":" in link or link.startswith("#") or "<" in link:
+                        continue
+                    target = (path.parent / link.split("#")[0]).resolve()
+                    if not target.is_relative_to(skill.parent.resolve()) or not target.exists():
+                        errors.append(f"broken/nonportable resource link {link} in {path.relative_to(root)}")
+        template = root / "skills/computation-audit/assets/computation-manifest.json"
+        subprocess.run([sys.executable, str(root / "skills/computation-audit/scripts/validate_manifest.py"),
+                        str(template), "--template"], check=True)
+    except (OSError, ValueError, KeyError, SyntaxError, subprocess.CalledProcessError) as exc:
+        errors.append(str(exc))
+    if errors:
+        print("\n".join(errors), file=sys.stderr)
+        return 1
+    print(f"Static package checks passed for {len(skills)} skills.", flush=True)
+    if not args.static:
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+        for directory in sorted((root / "skills").glob("*/scripts")):
+            if list(directory.glob("test_*.py")):
+                completed = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(directory),
+                                            "-p", "test_*.py"], cwd=root, env=env)
+                if completed.returncode:
+                    return completed.returncode
+    print("Gate passed. Model behavior and mathematical correctness require separate evaluation.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

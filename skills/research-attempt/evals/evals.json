@@ -55,6 +55,16 @@
         "Appends a new compact index entry without rewriting existing entries",
         "Does not migrate legacy log prose as a side effect of the attempt"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "The user authorized a sustained three-route investigation. This skill is handling route one, which just failed at a named comparison map. What happens next?",
+      "expected_output": "Closes this route with its first obstruction, then continues the authorized program through distinct remaining routes without asking permission again.",
+      "assertions": [
+        "Distinguishes a route boundary from the user goal",
+        "Does not claim the conjecture is false from failure of one method",
+        "Requires a mathematical change before repeating this mechanism"
+      ]
     }
   ]
 }

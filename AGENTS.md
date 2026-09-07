@@ -63,8 +63,11 @@ convert during submission. Keep the skills portable across both hosts.
 
 ## Validation
 
-There is no single repository-wide test runner. Run checks proportionate to the
-files changed. At minimum, run:
+Run `python3 scripts/check.py` for package consistency, portable resource links,
+Python syntax and executable regression suites. It does not grade mathematical
+skill behavior. For behavioral changes, use realistic tasks and raw artifacts
+following `evals/README.md`; never treat keyword matching as a proof audit.
+Run checks proportionate to the files changed. At minimum, run:
 
 ```bash
 for file in \
@@ -94,7 +97,7 @@ When touching the computation manifest or its validator, run:
 
 ```bash
 python3 skills/computation-audit/scripts/validate_manifest.py \
-  skills/computation-audit/assets/computation-manifest.json
+  skills/computation-audit/assets/computation-manifest.json --template
 ```
 
 When touching the repository inspector, smoke-test it with:

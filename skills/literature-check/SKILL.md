@@ -55,6 +55,12 @@ Write an explicit notation dictionary to the project conventions. Verify the
 project implication one arrow at a time. A citation supplies no unstated
 functor, equivalence, coherence datum, normalization, or limiting argument.
 
+Separate **source authentication**, **theorem extraction**, and **application
+to this project**. Record which of these was actually checked. A correctly
+identified paper can still be inapplicable. Treat objectwise, natural,
+equivariant, filtered, integral and completed statements as different contracts
+until a comparison argument supplies the missing structure.
+
 Use [source-record.md](references/source-record.md) for durable entries.
 
 ## Novelty and overlap
@@ -78,6 +84,12 @@ is never a global novelty theorem.
 Update the project's literature ledger only when authorized and when the check
 changes a dependency or attribution. Update status/log only if live research
 state changes.
+
+When a `.mathbox/` ledger is in use, record a source evidence event through the
+available `research-state` skill, pinning the durable extraction/translation
+report. If a source version or interpretation changes, examine dependent claims
+and record a correction; do not overwrite the old check or silently refresh a
+hash. The cache's content hash alone is not a verified-source event.
 
 Report:
 

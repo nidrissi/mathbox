@@ -22,6 +22,16 @@
         "Checks the authorized local cache before fetching",
         "Does not pass the proof obligation from a snippet, citation, or memory"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "A ledger labels Claim A proved and independently audited, but the source proof file changed after the review. Audit A.",
+      "expected_output": "Checks the actual current argument and treats earlier evidence/review as stale until revalidated.",
+      "assertions": [
+        "Does not certify mathematics from a ledger label",
+        "Checks exact current hypotheses and proof bytes",
+        "Separates evidence, freshness and review provenance"
+      ]
     }
   ]
 }

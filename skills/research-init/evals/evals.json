@@ -27,25 +27,35 @@
     {
       "id": 3,
       "prompt": "Initialize this repository and determine whether every theorem cited in its literature ledger has the hypotheses needed by the proofs.",
-      "expected_output": "Inventories the ledger and configures the research workflow, but does not perform substantive theorem lookups during initialization; it records bounded follow-up tasks for the available literature-check skill.",
+      "expected_output": "Inventories and configures the repository first, then executes the explicitly requested substantive theorem checks as a subsequent literature-check work package within the same assignment.",
       "assertions": [
         "Keeps repository initialization separate from source verification",
         "Does not read cached source content merely to initialize the repository",
         "Routes substantive theorem questions to literature-check",
-        "Records unresolved source checks without claiming they passed"
+        "Completes authorized source checks or reports actual source-access limits rather than merely deferring them"
       ]
     },
     {
       "id": 4,
       "prompt": "Refresh this Git-backed research repository. RESEARCH_LOG.md contains several long-form route entries, one has no date, and a preamble does not belong to any entry. Convert it to the current research-record architecture.",
-      "expected_output": "Treats the long-form structure as requiring a migration proposal, maps each route to a standalone research/records file, preserves unmatched context, and waits for approval before replacing the log with a compact index.",
+      "expected_output": "Makes a concrete lossless migration mapping, preserves unmatched context, and performs the explicitly requested conversion under the existing authorization; asks only for material ambiguity.",
       "assertions": [
         "Triggers on route-level prose rather than a size threshold",
-        "Presents the exact migration mapping and obtains approval before rewriting the log",
+        "Makes the exact migration mapping reviewable and applies the existing conversion authorization",
         "Uses the earliest supporting Git date for the undated entry and labels that date as inferred",
         "Preserves unmatched text in a legacy-context record",
         "Verifies lossless representation before replacing RESEARCH_LOG.md",
         "Does not strengthen legacy evidence labels or statuses"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Retrofit this project now, preserving historical records. Several confident proved labels have no accessible proof artifacts. Add executable claim tracking if useful.",
+      "expected_output": "Applies existing edit authorization, maps exact claims conservatively and does not import unsupported prose as proof.",
+      "assertions": [
+        "Does not ask again for routine authorized changes",
+        "Retains historical content and claim IDs",
+        "Separates proof artifacts from status labels"
       ]
     }
   ]

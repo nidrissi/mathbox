@@ -6,9 +6,12 @@ description: >-
 
 # Bounded mathematical research attempt
 
-Pursue exactly one route far enough to obtain a durable result, a precise
-obstruction, or a well-identified next implication. Do not turn the research
-log into a transcript.
+Pursue one route far enough to obtain a durable result, a precise obstruction,
+or a well-identified next implication. This is a work-package boundary, not a
+reason to stop a broader user-authorized investigation. For sustained or
+multi-route requests, use the available `research-program` workflow, or continue
+successive attempts directly if it is unavailable. Do not turn the log into a
+transcript.
 
 ## Resolve project context
 
@@ -18,6 +21,11 @@ named there. When not explicit, look for the standard alternatives in
 [project-context.md](references/project-context.md). Interpret every project
 path relative to the repository root, never relative to this installed
 `mathbox:research-attempt` plugin skill (or its standalone installation).
+
+If the project uses `.mathbox/`, use the available `research-state` skill to
+check freshness and obtain the target's dependency closure before trusting a
+status label. Otherwise use the existing prose evidence records. A clean ledger
+is bookkeeping evidence, not mathematical verification.
 
 ## Open the route
 
@@ -32,10 +40,16 @@ path relative to the repository root, never relative to this installed
    needed to find the first failed or unproved implication.
 4. State a falsifiable success criterion, a failure/no-go criterion, and the
    cheapest decisive example, source check, or computation.
-5. Choose one route. Do not silently broaden to a second work package.
+5. Choose one route within the current program. Match it against prior failed
+   mechanisms, not merely prior titles. Reopening one requires a new input,
+   invariant, construction or hypothesis that addresses its first failed step.
 
 Use the route card in [route-card.md](references/route-card.md) when a durable
 entry will be needed.
+
+For an obstructed structural route, consult the relevant moves in
+[structural-moves.md](references/structural-moves.md). Turn a proposed analogy
+into a specific comparison, obstruction or discriminating invariant.
 
 ## Execute
 
@@ -48,8 +62,9 @@ entry will be needed.
   proves through the available `literature-check` skill
   (`mathbox:literature-check` in plugin installations). That workflow checks an
   authorized project-local cache before fetching. If the skill is unavailable,
-  leave the input conditional rather than reconstructing it from snippets or
-  memory.
+  perform the exact-source check directly with available tools. If the source
+  cannot be verified, leave the input conditional; snippets and memory do not
+  discharge it.
 - For computation, separate the mathematical claim from the finite assertion
   implemented. Record domain, bounds, seed, versions, inputs, runtime, and
   non-claims; use the `mathbox:computation-audit` plugin skill when

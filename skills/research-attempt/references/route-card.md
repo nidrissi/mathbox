@@ -14,11 +14,14 @@ Write each durable route as a standalone Markdown file:
 - **Current dependency/evidence status:**
 - **Nearest prior attempt and first failure:**
 - **Route:**
+- **Mechanism and distinctness from prior routes:**
+- **Changed input, if reopening a failed route:**
 - **Success criterion:**
 - **Failure/no-go criterion:**
 - **Cheapest decisive check:**
 - **Outcome:**
 - **Evidence label:**
+- **Review and freshness status:**
 - **First unresolved or failed implication:**
 - **Strongest surviving statement:**
 - **Artifacts and commands:**

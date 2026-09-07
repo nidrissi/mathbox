@@ -25,6 +25,9 @@
 
 - Exactly one live dashboard is designated.
 - Claims have exact hypotheses and durable evidence links.
+- Evidence, independent review and freshness are separate fields. If an optional
+  `.mathbox/` ledger is adopted, its authoritative role and single live view are
+  explicit; old confident prose is not automatically imported as proof.
 - Computations state exact range and provenance.
 - Blockers name the missing implication.
 - Logging threshold is route-level, not command-level.

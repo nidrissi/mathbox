@@ -13,12 +13,12 @@ from pathlib import Path
 EXCLUDE = {
     '.git', '.hg', '.svn', '.venv', 'venv', 'node_modules', '__pycache__',
     'build', 'dist', 'target', '.tox', '.nox', '.pytest_cache', '.mypy_cache',
-    '.research-cache'
+    '.research-cache', '.mathbox'
 }
 CANONICAL = {
     'research-init', 'research-attempt', 'proof-audit', 'literature-check',
     'computation-audit', 'manuscript-integrate', 'proofread-math',
-    'research-retrospective'
+    'research-retrospective', 'research-program', 'research-state'
 }
 ROLE_NAMES = {
     'PROJECT_CHARTER.md', 'RESEARCH_STATUS.md', 'HANDOFF.md',
@@ -131,6 +131,7 @@ def inspect(root: Path, depth: int) -> dict:
         'canonical_name_overrides': duplicates,
         'build_manifests': manifests,
         'literature_cache': literature_cache,
+        'research_ledger': {'path': '.mathbox', 'exists': (root / '.mathbox/config.json').is_file()},
     }
 
 
@@ -165,6 +166,9 @@ def markdown(obj: dict) -> str:
         coverage = 'not ignored; add `/.research-cache/` to the project .gitignore'
     lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {coverage}")
     lines.append('')
+    ledger = obj['research_ledger']
+    lines += ['## Research ledger', '',
+              f"`{ledger['path']}` — {'present; use research-state for integrity and freshness checks' if ledger['exists'] else 'not found; optional'}", '']
     return '\n'.join(lines)
 
 

@@ -17,8 +17,10 @@ skills supplied by the `mathbox` plugin inside it.
 - Ask at most five material questions at a time.
 - Present a proposed file/migration plan before writing unless the user already
   authorized immediate execution.
-- Never overwrite an existing instruction, proof, status, log, convention,
-  configuration, or build file without explicit approval of the exact change.
+- Apply the user's existing authorization to coherent setup/retrofit changes;
+  do not ask again for routine edits already in scope. Preserve substantive
+  existing material and show a reviewable diff. Resolve genuine ambiguity before
+  replacing an authoritative proof, convention, or historical record.
 - Do not invent commands, proof status, conventions, repository paths, or
   permissions.
 - Preserve unrelated work. Do not commit, push, install dependencies, upload
@@ -38,6 +40,7 @@ skills supplied by the `mathbox` plugin inside it.
 4. Classify `RESEARCH_LOG.md`, when present, as a compact linked index,
    long-form legacy history, or a mixture. Locate any separate research-record
    directory and check whether the log links to it.
+   Detect `.mathbox/config.json` without replaying all history during inventory.
 5. Detect duplicate `mathbox` plugin skill names and paths hard-coded relative
    to a skill installation.
 6. Run the bundled read-only inspector when available:
@@ -56,6 +59,9 @@ Initialization may inventory literature records and cache policy, but it does
 not establish what cited mathematics proves. Do not perform substantive source
 lookups during setup; record them as follow-up work for the available
 `literature-check` skill (`mathbox:literature-check` in plugin installations).
+If the user also requested those source checks, execute them as a subsequent
+work package within the same assignment. The setup boundary does not authorize
+leaving an explicitly requested verification task unfinished.
 
 ## Phase 2 — interview adaptively
 
@@ -90,8 +96,10 @@ authorize the rewrite.
 
 ## Legacy research-log migration
 
-Perform the migration only after the user approves the exact mapping and file
-plan. An ordinary research attempt or retrospective does not trigger it.
+Make the mapping and file plan reviewable. Perform migration when the user's
+setup/retrofit authorization covers it; ask only if preservation or authority is
+materially ambiguous. An ordinary research attempt or retrospective does not
+trigger migration.
 
 1. Split every recognizable route-level entry into a standalone record under
    the project-designated directory, or `research/records/` by default. Preserve
@@ -126,6 +134,16 @@ placeholder. A normal setup has:
 
 Do not duplicate mutable state in persistent instructions.
 
+For a project whose claim dependencies and evidence frequently change, consider
+the available `research-state` skill and its optional `.mathbox/` ledger. Use its
+conservative migration workflow: import exact claims and checked artifacts,
+preserve existing IDs and records, and designate a single live generated view.
+Do not initialize it for a small project that does not benefit. The ledger
+checks bookkeeping; it neither certifies mathematics nor replaces proof files.
+
+For sustained multi-route work, make `research-program` discoverable as the
+coordinator of successive attempts, without copying its workflow into AGENTS.
+
 ## Skill-layer rule
 
 The default output is **no project skills**: use the installed `mathbox` plugin
@@ -134,7 +152,7 @@ for its canonical research workflows.
 Never synthesize local copies of the `mathbox` plugin components
 `research-attempt`, `proof-audit`, `literature-check`, `computation-audit`,
 `manuscript-integrate`, `proofread-math`, `research-retrospective`, or
-`research-init`.
+`research-init`, `research-program`, or `research-state`.
 Never write a skill to a root `skills/` directory.
 
 A repository skill is allowed only after explicit approval and only if its

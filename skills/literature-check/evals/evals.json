@@ -32,6 +32,16 @@
         "Does not upload the PDF",
         "Distinguishes local retention permission from ordinary source verification"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "The cache has the correct paper, but its theorem proves objectwise rational homology equivalence and the project needs a natural mod-p homotopy equivalence. Evaluate the dependency.",
+      "expected_output": "Separates source authentication from theorem content and project application; identifies coefficient, equivalence-level and naturality gaps.",
+      "assertions": [
+        "Does not treat cache identity as theorem verification",
+        "Makes the missing comparison obligations explicit",
+        "Keeps the project dependency unverified without a bridging argument"
+      ]
     }
   ]
 }

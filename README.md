@@ -1,7 +1,7 @@
 # Mathbox
 
-`mathbox` is a plugin for Codex and Claude Code containing eight reusable Agent
-Skills for rigorous AI-assisted mathematical research.
+`mathbox` is a plugin for Codex and Claude Code containing ten reusable Agent
+Skills and optional local tools for sustained, auditable mathematical research.
 
 The toolbox separates research, verification, computation, literature work,
 manuscript integration, and proofreading so that each workflow has a clear
@@ -11,6 +11,41 @@ hosts or environments that need a standalone Agent Skill.
 
 These are research workflows and safeguards, not a computer algebra system or
 a replacement for mathematical review.
+
+## What changes in v3
+
+Mathbox can now carry a research goal through successive attempts, retain the
+mathematical reason each route failed, and detect when a proof's supporting
+statement or artifact has changed.
+
+| Capability | Result |
+|---|---|
+| `research-program` | Executes distinct proof, counterexample, source and computation routes; continues after individual failures |
+| `research-state` | Records exact claim revisions, transitive dependencies, hashed evidence and separate review provenance |
+| Dependency impact and handoff | Shows stale evidence, downstream blockers and the next executable research routes |
+| Bounded experiment runner | Records actual commands, input hashes, logs, resource failures and finite scope |
+| Executable regression gate | Checks package contracts and state/experiment/cache behavior; mathematical task evaluation remains separate |
+
+The optional ledger lives in the research project's `.mathbox/` directory. It
+is an append-only, versioned record with generated views. Existing Markdown
+projects and the eight specialist skills continue to work without it. A ledger
+label records the evidence supplied; it does not certify a proof.
+
+Start a sustained investigation with:
+
+```text
+$mathbox:research-program Pursue this conjecture through distinct proof and counterexample routes. Preserve the original goal, execute the promising approaches, and continue after failed attempts.
+```
+
+For an existing ledger:
+
+```text
+$mathbox:research-state Check which claims depend on Lemma K, which evidence is stale, and what to attack next.
+```
+
+See the [v3 design and migration rationale](docs/design-v3.md),
+[ledger command contract](skills/research-state/references/ledger.md), and
+[experiment runner](skills/computation-audit/references/runner.md).
 
 ## Quick start
 
@@ -65,7 +100,7 @@ installation, so its explicit invocations use bare names such as
 
 ### Standalone or single-skill installation
 
-Requirements are Git, a host with Agent Skills support, and Python 3 only for
+Requirements are Git, a host with Agent Skills support, and Python 3.10+ only for
 the optional bundled helper scripts. This compatibility path installs bare
 skills rather than the `mathbox` plugin. The helpers use the standard library.
 
@@ -90,7 +125,7 @@ mkdir -p "$HOME/.claude/skills"
 ln -s "$skills_dir/proof-audit" "$HOME/.claude/skills/proof-audit"
 ```
 
-To link all eight skills for both hosts:
+To link all ten skills for both hosts:
 
 ```bash
 mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
@@ -117,6 +152,8 @@ install SageMath, LaTeX, or other project dependencies.
 
 | Plugin skill | Purpose | Selection |
 |---|---|---|
+| [`mathbox:research-program`](skills/research-program/) | Pursue a substantial research goal across successive, distinct routes | matching sustained research request |
+| [`mathbox:research-state`](skills/research-state/) | Track claim revisions, evidence freshness and dependency impact | existing ledger or tracking request |
 | [`mathbox:research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
 | [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
 | [`mathbox:proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
@@ -128,8 +165,10 @@ install SageMath, LaTeX, or other project dependencies.
 
 “Explicit request” is a portable routing boundary expressed in the skill's
 description and body, not a host-specific frontmatter switch. “Automatic” means
-that a matching task may select the skill without naming it. Every plugin skill
-can still be invoked by name: use `$mathbox:skill-name` in Codex or
+that a matching task may select the skill without naming it. The program and
+state skills use normal automatic discovery within their specific trigger
+boundaries. Existing explicit-only invocation policies are preserved.
+Every plugin skill can still be invoked by name: use `$mathbox:skill-name` in Codex or
 `/mathbox:skill-name` in Claude Code. Bare `$skill-name` and `/skill-name`
 forms refer only to standalone installations.
 
@@ -138,6 +177,8 @@ forms refer only to standalone installations.
 | The task is primarily… | Use |
 |---|---|
 | setting up the research repository or revising its agent architecture | `mathbox:research-init` |
+| pursuing a substantial goal across successive approaches | `mathbox:research-program` |
+| checking evidence freshness, dependency impact or a ledger handoff | `mathbox:research-state` |
 | developing new mathematics along one controlled route | `mathbox:research-attempt` |
 | deciding whether an existing argument is correct as written | `mathbox:proof-audit` |
 | checking exactly what an external source proves | `mathbox:literature-check` |
@@ -231,6 +272,22 @@ bundle as a plugin exposes them under the `mathbox:` namespace.
 The `SKILL.md` frontmatter uses only the portable required Agent Skills fields
 `name` and `description`. OpenAI uses `agents/openai.yaml` for host-specific
 presentation and invocation policy; other hosts ignore it.
+
+## Verification
+
+```bash
+python3 scripts/check.py
+```
+
+This runs static package checks and the executable regression suites, using
+only the Python standard library. `--static` skips execution. CI runs the same
+gate on Python 3.10 and 3.13. The [evaluation protocol](evals/README.md) separates
+routing, mathematical behavior and software correctness; the
+[v3 validation report](docs/validation-v3.md) records what was actually tested.
+
+The computation validator now rejects an unfilled template as evidence. Use
+`validate_manifest.py TEMPLATE --template` only for scaffolds. Complete version 1
+records remain supported; the optional runner emits version 2 records.
 
 ## Contributing
 

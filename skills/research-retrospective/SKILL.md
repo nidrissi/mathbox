@@ -21,6 +21,11 @@ Default to no edits unless the user asks to reconcile files.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
    authority conflicts.
 
+If `.mathbox/` is present, use the available `research-state` skill's read-only
+check, impact and handoff commands. Reconstruct affected proofs from artifacts;
+do not merely repeat generated labels. Do not initialize or migrate state as a
+side effect of a read-only retrospective.
+
 Do not start a broad literature search merely to complete a retrospective. If
 the requested review cannot be decided without establishing what a load-bearing
 external mathematical source says, route that bounded source question through
@@ -47,6 +52,11 @@ For each active claim or work package, record:
 
 Identify duplicated efforts, stale claims, abandoned routes with reusable
 information, and mutable facts incorrectly embedded in instructions.
+
+Group failed routes by their first failed mechanism rather than title. Identify
+shared unresolved dependencies and what mathematical change would reopen each
+route. Distinguish new evidence from more prose, repeated bounded cases, and
+rediscovery of already recorded obstructions.
 
 ## Select next routes
 

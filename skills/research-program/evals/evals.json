@@ -1,0 +1,16 @@
+{
+  "skill_name": "research-program",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Investigate the universal target through three distinct routes. Two approaches fail at the same naturality lemma and finite computations pass to arity 6. Continue the investigation.",
+      "expected_output": "Treats the shared naturality obstruction as one mechanism, executes a materially distinct next route and preserves the universal target and bounded evidence.",
+      "assertions": [
+        "Executes mathematics rather than only proposing routes",
+        "Does not stop after the first portfolio fails",
+        "Distinguishes method failure, finite success and the original goal",
+        "Requires a new input before reopening a failed route"
+      ]
+    }
+  ]
+}

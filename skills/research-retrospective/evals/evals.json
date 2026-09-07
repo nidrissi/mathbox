@@ -46,6 +46,16 @@
         "Does not treat migration as a prerequisite for the retrospective",
         "Does not rewrite existing records or index entries"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review a ledger where five differently named failed routes all rely on the same unproved collapse and a proof dependency has been retracted. Do not edit.",
+      "expected_output": "Groups routes by the common failed mechanism, traces dependent claims and selects discriminating alternatives without mutating the project.",
+      "assertions": [
+        "Uses dependency impact rather than titles",
+        "Reports downstream conditional claims",
+        "Preserves the read-only boundary"
+      ]
     }
   ]
 }

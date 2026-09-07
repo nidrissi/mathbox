@@ -25,6 +25,11 @@ by changing definitions, conventions, or scope.
 
 ## Build the dependency graph
 
+When the project has a `.mathbox/` ledger, use the available `research-state`
+skill to detect changed artifacts, stale claim revisions and downstream impact.
+Inspect the raw current proof even when the ledger reports `proved`. Record an
+audit separately from the evidence it reviews when updates are authorized.
+
 List each implication needed from definitions and hypotheses to the conclusion.
 Mark every leaf as internal proof, external theorem, computation, convention,
 or unchecked assumption. Detect circular dependencies and claims whose evidence
@@ -48,8 +53,9 @@ When an external-source leaf is not already verified in the project's durable
 literature record, route the source question through the available
 `literature-check` skill (`mathbox:literature-check` in plugin installations).
 That workflow checks an authorized project-local cache before fetching. If the
-skill is unavailable or the exact source cannot be checked, mark the leaf
-**conditional**; do not fill it from a snippet, secondary citation, or memory.
+skill is unavailable, perform the exact-source check with available tools. When
+the exact source cannot be checked, mark the leaf **conditional**; do not fill
+it from a snippet, secondary citation, or memory.
 
 Load the relevant domain sections of
 [obligation-checklists.md](references/obligation-checklists.md); do not apply
@@ -89,5 +95,8 @@ Lead with the normalized claim and verdict. Then give:
 6. strongest safe statement and cheapest next check.
 
 For an independent audit, use a fresh session or isolated subagent when the
-tool supports it; do not let the author's route summary substitute for reading
-the proof.
+tool supports it and delegation is authorized. Give the exact claim and raw
+proof/source artifacts, without the author's verdict or suspected gap. Ask for
+a fresh derivation of the critical implication. Otherwise label the pass
+self-review. Neither agreement between agents nor a different actor name proves
+independence or mathematical correctness.

@@ -1,0 +1,16 @@
+{
+  "skill_name": "research-state",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Record a proof of A and a proof of B depending on A. Revise A’s coefficient regime, then generate a handoff without modifying the proof files.",
+      "expected_output": "Preserves history, makes both affected proof snapshots stale, reports dependent impact and requires revalidation.",
+      "assertions": [
+        "Uses actual helper commands",
+        "Does not refresh hashes to hide staleness",
+        "Does not treat clean bookkeeping as proof verification",
+        "Read-only reports do not initialize or rewrite state"
+      ]
+    }
+  ]
+}
