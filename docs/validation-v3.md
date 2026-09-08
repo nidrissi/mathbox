@@ -10,21 +10,22 @@ portable resource links, Python syntax and three standard-library test suites:
 
 | Suite | Cases | Important exercised behavior |
 |---|---:|---|
-| Research state | 20 | Transitive revision invalidation, retraction, negative/conditional audits, conflicting evidence, supersession, journal integrity, path boundaries, writer contention and route reopening |
-| Computation provenance | 15 | Actual execution, failed assertions, timeout, process descendants, bounded logs, input mutation, stale hashes, shell metacharacters, launch failure, no overwrite, empty-template rejection and v1 compatibility |
+| Research state | 27 | Transitive revision invalidation, retraction, negative/conditional audits, conflicting evidence, supersession, journal integrity, path boundaries, writer contention, unresolved dependencies under finite evidence, duplicate open mechanisms, and goal-scoped route and staleness filtering |
+| Computation provenance | 21 | Actual execution, failed assertions, timeout, process descendants, process-group signalling bounds, bounded logs, input mutation, stale and missing hashes, software version records, shell metacharacters, launch failure, no overwrite, empty-template rejection and v1 compatibility |
 | Existing literature cache | 17 | Existing cache ingestion, source retention, lookup and error-path regressions |
 
-All 52 tests passed locally. The cache suite deliberately exercises an internal
+All 65 tests passed locally. The cache suite deliberately exercises an internal
 error path and prints its injected error message; the test asserts the handled
 failure and the suite passes. No mathematical theorem is inferred from this gate.
 
 The Codex plugin validator and all ten skill validators pass. The repository
-inspector smoke test and `git diff --check` pass. Claude's plugin/marketplace CLI
-checks were not available in the local environment; both manifests were parsed
-and their versions and skill inventory checked. Actual host installation was
-not performed as part of source development. The GitHub workflow is configured to run the same gate on Python 3.10 and
-3.13. Remote CI was not run during this validation: the available connection
-rejected publication with HTTP 403, so no pull request was created.
+inspector smoke test and `git diff --check` pass. Claude's plugin and strict
+marketplace validators pass, the latter with the expected warning that the
+repository `CLAUDE.md` is not loaded as plugin context. Actual host installation
+was not performed as part of source development. The GitHub workflow is
+configured to run the same gate on Python 3.10 and 3.13. Remote CI was not run
+during this validation: the available connection rejected publication with
+HTTP 403, so no pull request was created.
 
 ## Fresh task trials
 
