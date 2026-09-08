@@ -2,12 +2,22 @@
 """Package, local-link, syntax and executable regression gate; no keyword grading."""
 import argparse
 import ast
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
 import re
 import subprocess
 import sys
+
+
+@contextmanager
+def guard(errors, label):
+    """Record one unit's failure and keep checking the rest of the repository."""
+    try:
+        yield
+    except (OSError, ValueError, KeyError, SyntaxError, subprocess.CalledProcessError) as exc:
+        errors.append(f"{label}: {exc}")
 
 
 def main():
@@ -18,21 +28,24 @@ def main():
     errors = []
     skills = sorted((root / "skills").glob("*/SKILL.md"))
     names = [s.parent.name for s in skills]
-    try:
-        codex = json.loads((root / ".codex-plugin/plugin.json").read_text())
-        claude = json.loads((root / ".claude-plugin/plugin.json").read_text())
-        market = json.loads((root / ".claude-plugin/marketplace.json").read_text())
+    with guard(errors, "plugin manifests"):
+        codex = json.loads((root / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
+        claude = json.loads((root / ".claude-plugin/plugin.json").read_text(encoding="utf-8"))
+        market = json.loads((root / ".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
         if codex["version"] != claude["version"] or claude["version"] != market["plugins"][0]["version"]:
             errors.append("package versions disagree")
         if codex["name"] != claude["name"] or codex["name"] != market["plugins"][0]["name"]:
             errors.append("package identities disagree")
         if codex.get("skills") != "./skills/" or sorted(claude["skills"]) != ["./skills/" + n for n in names]:
             errors.append("manifest inventory differs from canonical skills")
-        for path in [*root.glob("skills/**/*.json"), *root.glob("evals/**/*.json")]:
+    for path in [*root.glob("skills/**/*.json"), *root.glob("evals/**/*.json")]:
+        with guard(errors, path.relative_to(root)):
             json.loads(path.read_text(encoding="utf-8"))
-        for path in [*root.glob("skills/**/*.py"), *root.glob("scripts/*.py"), *root.glob("evals/**/*.py")]:
+    for path in [*root.glob("skills/**/*.py"), *root.glob("scripts/*.py"), *root.glob("evals/**/*.py")]:
+        with guard(errors, path.relative_to(root)):
             ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        for skill in skills:
+    for skill in skills:
+        with guard(errors, skill.parent.name):
             body = skill.read_text(encoding="utf-8")
             parts = body.split("---", 2)
             if len(parts) != 3 or not re.search(r"^name: " + re.escape(skill.parent.name) + r"\s*$", parts[1], re.M) or "description:" not in parts[1]:
@@ -40,10 +53,11 @@ def main():
             for name in ("evals/evals.json", "evals/trigger-evals.json", "agents/openai.yaml"):
                 if not (skill.parent / name).is_file():
                     errors.append(f"missing {name}: {skill.parent.name}")
-            behavior = json.loads((skill.parent / "evals/evals.json").read_text())
-            if behavior.get("skill_name") != skill.parent.name or not behavior.get("evals"):
+            behavior = json.loads((skill.parent / "evals/evals.json").read_text(encoding="utf-8"))
+            cases = behavior.get("evals") if isinstance(behavior.get("evals"), list) else []
+            if behavior.get("skill_name") != skill.parent.name or not cases:
                 errors.append(f"invalid behavior evals: {skill.parent.name}")
-            ids = [e["id"] for e in behavior["evals"]]
+            ids = [case.get("id") for case in cases if isinstance(case, dict)]
             if len(ids) != len(set(ids)):
                 errors.append(f"duplicate eval IDs: {skill.parent.name}")
             for path in [skill, *skill.parent.glob("references/*.md")]:
@@ -54,11 +68,10 @@ def main():
                     target = (path.parent / link.split("#")[0]).resolve()
                     if not target.is_relative_to(skill.parent.resolve()) or not target.exists():
                         errors.append(f"broken/nonportable resource link {link} in {path.relative_to(root)}")
+    with guard(errors, "manifest template"):
         template = root / "skills/computation-audit/assets/computation-manifest.json"
         subprocess.run([sys.executable, str(root / "skills/computation-audit/scripts/validate_manifest.py"),
                         str(template), "--template"], check=True)
-    except (OSError, ValueError, KeyError, SyntaxError, subprocess.CalledProcessError) as exc:
-        errors.append(str(exc))
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
