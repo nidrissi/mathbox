@@ -109,6 +109,9 @@ rejects reviewing already stale evidence and rejects self-declared independent
 review by the evidence author. It cannot authenticate human/agent identities or
 whether the reviewer actually worked independently. Active failed reviews block
 their evidence; conflicting proof/counterexample evidence yields `disputed`.
+A counterexample with an active conditional review leaves the claim
+`conditional` unless another unqualified counterexample supports refutation.
+Conflicting proof evidence still yields `disputed`.
 
 Retract an erroneous evidence or review event with:
 
@@ -146,3 +149,10 @@ Correction/reopening is a new route ID with `reopens` equal to the result's
 event ID and a `changed_input` explanation. An exact repeated target/mechanism
 without this explanation is rejected. Semantic duplicates still need human or
 agent judgment. Route success does not itself create proof evidence.
+
+`handoff` includes open candidates in `routes` and completed history in
+`closed_routes`, filtered to the goal and its transitive dependencies when a
+goal is supplied. Each closed route includes its payload and `event_id`, plus
+a nested `result` with the outcome, reason/obstruction, next question and result
+`event_id` needed for `reopens`. Markdown handoffs also show these continuation
+details. `next` continues to list only open candidates.

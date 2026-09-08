@@ -1,10 +1,12 @@
 """Executable evidence-boundary regressions; no model-output keyword grading."""
 import json
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 import tempfile
 import unittest
 
-from research_state import Ledger, LedgerError, impact, next_routes, project
+from research_state import Ledger, LedgerError, impact, main, next_routes, project
 
 
 class ResearchStateTests(unittest.TestCase):
@@ -138,6 +140,32 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual(c["status"], "proved")
         self.assertEqual(c["review"], "independently-audited")
 
+    def test_conditional_counterexample_requires_resolution(self):
+        self.claim()
+        e = self.evidence(kind="counterexample", hypothesis_check="Connectedness remains to be verified")
+        r = self.review(e, "conditional")
+        self.review(e, "pass")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "conditional")
+        (self.root / "review.md").unlink()
+        self.assertEqual(self.view()["claims"]["A"]["status"], "conditional")
+        self.assertTrue(self.view()["issues"])
+        self.record("retract", {"target": r, "reason": "Connectedness established"})
+        self.assertEqual(self.view()["claims"]["A"]["status"], "refuted")
+
+    def test_unqualified_counterexample_still_refutes(self):
+        self.claim()
+        e = self.evidence(kind="counterexample", hypothesis_check="Witness under review")
+        self.review(e, "conditional")
+        self.evidence(kind="counterexample", hypothesis_check="Separate witness satisfies every hypothesis")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "refuted")
+
+    def test_conditional_counterexample_preserves_conflict(self):
+        self.claim()
+        self.evidence()
+        e = self.evidence(kind="counterexample", hypothesis_check="Witness under review")
+        self.review(e, "conditional")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "disputed")
+
     def test_competing_proof_and_counterexample_are_disputed(self):
         self.claim()
         self.evidence()
@@ -219,6 +247,40 @@ class ResearchStateTests(unittest.TestCase):
         self.record("route-result", dict(route="R", outcome="succeeded", reason="Calculated a useful example",
                                          next_question="Can it be made uniform?"))
         self.assertEqual(self.view()["claims"]["A"]["status"], "conjectural")
+
+    def test_handoff_retains_goal_relevant_closed_routes(self):
+        self.claim()
+        self.claim("B", ["A"])
+        self.claim("UNRELATED")
+        route_event = self.route()
+        result = dict(route="R", outcome="failed", reason="Obstruction survives",
+                      next_question="Does a different filtration remove it?")
+        result_event = self.record("route-result", result)
+        self.route("R2", reopens=result_event, changed_input="New filtration")
+        unrelated = dict(self.ledger.read()["routes"]["R"]["payload"], id="OTHER", claim="UNRELATED")
+        self.record("route", unrelated)
+        self.record("route-result", dict(route="OTHER", outcome="blocked", reason="Unrelated obstruction",
+                                         next_question="Unrelated question"))
+
+        def run(*args):
+            output = StringIO()
+            with redirect_stdout(output):
+                self.assertEqual(main(["--root", str(self.root), *args]), 0)
+            return output.getvalue()
+
+        before = {p.name: p.read_bytes() for p in self.ledger.events.iterdir()}
+        handoff = json.loads(run("--json", "handoff", "--goal", "B"))
+        self.assertEqual(set(handoff["state"]["claims"]), {"A", "B"})
+        self.assertEqual([r["id"] for r in handoff["routes"]], ["R2"])
+        self.assertEqual(handoff["closed_routes"], [dict(self.ledger.read()["routes"]["R"]["payload"],
+                         event_id=route_event, result=dict(result, event_id=result_event))])
+        md = run("handoff", "--goal", "B")
+        for value in ("integral-lift", "failed", result["reason"], result["next_question"], result_event):
+            self.assertIn(value, md)
+        self.assertNotIn("Unrelated obstruction", md)
+        self.assertEqual([r["id"] for r in json.loads(run("--json", "handoff"))["closed_routes"]], ["R", "OTHER"])
+        self.assertEqual([r["id"] for r in json.loads(run("next", "--goal", "B"))], ["R2"])
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.ledger.events.iterdir()})
 
 
 if __name__ == "__main__":

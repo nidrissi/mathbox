@@ -345,12 +345,12 @@ def project(root, state):
         failed = {r["evidence"] for r in reviews.values() if r["outcome"] == "fail"}
         uncertain = {r["evidence"] for r in reviews.values() if r["outcome"] == "conditional"}
         positive = {eid: e for eid, e in live.items() if e["kind"] in {"proof", "source"} and eid not in failed}
-        negative = [e for eid, e in live.items() if e["kind"] == "counterexample" and eid not in failed]
+        negative = {eid: e for eid, e in live.items() if e["kind"] == "counterexample" and eid not in failed}
         blocked = [d for d in c["dependencies"] if result[d]["status"] not in resolved]
         if positive and negative:
             status = "disputed"
         elif negative:
-            status = "refuted"
+            status = "refuted" if any(eid not in uncertain for eid in negative) else "conditional"
         elif positive:
             unqualified = {eid: e for eid, e in positive.items() if eid not in uncertain}
             status = "conditional" if blocked or not unqualified else ("proved" if any(e["kind"] == "proof" for e in unqualified.values()) else "externally-proved")
@@ -393,7 +393,18 @@ def next_routes(state, projection, goal=None):
     return sorted(result, key=lambda r: (not r["ready"], -r["score"], r["id"]))
 
 
-def markdown(projection, routes=None):
+def closed_routes(state, goal=None):
+    selected = closure(state["claims"], goal) if goal else set(state["claims"])
+    result = []
+    for eid, event in state["results"].items():
+        route = state["routes"][event["payload"]["route"]]
+        if route["payload"]["claim"] in selected:
+            result.append(dict(route["payload"], event_id=route["event_id"],
+                               result=dict(event["payload"], event_id=eid)))
+    return result
+
+
+def markdown(projection, routes=None, closed=None):
     def cell(value):
         return str(value).replace("|", "\\|").replace("\n", " ")
     lines = ["# Research state", "", "Recorded evidence; this report does not certify mathematical correctness.", "",
@@ -412,6 +423,14 @@ def markdown(projection, routes=None):
         for r in routes:
             lines.extend(["", f"- {r['id']} ({'ready' if r['ready'] else 'blocked'}, score {r['score']}): {r['question']}",
                           f"  Decisive check: {r['discriminator']}"])
+    if closed is not None:
+        lines += ["", "## Closed routes", ""]
+        for r in closed:
+            result = r["result"]
+            lines.extend([f"- {r['id']} (claim {r['claim']}, route event {r['event_id']}): {r['mechanism']}",
+                          f"  Result {result['event_id']}: {result['outcome']}",
+                          f"  Reason / obstruction: {result['reason']}",
+                          f"  Next question: {result['next_question']}"])
     return "\n".join(lines) + "\n"
 
 
@@ -443,6 +462,7 @@ def main(argv=None):
         state = ledger.read()
         projection = project(ledger.root, state)
         routes = None
+        closed = None
         if args.command == "impact":
             output = {"claim": args.claim, "dependents": impact(state["claims"], args.claim)}
         elif args.command in {"next", "handoff"}:
@@ -450,13 +470,17 @@ def main(argv=None):
             if args.goal:
                 selected = closure(state["claims"], args.goal)
                 projection["claims"] = {k: v for k, v in projection["claims"].items() if k in selected}
-            output = {"state": projection, "routes": routes} if args.command == "handoff" else routes
+            if args.command == "handoff":
+                closed = closed_routes(state, args.goal)
+                output = {"state": projection, "routes": routes, "closed_routes": closed}
+            else:
+                output = routes
         else:
             output = projection
         if args.json or args.command in {"next", "impact", "check"}:
             print(json.dumps(output, indent=2, ensure_ascii=False))
         else:
-            print(markdown(projection, routes), end="")
+            print(markdown(projection, routes, closed), end="")
         return 1 if args.command == "check" and projection["issues"] else 0
     except (LedgerError, OSError, ValueError, TypeError, KeyError) as exc:
         print(f"research-state: {exc}", file=sys.stderr)
