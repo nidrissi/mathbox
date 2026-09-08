@@ -96,16 +96,26 @@ def execute(args):
     output.mkdir(parents=True)
     start, count = time.monotonic(), [0]
     limit, io_failed, mutex = threading.Event(), [], threading.Lock()
-    proc = None
+    unterminated, proc, threads = [], None, []
 
     def stop():
-        if proc is not None:
+        # Signal the group only while a member is provably alive. A reaped child
+        # with no live pipe writer no longer owns the group ID, so signalling it
+        # could reach an unrelated group that reused the PID.
+        if proc is None or (proc.poll() is not None and not any(t.is_alive() for t in threads)):
+            return
+        try:
+            if os.name == "posix":
+                os.killpg(proc.pid, signal.SIGKILL)
+            else:
+                proc.kill()
+        except ProcessLookupError:
+            pass
+        except OSError as exc:
+            unterminated.append(f"Process-group termination failed, descendants may survive: {exc}")
             try:
-                if os.name == "posix":
-                    os.killpg(proc.pid, signal.SIGKILL)
-                else:
-                    proc.kill()
-            except ProcessLookupError:
+                proc.kill()
+            except OSError:
                 pass
 
     def drain(pipe, destination):
@@ -130,10 +140,16 @@ def execute(args):
         finally:
             pipe.close()
 
-    threads = []
+    # Only a failed launch is recorded as launch-failed; a later error must never
+    # overwrite the logs and status of a command that actually ran.
     try:
         proc = subprocess.Popen(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 start_new_session=os.name == "posix")
+    except OSError as exc:
+        manifest["run"].update(status="launch-failed", exit_status=127)
+        (output / "stderr.txt").write_text(str(exc), encoding="utf-8")
+        (output / "stdout.txt").touch()
+    else:
         for pipe, name in ((proc.stdout, "stdout.txt"), (proc.stderr, "stderr.txt")):
             thread = threading.Thread(target=drain, args=(pipe, output / name), daemon=True)
             thread.start()
@@ -153,15 +169,12 @@ def execute(args):
             for thread in threads:
                 thread.join(timeout=2)
         manifest["run"]["exit_status"] = proc.returncode
-    except OSError as exc:
-        manifest["run"].update(status="launch-failed", exit_status=127)
-        (output / "stderr.txt").write_text(str(exc), encoding="utf-8")
-        (output / "stdout.txt").touch()
     if limit.is_set():
         manifest["run"]["status"] = "output-limit"
     if io_failed:
         manifest["run"]["status"] = "failed"
         manifest["residual_risks"].extend(io_failed)
+    manifest["residual_risks"].extend(sorted(set(unterminated)))
     changed = []
     for record in inputs:
         try:

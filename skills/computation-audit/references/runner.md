@@ -48,8 +48,10 @@ The runner writes `stdout.txt`, `stderr.txt`, and `manifest.json`. It records th
 Git commit and dirty state, hashes of supplied inputs before and after execution,
 UTC start, elapsed time, process exit code, resource bounds and actual run status.
 Logs have a combined byte limit. On POSIX, timeout/output overflow kills the
-process group including descendants. On other platforms, termination is limited
-to the direct process; use an appropriate project runner for process trees.
+process group including descendants. If the kernel refuses that signal, the
+runner terminates the direct process and records the surviving-descendant risk.
+On other platforms, termination is limited to the direct process; use an
+appropriate project runner for process trees.
 
 Statuses distinguish completed, failed, timeout, output-limit, launch-failed and
 inputs-changed. Exit codes: 0 completed; 1 recorded unsuccessful run; 2 invalid

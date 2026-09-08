@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 from run_experiment import execute
 from validate_manifest import validate
@@ -128,6 +129,30 @@ class ExperimentTests(unittest.TestCase):
         manifest, _ = execute(self.args(timeout=0.2))
         self.assertEqual(manifest["run"]["status"], "timeout")
         self.assertLess(manifest["run"]["runtime_seconds"], 5)
+
+    @unittest.skipUnless(os.name == "posix", "process group termination is POSIX-specific")
+    def test_group_signal_only_fires_while_the_group_is_alive(self):
+        real_killpg = os.killpg
+        with mock.patch("run_experiment.os.killpg") as killpg:
+            completed, _ = execute(self.args())
+        self.assertEqual(completed["run"]["status"], "completed")
+        killpg.assert_not_called()
+        self.code.write_text("import time\ntime.sleep(30)\n")
+        with mock.patch("run_experiment.os.killpg", side_effect=real_killpg) as killpg:
+            timed_out, _ = execute(self.args(output="runs/two", timeout=0.2))
+        self.assertEqual(timed_out["run"]["status"], "timeout")
+        self.assertTrue(killpg.called)
+
+    @unittest.skipUnless(os.name == "posix", "process group termination is POSIX-specific")
+    def test_failed_group_signal_never_rewrites_an_executed_run(self):
+        self.code.write_text("import sys, time\nsys.stderr.write('partial diagnostics\\n')\n"
+                             "sys.stderr.flush()\ntime.sleep(30)\n")
+        with mock.patch("run_experiment.os.killpg", side_effect=PermissionError("operation not permitted")):
+            manifest, _ = execute(self.args(timeout=0.3))
+        self.assertEqual(manifest["run"]["status"], "timeout")
+        self.assertIn("partial diagnostics", (self.root / "runs/one/stderr.txt").read_text())
+        self.assertTrue(any("termination failed" in risk for risk in manifest["residual_risks"]))
+        self.assertEqual(validate(manifest, root=self.root), [])
 
 
 if __name__ == "__main__":
