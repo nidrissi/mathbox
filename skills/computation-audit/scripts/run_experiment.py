@@ -61,8 +61,9 @@ def execute(args):
     contract = json.loads(args.contract.read_text(encoding="utf-8"))
     if not isinstance(contract, dict) or not isinstance(contract.get("mathematics"), dict):
         raise ValueError("contract needs claim_id and mathematics")
-    if not isinstance(contract.get("software", []), list):
-        raise ValueError("contract software must be a list of version records")
+    software = contract.get("software")
+    if not isinstance(software, list) or not software:
+        raise ValueError("contract software must list the computation's own version records")
     inputs = []
     for name in args.input:
         path = relative_path(root, name)
@@ -80,7 +81,7 @@ def execute(args):
         "repository": {"commit": git(root, "rev-parse", "HEAD") or "unavailable", "dirty": dirty != ""},
         "command": command,
         "environment": {"software": [{"name": "runner-python", "version": platform.python_version()},
-                                      *contract.get("software", [])], "hardware": platform.platform()},
+                                      *software], "hardware": platform.platform()},
         "mathematics": contract["mathematics"],
         "randomness": contract.get("randomness", {"used": False, "generator": "", "seed": None}),
         "run": {"started_at": datetime.now(timezone.utc).isoformat(), "runtime_seconds": 0, "exit_status": 0,

@@ -21,7 +21,8 @@ class ExperimentTests(unittest.TestCase):
         self.contract.write_text(json.dumps({"claim_id":"A", "mathematics":{
             "assertion_tested":"The listed integer products are even", "coefficient_domain":"Z",
             "conventions":"ordinary multiplication", "inputs":["run.py"], "bounds":{"n":[0,20]},
-            "non_claims":["Not a universal proof"]}}))
+            "non_claims":["Not a universal proof"]},
+            "software":[{"name":"computation Python", "version":sys.version.split()[0]}]}))
         self.code = self.root / "run.py"
         self.code.write_text("assert all(n*(n+1)%2 == 0 for n in range(21))\nprint('21 cases checked')\n")
 
@@ -153,6 +154,36 @@ class ExperimentTests(unittest.TestCase):
         self.assertIn("partial diagnostics", (self.root / "runs/one/stderr.txt").read_text())
         self.assertTrue(any("termination failed" in risk for risk in manifest["residual_risks"]))
         self.assertEqual(validate(manifest, root=self.root), [])
+
+    def test_run_requires_the_computation_software_versions(self):
+        contract = json.loads(self.contract.read_text())
+        del contract["software"]
+        self.contract.write_text(json.dumps(contract))
+        with self.assertRaises(ValueError):
+            execute(self.args())
+        self.assertFalse((self.root / "runs").exists())
+
+    def test_unversioned_software_record_is_not_evidence(self):
+        manifest, _ = execute(self.args())
+        manifest["environment"]["software"] = [{"name": "SageMath"}]
+        self.assertTrue(validate(manifest))
+
+    def test_missing_field_errors_name_the_absent_keys(self):
+        manifest, _ = execute(self.args())
+        del manifest["claim_id"]
+        del manifest["mathematics"]["bounds"]
+        errors = "; ".join(validate(manifest))
+        self.assertIn("claim_id", errors)
+        self.assertIn("bounds", errors)
+
+    def test_missing_pinned_input_fails_the_on_disk_check(self):
+        manifest, _ = execute(self.args())
+        record = copy.deepcopy(manifest)
+        record["run"].update(status="failed", exit_status=1)
+        record["input_artifacts"][0]["sha256_after"] = None
+        self.assertEqual(validate(record), [])
+        self.code.unlink()
+        self.assertTrue(validate(record, root=self.root))
 
 
 if __name__ == "__main__":

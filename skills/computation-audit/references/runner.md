@@ -23,11 +23,14 @@ Create a contract JSON with these fields (this is a concrete small example):
 }
 ```
 
-Record actual software versions in a real contract. State a seed and generator
-when random sampling is used; the runner records them but does not configure
-the child program's RNG. Pin executed project code, imports, convention files
-and data explicitly with repeated `--input`. It cannot infer the full dependency
-closure of arbitrary programs or authenticate a declared bound.
+Record actual software versions in a real contract: `software` is required and
+each entry needs a name and a version. The runner records its own interpreter
+separately and cannot infer the version of the program it launches. State a
+seed and generator when random sampling is used; the runner records
+them but does not configure the child program's RNG. Pin executed project code,
+imports, convention files and data explicitly with repeated `--input`. It cannot
+infer the full dependency closure of arbitrary programs or authenticate a
+declared bound.
 
 ```bash
 python3 "$SKILL_DIR/scripts/run_experiment.py" \

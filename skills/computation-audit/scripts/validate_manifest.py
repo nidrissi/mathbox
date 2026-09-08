@@ -52,12 +52,14 @@ def validate(obj, template=False, root=None):
 
     if not isinstance(obj, dict):
         return ["top level must be an object"]
-    check(REQUIRED_TOP <= obj.keys(), "missing required top-level fields")
+    missing = REQUIRED_TOP - obj.keys()
+    check(not missing, "missing required top-level fields: " + ", ".join(sorted(missing)))
     check(type(obj.get("schema_version")) is int and obj["schema_version"] in {1, 2}, "unsupported schema_version")
     maths = obj.get("mathematics")
     if not isinstance(maths, dict):
         return errors + ["mathematics must be an object"]
-    check(REQUIRED_MATH <= maths.keys(), "missing mathematics fields")
+    missing = REQUIRED_MATH - maths.keys()
+    check(not missing, "missing mathematics fields: " + ", ".join(sorted(missing)))
     for key in ("repository", "environment", "randomness", "run"):
         check(isinstance(obj.get(key), dict), f"{key} must be an object")
     for key in ("outputs", "checks", "residual_risks"):
@@ -83,6 +85,9 @@ def validate(obj, template=False, root=None):
     check(nonempty(obj["repository"].get("commit")), "repository.commit must be recorded (or explicitly unavailable)")
     software = obj["environment"].get("software")
     check(isinstance(software, list) and bool(software), "environment.software must record versions")
+    for i, entry in enumerate(software if isinstance(software, list) else []):
+        check(isinstance(entry, dict) and nonempty(entry.get("name")) and nonempty(entry.get("version")),
+              f"environment.software[{i}] needs a name and a version")
     randomness = obj["randomness"]
     check(type(randomness.get("used")) is bool, "randomness.used must be boolean")
     if randomness.get("used"):
@@ -129,9 +134,11 @@ def validate(obj, template=False, root=None):
                 source = Path(path)
                 if source.is_absolute() or ".." in source.parts or not (root / source).resolve().is_relative_to(root.resolve()):
                     errors.append(f"input escapes project: {path}")
+                elif not (root / source).is_file():
+                    # An absent input cannot corroborate the record, whatever was hashed.
+                    errors.append(f"pinned input is missing: {path}")
                 else:
-                    current = file_hash(root / source) if (root / source).is_file() else None
-                    check(current == after, f"input changed since the run: {path}")
+                    check(file_hash(root / source) == after, f"input changed since the run: {path}")
     return errors
 
 
