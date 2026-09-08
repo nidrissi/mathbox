@@ -5,6 +5,7 @@ import io
 import json
 import os
 from pathlib import Path
+import signal
 import sys
 import tempfile
 import unittest
@@ -282,12 +283,19 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(observed["threads"], str(limits["max_threads"]))
         self.assertEqual(validate(manifest, root=self.root), [])
 
-    @unittest.skipUnless(os.name == "posix", "POSIX CPU limits are required")
+    @unittest.skipUnless(
+        os.name == "posix" and hasattr(signal, "SIGXCPU"),
+        "POSIX CPU-limit signals are required",
+    )
     def test_cpu_limit_has_a_distinct_recorded_status(self):
-        self.code.write_text("while True:\n    pass\n")
-        manifest, _ = execute(self.args(timeout=5, max_cpu_seconds=1))
+        self.code.write_text(
+            "import os, resource, signal\n"
+            "assert resource.getrlimit(resource.RLIMIT_CPU)[0] == 1\n"
+            "os.kill(os.getpid(), signal.SIGXCPU)\n"
+        )
+        manifest, _ = execute(self.args(max_cpu_seconds=1))
         self.assertEqual(manifest["run"]["status"], "resource-limit")
-        self.assertLess(manifest["run"]["runtime_seconds"], 4)
+        self.assertLess(manifest["run"]["runtime_seconds"], 2)
         self.assertTrue(any("CPU" in risk for risk in manifest["residual_risks"]))
         self.assertEqual(validate(manifest, root=self.root), [])
 
