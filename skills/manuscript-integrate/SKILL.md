@@ -42,6 +42,8 @@ State:
 - external dependencies and citations;
 - downstream statements, introduction claims, examples, and cross-references
   affected;
+- project maps, theorem inventories, source guides, status files and verification
+  benchmarks whose meaning depends on the changed scope;
 - validation plan and human-review obligation.
 
 ## Edit
@@ -56,6 +58,10 @@ State:
   correction rather than rewriting chronology.
 - Update notation, theorem names/numbers, references, citations, introduction,
   comparison, and outlook only where the result requires it.
+- For a scope removal or restriction, search every project-declared dependent
+  view before claiming consistency. Update authorized dependents together; if a
+  protected or separately governed file cannot be changed, mark the exact
+  conflict in the live view and do not report the propagation complete.
 - Do not edit generated output or bibliography entries without checking the
   project's source convention.
 
@@ -79,7 +85,10 @@ open until it has actually occurred.
 3. Run the appropriate out-of-tree or canonical manuscript build.
 4. Inspect undefined references/citations, warnings in the changed region,
    theorem numbering, bibliography changes, and `git diff --check`.
-5. Review the final diff for unintended semantic or generated-file changes.
+5. Search for the superseded statement, scope and terminology across declared
+   dependents; classify each remaining occurrence as current, historical or
+   stale.
+6. Review the final diff for unintended semantic or generated-file changes.
 
 ## Report
 

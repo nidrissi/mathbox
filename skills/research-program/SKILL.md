@@ -23,6 +23,9 @@ ambiguity from sources or the user.
 Record what would count as a proof or a counterexample and what would only be
 partial progress. Retain this contract after compaction and user status queries.
 “By any means” expands mathematical methods, not tool permissions or access.
+For work that may cross sessions, branches or delegated agents, record a
+checkpoint identifier and the exact Git revision or ledger event from which the
+work starts. A timestamp or display order is not a reliable ancestry relation.
 
 Use existing project records. When an executable `.mathbox/` ledger is present,
 use the available `research-state` skill for a goal-scoped handoff and stale
@@ -44,6 +47,13 @@ Run the decisive check, then pursue the promising route to a substantive
 checkpoint using `research-attempt` if available. Its one-route boundary applies
 to each work package, not to this whole program. Follow the user's breadth
 requirement: if they ask to try every proposed route, execute each one.
+
+When routes run in parallel, give each one an owner, base checkpoint and
+disjoint write scope. Require returned artifacts to identify that base and their
+actual inputs. Reconcile them against the common base; do not infer chronology
+or supersession from response order, directory names or wall-clock completion.
+Preserve incompatible results as competing evidence until their mathematics is
+resolved.
 
 Allocate effort by expected information gain, relevance to the goal and cost.
 Do not fabricate numerical success probabilities. Attack high-impact uncertain
@@ -74,6 +84,8 @@ method, an implementation bug, and an inaccessible source.
 
 Continue successive cycles while there is an executable, plausible route within
 the authorized resources. Do not stop just because the initial three failed.
+Likewise, a substantial partial theorem is a checkpoint, not completion, when
+the target contract still contains unresolved named implications.
 Use checkpoints to preserve work while continuing. When the user specifies
 time/resource bounds, honor them; otherwise choose bounded individual
 experiments without imposing an arbitrary global attempt quota.
@@ -98,6 +110,12 @@ Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
 Update only state that actually changed; do not rewrite indexed history.
 User-authorized repository deliverables remain part of completion.
+
+For a long or externally executed route, distinguish queued, running,
+last-observed, completed, failed, timed out and abandoned states. Do not keep a
+route marked running merely because a prior session launched it. Record the
+last observation and execution identifier without treating process completion
+as mathematical success.
 
 Lead with whether the original goal was reached and the exact result. State the
 proof/review status, decisive mechanism, files and meaningful checks. If it

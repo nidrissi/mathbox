@@ -65,6 +65,16 @@
         "Does not claim the conjecture is false from failure of one method",
         "Requires a mathematical change before repeating this mechanism"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Run one route testing a natural transformation by finite enumeration. The existing driver samples every fifth representative and the proposed maps agree on the sample, but no orbit lemma is available.",
+      "expected_output": "Records only sampled finite evidence, checks whether omitted representatives form genuinely equivalent orbits, and refuses to call the transformation verified on the full family without full coverage or a proof.",
+      "assertions": [
+        "Audits the iterator and skipped cases",
+        "Separates the implemented sample from the full claim",
+        "Names full enumeration or a coverage lemma as the decisive next step"
+      ]
     }
   ]
 }

@@ -15,11 +15,16 @@ Default to no edits unless the user asks to reconcile files.
 2. Resolve charter, live status, claims, conventions, literature ledger, durable
    proofs, computations, verification, research-history index, and detailed
    record directory.
+   Verify that referenced live-role paths exist and expose competing aliases or
+   broken authority links.
 3. Read current summaries and the compact history index first, then open only
    the proof or research records needed to verify conflicts or load-bearing
    claims.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
    authority conflicts.
+5. Compare the live dashboard's review/checkpoint revision with later changes to
+   authoritative manuscripts, proofs and declared deliverables. A stale date is
+   a prompt to inspect, not by itself proof that the mathematics changed.
 
 If `.mathbox/` is present, use the available `research-state` skill's read-only
 check, impact and handoff commands. Reconstruct affected proofs from artifacts;
@@ -52,6 +57,9 @@ For each active claim or work package, record:
 
 Identify duplicated efforts, stale claims, abandoned routes with reusable
 information, and mutable facts incorrectly embedded in instructions.
+For external or long computations, distinguish the last observed process state
+from current state. A launch record without a live process, scheduler result or
+later observation is `unknown`, not `running`.
 
 Group failed routes by their first failed mechanism rather than title. Identify
 shared unresolved dependencies and what mathematical change would reopen each
@@ -89,6 +97,11 @@ edits are requested, keep the latest full current summary and replace older
 narratives with links to immutable research records or computation manifests.
 Do not rewrite indexed records or their history-index entries; append a linked
 correction record when history itself needs correction.
+
+Flag broken links to purported live dashboards, conflicts between the designated
+authority and existing files, and completed deliverables still described as
+unresolved. Do not repair these during a read-only retrospective; identify the
+minimal reconciliation set.
 
 ## Output
 

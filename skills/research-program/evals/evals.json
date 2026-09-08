@@ -11,6 +11,28 @@
         "Distinguishes method failure, finite success and the original goal",
         "Requires a new input before reopening a failed route"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Pursue a theorem through several routes. The first route proves a useful special case but leaves two named comparison lemmas open; the original request says to continue while plausible routes remain.",
+      "expected_output": "Records the special case as partial progress, keeps the original theorem contract active, and executes a distinct route against one of the remaining comparison lemmas.",
+      "assertions": [
+        "Does not present the special case as completion",
+        "Names the unresolved implications",
+        "Continues without asking again for already granted authority",
+        "Preserves a checkpoint before changing routes"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Two delegated routes return in an unreliable display order. Both started from checkpoint P17 and both propose a different replacement for notes/result.md. Reconcile them and continue the program.",
+      "expected_output": "Uses the declared common base rather than arrival order, preserves both results, exposes the output collision, and serializes any shared-state update only after comparing the actual artifacts.",
+      "assertions": [
+        "Does not infer chronology from response order",
+        "Uses base checkpoint and artifact identity",
+        "Does not silently overwrite a colliding result",
+        "Keeps mathematical disagreement separate from file reconciliation"
+      ]
     }
   ]
 }

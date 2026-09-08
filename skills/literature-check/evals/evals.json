@@ -42,6 +42,27 @@
         "Makes the missing comparison obligations explicit",
         "Keeps the project dependency unverified without a bridging argument"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Assess whether a compactness theorem appears new. Searches for the draft's phrase find nothing, but an adjacent survey uses the older phrase 'precompact embedding' and cites a 1980s paper with a similar conclusion.",
+      "expected_output": "Treats the initial search as incomplete, follows the older terminology and citation chain to primary sources, and withholds any apparently-new classification until exact hypotheses and conclusion are compared.",
+      "assertions": [
+        "Searches equivalent and historical terminology",
+        "Follows backward citations from the adjacent source",
+        "Reads primary candidates rather than relying on titles or snippets",
+        "Records databases, queries, date scope and blind spots"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "A first search classified a paper as adjacent because its abstract discusses only objects. A later theorem in the same paper may establish the natural comparison required by the project. Recheck the overlap claim.",
+      "expected_output": "Separates discovery from theorem verification, checks the full primary statement and project translation, and appends a correction if the overlap classification changes.",
+      "assertions": [
+        "Does not preserve the initial classification from the abstract",
+        "Checks exact hypotheses, naturality and conclusion level",
+        "Records the changed classification without erasing the earlier scoped search"
+      ]
     }
   ]
 }

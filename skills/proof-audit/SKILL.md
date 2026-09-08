@@ -22,6 +22,9 @@ by changing definitions, conventions, or scope.
    - evidence label, dependencies, and cited computation or source.
 4. If the statement cannot be typed unambiguously, report that before auditing
    the argument.
+5. Resolve the authoritative statement itself, not only a dashboard summary.
+   Record its exact locator or revision when nearby material can change without
+   changing the claim.
 
 ## Build the dependency graph
 
@@ -39,14 +42,23 @@ ultimately points back to the claim itself.
 
 For every applicable obligation:
 
+- reconstruct the objects and admissible domain from their definitions before
+  accepting a proof representative, test fixture, or computational surrogate;
+  verify that homotopies, samples, and witnesses stay in that domain;
 - check types, hypotheses, quantifiers, and boundary cases;
 - recompute the smallest nontrivial examples from definitions;
+- include nullary/unary or minimum-parameter cases when they control units,
+  augmentation, grading, or induction, and check absolute degrees rather than
+  only their parity;
 - reverse choices or operation orders when independence is claimed;
 - check degrees, signs, actions, duals, invariants/coinvariants, completions,
   naturality, and coherence at the level actually used;
 - compare each external theorem with the exact needed implication;
 - compare every computation's implemented assertion and tested range with the
   theorem statement;
+- audit claims of exhaustive coverage against the enumerator and its filters:
+  sampling is not exhaustive unless a proved symmetry or reduction covers the
+  omitted cases;
 - search prior logs or archived claims for a known failed version.
 
 When an external-source leaf is not already verified in the project's durable
@@ -97,6 +109,8 @@ Lead with the normalized claim and verdict. Then give:
 For an independent audit, use a fresh session or isolated subagent when the
 tool supports it and delegation is authorized. Give the exact claim and raw
 proof/source artifacts, without the author's verdict or suspected gap. Ask for
-a fresh derivation of the critical implication. Otherwise label the pass
-self-review. Neither agreement between agents nor a different actor name proves
-independence or mathematical correctness.
+a fresh derivation of the critical implication and of the object being tested.
+Do not give it an implementation or geometric surrogate as though that were the
+definition. Otherwise label the pass self-review. Neither agreement between
+agents nor a different actor name proves independence or mathematical
+correctness; successive reviews can share the same model error.

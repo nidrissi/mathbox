@@ -54,8 +54,13 @@ into a specific comparison, obstruction or discriminating invariant.
 ## Execute
 
 - Begin with the smallest typed case capable of changing the conclusion.
+- Verify that the chosen example, representative and every intermediate
+  construction belong to the claimed domain; a convenient surrogate needs an
+  explicit comparison theorem before it can decide the route.
 - Search actively for counterexamples, boundary cases, convention failures,
   circularity, and missing hypotheses.
+- Check nullary/unary or minimum-parameter cases and absolute degrees whenever
+  a unit, augmentation, suspension or induction boundary is involved.
 - Do not repair a failed type, sign, variance, normalization, or completion
   check by silently changing the statement or convention.
 - Route every load-bearing question about what an external mathematical source
@@ -69,6 +74,9 @@ into a specific comparison, obstruction or discriminating invariant.
   implemented. Record domain, bounds, seed, versions, inputs, runtime, and
   non-claims; use the `mathbox:computation-audit` plugin skill when
   appropriate.
+- Before calling a finite sweep exhaustive, compare the claimed population with
+  the actual iterator, filters and skipped cases. Sampling requires a proved
+  coverage reduction.
 - After any bounded success, pause before extending the arity, range, or case
   ladder. Identify the minimal structural features used, separate uniform
   features from case-specific coincidences, and formulate the candidate

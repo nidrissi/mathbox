@@ -56,6 +56,17 @@
         "Reports downstream conditional claims",
         "Preserves the read-only boundary"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Review a project whose history says CURRENT_HANDOFF.md is authoritative, but that file does not exist. STATUS.md predates two manuscript commits and still calls the delivered article unfinished. A remote computation is labelled running based only on last week's launch note.",
+      "expected_output": "Reports the broken authority link, treats the dashboard and remote-run state as stale or unknown pending evidence, and proposes a minimal read-only reconciliation plan without choosing status by timestamp alone.",
+      "assertions": [
+        "Checks that the designated authority path exists",
+        "Compares status provenance with later authoritative changes",
+        "Does not infer a live process from an old launch record",
+        "Does not edit during the read-only review"
+      ]
     }
   ]
 }
