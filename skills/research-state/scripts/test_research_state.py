@@ -282,6 +282,46 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual([r["id"] for r in json.loads(run("next", "--goal", "B"))], ["R2"])
         self.assertEqual(before, {p.name: p.read_bytes() for p in self.ledger.events.iterdir()})
 
+    def test_unresolved_dependency_downgrades_finite_evidence(self):
+        self.claim()
+        self.claim("B", ["A"])
+        self.evidence("B", kind="computation", assertion="Checked arities 0..6", bounds="0 <= arity <= 6",
+                      non_claims=["Universal collapse remains open"])
+        claim = self.view()["claims"]["B"]
+        self.assertEqual(claim["status"], "conditional")
+        self.assertEqual(claim["blocked_by"], ["A"])
+
+    def test_open_route_mechanism_is_not_silently_repeated(self):
+        self.claim()
+        self.route()
+        with self.assertRaises(LedgerError):
+            self.route("R2")
+        self.assertEqual(list(self.ledger.read()["routes"]), ["R"])
+
+    def test_goal_handoff_hides_unrelated_stale_records(self):
+        (self.root / "other.md").write_text("An unrelated durable argument.")
+        self.claim()
+        self.evidence()
+        self.claim("B", ["A"])
+        self.claim("UNRELATED")
+        stale = self.record("evidence", dict(claim="UNRELATED", kind="proof", summary="Unrelated result",
+                                             artifacts=[{"path": "other.md"}]))
+        report = self.review(stale)
+        (self.root / "other.md").write_text("A different unrelated argument.")
+        (self.root / "review.md").unlink()
+
+        def run(*args):
+            output = StringIO()
+            with redirect_stdout(output):
+                self.assertEqual(main(["--root", str(self.root), *args]), 0)
+            return output.getvalue()
+
+        handoff = json.loads(run("--json", "handoff", "--goal", "B"))
+        self.assertEqual(set(handoff["state"]["claims"]), {"A", "B"})
+        self.assertEqual(handoff["state"]["issues"], [])
+        self.assertNotIn("other.md", run("handoff", "--goal", "B"))
+        self.assertEqual({i["event"] for i in json.loads(run("--json", "status"))["issues"]}, {stale, report})
+
 
 if __name__ == "__main__":
     unittest.main()

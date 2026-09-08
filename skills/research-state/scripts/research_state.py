@@ -100,6 +100,18 @@ def topological(claims):
     return order
 
 
+def dependency_map(claims):
+    """Transitive dependencies of every claim, accumulated once in dependency order."""
+    result = {}
+    for key in topological(claims):
+        deps = set()
+        for parent in claims[key]["dependencies"]:
+            deps.add(parent)
+            deps |= result[parent]
+        result[key] = deps
+    return result
+
+
 def snapshot(claims, claim):
     return {key: claims[key]["revision"] for key in sorted(closure(claims, claim))}
 
@@ -193,8 +205,8 @@ def apply(state, event):
             require(prior["claim"] == p["claim"] and prior["mechanism"] == p["mechanism"], "reopened route must retain target and mechanism")
             text_field(p, "changed_input")
         else:
-            for old in state["results"].values():
-                prior = state["routes"][old["payload"]["route"]]["payload"]
+            for old in state["routes"].values():
+                prior = old["payload"]
                 require(not (prior["claim"] == p["claim"] and prior["mechanism"] == p["mechanism"]),
                         "repeated mechanism: name reopens and changed_input")
         state["routes"][rid] = event
@@ -336,14 +348,14 @@ def project(root, state):
         if key not in state["retracted"] and event["payload"]["evidence"] in evidence:
             reviews[key] = dict(event["payload"], issues=artifact_issues(root, [event["payload"]["artifact"]]))
     resolved = {"proved", "externally-proved"}
+    # Losing a negative report cannot silently rehabilitate the challenged proof.
+    failed = {r["evidence"] for r in reviews.values() if r["outcome"] == "fail"}
+    uncertain = {r["evidence"] for r in reviews.values() if r["outcome"] == "conditional"}
     result = {}
     for key in topological(claims):
         c = claims[key]
         attached = {eid: e for eid, e in evidence.items() if e["claim"] == key}
         live = {eid: e for eid, e in attached.items() if not e["issues"]}
-        # Losing a negative report cannot silently rehabilitate the challenged proof.
-        failed = {r["evidence"] for r in reviews.values() if r["outcome"] == "fail"}
-        uncertain = {r["evidence"] for r in reviews.values() if r["outcome"] == "conditional"}
         positive = {eid: e for eid, e in live.items() if e["kind"] in {"proof", "source"} and eid not in failed}
         negative = {eid: e for eid, e in live.items() if e["kind"] == "counterexample" and eid not in failed}
         blocked = [d for d in c["dependencies"] if result[d]["status"] not in resolved]
@@ -357,7 +369,7 @@ def project(root, state):
         elif live and all(eid in failed for eid in live):
             status = "incomplete"
         elif any(e["kind"] == "computation" and eid not in failed for eid, e in live.items()):
-            status = "computationally-verified"
+            status = "conditional" if blocked else "computationally-verified"
         elif attached and not live:
             status = "stale"
         else:
@@ -374,12 +386,13 @@ def project(root, state):
 
 def impact(claims, target):
     require(target in claims, "unknown claim")
-    return sorted(key for key in claims if key != target and target in closure(claims, key))
+    return sorted(key for key, deps in dependency_map(claims).items() if key != target and target in deps)
 
 
 def next_routes(state, projection, goal=None):
     claims = projection["claims"]
     selected = closure(claims, goal) if goal else set(claims)
+    dependencies = dependency_map(claims)
     closed = {r["payload"]["route"] for r in state["results"].values()}
     result = []
     for rid, event in state["routes"].items():
@@ -387,7 +400,7 @@ def next_routes(state, projection, goal=None):
         if rid in closed or p["claim"] not in selected:
             continue
         blocked = [key for key in p["prerequisites"] if claims[key]["status"] not in {"proved", "externally-proved"}]
-        reach = len(set(impact(claims, p["claim"])) & selected)
+        reach = sum(1 for key in selected if key != p["claim"] and p["claim"] in dependencies[key])
         score = (p["gain"] + reach) / p["cost"]
         result.append(dict(p, ready=not blocked, blocked_by=blocked, score=round(score, 3)))
     return sorted(result, key=lambda r: (not r["ready"], -r["score"], r["id"]))
@@ -402,6 +415,15 @@ def closed_routes(state, goal=None):
             result.append(dict(route["payload"], event_id=route["event_id"],
                                result=dict(event["payload"], event_id=eid)))
     return result
+
+
+def restrict(projection, state, selected):
+    """Goal view: keep the selected claims and only the records reported under them."""
+    claims = {key: c for key, c in projection["claims"].items() if key in selected}
+    events = {eid for c in claims.values() for eid in c["evidence"]}
+    events |= {rid for rid, r in state["reviews"].items() if r["payload"]["evidence"] in events}
+    return dict(projection, claims=claims,
+                issues=[i for i in projection["issues"] if i["event"] in events])
 
 
 def markdown(projection, routes=None, closed=None):
@@ -468,8 +490,7 @@ def main(argv=None):
         elif args.command in {"next", "handoff"}:
             routes = next_routes(state, projection, args.goal)
             if args.goal:
-                selected = closure(state["claims"], args.goal)
-                projection["claims"] = {k: v for k, v in projection["claims"].items() if k in selected}
+                projection = restrict(projection, state, closure(state["claims"], args.goal))
             if args.command == "handoff":
                 closed = closed_routes(state, args.goal)
                 output = {"state": projection, "routes": routes, "closed_routes": closed}

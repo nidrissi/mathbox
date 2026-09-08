@@ -119,6 +119,10 @@ Retract an erroneous evidence or review event with:
 {"type":"retract","actor":"researcher","payload":{"target":"E000002","reason":"The witness does not satisfy the connectedness hypothesis."}}
 ```
 
+A claim whose dependencies are not `proved` or `externally-proved` is reported
+`conditional`, including when its own attached evidence is a finite computation.
+Finite evidence never reads as verified while its inputs remain open.
+
 Changes in a claim's transitive revision snapshot or artifact bytes make evidence
 stale. Dependency evidence being retracted or refuted instead makes downstream
 arguments conditional. Re-record after mathematical revalidation, never just
@@ -147,12 +151,16 @@ A `route-result` payload has `route`, `outcome` (`succeeded`, `failed`, `blocked
 `inconclusive`), `reason`, and `next_question`. A route can close only once.
 Correction/reopening is a new route ID with `reopens` equal to the result's
 event ID and a `changed_input` explanation. An exact repeated target/mechanism
-without this explanation is rejected. Semantic duplicates still need human or
-agent judgment. Route success does not itself create proof evidence.
+without this explanation is rejected, whether the earlier route is open or
+closed. Semantic duplicates still need human or agent judgment. Route success
+does not itself create proof evidence.
 
 `handoff` includes open candidates in `routes` and completed history in
 `closed_routes`, filtered to the goal and its transitive dependencies when a
-goal is supplied. Each closed route includes its payload and `event_id`, plus
-a nested `result` with the outcome, reason/obstruction, next question and result
-`event_id` needed for `reopens`. Markdown handoffs also show these continuation
-details. `next` continues to list only open candidates.
+goal is supplied. Reported stale records are filtered the same way, so a goal
+handoff never carries an unrelated claim's freshness problem. Use `check` or an
+unfiltered `status` for the whole project. Each closed route includes its
+payload and `event_id`, plus a nested `result` with the outcome,
+reason/obstruction, next question and result `event_id` needed for `reopens`.
+Markdown handoffs also show these continuation details. `next` continues to
+list only open candidates.
