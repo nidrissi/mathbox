@@ -15,21 +15,25 @@ a replacement for mathematical review.
 ## What changes in v3
 
 Mathbox can now carry a research goal through successive attempts, retain the
-mathematical reason each route failed, and detect when a proof's supporting
-statement or artifact has changed.
+mathematical reason each route failed, reconcile parallel or delayed returns,
+and detect when a claim statement, proof input, computation result, or other
+supporting artifact has changed.
 
 | Capability | Result |
 |---|---|
-| `research-program` | Executes distinct proof, counterexample, source and computation routes; continues after individual failures |
-| `research-state` | Records exact claim revisions, transitive dependencies, hashed evidence and separate review provenance |
-| Dependency impact and handoff | Shows stale evidence, downstream blockers and the next executable research routes |
-| Bounded experiment runner | Records actual commands, input hashes, logs, resource failures and finite scope |
-| Executable regression gate | Checks package contracts and state/experiment/cache behavior; mathematical task evaluation remains separate |
+| `research-program` | Executes distinct proof, counterexample, source and computation routes from explicit checkpoints; preserves partial results and reconciles sibling returns |
+| `research-state` | Records exact claim revisions, optional statement bindings, transitive dependencies, hashed evidence, separate review provenance, and program/run lifecycle |
+| Dependency impact and handoff | Shows stale evidence, downstream blockers, unresolved parallel state, and the next executable research routes |
+| Bounded experiment runner | Records actual argv, input and scientific-result hashes, bounded logs, finite scope, and optional POSIX memory/CPU/affinity limits |
+| Repository retrofit | Detects aliased research roles, ambiguous live files, computation records, cache conventions, and migration material that needs review or quarantine |
+| Executable regression gate | Checks package contracts, synthetic fixture inventory, and state/experiment/inspector/cache behavior; mathematical task evaluation remains separate |
 
 The optional ledger lives in the research project's `.mathbox/` directory. It
 is an append-only, versioned record with generated views. Existing Markdown
-projects and the eight specialist skills continue to work without it. A ledger
-label records the evidence supplied; it does not certify a proof.
+projects and the eight specialist skills continue to work without it. Ledger
+labels such as `proof-recorded` and `source-recorded` describe mechanically
+current evidence; they do not certify a proof or replace a project's promotion
+policy.
 
 Start a sustained investigation with:
 
@@ -191,6 +195,10 @@ Important boundaries:
 
 - A bounded computation is evidence only for its stated range, not a universal
   proof.
+- A proof audit reconstructs the claimed object independently before accepting
+  a computation or derivation performed on a convenient substitute. Coverage
+  claims must match the actual iterator and absolute grading, not only samples
+  or parity checks.
 - Proofreading does not authorize changing an argument. Use the
   `mathbox:proof-audit` plugin skill to diagnose an existing proof or
   `mathbox:research-attempt` to develop a new one.
@@ -198,7 +206,8 @@ Important boundaries:
   has already been validated; it does not make conjectural work
   publication-ready.
 - A failed literature search supports only a bounded search report, not a claim
-  of global novelty.
+  of global novelty. Novelty checks use equivalent and historical terminology
+  and follow citation chains to primary sources where available.
 
 ## Local literature cache
 

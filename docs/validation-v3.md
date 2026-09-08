@@ -5,16 +5,18 @@ trials. It makes no comparative claim about solving frontier research problems.
 
 ## Executable checks
 
-`python3 scripts/check.py` covers package identity/version/inventory, JSON,
-portable resource links, Python syntax and three standard-library test suites:
+`python3 scripts/check.py` covers package identity/version/inventory, the
+synthetic behavioral-fixture inventory, JSON, portable resource links, Python
+syntax and four standard-library test suites:
 
 | Suite | Cases | Important exercised behavior |
 |---|---:|---|
-| Research state | 27 | Transitive revision invalidation, retraction, negative/conditional audits, conflicting evidence, supersession, journal integrity, path boundaries, writer contention, unresolved dependencies under finite evidence, duplicate open mechanisms, and goal-scoped route and staleness filtering |
-| Computation provenance | 21 | Actual execution, failed assertions, timeout, process descendants, process-group signalling bounds, bounded logs, input mutation, stale and missing hashes, software version records, shell metacharacters, launch failure, no overwrite, empty-template rejection and v1 compatibility |
+| Research state | 35 | Neutral evidence projections, bound statement staleness, strict computation-manifest closure, transitive revision invalidation, review separation, program/run lifecycle, explicit unknown observations, common-base reconciliation, delayed results, journal integrity and path/writer boundaries |
+| Computation provenance | 30 | Actual execution, declared scientific-result hashes, input/result collision controls, timeout and process descendants, bounded logs, optional POSIX resource caps, input mutation, stale hashes, shell metacharacters, atomic manifests, strict v2 validation and historical v1 compatibility/ambiguity handling |
+| Repository inspector | 7 | Semantic filename aliases, computation-manifest inventory, mixed-log classification, declared path/cache conventions, conservative broken references, Git-state distinctions, missing compatibility bridges and refusal to inspect symlinked files |
 | Existing literature cache | 17 | Existing cache ingestion, source retention, lookup and error-path regressions |
 
-All 65 tests passed locally. The cache suite deliberately exercises an internal
+All 89 tests passed locally. The cache suite deliberately exercises an internal
 error path and prints its injected error message; the test asserts the handled
 failure and the suite passes. No mathematical theorem is inferred from this gate.
 
@@ -56,18 +58,43 @@ Reviewable trial evidence is retained under [evals/results/v3](../evals/results/
 the complete mathematical derivation, finite-result summary, state execution
 notes and exact journal events. The notes refer to the trial's original isolated
 project paths; those are historical observations, not required install paths.
+They also retain the status strings emitted by the helper at that time; the
+current projection renders the same evidence categories with neutral
+`*-recorded` labels.
+
+## Targeted synthetic regression trials
+
+Three additional fresh agents received only the named skill and one raw
+synthetic fixture. They did not receive `evals/cases.json`, the expected answer,
+or the redesign diagnosis. A separate review compared each returned derivation
+with the checked-in obligations and critical-failure condition.
+
+| Fixture | Independently observed result | Review |
+|---|---|---|
+| Surrogate domain | Computed the singular midpoint of the stated polynomial curve, rejected it as a path in the open cone, and distinguished the eigenvalue-clipped curve as a different object | Pass |
+| Sampled enumeration | Counted the 16 actually visited inputs out of 64, restricted the conclusion to that subset, and required full enumeration or a proved coverage reduction | Pass |
+| Parallel reconciliation | Used the common checkpoint rather than display order, preserved both raw returns, exposed their shared-path collision, and deferred shared-state mutation until mathematical reconciliation | Pass |
+
+All three avoided their critical failure. These trials establish behavior on
+those small fixtures only. The fixture correction and rerun are part of the
+record: the first surrogate-domain draft accidentally described an impossible
+singular affine segment between positive-definite endpoints; it was replaced by
+an explicit non-affine polynomial curve before the passing result above. Only
+synthetic public inputs were used for these trials.
 
 ## Limits of the evaluation
 
-The new bounded-tower fixture is supplied for future independent runs and was
-not executed in these task trials. The complete collection of natural-language
-trigger and behavioral probes was structurally validated, not batch-scored by
-an LLM judge. No performance comparison with v2, formal-verifier integration,
-Windows process-tree test or actual open-problem success is claimed.
+The bounded-tower, absolute-grading and novelty-vocabulary fixtures remain for
+future independent runs. The complete collection of natural-language trigger
+and behavioral probes was structurally validated, not batch-scored by an LLM
+judge. No performance comparison with v2, formal-verifier integration, Windows
+process-tree test or actual open-problem success is claimed.
 
 The journal trusts declared mathematical dependencies and evidence kinds. Hashes
 cannot authenticate the correctness of a proof or a reviewer's independence.
-The experiment runner pins explicitly supplied inputs and captures execution;
-its declared mathematical bounds and external software dependencies still need
-review. These are deliberate boundaries, documented in the skills and command
-contracts.
+The experiment runner pins explicitly supplied inputs and declared result files,
+and records requested resource caps. Address-space and CPU caps are per process,
+thread caps remain cooperative, and declared mathematical bounds plus external
+software dependencies still need review. Historical v1 validation reports its
+missing provenance rather than inventing it. These are deliberate boundaries,
+documented in the skills and command contracts.

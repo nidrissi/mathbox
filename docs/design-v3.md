@@ -13,8 +13,13 @@ local literature cache. Three structural gaps limited long investigations:
   not whether the record contained an actual assertion, range, run or valid hash.
 
 The redesign retains the specialist boundaries and adds the missing coordination
-and state layer. It does not require every mathematical conversation to become
-a managed project.
+and state layer. Additional adversarial hardening also exposed failure classes that a
+nominally valid workflow could miss: audits reusing the claimant's surrogate
+object, sparse iterators presented as exhaustive, parity checks masking absolute
+degree errors, parallel returns without a common-base reconciliation, narrow
+novelty searches, and repository migrations that inferred authority from
+filenames. The fixes and regression examples are entirely synthetic. The redesign does not require
+every mathematical conversation to become a managed project.
 
 ## Architecture
 
@@ -23,7 +28,7 @@ a managed project.
 | Research program | Own the original goal; execute distinct routes and allocate effort by information gained | Cannot turn partial success into the requested theorem |
 | Specialist skills | Develop one route, audit a proof, check a source, run an experiment or edit a manuscript | A workflow cannot substitute for a missing mathematical implication |
 | Project artifacts | Exact statements, full derivations, checked source translations, code and review reports | Durable arguments carry the mathematical content |
-| Optional ledger | Record revisions, dependencies, artifact hashes, review attribution and route outcomes | Validates declared provenance and freshness, not the argument's truth |
+| Optional ledger | Record revisions, statement bindings, dependencies, artifact hashes, review attribution, route outcomes and execution lifecycle | Validates declared provenance and freshness, not the argument's truth |
 | Evaluation | Test packaging, execution and actual mathematical task behavior separately | Software tests are not evidence of frontier research success |
 
 Every skill is still independently installable. No helper imports a sibling
@@ -47,32 +52,58 @@ an exact mathematical obligation.
 
 Fresh audit work receives the claim and raw artifacts without the author's
 desired verdict. Review provenance is independent of mathematical evidence and
-artifact freshness. Source work distinguishes authenticating a document,
-extracting its theorem and proving its applicability. Unavailable companion
-skills can be replaced by direct checks with available tools; unverifiable
-mathematical inputs remain conditional.
+artifact freshness. The reviewer reconstructs the claimed object, domain and
+absolute degrees independently, checks minimum cases and iterator coverage, and
+does not let a regularized substitute or sampled sweep inherit the original
+claim. Source work separates discovery from verification, searches equivalent
+and historical terminology, follows citation chains, and distinguishes
+authenticating a document, extracting its theorem and proving its applicability.
+Unavailable companion skills can be replaced by direct checks with available
+tools; unverifiable mathematical inputs remain conditional.
 
-Setup applies existing user authorization to coherent edits. It no longer asks
-for approval of each routine modification within an already authorized retrofit.
-Ambiguous authority changes and destructive historical rewrites still require
-resolution before execution.
+Setup applies existing user authorization to coherent edits. Its inspector
+recognizes semantic filename aliases, distinguishes unavailable Git metadata
+from a clean worktree, inventories computation manifests and declared path/cache
+conventions, and reports competing dashboard or handoff candidates without
+choosing authority from names. It does not follow symlinked files. Legacy log
+migration maps source spans against the stated mission, quarantines foreign or
+ambiguous material, and requires review before replacing the live index.
+Manuscript setup leaves venue, language, audience, deadline, counting convention
+and complete page budget unknown until confirmed. Source-derived inventory
+entries remain pending until checked. Ambiguous authority changes and destructive
+historical rewrites still require resolution before execution.
+
+Parallel research uses explicit base checkpoints, owners and write scopes.
+Arrival order is not ancestry, shared files are written only after coordinator
+reconciliation, and a restricted theorem or conditional lemma remains a partial
+result rather than silently completing the original goal. Manuscript integration
+propagates accepted changes through a project map of semantic dependents instead
+of relying on filename proximity.
 
 ## State invariants
 
-- Claims have explicit hypotheses, regime, conclusion level and dependencies.
+- Claims have explicit hypotheses, regime, conclusion level and dependencies;
+  an optional hashed statement artifact binds ledger text to the controlling file.
 - Evidence is attached to the claim and all transitive dependency revisions.
-- Proof/source/computation/counterexample evidence remain different types.
+- Proof/source/computation/counterexample evidence remain different types, with
+  neutral generated labels such as `proof-recorded` and `source-recorded`.
 - Computation cannot discharge a universal proof dependency without a separate
   recorded argument establishing why the finite assertion decides the claim.
-- Changed artifacts or contracts make evidence stale. Refuted/retracted inputs
-  make downstream arguments conditional. Conflicting proof and counterexample
-  evidence is displayed as disputed.
+- A linked v2 computation record pins its manifest plus the complete declared
+  input/output closure; equal before/after input hashes and a completed zero-exit
+  run are required before the ledger grants closure semantics.
+- Changed artifacts or contracts make evidence stale. Counterexample-supported
+  or retracted inputs make downstream arguments conditional. Conflicting proof
+  and counterexample evidence is displayed as disputed.
 - Audits address exact evidence events. Author self-review cannot be marked
   independent. Losing a negative audit report cannot silently clear its challenge.
 - Corrections append events. Revalidated evidence can explicitly supersede old
   evidence while preserving history. No automatic migration promotes old prose.
 - Read-only commands never initialize or mutate the project. Writes serialize
   under a lock and publish complete event files atomically.
+- Programs and route runs record common bases, observations (including explicit
+  `unknown`), terminal revisions, conflicts and late-result dispositions. Run or
+  route success never promotes a mathematical claim by itself.
 
 The ledger cannot discover undeclared dependencies, prove an alleged argument,
 authenticate an actor's identity or measure real reviewer independence. These
@@ -88,19 +119,30 @@ plugin version. Keep existing Markdown status and proof files until their
 mapping and authoritative replacement are clear. Adopt only the active claim
 subgraph that benefits from tracking.
 
-Complete computation manifests in version 1 remain readable. Blank templates
-now require `--template`; this intentional validation change prevents treating
-scaffolds as evidence. New runs optionally use the version 2 provenance runner.
+Historical computation manifests in version 1 remain readable with their
+original nonempty software strings, absent/null repository revisions, and
+unambiguous project- or manifest-relative output paths. The validator reports
+the provenance those records cannot establish; it does not upgrade them to v2.
+Blank templates require `--template`. New v2 runs can declare and hash scientific
+result files, cross-check execution artifacts, and request POSIX address-space,
+CPU-time and affinity caps plus cooperative numerical-library thread caps.
 Python helpers require Python 3.10+. POSIX process-group termination is tested;
 other platforms only receive direct-process termination from this runner.
 
-## Next work that needs real project evidence
+Existing research-state schema-version-1 journals and minimal configs remain
+readable without event rewriting. Generated status strings intentionally use
+the neutral `*-recorded` vocabulary, so dashboards or scripts matching the old
+mathematical-sounding strings must be updated. New lifecycle events require the
+v3 helper.
 
-The next improvement should be measured on held-out research tasks from actual
-projects: time to identify a false implication, repeated failed mechanisms,
-stale evidence detected, reproducible runs, and useful mathematical results per
-research session. The elementary fixtures here test failure mechanisms, not
-research creativity at the frontier.
+## Evaluation boundary and future work
+
+Real-project evaluation should remain held out and confidential. Only aggregate
+measures—time to identify a false implication, repeated failed mechanisms, stale
+evidence detected, reproducible runs, and useful mathematical results per
+research session—belong in public reports. The elementary fixtures in this
+repository test transferable failure mechanisms, not research creativity at the
+frontier.
 
 Formal-verifier adapters should record exact propositions, toolchain and kernel
 results once a project supplies a Lean/Coq/other formal target. A fabricated
