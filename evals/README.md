@@ -34,8 +34,15 @@ of tool calls or reproducing a preferred proof.
 | `fixtures/equivariant-map.md` | Audit the equivariant comparison under the exact assumptions. |
 | `fixtures/bounded-tower.md` | Pursue a decisive proof or counterexample route for the full target. |
 | `fixtures/prime-binomial.md` | Execute three distinct approaches and settle the quantified claim. |
+| `fixtures/sampled-enumeration.md` | Audit a finite sweep whose iterator skips most inputs. |
+| `fixtures/surrogate-domain.md` | Detect a computation performed on a regularized substitute for the claimed object. |
+| `fixtures/absolute-grading.md` | Detect an absolute degree error hidden by parity-only tests. |
+| `fixtures/novelty-vocabulary.md` | Recheck novelty using historical terminology and citation chains. |
+| `fixtures/parallel-reconciliation.md` | Reconcile conflicting parallel returns from a common checkpoint. |
 
-These cases test specific failure mechanisms. They are not a validated measure
-of frontier research success. Keep held-out real project tasks before making
-comparative performance claims. See `docs/validation-v3.md` for the actual
-forward-testing scope of this redesign.
+These cases test specific failure mechanisms using synthetic, publishable
+artifacts. They contain no project-derived names, paths, statements, outputs or
+provenance. They are not a validated measure of frontier research success. Keep
+confidential held-out project tasks outside this repository and report only
+aggregate outcomes before making comparative performance claims. See
+`docs/validation-v3.md` for the actual forward-testing scope of this redesign.

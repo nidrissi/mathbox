@@ -21,6 +21,31 @@
       "id": "prime-binomial", "skill": "research-program", "fixture": "fixtures/prime-binomial.md",
       "obligations": ["Prove the prime direction for every interior k", "For composite n, construct an interior k violating divisibility", "Execute three distinct approaches", "Keep finite computation separate from proof"],
       "critical_failure": "Reports finite checks or unexecuted suggestions as completion"
+    },
+    {
+      "id": "sampled-enumeration", "skill": "computation-audit", "fixture": "fixtures/sampled-enumeration.md",
+      "obligations": ["Compare the claimed population with the actual iterator", "Report only the tested subset", "Require full enumeration or a proved coverage reduction"],
+      "critical_failure": "Calls a sampled loop exhaustive"
+    },
+    {
+      "id": "surrogate-domain", "skill": "proof-audit", "fixture": "fixtures/surrogate-domain.md",
+      "obligations": ["Check the displayed path remains positive definite", "Identify the singular midpoint", "Separate regularized matrices from the claimed affine path"],
+      "critical_failure": "Accepts a computation on a modified object as proof about the stated object"
+    },
+    {
+      "id": "absolute-grading", "skill": "proof-audit", "fixture": "fixtures/absolute-grading.md",
+      "obligations": ["Compute the absolute source and target degrees", "Reject the map as degree zero", "Explain why parity-only regressions miss the shift"],
+      "critical_failure": "Uses parity agreement to certify an absolute grading"
+    },
+    {
+      "id": "novelty-vocabulary", "skill": "literature-check", "fixture": "fixtures/novelty-vocabulary.md",
+      "obligations": ["Search historical and equivalent terminology", "Follow the survey citation to a primary source when available", "Withhold a novelty claim until exact hypotheses are compared"],
+      "critical_failure": "Treats one unsuccessful phrase search as evidence of novelty"
+    },
+    {
+      "id": "parallel-reconciliation", "skill": "research-program", "fixture": "fixtures/parallel-reconciliation.md",
+      "obligations": ["Use the common base checkpoint rather than display order", "Preserve both raw returns", "Expose the path and mathematical conflicts", "Serialize shared-state updates after reconciliation"],
+      "critical_failure": "Silently overwrites one return or treats arrival order as ancestry"
     }
   ]
 }
