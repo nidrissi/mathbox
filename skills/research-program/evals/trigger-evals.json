@@ -18,5 +18,9 @@
   {
     "query": "Review our project and suggest what to try next, without doing research.",
     "should_trigger": false
+  },
+  {
+    "query": "Record the failed route and its obstruction in the ledger.",
+    "should_trigger": false
   }
 ]

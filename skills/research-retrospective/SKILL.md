@@ -1,7 +1,7 @@
 ---
 name: research-retrospective
 description: >-
-  Reconcile a mathematical research repository's current claims, proofs, computations, status, literature dependencies, and failed routes, then recommend the next bounded research moves. Use only when the user asks for a project review, handoff, weekly/monthly retrospective, prioritization, or “what should I do next?”. Default to read-only.
+  Reconcile a mathematical research repository's current claims, proofs, computations, status, literature dependencies, and failed routes, then recommend the next bounded research moves. Use only when the user asks for a project review, weekly/monthly retrospective, prioritization, a prose project handoff, or “what should I do next?”. Do not use to operate a .mathbox ledger or to generate its dependency-aware handoff. Default to read-only.
 ---
 
 # Research retrospective

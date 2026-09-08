@@ -1,7 +1,7 @@
 ---
 name: research-state
 description: >-
-  Track exact mathematical claims, evidence revisions, dependency impact, audit provenance, and research routes in a local append-only ledger. Use when a project has a .mathbox ledger or the user asks for executable research-state tracking, stale-evidence detection, or a dependency-aware handoff. Do not initialize state for a casual math question or replace proof auditing with metadata validation.
+  Track exact mathematical claims, evidence revisions, dependency impact, audit provenance, and research routes in a local append-only ledger. Use when a project has a .mathbox ledger or the user asks for executable research-state tracking, stale-evidence detection, or a dependency-aware handoff generated from recorded events. Do not initialize state for a casual math question, replace proof auditing with metadata validation, or write a prose project retrospective from status files.
 ---
 
 # Executable research state

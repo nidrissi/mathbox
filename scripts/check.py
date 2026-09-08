@@ -53,6 +53,10 @@ def main():
             for name in ("evals/evals.json", "evals/trigger-evals.json", "agents/openai.yaml"):
                 if not (skill.parent / name).is_file():
                     errors.append(f"missing {name}: {skill.parent.name}")
+            openai = skill.parent / "agents/openai.yaml"
+            if openai.is_file() and not re.search(r"^  allow_implicit_invocation: (true|false)$",
+                                                  openai.read_text(encoding="utf-8"), re.M):
+                errors.append(f"undeclared OpenAI invocation policy: {skill.parent.name}")
             behavior = json.loads((skill.parent / "evals/evals.json").read_text(encoding="utf-8"))
             cases = behavior.get("evals") if isinstance(behavior.get("evals"), list) else []
             if behavior.get("skill_name") != skill.parent.name or not cases:

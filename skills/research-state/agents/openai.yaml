@@ -2,3 +2,5 @@ interface:
   display_name: "Mathbox: Research State"
   short_description: "Track evidence, dependencies and stale proofs"
   default_prompt: "Use $mathbox:research-state to check this project’s claim dependencies, stale evidence and next research routes."
+policy:
+  allow_implicit_invocation: true

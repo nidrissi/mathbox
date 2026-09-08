@@ -1,7 +1,7 @@
 ---
 name: research-attempt
 description: >-
-  Run one bounded, auditable mathematical research route: a proof attempt, reduction, counterexample search, source-dependent implication, or claim-supporting computation. Use when the user explicitly asks to attack a research question or invokes this skill. Do not use for routine editing, explanation, or an unchanged verification rerun.
+  Run one bounded, auditable mathematical research route: a proof attempt, reduction, counterexample search, source-dependent implication, or claim-supporting computation. Use when the user explicitly asks to attack a research question or invokes this skill. Do not use for a sustained multi-route investigation that continues after failed approaches, routine editing, explanation, or an unchanged verification rerun.
 ---
 
 # Bounded mathematical research attempt

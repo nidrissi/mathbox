@@ -14,5 +14,13 @@
   {
     "query": "Audit this proof without creating project files.",
     "should_trigger": false
+  },
+  {
+    "query": "Prepare a weekly research handoff from the status file, claims and log.",
+    "should_trigger": false
+  },
+  {
+    "query": "Pursue this conjecture through several approaches until one works.",
+    "should_trigger": false
   }
 ]
