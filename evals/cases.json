@@ -29,7 +29,7 @@
     },
     {
       "id": "surrogate-domain", "skill": "proof-audit", "fixture": "fixtures/surrogate-domain.md",
-      "obligations": ["Check the displayed path remains positive definite", "Identify the singular midpoint", "Separate regularized matrices from the claimed affine path"],
+      "obligations": ["Check the displayed curve remains positive definite", "Identify the singular midpoint", "Separate regularized matrices from the claimed polynomial curve"],
       "critical_failure": "Accepts a computation on a modified object as proof about the stated object"
     },
     {
