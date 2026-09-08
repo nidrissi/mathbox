@@ -16,14 +16,19 @@ supply mathematical validation or human review.
 2. Resolve the authoritative manuscript, proof source, current status/claims,
    conventions, literature ledger, bibliography, and verification commands.
 3. Identify the exact validated result and its evidence/review status.
+   If `.mathbox/` is present, use the available `research-state` workflow to
+   check the current claim revision, artifact freshness and dependency closure.
+   Read the proof itself; a generated `proved` label does not validate it.
 4. Stop if the source proof conflicts with current status or the target
    manuscript is ambiguous.
 5. If a required external theorem has not been checked, pause integration and
    route that source question through the available `literature-check` skill
    (`mathbox:literature-check` in plugin installations). That workflow checks an
    authorized project-local cache before fetching. Resume only after the exact
-   source implication is verified; if the skill or source is unavailable,
-   leave integration blocked rather than supplying validation here.
+   source implication is verified. If the skill is unavailable, perform the
+   exact-source check directly. If the source remains unavailable, keep that
+   result conditional rather than supplying validation here. Continue any
+   independent, already validated integration work the user authorized.
 
 ## Build the integration map
 
@@ -37,6 +42,8 @@ State:
 - external dependencies and citations;
 - downstream statements, introduction claims, examples, and cross-references
   affected;
+- project maps, theorem inventories, source guides, status files and verification
+  benchmarks whose meaning depends on the changed scope;
 - validation plan and human-review obligation.
 
 ## Edit
@@ -51,6 +58,10 @@ State:
   correction rather than rewriting chronology.
 - Update notation, theorem names/numbers, references, citations, introduction,
   comparison, and outlook only where the result requires it.
+- For a scope removal or restriction, search every project-declared dependent
+  view before claiming consistency. Update authorized dependents together; if a
+  protected or separately governed file cannot be changed, mark the exact
+  conflict in the live view and do not report the propagation complete.
 - Do not edit generated output or bibliography entries without checking the
   project's source convention.
 
@@ -74,7 +85,10 @@ open until it has actually occurred.
 3. Run the appropriate out-of-tree or canonical manuscript build.
 4. Inspect undefined references/citations, warnings in the changed region,
    theorem numbering, bibliography changes, and `git diff --check`.
-5. Review the final diff for unintended semantic or generated-file changes.
+5. Search for the superseded statement, scope and terminology across declared
+   dependents; classify each remaining occurrence as current, historical or
+   stale.
+6. Review the final diff for unintended semantic or generated-file changes.
 
 ## Report
 

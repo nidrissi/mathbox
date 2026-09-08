@@ -18,6 +18,8 @@ State:
   normalization, version, and range;
 - whether the task is theorem verification, attribution, notation translation,
   overlap classification, or bounded novelty search.
+- for overlap or novelty, the terminology variants, older vocabulary, adjacent
+  fields, date horizon and citation graph likely to contain the same result.
 
 Read an existing literature-ledger entry and the dependent proof before
 searching when they exist.
@@ -55,9 +57,30 @@ Write an explicit notation dictionary to the project conventions. Verify the
 project implication one arrow at a time. A citation supplies no unstated
 functor, equivalence, coherence datum, normalization, or limiting argument.
 
+Separate **source authentication**, **theorem extraction**, and **application
+to this project**. Record which of these was actually checked. A correctly
+identified paper can still be inapplicable. Treat objectwise, natural,
+equivariant, filtered, integral and completed statements as different contracts
+until a comparison argument supplies the missing structure.
+
 Use [source-record.md](references/source-record.md) for durable entries.
 
 ## Novelty and overlap
+
+Run discovery and verification as separate passes. In discovery, search the
+exact statement together with synonyms, older terminology, equivalent
+formulations and the names of the objects/invariants rather than only the
+project's current title. Follow backward references from the closest source and
+forward citations when available; inspect relevant authors' earlier work and
+bibliographies in neighboring fields. Use more than one suitable index when
+feasible and record which coverage was unavailable.
+
+In verification, read the strongest candidates in their primary versions and
+compare exact hypotheses and conclusion level. A title/abstract that appears
+adjacent can still contain the needed theorem, while matching terminology can
+hide an inapplicable result. For a material “apparently new” claim, use a second
+search strategy or fresh reviewer when available; disclose when the same searcher
+performed both passes.
 
 Classify only as:
 
@@ -69,15 +92,23 @@ Classify only as:
 - apparently new within the stated search scope;
 - conjectural or explicitly open in a checked source.
 
-For “apparently new,” report databases, queries, date range, languages or fields
-searched, citation chains followed, and important blind spots. A failed search
-is never a global novelty theorem.
+For “apparently new,” report databases, exact and synonym queries, date range,
+languages or fields searched, backward/forward citation chains followed, the
+second-pass method, and important blind spots. A failed search is never a global
+novelty theorem. Later-discovered overlap is a correction to append and propagate,
+not a reason to rewrite the earlier scoped search as though it never occurred.
 
 ## Record and report
 
 Update the project's literature ledger only when authorized and when the check
 changes a dependency or attribution. Update status/log only if live research
 state changes.
+
+When a `.mathbox/` ledger is in use, record a source evidence event through the
+available `research-state` skill, pinning the durable extraction/translation
+report. If a source version or interpretation changes, examine dependent claims
+and record a correction; do not overwrite the old check or silently refresh a
+hash. The cache's content hash alone is not a verified-source event.
 
 Report:
 

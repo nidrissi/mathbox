@@ -22,6 +22,47 @@
         "Checks the authorized local cache before fetching",
         "Does not pass the proof obligation from a snippet, citation, or memory"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "A ledger labels Claim A proved and independently audited, but the source proof file changed after the review. Audit A.",
+      "expected_output": "Checks the actual current argument and treats earlier evidence/review as stale until revalidated.",
+      "assertions": [
+        "Does not certify mathematics from a ledger label",
+        "Checks exact current hypotheses and proof bytes",
+        "Separates evidence, freshness and review provenance"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Audit a proof and numerical check about paths in the cone of positive-definite matrices. The supplied path crosses a singular matrix; the code silently replaces every small eigenvalue by a positive cutoff.",
+      "expected_output": "Rejects both the path and the computation as evidence for the stated cone until a domain-valid path and a proved comparison with the regularized surrogate are supplied.",
+      "assertions": [
+        "Reconstructs the admissible domain from the definition",
+        "Checks every intermediate point rather than only endpoints",
+        "Does not treat the regularized surrogate as the claimed matrix cone",
+        "States the strongest safe conclusion and the first repair obligation"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Audit a report claiming an exhaustive identity check on 96 inputs. The driver iterates inputs[::5], reports that every assertion passed, and gives no reduction lemma.",
+      "expected_output": "Finds that only a sample was checked, rejects the exhaustive label, and asks either for full enumeration or a proved symmetry reduction covering omitted representatives.",
+      "assertions": [
+        "Compares the claimed cardinality with the actual iterator",
+        "Distinguishes passing sampled assertions from exhaustive coverage",
+        "Does not infer omitted cases from unproved symmetry"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Audit a graded chain-map argument whose regression matrices pass in degrees 1 through 4. The tests record only degree parity, while the proposed shift sends a degree-zero generator to absolute degree 2.",
+      "expected_output": "Rejects the chain-map claim because the shift is not degree zero, checks the degree-zero boundary case, and explains why parity-only matrices could not detect the defect.",
+      "assertions": [
+        "Checks absolute degree and shift direction",
+        "Includes the degree-zero case",
+        "Does not let higher-arity parity tests certify a graded map"
+      ]
     }
   ]
 }

@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Run this exact checker with reproducible input and result hashes plus memory and CPU caps.",
+    "should_trigger": true
+  },
+  {
     "query": "Check whether the paper states its recurrence over integers.",
     "should_trigger": false
   },

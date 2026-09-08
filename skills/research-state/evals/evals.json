@@ -1,0 +1,60 @@
+{
+  "skill_name": "research-state",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Record a proof of A and a proof of B depending on A. Revise A’s coefficient regime, then generate a handoff without modifying the proof files.",
+      "expected_output": "Preserves history, makes both affected proof snapshots stale, reports dependent impact and requires revalidation.",
+      "assertions": [
+        "Uses actual helper commands",
+        "Does not refresh hashes to hide staleness",
+        "Does not treat clean bookkeeping as proof verification",
+        "Uses neutral recorded-evidence labels rather than automatically declaring either claim proved",
+        "Read-only reports do not initialize or rewrite state"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "In an authorized temporary ledger, record a counterexample with a conditional review because connectedness of its witness remains unverified. Generate a status report, then remove the review artifact and report again. Explain what is needed to resolve the challenge.",
+      "expected_output": "The claim remains conditional in both reports; the missing report is also flagged as stale. Explicit review retraction or replacement evidence is required to resolve the challenge.",
+      "assertions": [
+        "Uses actual helper commands and durable evidence and review artifacts",
+        "Does not present the unresolved witness as an unconditional refutation",
+        "Does not silently rehabilitate evidence when a conditional report disappears"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "In an authorized temporary ledger, register A and a goal B depending on A. Close a route for A with a failed obstruction test and a next question, and also close an unrelated route. Produce JSON and Markdown handoffs for B and identify the event needed to reopen the failed mechanism with new mathematical input.",
+      "expected_output": "Both handoffs retain A's closed mechanism, failed outcome, obstruction, next question and result event ID, exclude unrelated route history, and keep next candidates limited to open routes.",
+      "assertions": [
+        "Runs the helper and inspects both handoff formats",
+        "Preserves goal dependency route history and the result event ID needed for reopens",
+        "Does not reopen an exhausted mechanism without changed mathematical input",
+        "Read-only reports preserve ledger events"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "In an authorized temporary ledger, bind claim A to a statement artifact and locator, record proof evidence for A and B depending on A, then change only the bound statement file. Check status and attempt to review the old evidence.",
+      "expected_output": "The helper pins the statement artifact, marks the relevant evidence and dependent claim stale after the statement changes, and refuses a review of stale evidence.",
+      "assertions": [
+        "Uses a synthetic project and actual helper commands",
+        "Records the statement locator and helper-generated artifact hash",
+        "Reports transitive staleness without silently refreshing evidence",
+        "Does not claim that the locator itself was semantically parsed"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "In an authorized temporary ledger, register a goal, two routes, and a program. Start two parallel runs of one route from the same recorded base. Mark one execution state unknown, record both terminal results at their actual revisions, explicitly reconcile their conflict, then record a third result that arrives after route closure.",
+      "expected_output": "The status preserves the common base and per-run revisions, does not treat unknown as active, closes executions separately from the route, records conflicts explicitly, and gives the delayed result a late disposition through the single writer.",
+      "assertions": [
+        "Uses program, route-run, observation, run-result and route-reconcile events",
+        "Does not infer precedence or correctness from event arrival order",
+        "Does not merge or renumber concurrent journals",
+        "Does not promote a claim merely because a run or route succeeded"
+      ]
+    }
+  ]
+}

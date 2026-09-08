@@ -27,25 +27,71 @@
     {
       "id": 3,
       "prompt": "Initialize this repository and determine whether every theorem cited in its literature ledger has the hypotheses needed by the proofs.",
-      "expected_output": "Inventories the ledger and configures the research workflow, but does not perform substantive theorem lookups during initialization; it records bounded follow-up tasks for the available literature-check skill.",
+      "expected_output": "Inventories and configures the repository first, then executes the explicitly requested substantive theorem checks as a subsequent literature-check work package within the same assignment.",
       "assertions": [
         "Keeps repository initialization separate from source verification",
         "Does not read cached source content merely to initialize the repository",
         "Routes substantive theorem questions to literature-check",
-        "Records unresolved source checks without claiming they passed"
+        "Completes authorized source checks or reports actual source-access limits rather than merely deferring them"
       ]
     },
     {
       "id": 4,
       "prompt": "Refresh this Git-backed research repository. RESEARCH_LOG.md contains several long-form route entries, one has no date, and a preamble does not belong to any entry. Convert it to the current research-record architecture.",
-      "expected_output": "Treats the long-form structure as requiring a migration proposal, maps each route to a standalone research/records file, preserves unmatched context, and waits for approval before replacing the log with a compact index.",
+      "expected_output": "Makes a concrete lossless migration mapping, classifies relevance against the repository mission, preserves unmatched or uncertain context in quarantine, and requires review of the mapping before replacing or indexing the legacy log.",
       "assertions": [
         "Triggers on route-level prose rather than a size threshold",
-        "Presents the exact migration mapping and obtains approval before rewriting the log",
+        "Shows source spans, destinations, relevance classifications and carried evidence labels for review before indexing",
         "Uses the earliest supporting Git date for the undated entry and labels that date as inferred",
-        "Preserves unmatched text in a legacy-context record",
+        "Preserves unmatched, foreign and ambiguous text in quarantine rather than live project history",
         "Verifies lossless representation before replacing RESEARCH_LOG.md",
         "Does not strengthen legacy evidence labels or statuses"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Retrofit this project now, preserving historical records. Several confident proved labels have no accessible proof artifacts. Add executable claim tracking if useful.",
+      "expected_output": "Applies existing edit authorization, maps exact claims conservatively and does not import unsupported prose as proof.",
+      "assertions": [
+        "Does not ask again for routine authorized changes",
+        "Retains historical content and claim IDs",
+        "Separates proof artifacts from status labels"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Inspect and propose a retrofit for this synthetic-style repository. It uses PLAN.md, STATUS.md, two dated HANDOFF files, THEOREMS.md, FACT_INVENTORY.md, docs/path-migrations.json, and computation manifests under checks/. AGENTS.md exists but CLAUDE.md does not; RESEARCH_LOG.md mixes linked index lines with full route prose.",
+      "expected_output": "Recognizes semantic role aliases rather than requiring canonical names, inventories computation manifests and path maps separately, reports the missing Claude bridge and multiple handoff candidates, classifies the log as mixed without choosing authority from filenames alone, and leaves source-derived inventory assertions pending verification.",
+      "assertions": [
+        "Recognizes plan, status, theorem/fact inventory and handoff variants",
+        "Inventories computation manifests separately from build manifests",
+        "Reports the missing CLAUDE.md bridge",
+        "Flags multiple handoff candidates for authority review",
+        "Classifies the research log structurally as mixed",
+        "Schedules exact source verification before source-derived inventory entries become foundations"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Retrofit the research history. The legacy log contains one route about the stated mission, one record clearly copied from a different project, and one whose relevance cannot be determined from the text.",
+      "expected_output": "Prepares a lossless reviewed mapping, proposes normal records only for mission-relevant routes, quarantines foreign and ambiguous material with provenance, and does not index it as current project history before review.",
+      "assertions": [
+        "Classifies relevance against the explicit repository mission",
+        "Does not infer relevance from topic words or filenames",
+        "Quarantines foreign and ambiguous records without declaring them mathematically false",
+        "Requires mapping review before replacing the live index"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Initialize this repository for a journal manuscript. The draft is 24 pages, but I have not told you the venue, language, audience, deadline, page-count rules, or page budget.",
+      "expected_output": "Treats every submission constraint as unresolved and asks a compact material interview covering venue/template/category, language/audience, exact deadline, count convention, and a page budget that includes front matter, bibliography, figures and contingency.",
+      "assertions": [
+        "Does not infer a page limit or venue from the current draft",
+        "Asks for language and intended audience",
+        "Asks for an exact deadline and timezone",
+        "Asks what the page-count convention includes",
+        "Requires explicit budget for front matter, main text, bibliography, figures/tables, appendices/supplement and contingency"
       ]
     }
   ]

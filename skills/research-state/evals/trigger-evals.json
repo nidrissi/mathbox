@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Check the .mathbox ledger and tell me which proofs are stale.",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up executable evidence and dependency tracking for this research project.",
+    "should_trigger": true
+  },
+  {
+    "query": "Reconcile these delayed parallel route runs against their shared base revision in the .mathbox ledger.",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain the definition of a chain complex.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit this proof without creating project files.",
+    "should_trigger": false
+  },
+  {
+    "query": "Prepare a weekly research handoff from the status file, claims and log.",
+    "should_trigger": false
+  },
+  {
+    "query": "Pursue this conjecture through several approaches until one works.",
+    "should_trigger": false
+  }
+]

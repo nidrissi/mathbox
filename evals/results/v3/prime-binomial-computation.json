@@ -1,0 +1,52 @@
+{
+  "arithmetic": "exact Python integers; coefficientwise modular reduction",
+  "scope": {
+    "n_max": 128,
+    "n_min": 2,
+    "orbit_cases": [
+      [
+        4,
+        2
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        9,
+        3
+      ]
+    ]
+  },
+  "counts": {
+    "binomial_crosscheck": 8382,
+    "exceptional_orbit_is_cosets": 4,
+    "hand_benchmark": 7,
+    "interior_coefficients_examined": 8128,
+    "interior_witness": 193,
+    "non_power_coefficient": 180,
+    "orbit_congruence": 224,
+    "orbit_partition": 19,
+    "orbit_size_classification": 4,
+    "orbit_stabilizer": 19,
+    "orbit_total": 4,
+    "polynomial_lift": 702,
+    "polynomial_reduction": 15522,
+    "prime_power_coefficient": 13,
+    "stabilizer_orders": 19,
+    "target_equivalence": 127,
+    "unique_exceptional_orbit": 4,
+    "valuation_witness": 193
+  },
+  "composite_count": 96,
+  "failures": [],
+  "non_claim": "This finite computation does not prove the universal theorem.",
+  "verdict": "passed",
+  "prime_count": 31,
+  "source_output_sha256": "5d61cdfb338dadd8465b3f1ef2fc713f1ef30973436afe0b87ddc96ab9dfba44",
+  "summary_note": "Exact aggregate fields from the trial output; repetitive per-integer witnesses and coefficient lists omitted."
+}

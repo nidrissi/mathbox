@@ -9,6 +9,10 @@ Use only the sections relevant to the claim.
 - No implication is used in the reverse direction without proof.
 - No induction, minimality, or compactness argument loses a boundary case.
 - Definitions are stable across the proof; no hidden strengthening occurs.
+- Every witness, representative, deformation and intermediate object remains in
+  the domain named by the definition.
+- A convenient replacement object is connected to the claimed object by a
+  proved comparison at the exact level used.
 
 ## Graded, differential, and sign-sensitive arguments
 
@@ -18,6 +22,9 @@ Use only the sections relevant to the claim.
 - Homology-level statements are not inferred from chain-level data without the
   required quasi-isomorphism, convergence, or filtration argument.
 - Test the smallest two-operation and three-operation orders.
+- Check absolute degrees and shift directions, not only signs or parity.
+- Include arity zero/one and the minimum parameter when units, augmentation or
+  the start of an induction can behave differently.
 
 ## Category, variance, and duality
 
@@ -58,6 +65,9 @@ Use only the sections relevant to the claim.
 - Bounds cover the claimed range.
 - Randomness, numerical tolerances, and rational reconstruction are controlled.
 - Independent invariants or implementations catch correlated bugs.
+- Exhaustive claims match the actual iterator cardinality, filters and skipped
+  cases; sampling has a separately proved coverage reduction.
+- Serialized output and its interpretation refer to the same object and run.
 
 ## External sources
 

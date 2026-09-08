@@ -18,5 +18,10 @@
 - **Implication check:**
 - **Exceptions or caveats:**
 - **Overlap classification:**
-- **Search scope for novelty statement:**
+- **Search scope for novelty statement:** databases/indexes, exact queries,
+  synonym or historical-vocabulary queries, date/language/field bounds
+- **Citation graph checked:** backward references, forward citations, related
+  authors or bibliographies
+- **Second search pass:** method/reviewer, date, and independence limitation
+- **Coverage gaps:**
 ```

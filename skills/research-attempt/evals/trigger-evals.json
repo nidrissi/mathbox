@@ -18,5 +18,9 @@
   {
     "query": "Fix the grammar in this paragraph.",
     "should_trigger": false
+  },
+  {
+    "query": "Pursue the conjecture across many approaches and keep trying after failed routes.",
+    "should_trigger": false
   }
 ]

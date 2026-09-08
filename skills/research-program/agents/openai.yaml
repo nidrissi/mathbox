@@ -1,0 +1,6 @@
+interface:
+  display_name: "Mathbox: Research Program"
+  short_description: "Pursue a goal across multiple research routes"
+  default_prompt: "Use $mathbox:research-program to pursue this research goal through distinct routes, preserving evidence and continuing after failed attempts."
+policy:
+  allow_implicit_invocation: true

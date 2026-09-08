@@ -1,0 +1,878 @@
+#!/usr/bin/env python3
+"""Local, append-only research evidence ledger. No network or code execution.
+
+This checks bookkeeping, artifact freshness and dependency closure, not proofs.
+Python 3.10+, standard library only. See ../references/ledger.md for the contract.
+"""
+from __future__ import annotations
+
+import argparse
+from contextlib import contextmanager
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import sys
+import tempfile
+
+
+SUPPORTING_STATUSES = {"proof-recorded", "source-recorded"}
+RUN_OUTCOMES = {"succeeded", "failed", "blocked", "inconclusive", "abandoned"}
+RECONCILIATION_DECISIONS = {
+    "continue",
+    "succeeded",
+    "failed",
+    "blocked",
+    "inconclusive",
+    "late-consistent",
+    "late-conflict",
+    "late-superseded",
+    "late-not-applicable",
+}
+TERMINAL_RECONCILIATIONS = {"succeeded", "failed", "blocked", "inconclusive"}
+LATE_RECONCILIATIONS = {
+    "late-consistent", "late-conflict", "late-superseded", "late-not-applicable"
+}
+
+
+class LedgerError(ValueError):
+    pass
+
+
+def require(condition, message):
+    if not condition:
+        raise LedgerError(message)
+
+
+def canonical(value):
+    return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+
+
+def digest(value):
+    return hashlib.sha256(canonical(value).encode()).hexdigest()
+
+
+def file_hash(path):
+    h = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def inside(root, name):
+    require(isinstance(name, str) and name.strip(), "path must be nonempty text")
+    path = Path(name)
+    require(not path.is_absolute() and ".." not in path.parts, "path must be project-relative")
+    current = root
+    for part in path.parts:
+        current = current / part
+        require(not current.is_symlink(), f"symlink not supported: {name}")
+    require(current.resolve().is_relative_to(root), f"path escapes project: {name}")
+    return current
+
+
+def text_field(obj, key):
+    value = obj.get(key)
+    require(isinstance(value, str) and bool(value.strip()), f"{key} must be nonempty text")
+    return value
+
+
+def strings(obj, key):
+    value = obj.get(key)
+    require(isinstance(value, list) and all(isinstance(x, str) and x.strip() for x in value),
+            f"{key} must be a list of nonempty strings")
+    require(len(value) == len(set(value)), f"duplicate {key}")
+    return value
+
+
+def identifier(obj, key="id"):
+    value = text_field(obj, key)
+    require(bool(re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,79}", value)), f"invalid {key}")
+    return value
+
+
+def artifact_record(artifact, label="artifact", locator=False):
+    require(isinstance(artifact, dict), f"{label} must be an object")
+    text_field(artifact, "path")
+    require(bool(re.fullmatch(r"[0-9a-f]{64}", artifact.get("sha256", ""))),
+            f"invalid {label} hash")
+    if locator:
+        text_field(artifact, "locator")
+
+
+def base_pointer(state, payload):
+    base = text_field(payload, "base_event")
+    require(base in state["events"], "base_event must name an existing ledger event")
+    text_field(payload, "base_revision")
+
+
+def route_closed(state, route):
+    return any(event["payload"]["route"] == route
+               for event in state["route_closures"].values())
+
+
+def program_closed(state, program):
+    return any(event["payload"]["program"] == program
+               for event in state["program_results"].values())
+
+
+def closure(claims, start):
+    seen, todo = set(), [start]
+    while todo:
+        key = todo.pop()
+        require(key in claims, f"unknown claim: {key}")
+        if key not in seen:
+            seen.add(key)
+            todo.extend(claims[key]["dependencies"])
+    return seen
+
+
+def topological(claims):
+    remaining = {key: set(c["dependencies"]) for key, c in claims.items()}
+    order = []
+    while remaining:
+        ready = sorted(key for key, deps in remaining.items() if not deps)
+        require(ready, "circular claim dependencies")
+        order.extend(ready)
+        for key in ready:
+            del remaining[key]
+        for deps in remaining.values():
+            deps.difference_update(ready)
+    return order
+
+
+def dependency_map(claims):
+    """Transitive dependencies of every claim, accumulated once in dependency order."""
+    result = {}
+    for key in topological(claims):
+        deps = set()
+        for parent in claims[key]["dependencies"]:
+            deps.add(parent)
+            deps |= result[parent]
+        result[key] = deps
+    return result
+
+
+def snapshot(claims, claim):
+    return {key: claims[key]["revision"] for key in sorted(closure(claims, claim))}
+
+
+def empty_state():
+    return {
+        "claims": {}, "evidence": {}, "reviews": {}, "routes": {}, "results": {},
+        "programs": {}, "program_observations": {}, "program_results": {},
+        "runs": {}, "run_observations": {}, "run_results": {},
+        "reconciliations": {}, "reconciled_results": set(), "route_closures": {},
+        "retracted": set(), "superseded": set(), "events": {},
+    }
+
+
+def apply(state, event):
+    """Validate an event against prior state. Mutates only an in-memory projection."""
+    require(isinstance(event, dict), "event must be an object")
+    text_field(event, "actor")
+    payload = event.get("payload")
+    require(isinstance(payload, dict), "payload must be an object")
+    p, kind, claims = payload, event.get("type"), state["claims"]
+    key = event["event_id"]
+    require(key not in state["events"], "duplicate event ID")
+    if kind == "claim":
+        cid = identifier(p)
+        for field in ("statement", "regime", "level"):
+            text_field(p, field)
+        strings(p, "hypotheses")
+        deps = strings(p, "dependencies")
+        require(all(d in claims for d in deps), "register dependency claims first")
+        if "statement_artifact" in p:
+            artifact_record(p["statement_artifact"], "statement artifact", locator=True)
+        if cid in claims:
+            text_field(p, "reason")
+        revision = claims.get(cid, {}).get("revision", 0) + 1
+        claims[cid] = dict(p, revision=revision, event_id=key)
+        topological(claims)
+    elif kind == "evidence":
+        cid = text_field(p, "claim")
+        require(cid in claims, "unknown evidence claim")
+        require(p.get("kind") in {"proof", "source", "computation", "counterexample"},
+                "unknown evidence kind")
+        text_field(p, "summary")
+        require(p.get("snapshot") == snapshot(claims, cid), "incorrect evidence revision snapshot")
+        artifacts = p.get("artifacts")
+        require(isinstance(artifacts, list), "artifacts must be a list")
+        for artifact in artifacts:
+            artifact_record(artifact)
+        if p["kind"] == "computation":
+            text_field(p, "assertion")
+            text_field(p, "bounds")
+            require(strings(p, "non_claims"), "computation needs non_claims")
+            if "manifest" in p:
+                artifact_record(p["manifest"], "computation manifest")
+                inputs, outputs = p.get("manifest_inputs"), p.get("manifest_outputs")
+                require(isinstance(inputs, list) and inputs,
+                        "linked computation manifest needs pinned inputs")
+                require(isinstance(outputs, list) and outputs,
+                        "linked computation manifest needs pinned outputs")
+                for artifact in inputs + outputs:
+                    artifact_record(artifact, "manifest artifact")
+                require(not ({a["path"] for a in inputs} & {a["path"] for a in outputs}),
+                        "computation inputs and outputs must be disjoint")
+        require(bool(artifacts) or p.get("kind") == "computation" and "manifest" in p,
+                "evidence needs durable artifacts")
+        if p["kind"] == "source":
+            for field in ("identifier", "version", "locator", "translation"):
+                text_field(p, field)
+        if p["kind"] == "counterexample":
+            text_field(p, "hypothesis_check")
+        if "supersedes" in p:
+            for old in strings(p, "supersedes"):
+                require(old in state["evidence"] and state["evidence"][old]["payload"]["claim"] == cid,
+                        "supersedes must name prior evidence of this claim")
+                require(old not in state["superseded"] and old not in state["retracted"], "evidence is already inactive")
+                state["superseded"].add(old)
+        state["evidence"][key] = event
+    elif kind == "review":
+        target = p.get("evidence")
+        require(target in state["evidence"] and target not in state["retracted"] and target not in state["superseded"], "review needs active evidence")
+        require(p.get("outcome") in {"pass", "fail", "conditional"}, "invalid review outcome")
+        require(type(p.get("independent")) is bool, "independent must be a boolean")
+        if p["independent"]:
+            require(event["actor"] != state["evidence"][target]["actor"], "author cannot independently review own evidence")
+        text_field(p, "summary")
+        artifact = p.get("artifact")
+        require(isinstance(artifact, dict), "review needs a durable report")
+        text_field(artifact, "path")
+        require(bool(re.fullmatch(r"[0-9a-f]{64}", artifact.get("sha256", ""))), "invalid review hash")
+        state["reviews"][key] = event
+    elif kind == "retract":
+        target = text_field(p, "target")
+        require(target in state["evidence"] or target in state["reviews"], "retract an evidence or review event")
+        require(target not in state["retracted"], "already retracted")
+        text_field(p, "reason")
+        state["retracted"].add(target)
+    elif kind == "route":
+        rid = identifier(p)
+        require(rid not in state["routes"], "route IDs are immutable; open a new route")
+        require(p.get("claim") in claims, "unknown route claim")
+        for field in ("mechanism", "question", "discriminator", "success", "failure"):
+            text_field(p, field)
+        require(all(d in claims for d in strings(p, "prerequisites")), "unknown route prerequisite")
+        for field in ("gain", "cost"):
+            require(type(p.get(field)) is int and 1 <= p[field] <= 5, f"{field} must be an integer 1..5")
+        if "reopens" in p:
+            require(p["reopens"] in state["route_closures"],
+                    "reopens must name a terminal route event")
+            prior = state["routes"][state["route_closures"][p["reopens"]]["payload"]["route"]]["payload"]
+            require(prior["claim"] == p["claim"] and prior["mechanism"] == p["mechanism"], "reopened route must retain target and mechanism")
+            text_field(p, "changed_input")
+        else:
+            for old in state["routes"].values():
+                prior = old["payload"]
+                require(not (prior["claim"] == p["claim"] and prior["mechanism"] == p["mechanism"]),
+                        "repeated mechanism: name reopens and changed_input")
+        state["routes"][rid] = event
+    elif kind == "route-result":
+        require(p.get("route") in state["routes"], "unknown route")
+        require(not route_closed(state, p["route"]), "route already closed")
+        require(p.get("outcome") in {"succeeded", "failed", "blocked", "inconclusive"}, "invalid route outcome")
+        text_field(p, "reason")
+        text_field(p, "next_question")
+        state["results"][key] = event
+        state["route_closures"][key] = event
+    elif kind == "program":
+        pid = identifier(p)
+        require(pid not in state["programs"], "program IDs are immutable")
+        require(p.get("goal") in claims, "unknown program goal")
+        text_field(p, "objective")
+        base_pointer(state, p)
+        state["programs"][pid] = event
+    elif kind == "program-observation":
+        pid = p.get("program")
+        require(pid in state["programs"], "unknown program")
+        require(not program_closed(state, pid), "program already closed")
+        require(p.get("state") in {"active", "waiting", "blocked", "unknown"},
+                "invalid program observation state")
+        text_field(p, "summary")
+        text_field(p, "observed_revision")
+        state["program_observations"][key] = event
+    elif kind == "program-result":
+        pid = p.get("program")
+        require(pid in state["programs"], "unknown program")
+        require(not program_closed(state, pid), "program already closed")
+        require(p.get("outcome") in {"completed", "blocked", "abandoned"},
+                "invalid program outcome")
+        active_runs = [run for run, item in state["runs"].items()
+                       if item["payload"]["program"] == pid and
+                       not any(result["payload"]["run"] == run
+                               for result in state["run_results"].values())]
+        require(not active_runs, "close or abandon every program run first")
+        text_field(p, "reason")
+        text_field(p, "next_action")
+        text_field(p, "closed_revision")
+        state["program_results"][key] = event
+    elif kind == "route-run":
+        run = identifier(p)
+        require(run not in state["runs"], "run IDs are immutable")
+        rid, pid = p.get("route"), p.get("program")
+        require(rid in state["routes"], "unknown run route")
+        require(pid in state["programs"], "unknown run program")
+        require(not program_closed(state, pid), "cannot start a run in a closed program")
+        require(not route_closed(state, rid), "cannot start a run on a closed route")
+        goal = state["programs"][pid]["payload"]["goal"]
+        require(state["routes"][rid]["payload"]["claim"] in closure(claims, goal),
+                "run route is outside the program goal dependency closure")
+        base_pointer(state, p)
+        text_field(p, "executor")
+        require(strings(p, "work_scope"), "run needs a nonempty work_scope")
+        state["runs"][run] = event
+    elif kind == "run-observation":
+        run = p.get("run")
+        require(run in state["runs"], "unknown run")
+        require(not any(x["payload"]["run"] == run for x in state["run_results"].values()),
+                "run already closed")
+        require(p.get("state") in {"active", "waiting", "blocked", "unknown"},
+                "invalid run observation state")
+        text_field(p, "summary")
+        text_field(p, "observed_revision")
+        state["run_observations"][key] = event
+    elif kind == "run-result":
+        run = p.get("run")
+        require(run in state["runs"], "unknown run")
+        require(not any(x["payload"]["run"] == run for x in state["run_results"].values()),
+                "run already closed")
+        require(p.get("outcome") in RUN_OUTCOMES, "invalid run outcome")
+        text_field(p, "reason")
+        text_field(p, "next_question")
+        text_field(p, "result_revision")
+        artifacts = p.get("artifacts", [])
+        require(isinstance(artifacts, list), "run result artifacts must be a list")
+        for artifact in artifacts:
+            artifact_record(artifact, "run result artifact")
+        state["run_results"][key] = event
+    elif kind == "route-reconcile":
+        rid = p.get("route")
+        require(rid in state["routes"], "unknown reconciliation route")
+        results = strings(p, "results")
+        require(results, "reconciliation needs run results")
+        require(all(result in state["run_results"] for result in results),
+                "reconciliation results must name run-result events")
+        require(all(state["runs"][state["run_results"][result]["payload"]["run"]]["payload"]["route"] == rid
+                    for result in results), "reconciliation result belongs to another route")
+        base_pointer(state, p)
+        require(all(
+            state["runs"][state["run_results"][result]["payload"]["run"]]["payload"]["base_event"]
+            == p["base_event"]
+            and state["runs"][state["run_results"][result]["payload"]["run"]]["payload"]["base_revision"]
+            == p["base_revision"]
+            for result in results
+        ), "reconciliation results must share its declared base event and revision")
+        require(any(result not in state["reconciled_results"] for result in results),
+                "reconciliation must add at least one previously unreconciled result")
+        decision = p.get("decision")
+        require(decision in RECONCILIATION_DECISIONS, "invalid reconciliation decision")
+        text_field(p, "reason")
+        text_field(p, "next_question")
+        text_field(p, "current_revision")
+        conflicts = strings(p, "conflicts")
+        outcomes = {state["run_results"][result]["payload"]["outcome"]
+                    for result in results}
+        require(len(outcomes) == 1 or conflicts,
+                "reconciliation of differing run outcomes must record conflicts")
+        require(decision != "late-conflict" or conflicts,
+                "late-conflict needs an explicit conflict")
+        if decision in LATE_RECONCILIATIONS:
+            require(route_closed(state, rid), "late reconciliation requires a closed route")
+        else:
+            require(not route_closed(state, rid), "route already closed; use a late disposition")
+        if decision in TERMINAL_RECONCILIATIONS:
+            state["route_closures"][key] = event
+        state["reconciled_results"].update(results)
+        state["reconciliations"][key] = event
+    else:
+        raise LedgerError(f"unknown event type: {kind}")
+    state["events"][key] = event
+
+
+class Ledger:
+    def __init__(self, root):
+        self.root = Path(root).resolve()
+        require(self.root.is_dir(), "project root does not exist")
+        self.base = inside(self.root, ".mathbox")
+        self.events = inside(self.root, ".mathbox/events")
+
+    def initialize(self):
+        require(not self.base.exists(), ".mathbox already exists; initialization never overwrites")
+        self.base.mkdir()
+        self.events.mkdir()
+        config = {"schema_version": 1, "projection": {"semantics": "recorded-evidence-v1"}}
+        (self.base / "config.json").write_text(
+            json.dumps(config, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+
+    def read(self):
+        config_path = inside(self.root, ".mathbox/config.json")
+        require(config_path.is_file(), "ledger not initialized; use init explicitly")
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+        require(isinstance(config, dict) and type(config.get("schema_version")) is int and config["schema_version"] == 1,
+                "unsupported ledger schema")
+        projection = config.get("projection")
+        require(projection is None or
+                isinstance(projection, dict) and projection.get("semantics") == "recorded-evidence-v1",
+                "unsupported projection semantics")
+        require(self.events.is_dir(), "missing events directory")
+        state, previous = empty_state(), None
+        for number, path in enumerate(sorted(self.events.iterdir()), 1):
+            require(path.name == f"{number:06d}.json" and path.is_file() and not path.is_symlink(),
+                    f"invalid or noncontiguous event: {path.name}")
+            event = json.loads(path.read_text(encoding="utf-8"))
+            require(isinstance(event, dict), f"invalid event: {path.name}")
+            recorded = event.get("sha256")
+            unsigned = {k: v for k, v in event.items() if k != "sha256"}
+            require(recorded == digest(unsigned), f"event checksum mismatch: {path.name}")
+            require(event.get("previous") == previous and event.get("event_id") == f"E{number:06d}",
+                    f"broken event chain: {path.name}")
+            apply(state, event)
+            previous = recorded
+        return state
+
+    @contextmanager
+    def lock(self):
+        path = inside(self.root, ".mathbox/write.lock")
+        try:
+            path.mkdir()
+        except FileExistsError:
+            raise LedgerError("ledger writer active or stale write.lock; inspect before removing") from None
+        try:
+            yield
+        finally:
+            path.rmdir()
+
+    def pin(self, artifact):
+        require(isinstance(artifact, dict), "artifact must be an object with path")
+        path = inside(self.root, text_field(artifact, "path"))
+        require(path.is_file(), f"missing artifact: {artifact['path']}")
+        require(not path.is_relative_to(self.base), "evidence must be outside the ledger itself")
+        actual = file_hash(path)
+        if "sha256" in artifact:
+            require(artifact["sha256"] == actual, "supplied artifact hash differs from disk")
+        return dict(artifact, sha256=actual)
+
+    def pin_computation_manifest(self, artifact, claim):
+        """Pin a manifest plus the exact input/output closure it declares.
+
+        This intentionally checks only ledger linkage and file hashes. The
+        computation-audit validator remains responsible for the manifest's
+        scientific and execution contract.
+        """
+        pinned = self.pin(artifact)
+        path = inside(self.root, pinned["path"])
+        try:
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, TypeError) as exc:
+            raise LedgerError(f"cannot read computation manifest: {exc}") from None
+        require(isinstance(manifest, dict), "computation manifest must be an object")
+        require(type(manifest.get("schema_version")) is int
+                and manifest["schema_version"] == 2,
+                "linked computation evidence requires a version 2 manifest")
+        require(manifest.get("claim_id") == claim,
+                "computation manifest claim_id must equal the ledger claim ID")
+        run = manifest.get("run")
+        require(isinstance(run, dict) and run.get("status") == "completed"
+                and run.get("exit_status") == 0,
+                "linked computation evidence needs a completed zero-exit run")
+        inputs, outputs = manifest.get("input_artifacts"), manifest.get("outputs")
+        require(isinstance(inputs, list) and inputs,
+                "linked computation manifest needs nonempty input_artifacts")
+        require(isinstance(outputs, list) and outputs,
+                "linked computation manifest needs nonempty outputs")
+
+        def declared(entry, role):
+            require(isinstance(entry, dict), f"manifest {role} must be an object")
+            checksum = entry.get("sha256_after") if role == "input" else entry.get("sha256")
+            require(bool(re.fullmatch(r"[0-9a-f]{64}", checksum or "")),
+                    f"manifest {role} needs a current SHA-256")
+            if role == "input":
+                require(bool(re.fullmatch(r"[0-9a-f]{64}", entry.get("sha256") or "")),
+                        "manifest input needs a pre-run SHA-256")
+                require(entry["sha256"] == entry["sha256_after"],
+                        "completed computation evidence cannot have changed inputs")
+            return self.pin({"path": text_field(entry, "path"), "sha256": checksum})
+
+        pinned_inputs = [declared(entry, "input") for entry in inputs]
+        pinned_outputs = [declared(entry, "output") for entry in outputs]
+        if "declared_results" in manifest:
+            declared_results = manifest["declared_results"]
+            require(isinstance(declared_results, list)
+                    and all(isinstance(path, str) and path.strip() for path in declared_results)
+                    and len(declared_results) == len(set(declared_results)),
+                    "declared_results must be a duplicate-free path list")
+            result_outputs = {entry.get("path") for entry in outputs
+                              if isinstance(entry, dict) and entry.get("kind") == "result"}
+            require(set(declared_results) == result_outputs,
+                    "every declared result must be a result-kind output, with no extras")
+        paths = [entry["path"] for entry in pinned_inputs + pinned_outputs]
+        require(len(paths) == len(set(paths)), "manifest artifact paths must be unique")
+        return pinned, pinned_inputs, pinned_outputs
+
+    def record(self, proposal):
+        require(self.base.is_dir(), "ledger not initialized")
+        require(isinstance(proposal, dict) and set(proposal) == {"type", "actor", "payload"},
+                "proposal fields must be type, actor, payload")
+        with self.lock():
+            state = self.read()
+            event = json.loads(json.dumps(proposal))
+            require(isinstance(event["payload"], dict), "payload must be an object")
+            p = event["payload"]
+            if event["type"] == "claim" and "statement_artifact" in p:
+                require(isinstance(p["statement_artifact"], dict),
+                        "statement artifact must be an object")
+                text_field(p["statement_artifact"], "locator")
+                p["statement_artifact"] = self.pin(p["statement_artifact"])
+            elif event["type"] == "evidence":
+                require(p.get("claim") in state["claims"], "unknown evidence claim")
+                require(isinstance(p.get("artifacts", []), list), "artifacts must be a list")
+                p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
+                if p.get("kind") == "computation" and "manifest" in p:
+                    p["manifest"], p["manifest_inputs"], p["manifest_outputs"] = \
+                        self.pin_computation_manifest(p["manifest"], p["claim"])
+                p["snapshot"] = snapshot(state["claims"], p["claim"])
+            elif event["type"] == "review":
+                p["artifact"] = self.pin(p.get("artifact"))
+                target = state["evidence"].get(p.get("evidence"))
+                require(target is not None, "unknown evidence to review")
+                require(not evidence_issues(self.root, state, target), "cannot review stale evidence; record fresh evidence first")
+            elif event["type"] == "run-result":
+                require(isinstance(p.get("artifacts", []), list),
+                        "run result artifacts must be a list")
+                p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
+            number = len(state["events"]) + 1
+            event.update(event_id=f"E{number:06d}",
+                         created_at=datetime.now(timezone.utc).isoformat(),
+                         previous=next(reversed(state["events"].values()))["sha256"] if state["events"] else None)
+            apply(state, event)
+            event["sha256"] = digest(event)
+            # A complete file becomes visible atomically; writers serialize via the lock.
+            fd, temp = tempfile.mkstemp(prefix="pending-", dir=self.base)
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                    stream.write(json.dumps(event, indent=2, ensure_ascii=False) + "\n")
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                dest = self.events / f"{number:06d}.json"
+                require(not dest.exists(), "event collision")
+                os.replace(temp, dest)
+            finally:
+                Path(temp).unlink(missing_ok=True)
+            return event
+
+
+def artifact_issues(root, artifacts):
+    issues = []
+    for artifact in artifacts:
+        try:
+            path = inside(root, artifact["path"])
+            if not path.is_file() or file_hash(path) != artifact["sha256"]:
+                issues.append(f"missing or changed artifact: {artifact['path']}")
+        except (OSError, LedgerError) as exc:
+            issues.append(str(exc))
+    return issues
+
+
+def claim_contract_issues(root, claims, claim):
+    issues = []
+    for key in sorted(closure(claims, claim)):
+        artifact = claims[key].get("statement_artifact")
+        if artifact:
+            issues.extend(f"claim {key} statement contract: {issue}"
+                          for issue in artifact_issues(root, [artifact]))
+    return issues
+
+
+def evidence_artifacts(payload):
+    artifacts = list(payload["artifacts"])
+    if payload.get("kind") == "computation" and "manifest" in payload:
+        artifacts.append(payload["manifest"])
+        artifacts.extend(payload["manifest_inputs"])
+        artifacts.extend(payload["manifest_outputs"])
+    return artifacts
+
+
+def evidence_issues(root, state, event):
+    p = event["payload"]
+    issues = artifact_issues(root, evidence_artifacts(p))
+    issues.extend(claim_contract_issues(root, state["claims"], p["claim"]))
+    if p["snapshot"] != snapshot(state["claims"], p["claim"]):
+        issues.append("claim or transitive dependency revision changed")
+    return issues
+
+
+def execution_projection(root, state):
+    programs, runs, reconciliations, issues = {}, {}, [], []
+    for pid, event in state["programs"].items():
+        observations = [(eid, item) for eid, item in state["program_observations"].items()
+                        if item["payload"]["program"] == pid]
+        terminals = [(eid, item) for eid, item in state["program_results"].items()
+                     if item["payload"]["program"] == pid]
+        if terminals:
+            last_id, last = terminals[-1]
+            status = last["payload"]["outcome"]
+            terminal = dict(last["payload"], event_id=last_id,
+                            created_at=last["created_at"])
+        elif observations:
+            last_id, last = observations[-1]
+            status, terminal = last["payload"]["state"], None
+        else:
+            last_id, last, status, terminal = event["event_id"], event, "active", None
+        programs[pid] = dict(event["payload"], event_id=event["event_id"], status=status,
+                             last_observed={"event_id": last_id,
+                                            "created_at": last["created_at"]},
+                             terminal=terminal)
+
+    for run, event in state["runs"].items():
+        observations = [(eid, item) for eid, item in state["run_observations"].items()
+                        if item["payload"]["run"] == run]
+        terminals = [(eid, item) for eid, item in state["run_results"].items()
+                     if item["payload"]["run"] == run]
+        result_issues = []
+        if terminals:
+            last_id, last = terminals[-1]
+            result_issues = artifact_issues(root, last["payload"].get("artifacts", []))
+            outcome = last["payload"]["outcome"]
+            status = "stale-result" if result_issues else outcome
+            terminal = dict(last["payload"], event_id=last_id,
+                            created_at=last["created_at"])
+            issues.extend({"event": last_id, "issue": issue} for issue in result_issues)
+        elif observations:
+            last_id, last = observations[-1]
+            status, terminal = last["payload"]["state"], None
+        else:
+            last_id, last, status, terminal = event["event_id"], event, "active", None
+        route = state["routes"][event["payload"]["route"]]["payload"]
+        runs[run] = dict(event["payload"], event_id=event["event_id"], claim=route["claim"],
+                         status=status, last_observed={"event_id": last_id,
+                         "created_at": last["created_at"]}, terminal=terminal,
+                         issues=result_issues)
+
+    for eid, event in state["reconciliations"].items():
+        route = state["routes"][event["payload"]["route"]]["payload"]
+        reconciliations.append(dict(event["payload"], event_id=eid,
+                                    created_at=event["created_at"], claim=route["claim"]))
+    return {"programs": programs, "runs": runs,
+            "reconciliations": reconciliations, "issues": issues}
+
+
+def project(root, state):
+    claims, evidence, reviews = state["claims"], {}, {}
+    for key, event in state["evidence"].items():
+        if key not in state["retracted"] and key not in state["superseded"]:
+            evidence[key] = dict(event["payload"], actor=event["actor"], issues=evidence_issues(root, state, event))
+    for key, event in state["reviews"].items():
+        if key not in state["retracted"] and event["payload"]["evidence"] in evidence:
+            reviews[key] = dict(event["payload"], issues=artifact_issues(root, [event["payload"]["artifact"]]))
+    resolved = SUPPORTING_STATUSES
+    # Losing a negative report cannot silently rehabilitate the challenged proof.
+    failed = {r["evidence"] for r in reviews.values() if r["outcome"] == "fail"}
+    uncertain = {r["evidence"] for r in reviews.values() if r["outcome"] == "conditional"}
+    result = {}
+    for key in topological(claims):
+        c = claims[key]
+        attached = {eid: e for eid, e in evidence.items() if e["claim"] == key}
+        live = {eid: e for eid, e in attached.items() if not e["issues"]}
+        positive = {eid: e for eid, e in live.items() if e["kind"] in {"proof", "source"} and eid not in failed}
+        negative = {eid: e for eid, e in live.items() if e["kind"] == "counterexample" and eid not in failed}
+        blocked = [d for d in c["dependencies"] if result[d]["status"] not in resolved]
+        if positive and negative:
+            status = "disputed"
+        elif negative:
+            status = "counterexample-recorded" if any(eid not in uncertain for eid in negative) else "conditional"
+        elif positive:
+            unqualified = {eid: e for eid, e in positive.items() if eid not in uncertain}
+            status = "conditional" if blocked or not unqualified else ("proof-recorded" if any(e["kind"] == "proof" for e in unqualified.values()) else "source-recorded")
+        elif live and all(eid in failed for eid in live):
+            status = "incomplete"
+        elif any(e["kind"] == "computation" and eid not in failed for eid, e in live.items()):
+            status = "conditional" if blocked else "computation-recorded"
+        elif attached and not live:
+            status = "stale"
+        else:
+            status = "conjectural"
+        independent = any(r["evidence"] in live and r["evidence"] not in uncertain and r["independent"] and r["outcome"] == "pass" and not r["issues"]
+                          for r in reviews.values())
+        result[key] = dict(c, status=status, blocked_by=blocked,
+                          review="independent-pass-recorded" if independent else "no-independent-pass-recorded",
+                          evidence=attached)
+    issues = [{"event": key, "issue": issue} for key, e in evidence.items() for issue in e["issues"]]
+    issues += [{"event": key, "issue": issue} for key, r in reviews.items() for issue in r["issues"]]
+    for claim in claims.values():
+        if "statement_artifact" in claim:
+            issues += [{"event": claim["event_id"], "issue": issue}
+                       for issue in artifact_issues(root, [claim["statement_artifact"]])]
+    executions = execution_projection(root, state)
+    issues += executions.pop("issues")
+    return {"claims": result, "issues": issues, "events": len(state["events"]),
+            **executions}
+
+
+def impact(claims, target):
+    require(target in claims, "unknown claim")
+    return sorted(key for key, deps in dependency_map(claims).items() if key != target and target in deps)
+
+
+def next_routes(state, projection, goal=None):
+    claims = projection["claims"]
+    selected = closure(claims, goal) if goal else set(claims)
+    dependencies = dependency_map(claims)
+    closed = {r["payload"]["route"] for r in state["route_closures"].values()}
+    result = []
+    for rid, event in state["routes"].items():
+        p = event["payload"]
+        if rid in closed or p["claim"] not in selected:
+            continue
+        blocked = [key for key in p["prerequisites"]
+                   if claims[key]["status"] not in SUPPORTING_STATUSES]
+        reach = sum(1 for key in selected if key != p["claim"] and p["claim"] in dependencies[key])
+        score = (p["gain"] + reach) / p["cost"]
+        result.append(dict(p, ready=not blocked, blocked_by=blocked, score=round(score, 3)))
+    return sorted(result, key=lambda r: (not r["ready"], -r["score"], r["id"]))
+
+
+def closed_routes(state, goal=None):
+    selected = closure(state["claims"], goal) if goal else set(state["claims"])
+    result = []
+    for eid, event in state["route_closures"].items():
+        route = state["routes"][event["payload"]["route"]]
+        if route["payload"]["claim"] in selected:
+            payload = event["payload"]
+            if event["type"] == "route-reconcile":
+                payload = {
+                    "route": payload["route"], "outcome": payload["decision"],
+                    "reason": payload["reason"], "next_question": payload["next_question"],
+                    "run_results": payload["results"], "conflicts": payload["conflicts"],
+                }
+            result.append(dict(route["payload"], event_id=route["event_id"],
+                               result=dict(payload, event_id=eid)))
+    return result
+
+
+def restrict(projection, state, selected):
+    """Goal view: keep the selected claims and only the records reported under them."""
+    claims = {key: c for key, c in projection["claims"].items() if key in selected}
+    events = {c["event_id"] for c in claims.values()}
+    events |= {eid for c in claims.values() for eid in c["evidence"]}
+    events |= {rid for rid, r in state["reviews"].items() if r["payload"]["evidence"] in events}
+    programs = {key: value for key, value in projection["programs"].items()
+                if value["goal"] in selected}
+    runs = {key: value for key, value in projection["runs"].items()
+            if value["claim"] in selected}
+    reconciliations = [value for value in projection["reconciliations"]
+                       if value["claim"] in selected]
+    lifecycle_events = {value["event_id"] for value in programs.values()}
+    lifecycle_events |= {value["event_id"] for value in runs.values()}
+    lifecycle_events |= {value["event_id"] for value in reconciliations}
+    lifecycle_events |= {value["last_observed"]["event_id"] for value in programs.values()}
+    lifecycle_events |= {value["last_observed"]["event_id"] for value in runs.values()}
+    return dict(projection, claims=claims, programs=programs, runs=runs,
+                reconciliations=reconciliations,
+                issues=[i for i in projection["issues"]
+                        if i["event"] in events | lifecycle_events])
+
+
+def markdown(projection, routes=None, closed=None):
+    def cell(value):
+        return str(value).replace("|", "\\|").replace("\n", " ")
+    lines = ["# Research state", "", "Recorded evidence; this report does not certify mathematical correctness.", "",
+             "| Claim | Revision | Evidence status | Review | Blocked by |", "|---|---:|---|---|---|"]
+    for key, c in sorted(projection["claims"].items()):
+        lines.append(f"| {cell(key)} | {c['revision']} | {c['status']} | {c['review']} | {cell(', '.join(c['blocked_by']))} |")
+    for key, c in sorted(projection["claims"].items()):
+        lines.extend(["", f"## {key}", "", c["statement"], "", f"Regime: {c['regime']}. Level: {c['level']}.",
+                      "Hypotheses: " + ("; ".join(c["hypotheses"]) or "none recorded")])
+        for eid, e in c["evidence"].items():
+            paths = list(dict.fromkeys(a["path"] for a in evidence_artifacts(e)))
+            lines.append(f"- {eid} ({e['kind']}): {e['summary']}; artifacts: " + ", ".join(paths))
+    if projection["issues"]:
+        lines += ["", "## Stale records", ""] + [f"- {i['event']}: {i['issue']}" for i in projection["issues"]]
+    if projection["programs"]:
+        lines += ["", "## Program lifecycle", ""]
+        for p in projection["programs"].values():
+            lines.append(f"- {p['id']} ({p['status']}): goal {p['goal']}; base {p['base_event']} at {p['base_revision']}; last observed {p['last_observed']['event_id']}")
+    if projection["runs"]:
+        lines += ["", "## Route executions", ""]
+        for run in projection["runs"].values():
+            lines.append(f"- {run['id']} ({run['status']}): route {run['route']}; base {run['base_event']} at {run['base_revision']}; last observed {run['last_observed']['event_id']}")
+    if projection["reconciliations"]:
+        lines += ["", "## Reconciliations", ""]
+        for item in projection["reconciliations"]:
+            lines.append(f"- {item['event_id']}: route {item['route']}, {item['decision']}; run results {', '.join(item['results'])}")
+    if routes is not None:
+        lines += ["", "## Candidate routes", "", "Scores order declared gain plus dependency reach per declared cost; they are not success probabilities."]
+        for r in routes:
+            lines.extend(["", f"- {r['id']} ({'ready' if r['ready'] else 'blocked'}, score {r['score']}): {r['question']}",
+                          f"  Decisive check: {r['discriminator']}"])
+    if closed is not None:
+        lines += ["", "## Closed routes", ""]
+        for r in closed:
+            result = r["result"]
+            lines.extend([f"- {r['id']} (claim {r['claim']}, route event {r['event_id']}): {r['mechanism']}",
+                          f"  Result {result['event_id']}: {result['outcome']}",
+                          f"  Reason / obstruction: {result['reason']}",
+                          f"  Next question: {result['next_question']}"])
+    return "\n".join(lines) + "\n"
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--json", action="store_true")
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("init")
+    commands.add_parser("check")
+    commands.add_parser("status")
+    record = commands.add_parser("record")
+    record.add_argument("proposal", type=Path)
+    for name in ("next", "handoff"):
+        sub = commands.add_parser(name)
+        sub.add_argument("--goal")
+    sub = commands.add_parser("impact")
+    sub.add_argument("claim")
+    args = parser.parse_args(argv)
+    try:
+        ledger = Ledger(args.root)
+        if args.command == "init":
+            ledger.initialize()
+            print(json.dumps({"initialized": str(ledger.base)}))
+            return 0
+        if args.command == "record":
+            print(json.dumps(ledger.record(json.loads(args.proposal.read_text(encoding="utf-8"))), indent=2, ensure_ascii=False))
+            return 0
+        state = ledger.read()
+        projection = project(ledger.root, state)
+        routes = None
+        closed = None
+        if args.command == "impact":
+            output = {"claim": args.claim, "dependents": impact(state["claims"], args.claim)}
+        elif args.command in {"next", "handoff"}:
+            routes = next_routes(state, projection, args.goal)
+            if args.goal:
+                projection = restrict(projection, state, closure(state["claims"], args.goal))
+            if args.command == "handoff":
+                closed = closed_routes(state, args.goal)
+                output = {"state": projection, "routes": routes, "closed_routes": closed}
+            else:
+                output = routes
+        else:
+            output = projection
+        if args.json or args.command in {"next", "impact", "check"}:
+            print(json.dumps(output, indent=2, ensure_ascii=False))
+        else:
+            print(markdown(projection, routes, closed), end="")
+        return 1 if args.command == "check" and projection["issues"] else 0
+    except (LedgerError, OSError, ValueError, TypeError, KeyError) as exc:
+        print(f"research-state: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

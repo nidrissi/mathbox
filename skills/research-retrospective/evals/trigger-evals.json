@@ -18,5 +18,9 @@
   {
     "query": "Compile the paper.",
     "should_trigger": false
+  },
+  {
+    "query": "Generate the dependency-aware handoff from the .mathbox event ledger.",
+    "should_trigger": false
   }
 ]

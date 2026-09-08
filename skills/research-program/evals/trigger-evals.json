@@ -1,0 +1,26 @@
+[
+  {
+    "query": "Pursue the full conjecture by trying three approaches; keep going after a route fails.",
+    "should_trigger": true
+  },
+  {
+    "query": "Continue the investigation until we have a proof or a counterexample.",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit the proof of Lemma 2.",
+    "should_trigger": false
+  },
+  {
+    "query": "Proofread this paragraph.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review our project and suggest what to try next, without doing research.",
+    "should_trigger": false
+  },
+  {
+    "query": "Record the failed route and its obstruction in the ledger.",
+    "should_trigger": false
+  }
+]
