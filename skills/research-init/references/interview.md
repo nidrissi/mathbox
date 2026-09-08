@@ -9,6 +9,24 @@ Ask only unresolved material questions, in batches of at most five.
 - What is explicitly out of scope for this phase?
 - What is the current strongest evidence and principal blocker?
 
+## Manuscript or submission deliverable
+
+Ask this section only when the current deliverable is a manuscript, article,
+chapter, proceedings submission, thesis component, or grant-facing research
+document. Never guess an answer from an existing TeX class, filename, old draft,
+generic venue practice, or the current rendered length.
+
+- What exact venue, call, template and submission category govern the document?
+- What language must be used, and who is the intended mathematical audience?
+- What is the deadline, including date, time, timezone and whether it is hard,
+  soft or an internal target?
+- What is the page/count limit, and does that convention include front matter,
+  bibliography, figures/tables, appendices and supplemental material?
+- What reviewed page budget should be used for front matter, main exposition,
+  figures/tables, bibliography, appendices/supplement and contingency? If the
+  owner has not allocated it, record the budget as unresolved rather than
+  silently consuming the margin.
+
 ## Authority and provenance
 
 - Which file is the live dashboard?
