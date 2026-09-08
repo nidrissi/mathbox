@@ -41,6 +41,30 @@ def main():
     for path in [*root.glob("skills/**/*.json"), *root.glob("evals/**/*.json")]:
         with guard(errors, path.relative_to(root)):
             json.loads(path.read_text(encoding="utf-8"))
+    with guard(errors, "behavior fixture inventory"):
+        inventory = json.loads((root / "evals/cases.json").read_text(encoding="utf-8"))
+        cases = inventory.get("cases") if isinstance(inventory, dict) else None
+        if not isinstance(cases, list) or not cases:
+            errors.append("evals/cases.json needs a nonempty cases array")
+        else:
+            case_ids = [case.get("id") for case in cases if isinstance(case, dict)]
+            if len(case_ids) != len(cases) or len(case_ids) != len(set(case_ids)):
+                errors.append("behavior fixture IDs must be present and unique")
+            skill_names = set(names)
+            fixtures_root = (root / "evals/fixtures").resolve()
+            for case in cases:
+                if not isinstance(case, dict):
+                    continue
+                if case.get("skill") not in skill_names:
+                    errors.append(f"unknown behavior fixture skill: {case.get('skill')}")
+                fixture = case.get("fixture")
+                target = (root / "evals" / fixture).resolve() if isinstance(fixture, str) else None
+                if target is None or not target.is_relative_to(fixtures_root) or not target.is_file():
+                    errors.append(f"missing or unsafe behavior fixture: {fixture}")
+                if not isinstance(case.get("obligations"), list) or not case["obligations"]:
+                    errors.append(f"behavior fixture needs obligations: {case.get('id')}")
+                if not isinstance(case.get("critical_failure"), str) or not case["critical_failure"].strip():
+                    errors.append(f"behavior fixture needs a critical failure: {case.get('id')}")
     for path in [*root.glob("skills/**/*.py"), *root.glob("scripts/*.py"), *root.glob("evals/**/*.py")]:
         with guard(errors, path.relative_to(root)):
             ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
