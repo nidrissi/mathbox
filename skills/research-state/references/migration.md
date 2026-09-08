@@ -17,6 +17,21 @@
 6. Keep the compact research log and existing immutable route records. The ledger
    stores claim/evidence transitions; the records store reusable mathematics.
 
+Existing schema-version-1 journals and minimal `{"schema_version": 1}` configs
+remain readable without rewriting any event. Generated projection labels changed
+from mathematical-sounding conclusions to `proof-recorded`, `source-recorded`,
+`computation-recorded`, and `counterexample-recorded`; update consumers and
+generated dashboards that matched the old strings. Do not translate those
+states back to `proved` without applying the project's own audit and approval
+policy.
+
+Do not infer that an old launched process is still running. If lifecycle history
+is useful, register a program and route run against the exact historical base,
+then add an `unknown` observation unless liveness was actually observed. Import
+parallel proposals through the current ledger's single writer. Preserve each
+run's base/result revision and record explicit conflicts; never infer precedence
+from import order or merge two numbered event directories.
+
 Migration is optional. A project can retain Markdown tables and use the same
 evidence distinctions manually. There is deliberately no automatic prose parser
 that turns confident historical summaries into proof events.

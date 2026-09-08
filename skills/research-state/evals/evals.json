@@ -9,6 +9,7 @@
         "Uses actual helper commands",
         "Does not refresh hashes to hide staleness",
         "Does not treat clean bookkeeping as proof verification",
+        "Uses neutral recorded-evidence labels rather than automatically declaring either claim proved",
         "Read-only reports do not initialize or rewrite state"
       ]
     },
@@ -31,6 +32,28 @@
         "Preserves goal dependency route history and the result event ID needed for reopens",
         "Does not reopen an exhausted mechanism without changed mathematical input",
         "Read-only reports preserve ledger events"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "In an authorized temporary ledger, bind claim A to a statement artifact and locator, record proof evidence for A and B depending on A, then change only the bound statement file. Check status and attempt to review the old evidence.",
+      "expected_output": "The helper pins the statement artifact, marks the relevant evidence and dependent claim stale after the statement changes, and refuses a review of stale evidence.",
+      "assertions": [
+        "Uses a synthetic project and actual helper commands",
+        "Records the statement locator and helper-generated artifact hash",
+        "Reports transitive staleness without silently refreshing evidence",
+        "Does not claim that the locator itself was semantically parsed"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "In an authorized temporary ledger, register a goal, two routes, and a program. Start two parallel runs of one route from the same recorded base. Mark one execution state unknown, record both terminal results at their actual revisions, explicitly reconcile their conflict, then record a third result that arrives after route closure.",
+      "expected_output": "The status preserves the common base and per-run revisions, does not treat unknown as active, closes executions separately from the route, records conflicts explicitly, and gives the delayed result a late disposition through the single writer.",
+      "assertions": [
+        "Uses program, route-run, observation, run-result and route-reconcile events",
+        "Does not infer precedence or correctness from event arrival order",
+        "Does not merge or renumber concurrent journals",
+        "Does not promote a claim merely because a run or route succeeded"
       ]
     }
   ]

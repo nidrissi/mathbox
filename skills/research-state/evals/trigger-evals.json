@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Reconcile these delayed parallel route runs against their shared base revision in the .mathbox ledger.",
+    "should_trigger": true
+  },
+  {
     "query": "Explain the definition of a chain complex.",
     "should_trigger": false
   },

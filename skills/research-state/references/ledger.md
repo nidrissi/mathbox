@@ -1,7 +1,10 @@
 # Ledger format and commands
 
 The journal is `.mathbox/events/000001.json`, etc., with schema version 1 in
-`.mathbox/config.json`. Keep it in project version control. Events form a hash
+`.mathbox/config.json`. New configurations also declare the
+`recorded-evidence-v1` projection semantics. A pre-existing version-1 config
+without that declaration remains readable and receives the same neutral
+projection. Keep it in project version control. Events form a hash
 chain, have UTC timestamps and actor attribution, and are written atomically
 under an exclusive writer lock. Hash chaining detects accidental corruption; it
 is not authentication against someone who can rewrite the whole journal. Git
@@ -47,7 +50,11 @@ Open conjectures are valid state and do not make `check` fail.
     "hypotheses": ["n is an integer"],
     "regime": "Exact integer arithmetic",
     "level": "Divisibility",
-    "dependencies": []
+    "dependencies": [],
+    "statement_artifact": {
+      "path": "statements/parity.md",
+      "locator": "Theorem A"
+    }
   }
 }
 ```
@@ -57,6 +64,12 @@ the complete contract; old hypotheses are not implicitly inherited. Add separate
 claim IDs for distinct restrictions, equivalent formulations requiring a bridge,
 or unresolved proof obligations. Every dependency must already be registered.
 Cycles are rejected, including cycles introduced by revisions.
+`statement_artifact` is optional. Use it when a project file, rather than the
+ledger text alone, controls the exact theorem statement. The helper pins the
+whole file and retains the locator; a byte change conservatively stales evidence
+for the claim and its consumers. Prefer a claim-scoped file when unrelated edits
+to a large manuscript should not trigger that warning. A locator identifies the
+intended statement but is not parsed or hashed independently.
 
 ```json
 {
@@ -87,6 +100,36 @@ cannot be detected by this tool. A finite computation that exhausts a finite
 theorem still needs a separate proof artifact establishing exhaustive coverage
 and implementation correctness. The helper never infers such a bridge.
 
+A computation can link a strict computation manifest instead of duplicating its
+file closure in `artifacts`:
+
+```json
+{
+  "type": "evidence",
+  "actor": "researcher",
+  "payload": {
+    "claim": "C_FINITE",
+    "kind": "computation",
+    "summary": "Checked the declared finite instance.",
+    "artifacts": [],
+    "manifest": {"path": "runs/example/manifest.json"},
+    "assertion": "The declared instance has rank 4.",
+    "bounds": "One matrix over GF(5)",
+    "non_claims": ["No assertion for other matrices"]
+  }
+}
+```
+
+The manifest must have the same `claim_id`, a completed zero-exit run, nonempty
+`input_artifacts`, and nonempty `outputs`. Every declared path must be
+project-relative, inputs must
+retain equal before/after hashes, and input/output paths must be distinct. The
+ledger copies and checks those pins whenever status is projected. It does not
+validate the manifest's broader execution or mathematical schema; run the
+computation-audit validator first. When `declared_results` is present, it must
+exactly match the paths labeled as result outputs. Older or incomplete manifests can still be
+pinned as ordinary artifacts, but do not gain automatic dependency closure.
+
 ## Reviews and corrections
 
 ```json
@@ -110,8 +153,8 @@ review by the evidence author. It cannot authenticate human/agent identities or
 whether the reviewer actually worked independently. Active failed reviews block
 their evidence; conflicting proof/counterexample evidence yields `disputed`.
 A counterexample with an active conditional review leaves the claim
-`conditional` unless another unqualified counterexample supports refutation.
-Conflicting proof evidence still yields `disputed`.
+`conditional` unless another unqualified counterexample supports a negative
+record. Coexisting positive and counterexample evidence yields `disputed`.
 
 Retract an erroneous evidence or review event with:
 
@@ -119,12 +162,30 @@ Retract an erroneous evidence or review event with:
 {"type":"retract","actor":"researcher","payload":{"target":"E000002","reason":"The witness does not satisfy the connectedness hypothesis."}}
 ```
 
-A claim whose dependencies are not `proved` or `externally-proved` is reported
-`conditional`, including when its own attached evidence is a finite computation.
+A claim whose dependencies are not `proof-recorded` or `source-recorded` is
+reported `conditional`, including when its own attached evidence is a finite computation.
 Finite evidence never reads as verified while its inputs remain open.
 
+Generated evidence states deliberately avoid project-level mathematical
+promotion words:
+
+| Generated state | Mechanical meaning |
+|---|---|
+| `proof-recorded` | A current proof artifact was recorded and declared claim dependencies have supporting proof/source records |
+| `source-recorded` | A current source application was recorded under the same dependency condition |
+| `computation-recorded` | Current bounded computation evidence was recorded; it does not discharge proof dependencies |
+| `counterexample-recorded` | A current unqualified counterexample record was supplied |
+| `conditional` | A declared dependency or review condition remains open |
+| `disputed` | Current positive and counterexample evidence coexist |
+| `stale`, `incomplete`, `conjectural` | Evidence changed, failed review blocks it, or no current evidence is recorded |
+
+`independent-pass-recorded` likewise reports a current review event, not an
+authenticated reviewer or theorem certification. Translate these mechanical
+states through the repository's own approval policy; do not rename them to
+`proved` automatically.
+
 Changes in a claim's transitive revision snapshot or artifact bytes make evidence
-stale. Dependency evidence being retracted or refuted instead makes downstream
+stale. Dependency evidence being retracted or counterexample-supported instead makes downstream
 arguments conditional. Re-record after mathematical revalidation, never just
 to refresh bookkeeping. Generated labels describe recorded local proof, source,
 finite evidence, counterexample, missing evidence, conflict or staleness.
@@ -149,8 +210,8 @@ invent new routes, claim semantic diversity or assign success probabilities.
 
 A `route-result` payload has `route`, `outcome` (`succeeded`, `failed`, `blocked`,
 `inconclusive`), `reason`, and `next_question`. A route can close only once.
-Correction/reopening is a new route ID with `reopens` equal to the result's
-event ID and a `changed_input` explanation. An exact repeated target/mechanism
+Correction/reopening is a new route ID with `reopens` equal to the terminal
+route-result or reconciliation event ID and a `changed_input` explanation. An exact repeated target/mechanism
 without this explanation is rejected, whether the earlier route is open or
 closed. Semantic duplicates still need human or agent judgment. Route success
 does not itself create proof evidence.
@@ -164,3 +225,88 @@ payload and `event_id`, plus a nested `result` with the outcome,
 reason/obstruction, next question and result `event_id` needed for `reopens`.
 Markdown handoffs also show these continuation details. `next` continues to
 list only open candidates.
+
+## Programs, executions and reconciliation
+
+Use lifecycle events when work spans agents, branches, delayed responses, or
+multiple sessions. Ordinary route/result records remain valid.
+
+Start a program against a precise ledger head and external project revision:
+
+```json
+{
+  "type": "program",
+  "actor": "coordinator",
+  "payload": {
+    "id": "P_MAIN",
+    "goal": "C_MAIN",
+    "objective": "Resolve the registered goal through the live route portfolio.",
+    "base_event": "E000012",
+    "base_revision": "git:0123456789abcdef"
+  }
+}
+```
+
+The base event must already exist in the ledger. The revision is an external
+immutable identifier or an explicit unversioned snapshot label; the helper
+cannot verify a VCS revision. A `program-observation` records `program`, a state
+(`active`, `waiting`, `blocked`, or `unknown`), `summary`, and
+`observed_revision`. Use `unknown` when importing an old launch whose liveness
+has not been observed; do not infer that it is active. A terminal
+`program-result` records `program`, an outcome (`completed`, `blocked`, or
+`abandoned`), `reason`, `next_action`, and `closed_revision`. Programs are
+status containers and never promote claims. Close or explicitly abandon every
+run before closing its program.
+
+Start every execution separately, including parallel executions of one route:
+
+```json
+{
+  "type": "route-run",
+  "actor": "coordinator",
+  "payload": {
+    "id": "RUN_A",
+    "program": "P_MAIN",
+    "route": "R_LIFT",
+    "base_event": "E000013",
+    "base_revision": "git:0123456789abcdef",
+    "executor": "worker-a",
+    "work_scope": ["construct the lift", "do not edit the main ledger"]
+  }
+}
+```
+
+The route must belong to the program goal or its dependency closure. A
+`run-observation` records `run`, state (`active`, `waiting`, `blocked`, or
+`unknown`), `summary`, and `observed_revision`. Its event becomes the generated
+last observation. A `run-result` records `run`, outcome (`succeeded`, `failed`,
+`blocked`, `inconclusive`, or `abandoned`), `reason`, `next_question`,
+`result_revision`, and optional pinned `artifacts`. It closes only that
+execution. Results may arrive after their route closed because their
+base and result revisions, rather than event arrival order, carry chronology.
+
+The ledger's single writer then records `route-reconcile` with `route`, one or
+more run-result event IDs in `results`, their common `base_event` and
+`base_revision`, `current_revision`, `reason`, `next_question`, and an explicit
+`conflicts` string array. Runs based on different snapshots need separate
+reconciliations. Differing run outcomes and `late-conflict` require a nonempty
+conflict record. Decisions are:
+
+- `continue`: retain an open route while waiting or adapting;
+- `succeeded`, `failed`, `blocked`, or `inconclusive`: close an open route;
+- `late-consistent`, `late-conflict`, `late-superseded`, or
+  `late-not-applicable`: disposition a newly arrived result after closure.
+
+Each reconciliation must add at least one result not previously reconciled; a
+later cumulative reconciliation may also cite earlier results. A terminal
+reconciliation event is the event named by `reopens`. No outcome is inferred
+from completion or arrival order. This serial proposal workflow records parallel
+and delayed work without merging or renumbering journals. A run result or
+reconciliation never creates mathematical evidence; record separate evidence
+only after checking the result against the exact claim.
+
+JSON status and handoff output include `programs`, `runs`, and
+`reconciliations`. Each program/run has a projected lifecycle status and a
+generated `last_observed` event and timestamp. Changed terminal run artifacts
+produce `stale-result` plus a ledger issue; they do not silently change the
+recorded terminal outcome.
