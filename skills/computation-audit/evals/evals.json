@@ -43,6 +43,17 @@
         "Reports exact finite range and changed inputs",
         "Requires a separate mathematical reduction for universal promotion"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run an authorized exact-arithmetic checker that reads checks/model.py and data/cases.json, writes runs/check-001/result.json, and may consume substantial memory. Preserve evidence that can be audited later.",
+      "expected_output": "Defines the finite mathematical contract, pins both execution inputs, declares and hashes the scientific result after execution, chooses explicit resource caps, and reports execution status separately from mathematical interpretation.",
+      "assertions": [
+        "Uses distinct mathematical inputs and execution-artifact pins",
+        "Declares the result below a fresh output directory",
+        "Records appropriate time, log, memory, CPU, core, or thread limits",
+        "Does not infer theorem validity from successful execution"
+      ]
     }
   ]
 }

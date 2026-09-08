@@ -34,6 +34,18 @@ REQUIRED_MATH = {
     "non_claims",
 }
 
+RUN_STATUSES_V2 = {
+    "completed",
+    "failed",
+    "timeout",
+    "output-limit",
+    "launch-failed",
+    "inputs-changed",
+    "resource-limit",
+    "result-missing",
+    "result-invalid",
+}
+
 
 def file_hash(path):
     digest = hashlib.sha256()
@@ -43,7 +55,73 @@ def file_hash(path):
     return digest.hexdigest()
 
 
-def validate(obj, template=False, root=None):
+def safe_project_path(root, name):
+    """Resolve a relative artifact path without allowing it to escape root."""
+    source = Path(name)
+    resolved_root = root.resolve()
+    if source.is_absolute() or ".." in source.parts:
+        return None
+    candidate = (resolved_root / source).resolve()
+    return candidate if candidate.is_relative_to(resolved_root) else None
+
+
+def safe_relative_name(name):
+    if not isinstance(name, str) or not name.strip():
+        return False
+    path = Path(name)
+    return not path.is_absolute() and ".." not in path.parts
+
+
+def resolve_output_path(schema_version, root, manifest_path, name):
+    """Resolve an output, with an ambiguity-safe v1 manifest-relative fallback."""
+    project_candidate = safe_project_path(root, name)
+    if project_candidate is None:
+        return None, "escape"
+    if schema_version != 1 or manifest_path is None:
+        return project_candidate, "project"
+    manifest_directory = Path(manifest_path).resolve().parent
+    resolved_root = root.resolve()
+    if not manifest_directory.is_relative_to(resolved_root):
+        return project_candidate, "project"
+    local_candidate = safe_project_path(manifest_directory, name)
+    if local_candidate is None or not local_candidate.is_relative_to(resolved_root):
+        return project_candidate, "project"
+    if local_candidate == project_candidate:
+        return project_candidate, "project"
+    project_exists = project_candidate.is_file()
+    local_exists = local_candidate.is_file()
+    if project_exists and local_exists:
+        return None, "ambiguous"
+    if not project_exists and local_exists:
+        return local_candidate, "manifest"
+    return project_candidate, "project"
+
+
+def legacy_limits(obj, root=None, manifest_path=None):
+    """Return limitations inherent in a valid version 1 evidence record."""
+    if isinstance(obj, dict) and obj.get("schema_version") == 1:
+        limits = [
+            "schema version 1 does not require hashes of execution inputs",
+            "schema version 1 does not record machine-checkable resource limits or declared result files",
+            "schema version 1 output paths may be project-root- or manifest-relative; ambiguous paths are rejected",
+        ]
+        repository = obj.get("repository")
+        commit = repository.get("commit") if isinstance(repository, dict) else None
+        if not isinstance(commit, str) or not commit.strip() or commit.strip().lower() == "unavailable":
+            limits.append("the legacy record does not identify a repository revision")
+        if root is not None and manifest_path is not None:
+            for output in obj.get("outputs", []) if isinstance(obj.get("outputs"), list) else []:
+                if not isinstance(output, dict) or not isinstance(output.get("path"), str):
+                    continue
+                _, mode = resolve_output_path(1, Path(root), Path(manifest_path), output["path"])
+                if mode == "manifest":
+                    limits.append("at least one output was resolved relative to the manifest directory")
+                    break
+        return limits
+    return []
+
+
+def validate(obj, template=False, root=None, manifest_path=None):
     errors = []
 
     def check(condition, message):
@@ -54,7 +132,8 @@ def validate(obj, template=False, root=None):
         return ["top level must be an object"]
     missing = REQUIRED_TOP - obj.keys()
     check(not missing, "missing required top-level fields: " + ", ".join(sorted(missing)))
-    check(type(obj.get("schema_version")) is int and obj["schema_version"] in {1, 2}, "unsupported schema_version")
+    schema_version = obj.get("schema_version")
+    check(type(schema_version) is int and schema_version in {1, 2}, "unsupported schema_version")
     maths = obj.get("mathematics")
     if not isinstance(maths, dict):
         return errors + ["mathematics must be an object"]
@@ -82,12 +161,26 @@ def validate(obj, template=False, root=None):
     check(isinstance(maths.get("non_claims"), list) and bool(maths["non_claims"]) and all(nonempty(x) for x in maths["non_claims"]),
           "mathematics.non_claims must state the limits")
     check(type(obj["repository"].get("dirty")) is bool, "repository.dirty must be boolean")
-    check(nonempty(obj["repository"].get("commit")), "repository.commit must be recorded (or explicitly unavailable)")
+    commit = obj["repository"].get("commit")
+    if schema_version == 1:
+        check(commit is None or isinstance(commit, str), "legacy repository.commit must be text, null, or absent")
+    else:
+        check(nonempty(commit), "repository.commit must be recorded (or explicitly unavailable)")
     software = obj["environment"].get("software")
     check(isinstance(software, list) and bool(software), "environment.software must record versions")
     for i, entry in enumerate(software if isinstance(software, list) else []):
-        check(isinstance(entry, dict) and nonempty(entry.get("name")) and nonempty(entry.get("version")),
-              f"environment.software[{i}] needs a name and a version")
+        if schema_version == 1:
+            # Historical v1 records allowed one nonempty, human-readable version
+            # string per program. Structured records were also valid and remain so.
+            valid = nonempty(entry) or (
+                isinstance(entry, dict)
+                and nonempty(entry.get("name"))
+                and nonempty(entry.get("version"))
+            )
+            check(valid, f"environment.software[{i}] needs a nonempty version string or a name/version object")
+        else:
+            check(isinstance(entry, dict) and nonempty(entry.get("name")) and nonempty(entry.get("version")),
+                  f"environment.software[{i}] needs a name and a version")
     randomness = obj["randomness"]
     check(type(randomness.get("used")) is bool, "randomness.used must be boolean")
     if randomness.get("used"):
@@ -104,27 +197,47 @@ def validate(obj, template=False, root=None):
             continue
         path, checksum = output.get("path"), output.get("sha256")
         check(nonempty(path), f"outputs[{i}].path must be nonempty")
+        if schema_version == 2:
+            check(safe_relative_name(path), f"outputs[{i}].path must be project-relative")
+        if schema_version == 2 and "kind" in output:
+            check(output.get("kind") in {"log", "result"}, f"outputs[{i}].kind must be log or result")
         valid_hash = isinstance(checksum, str) and bool(re.fullmatch(r"[0-9a-f]{64}", checksum))
         check(valid_hash, f"outputs[{i}].sha256 must be SHA-256")
         if root is not None and nonempty(path) and valid_hash:
-            source = Path(path)
-            if source.is_absolute() or ".." in source.parts or not (root / source).resolve().is_relative_to(root.resolve()):
+            source, mode = resolve_output_path(schema_version, Path(root), manifest_path, path)
+            if mode == "escape":
                 errors.append(f"output escapes project: {path}")
-            elif not (root / source).is_file():
+            elif mode == "ambiguous":
+                errors.append(f"ambiguous legacy output path exists relative to both project and manifest: {path}")
+            elif source is None or not source.is_file():
                 errors.append(f"output missing: {path}")
-            elif file_hash(root / source) != checksum:
+            elif file_hash(source) != checksum:
                 errors.append(f"output changed: {path}")
-    if obj.get("schema_version") == 2:
-        check(run.get("status") in {"completed", "failed", "timeout", "output-limit", "launch-failed", "inputs-changed"}, "invalid run.status")
+    if schema_version == 2:
+        v2_output_paths = [
+            output.get("path") for output in obj.get("outputs", [])
+            if isinstance(output, dict) and isinstance(output.get("path"), str)
+        ]
+        check(len(v2_output_paths) == len(set(v2_output_paths)), "v2 output paths must be unique")
+        check(run.get("status") in RUN_STATUSES_V2, "invalid run.status")
         if run.get("status") == "completed":
             check(run.get("exit_status") == 0, "completed run must have zero exit status")
+        if run.get("status") in {"inputs-changed", "result-missing", "result-invalid"}:
+            check(run.get("exit_status") == 0, f"{run.get('status')} run must have zero process exit status")
         check(isinstance(obj.get("input_artifacts"), list) and bool(obj["input_artifacts"]), "v2 needs input_artifacts")
+        v2_input_paths = [
+            artifact.get("path")
+            for artifact in obj.get("input_artifacts", [])
+            if isinstance(artifact, dict) and isinstance(artifact.get("path"), str)
+        ]
+        check(len(v2_input_paths) == len(set(v2_input_paths)), "v2 input artifact paths must be unique")
         for artifact in obj.get("input_artifacts", []) if isinstance(obj.get("input_artifacts"), list) else []:
             if not isinstance(artifact, dict):
                 errors.append("input artifact must be an object")
                 continue
             path, before, after = artifact.get("path"), artifact.get("sha256"), artifact.get("sha256_after")
             check(nonempty(path), "input artifact needs a path")
+            check(safe_relative_name(path), "input artifact path must be project-relative")
             valid_before = isinstance(before, str) and bool(re.fullmatch(r"[0-9a-f]{64}", before))
             valid_after = after is None or (isinstance(after, str) and bool(re.fullmatch(r"[0-9a-f]{64}", after)))
             check(valid_before and valid_after and "sha256_after" in artifact, "input artifact needs before/after hashes")
@@ -139,6 +252,107 @@ def validate(obj, template=False, root=None):
                     errors.append(f"pinned input is missing: {path}")
                 else:
                     check(file_hash(root / source) == after, f"input changed since the run: {path}")
+        execution_artifacts = obj.get("execution_artifacts")
+        if execution_artifacts is not None:
+            check(
+                isinstance(execution_artifacts, list)
+                and all(safe_relative_name(path) for path in execution_artifacts)
+                and len(execution_artifacts) == len(set(execution_artifacts)),
+                "execution_artifacts must be a duplicate-free array of paths",
+            )
+            if isinstance(execution_artifacts, list):
+                pinned = [
+                    artifact.get("path")
+                    for artifact in obj.get("input_artifacts", [])
+                    if isinstance(artifact, dict) and isinstance(artifact.get("path"), str)
+                ]
+                check(set(execution_artifacts) == set(pinned),
+                      "execution_artifacts must match pinned input_artifacts")
+        declared_results = obj.get("declared_results")
+        output_paths = {
+            output.get("path")
+            for output in obj.get("outputs", [])
+            if isinstance(output, dict) and isinstance(output.get("path"), str)
+        }
+        result_output_paths = {
+            output.get("path")
+            for output in obj.get("outputs", [])
+            if isinstance(output, dict) and output.get("kind") == "result"
+            and isinstance(output.get("path"), str)
+        }
+        pinned_set = {
+            artifact.get("path")
+            for artifact in obj.get("input_artifacts", [])
+            if isinstance(artifact, dict) and isinstance(artifact.get("path"), str)
+        }
+        has_result_outputs = any(
+            isinstance(output, dict) and output.get("kind") == "result"
+            for output in obj.get("outputs", [])
+        )
+        if declared_results is None:
+            check(not has_result_outputs, "result outputs require declared_results")
+        if declared_results is not None:
+            check(
+                isinstance(declared_results, list)
+                and all(safe_relative_name(path) for path in declared_results)
+                and len(declared_results) == len(set(declared_results)),
+                "declared_results must be a duplicate-free array of paths",
+            )
+            if isinstance(declared_results, list):
+                declared_set = set(declared_results)
+                check(declared_set.isdisjoint(pinned_set),
+                      "declared_results cannot overlap input_artifacts")
+                check(result_output_paths.issubset(declared_set),
+                      "result outputs must have been declared before execution")
+                if run.get("status") == "completed":
+                    check(declared_set.issubset(result_output_paths),
+                          "completed run must hash every declared result")
+                missing = run.get("missing_results")
+                invalid = run.get("invalid_results")
+                if missing is not None or invalid is not None:
+                    check(isinstance(missing, list) and all(nonempty(path) for path in missing),
+                          "run.missing_results must be an array of paths")
+                    check(isinstance(invalid, list) and all(nonempty(path) for path in invalid),
+                          "run.invalid_results must be an array of paths")
+                    if (isinstance(missing, list) and isinstance(invalid, list)
+                            and all(isinstance(path, str) for path in missing + invalid)):
+                        check(set(missing).isdisjoint(invalid),
+                              "missing_results and invalid_results must be disjoint")
+                        check(set(missing) | set(invalid) == declared_set - result_output_paths,
+                              "missing/invalid result records must account for every unhashed declared result")
+                if run.get("status") == "result-missing":
+                    check(isinstance(missing, list) and bool(missing),
+                          "result-missing status needs at least one missing result")
+                if run.get("status") == "result-invalid":
+                    check(isinstance(invalid, list) and bool(invalid),
+                          "result-invalid status needs at least one invalid result")
+        output_directory = obj.get("output_directory")
+        if output_directory is not None:
+            valid_output_directory = safe_relative_name(output_directory) and Path(output_directory) != Path(".")
+            check(valid_output_directory, "output_directory must be a nonempty project-relative directory")
+            if valid_output_directory:
+                directory = Path(output_directory)
+                for path in output_paths:
+                    if isinstance(path, str):
+                        check(Path(path) != directory and Path(path).is_relative_to(directory),
+                              f"output must be below output_directory: {path}")
+                for path in declared_results if isinstance(declared_results, list) else []:
+                    check(Path(path) != directory and Path(path).is_relative_to(directory),
+                          f"declared result must be below output_directory: {path}")
+                for path in pinned_set:
+                    if isinstance(path, str):
+                        check(not Path(path).is_relative_to(directory),
+                              f"input artifact cannot be inside output_directory: {path}")
+        limits = run.get("resource_limits")
+        if limits is not None:
+            check(isinstance(limits, dict), "run.resource_limits must be an object")
+            if isinstance(limits, dict):
+                missing_limits = {"memory_bytes", "cpu_seconds", "max_cores", "max_threads"} - limits.keys()
+                check(not missing_limits, "run.resource_limits is missing: " + ", ".join(sorted(missing_limits)))
+            for key in ("memory_bytes", "cpu_seconds", "max_cores", "max_threads"):
+                value = limits.get(key) if isinstance(limits, dict) else None
+                check(value is None or (type(value) is int and value > 0),
+                      f"run.resource_limits.{key} must be null or a positive integer")
     return errors
 
 
@@ -146,16 +360,28 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--template", action="store_true", help="allow deliberately unfilled scaffold fields")
-    parser.add_argument("--root", type=Path, help="also verify output hashes relative to this project")
+    parser.add_argument(
+        "--root", type=Path,
+        help="verify artifacts in this project (v1 may fall back to the manifest directory)",
+    )
     args = parser.parse_args(argv)
+    obj = None
     try:
-        errors = validate(json.loads(args.manifest.read_text(encoding="utf-8")), args.template, args.root)
+        obj = json.loads(args.manifest.read_text(encoding="utf-8"))
+        errors = validate(obj, args.template, args.root, args.manifest)
     except (OSError, ValueError, TypeError) as exc:
         errors = [str(exc)]
     if errors:
         print("invalid manifest: " + "; ".join(errors), file=sys.stderr)
         return 1
-    print("valid template" if args.template else "valid evidence record; mathematical interpretation requires review")
+    if args.template:
+        print("valid template")
+    elif legacy_limits(obj, args.root, args.manifest):
+        print("valid legacy version 1 evidence record; "
+              + "; ".join(legacy_limits(obj, args.root, args.manifest))
+              + "; mathematical interpretation requires review")
+    else:
+        print("valid evidence record; mathematical interpretation requires review")
     return 0
 
 
