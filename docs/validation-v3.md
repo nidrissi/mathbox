@@ -22,9 +22,9 @@ failure and the suite passes. No mathematical theorem is inferred from this gate
 
 The Codex plugin validator and all ten skill validators pass. The repository
 inspector smoke test and `git diff --check` pass. Claude's plugin and strict
-marketplace validators pass, the latter with the expected warning that the
-repository `CLAUDE.md` is not loaded as plugin context. Actual host installation
-was not performed as part of source development. The GitHub workflow is
+marketplace validators pass; the plugin validator emits the expected warning
+that the repository `CLAUDE.md` is not loaded as plugin context. Actual host
+installation was not performed as part of source development. The GitHub workflow is
 configured to run the same gate on Python 3.10 and 3.13. Remote CI was not run
 during this validation: the available connection rejected publication with
 HTTP 403, so no pull request was created.
