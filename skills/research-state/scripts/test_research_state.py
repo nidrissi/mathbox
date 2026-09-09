@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from research_state import Ledger, LedgerError, file_hash, impact, main, next_routes, project
+from research_state import Ledger, LedgerError, file_hash, impact, main, next_routes, project, restrict
 
 
 class ResearchStateTests(unittest.TestCase):
@@ -126,7 +126,41 @@ class ResearchStateTests(unittest.TestCase):
         self.claim()
         e = self.evidence()
         self.review(e, "conditional")
-        self.assertEqual(self.view()["claims"]["A"]["status"], "conditional")
+        claim = self.view()["claims"]["A"]
+        self.assertEqual(claim["status"], "conditional")
+        self.assertEqual(claim["review"], "conditional-review-recorded")
+
+    def test_conditional_computation_review_is_applied_and_retractable(self):
+        self.claim()
+        evidence = self.evidence(kind="computation", assertion="Checked one instance",
+                                 bounds="One input", non_claims=["No general conclusion"])
+        review = self.review(evidence, "conditional")
+        claim = self.view()["claims"]["A"]
+        self.assertEqual(claim["status"], "conditional")
+        self.assertEqual(claim["review"], "conditional-review-recorded")
+        self.assertEqual(claim["reviews"][review]["evidence"], evidence)
+        self.record("retract", {"target": review, "reason": "Condition was resolved"})
+        claim = self.view()["claims"]["A"]
+        self.assertEqual(claim["status"], "computation-recorded")
+        self.assertEqual(claim["reviews"], {})
+
+    def test_conflicting_reviews_are_visible_with_reports(self):
+        self.claim()
+        evidence = self.evidence()
+        passed = self.review(evidence)
+        failed = self.review(evidence, "fail", independent=False)
+        claim = self.view()["claims"]["A"]
+        self.assertEqual(claim["status"], "incomplete")
+        self.assertEqual(claim["review"], "conflicting-reviews-recorded")
+        self.assertEqual(set(claim["reviews"]), {passed, failed})
+        self.assertEqual(claim["reviews"][failed]["artifact"]["path"], "review.md")
+
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "handoff", "--goal", "A"]), 0)
+        report = output.getvalue()
+        for value in (passed, failed, "pass", "fail", "Report", "review.md"):
+            self.assertIn(value, report)
 
     def test_review_independence_is_not_proof_strength(self):
         self.claim()
@@ -273,7 +307,8 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual(set(handoff["state"]["claims"]), {"A", "B"})
         self.assertEqual([r["id"] for r in handoff["routes"]], ["R2"])
         self.assertEqual(handoff["closed_routes"], [dict(self.ledger.read()["routes"]["R"]["payload"],
-                         event_id=route_event, result=dict(result, event_id=result_event))])
+                         resolves=["A"], event_id=route_event,
+                         result=dict(result, event_id=result_event))])
         md = run("handoff", "--goal", "B")
         for value in ("integral-lift", "failed", result["reason"], result["next_question"], result_event):
             self.assertIn(value, md)
@@ -281,6 +316,96 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual([r["id"] for r in json.loads(run("--json", "handoff"))["closed_routes"]], ["R", "OTHER"])
         self.assertEqual([r["id"] for r in json.loads(run("next", "--goal", "B"))], ["R2"])
         self.assertEqual(before, {p.name: p.read_bytes() for p in self.ledger.events.iterdir()})
+
+    def test_goal_handoff_includes_route_context_without_changing_dependencies(self):
+        self.claim("BASE")
+        self.claim("AUX", ["BASE"])
+        self.claim("GOAL")
+        self.record("route", {
+            "id": "R", "claim": "GOAL", "mechanism": "conditional construction",
+            "question": "Does the auxiliary claim permit the construction?",
+            "discriminator": "Check the auxiliary claim", "success": "Construct the object",
+            "failure": "Auxiliary obstruction", "prerequisites": ["AUX"],
+            "gain": 4, "cost": 2,
+        })
+
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "--json", "handoff",
+                                   "--goal", "GOAL"]), 0)
+        handoff = json.loads(output.getvalue())
+        self.assertEqual(set(handoff["state"]["claims"]), {"GOAL"})
+        self.assertEqual(set(handoff["state"]["route_context"]), {"AUX", "BASE"})
+        self.assertEqual(handoff["state"]["claims"]["GOAL"]["dependencies"], [])
+        self.assertEqual(handoff["routes"][0]["blocked_by"], ["AUX"])
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "handoff",
+                                   "--goal", "GOAL"]), 0)
+        markdown = output.getvalue()
+        self.assertIn("## Route context", markdown)
+        self.assertIn("### AUX", markdown)
+        self.assertIn("Evidence status: conjectural", markdown)
+
+    def test_parent_route_can_resolve_a_goal_obligation(self):
+        self.claim("LEAF")
+        self.claim("SIBLING")
+        self.claim("PARENT", ["LEAF", "SIBLING"])
+        route = self.record("route", {
+            "id": "R", "claim": "PARENT", "resolves": ["LEAF"],
+            "mechanism": "direct leaf argument", "question": "Can the leaf be proved directly?",
+            "discriminator": "Construct the comparison", "success": "Prove the leaf",
+            "failure": "Comparison obstruction", "prerequisites": [], "gain": 5, "cost": 2,
+        })
+        state = self.ledger.read()
+        self.assertEqual([item["id"] for item in next_routes(state, self.view(), "LEAF")], ["R"])
+
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "--json", "handoff",
+                                   "--goal", "LEAF"]), 0)
+        handoff = json.loads(output.getvalue())
+        self.assertEqual(handoff["routes"][0]["resolves"], ["LEAF"])
+        self.assertEqual(set(handoff["state"]["route_context"]), {"PARENT"})
+
+        program = self.record("program", {
+            "id": "P", "goal": "LEAF", "objective": "Resolve the leaf",
+            "base_event": route, "base_revision": "revision-1",
+        })
+        self.record("route-run", {
+            "id": "RUN", "program": "P", "route": "R", "base_event": program,
+            "base_revision": "revision-1", "executor": "worker",
+            "work_scope": ["direct leaf argument"],
+        })
+        projection = self.view()
+        scoped = restrict(projection, self.ledger.read(), {"LEAF"})
+        self.assertEqual(set(scoped["runs"]), {"RUN"})
+        self.assertEqual(set(scoped["programs"]), {"P"})
+
+    def test_route_resolves_only_owned_obligations_without_cloning_mechanisms(self):
+        self.claim("LEAF")
+        self.claim("OTHER")
+        self.claim("PARENT", ["LEAF"])
+        with self.assertRaises(LedgerError):
+            self.record("route", {
+                "id": "BAD", "claim": "PARENT", "resolves": ["OTHER"],
+                "mechanism": "direct argument", "question": "Can it work?",
+                "discriminator": "Check the map", "success": "Construct it",
+                "failure": "Obstruction", "prerequisites": [], "gain": 3, "cost": 2,
+            })
+        self.record("route", {
+            "id": "R", "claim": "PARENT", "resolves": ["LEAF"],
+            "mechanism": "direct argument", "question": "Can it work?",
+            "discriminator": "Check the map", "success": "Construct it",
+            "failure": "Obstruction", "prerequisites": [], "gain": 3, "cost": 2,
+        })
+        with self.assertRaises(LedgerError):
+            self.record("route", {
+                "id": "COPY", "claim": "PARENT", "resolves": ["PARENT"],
+                "mechanism": "direct argument", "question": "Can it work globally?",
+                "discriminator": "Check the global map", "success": "Construct it",
+                "failure": "Obstruction", "prerequisites": [], "gain": 3, "cost": 2,
+            })
 
     def test_unresolved_dependency_downgrades_finite_evidence(self):
         self.claim()
@@ -329,6 +454,26 @@ class ResearchStateTests(unittest.TestCase):
         claim = self.view()["claims"]["A"]
         self.assertEqual(claim["status"], "proof-recorded")
         self.assertNotIn("proved", claim["status"])
+
+    def test_check_summary_reports_counts_and_issue_details(self):
+        self.claim()
+        self.evidence()
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "check", "--summary"]), 0)
+        summary = json.loads(output.getvalue())
+        self.assertEqual(summary["events"], 2)
+        self.assertEqual(summary["claims"], 1)
+        self.assertEqual(summary["statuses"], {"proof-recorded": 1})
+        self.assertEqual(summary["review_statuses"], {"no-independent-pass-recorded": 1})
+        self.assertEqual(summary["issues"], [])
+        (self.root / "proof.md").write_text("Changed proof")
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "check", "--summary"]), 1)
+        summary = json.loads(output.getvalue())
+        self.assertEqual(summary["statuses"], {"stale": 1})
+        self.assertEqual(summary["issues"][0]["event"], "E000002")
 
     def test_statement_artifact_binds_claim_and_transitive_evidence(self):
         (self.root / "statement.md").write_text("Theorem A, exact version one.")

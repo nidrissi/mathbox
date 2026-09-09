@@ -19,7 +19,7 @@ project supplied with `--root`, never to the installed skill.
 
 ## Read before changing state
 
-For an existing initialized ledger, run `--root PROJECT check`, then `--root
+For an existing initialized ledger, run `--root PROJECT check --summary`, then `--root
 PROJECT handoff --goal CLAIM` when that goal has been registered. For an authorized
 new project, create its directory, initialize and register claims first; do not
 run handoff against nonexistent state. `status`, `check`, `impact`, `next`, and `handoff` are read-only
@@ -56,6 +56,9 @@ report. An independence declaration must describe a real fresh review; a
 different actor name alone does not establish independence. The author cannot
 declare an independent audit of their own evidence. A failed review remains
 active until explicitly retracted with a reason or replaced by new evidence.
+Inspect the projected active review events and report paths, especially when
+conditional, failed and passing reviews coexist; a one-line review label is not
+a substitute for those conditions.
 
 Correct a claim by recording a new claim revision with a reason. Correct bad
 evidence/reviews with a retraction and new events. Never edit/delete numbered
@@ -64,8 +67,10 @@ statement as already proved. Keep proof details outside the ledger.
 
 ## Use routes to support decisions
 
-Record a route's target, mechanism, decisive question/test, prerequisites,
-success/failure criteria and rough gain/cost estimates. `next` orders ready
+Record a route's owning claim and, when different, the exact obligations it
+`resolves`, plus its mechanism, decisive question/test, prerequisites,
+success/failure criteria and rough gain/cost estimates. Keep alternative routes
+distinct from jointly required claim dependencies. `next` orders ready
 routes by a transparent heuristic; use mathematical judgment over its ordering.
 Close routes with the exact outcome, obstruction and next question. Reopening
 a completed mechanism requires the prior result and the new mathematical input.
@@ -87,6 +92,8 @@ under their own existing retention policy; the ledger stores references only.
 Do not create a second manually maintained claims dashboard. Prefer a generated
 view in the designated live status location when migration is authorized.
 
-Report changed claims, stale evidence and affected dependents. A clean `check`
+Report changed claims, active review conditions and conflicts, stale evidence,
+affected dependents, and route-only context kept outside the theorem dependency
+graph. A clean `check`
 means bookkeeping integrity and current artifact hashes, not a proof audit.
 For genuine correctness decisions, use the mathematical specialist workflow.

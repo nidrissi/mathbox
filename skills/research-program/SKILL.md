@@ -43,6 +43,10 @@ target when a counterexample would settle it.
 
 For each route, state the central mathematical move, its first uncertain
 implication, the cheapest discriminating check, and success/failure criteria.
+Treat alternative mechanisms as a portfolio and jointly required lemmas as
+claim dependencies. When a route is recorded under a parent goal but directly
+advances a named sub-obligation, identify that obligation explicitly rather than
+retargeting the route or duplicating the mechanism.
 Run the decisive check, then pursue the promising route to a substantive
 checkpoint using `research-attempt` if available. Its one-route boundary applies
 to each work package, not to this whole program. Follow the user's breadth

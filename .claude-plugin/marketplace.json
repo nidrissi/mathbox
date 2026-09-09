@@ -10,7 +10,7 @@
       "name": "mathbox",
       "source": ".",
       "description": "Sustained mathematical research with versioned evidence and dependency tracking",
-      "version": "3.0.0",
+      "version": "3.0.1",
       "author": {
         "name": "Najib Idrissi-Kaïtouni",
         "url": "https://github.com/nidrissi"

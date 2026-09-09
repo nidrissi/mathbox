@@ -11,12 +11,12 @@ syntax and four standard-library test suites:
 
 | Suite | Cases | Important exercised behavior |
 |---|---:|---|
-| Research state | 35 | Neutral evidence projections, bound statement staleness, strict computation-manifest closure, transitive revision invalidation, review separation, program/run lifecycle, explicit unknown observations, common-base reconciliation, delayed results, journal integrity and path/writer boundaries |
+| Research state | 41 | Neutral evidence projections, conditional computation reviews, visible review conflicts, obligation-aware routes, typed route context, compact checks, bound statement staleness, strict computation-manifest closure, transitive revision invalidation, program/run lifecycle, explicit unknown observations, common-base reconciliation, delayed results, journal integrity and path/writer boundaries |
 | Computation provenance | 30 | Actual execution, declared scientific-result hashes, input/result collision controls, timeout and process descendants, bounded logs, optional POSIX resource caps, input mutation, stale hashes, shell metacharacters, atomic manifests, strict v2 validation and historical v1 compatibility/ambiguity handling |
 | Repository inspector | 7 | Semantic filename aliases, computation-manifest inventory, mixed-log classification, declared path/cache conventions, conservative broken references, Git-state distinctions, missing compatibility bridges and refusal to inspect symlinked files |
 | Existing literature cache | 17 | Existing cache ingestion, source retention, lookup and error-path regressions |
 
-All 89 tests passed locally. The cache suite deliberately exercises an internal
+All 95 tests passed locally. The cache suite deliberately exercises an internal
 error path and prints its injected error message; the test asserts the handled
 failure and the suite passes. No mathematical theorem is inferred from this gate.
 

@@ -11,7 +11,10 @@ For continuation:
 - Goal and definition of done; current strongest result.
 - Exact missing implication and dependency status.
 - Relevant proof/source/computation paths and their checked versions.
+- Active review event IDs, outcomes, conditions and report paths.
 - Active mechanism, cheapest discriminator and already exhausted alternatives.
+- Route ownership, resolved obligations, and route-only prerequisite context
+  without promoting those prerequisites to theorem dependencies.
 - Authorized scope, resource bounds, next executable action.
 - For external work, execution identifier, last observation and current
   lifecycle state.

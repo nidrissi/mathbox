@@ -33,6 +33,17 @@
         "Does not silently overwrite a colliding result",
         "Keeps mathematical disagreement separate from file reconciliation"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "A theorem needs two named lemmas. There are three proposed mechanisms for the first lemma, and one mechanism is recorded under the parent theorem because it also informs the second lemma. Continue the research program and prepare its handoff.",
+      "expected_output": "Keeps the two lemmas as jointly required claim dependencies, treats the three mechanisms as alternatives, records which obligation the parent-owned route directly resolves, and preserves route-only prerequisites as context rather than theorem dependencies.",
+      "assertions": [
+        "Does not count stages of one mechanism as independent routes",
+        "Distinguishes alternative routes from jointly required obligations",
+        "Names the sub-obligation resolved by the parent-owned route",
+        "Does not alter theorem dependencies to make the handoff include route context"
+      ]
     }
   ]
 }

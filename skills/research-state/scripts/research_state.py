@@ -114,6 +114,15 @@ def route_closed(state, route):
                for event in state["route_closures"].values())
 
 
+def route_targets(route):
+    """Claims a route can directly advance, with legacy routes targeting claim."""
+    return set(route.get("resolves", [route["claim"]]))
+
+
+def route_in_scope(route, selected):
+    return route["claim"] in selected or bool(route_targets(route) & selected)
+
+
 def program_closed(state, program):
     return any(event["payload"]["program"] == program
                for event in state["program_results"].values())
@@ -258,19 +267,32 @@ def apply(state, event):
         require(p.get("claim") in claims, "unknown route claim")
         for field in ("mechanism", "question", "discriminator", "success", "failure"):
             text_field(p, field)
-        require(all(d in claims for d in strings(p, "prerequisites")), "unknown route prerequisite")
+        prerequisites = strings(p, "prerequisites")
+        require(all(d in claims for d in prerequisites), "unknown route prerequisite")
+        if "resolves" in p:
+            resolves = strings(p, "resolves")
+            require(resolves, "resolves must name at least one claim")
+            require(all(d in claims for d in resolves), "unknown resolved obligation")
+            require(set(resolves) <= closure(claims, p["claim"]),
+                    "resolved obligations must belong to the owning claim's dependency closure")
+        require(not (set(prerequisites) & route_targets(p)),
+                "a route target cannot be its own prerequisite")
         for field in ("gain", "cost"):
             require(type(p.get(field)) is int and 1 <= p[field] <= 5, f"{field} must be an integer 1..5")
         if "reopens" in p:
             require(p["reopens"] in state["route_closures"],
                     "reopens must name a terminal route event")
             prior = state["routes"][state["route_closures"][p["reopens"]]["payload"]["route"]]["payload"]
-            require(prior["claim"] == p["claim"] and prior["mechanism"] == p["mechanism"], "reopened route must retain target and mechanism")
+            require(prior["claim"] == p["claim"]
+                    and route_targets(prior) == route_targets(p)
+                    and prior["mechanism"] == p["mechanism"],
+                    "reopened route must retain owner, resolved obligations and mechanism")
             text_field(p, "changed_input")
         else:
             for old in state["routes"].values():
                 prior = old["payload"]
-                require(not (prior["claim"] == p["claim"] and prior["mechanism"] == p["mechanism"]),
+                require(not (prior["claim"] == p["claim"]
+                             and prior["mechanism"] == p["mechanism"]),
                         "repeated mechanism: name reopens and changed_input")
         state["routes"][rid] = event
     elif kind == "route-result":
@@ -321,7 +343,7 @@ def apply(state, event):
         require(not program_closed(state, pid), "cannot start a run in a closed program")
         require(not route_closed(state, rid), "cannot start a run on a closed route")
         goal = state["programs"][pid]["payload"]["goal"]
-        require(state["routes"][rid]["payload"]["claim"] in closure(claims, goal),
+        require(route_in_scope(state["routes"][rid]["payload"], closure(claims, goal)),
                 "run route is outside the program goal dependency closure")
         base_pointer(state, p)
         text_field(p, "executor")
@@ -651,6 +673,7 @@ def execution_projection(root, state):
             last_id, last, status, terminal = event["event_id"], event, "active", None
         route = state["routes"][event["payload"]["route"]]["payload"]
         runs[run] = dict(event["payload"], event_id=event["event_id"], claim=route["claim"],
+                         resolves=sorted(route_targets(route)),
                          status=status, last_observed={"event_id": last_id,
                          "created_at": last["created_at"]}, terminal=terminal,
                          issues=result_issues)
@@ -658,7 +681,8 @@ def execution_projection(root, state):
     for eid, event in state["reconciliations"].items():
         route = state["routes"][event["payload"]["route"]]["payload"]
         reconciliations.append(dict(event["payload"], event_id=eid,
-                                    created_at=event["created_at"], claim=route["claim"]))
+                                    created_at=event["created_at"], claim=route["claim"],
+                                    resolves=sorted(route_targets(route))))
     return {"programs": programs, "runs": runs,
             "reconciliations": reconciliations, "issues": issues}
 
@@ -670,7 +694,9 @@ def project(root, state):
             evidence[key] = dict(event["payload"], actor=event["actor"], issues=evidence_issues(root, state, event))
     for key, event in state["reviews"].items():
         if key not in state["retracted"] and event["payload"]["evidence"] in evidence:
-            reviews[key] = dict(event["payload"], issues=artifact_issues(root, [event["payload"]["artifact"]]))
+            reviews[key] = dict(event["payload"], event_id=key, actor=event["actor"],
+                                created_at=event["created_at"],
+                                issues=artifact_issues(root, [event["payload"]["artifact"]]))
     resolved = SUPPORTING_STATUSES
     # Losing a negative report cannot silently rehabilitate the challenged proof.
     failed = {r["evidence"] for r in reviews.values() if r["outcome"] == "fail"}
@@ -680,8 +706,11 @@ def project(root, state):
         c = claims[key]
         attached = {eid: e for eid, e in evidence.items() if e["claim"] == key}
         live = {eid: e for eid, e in attached.items() if not e["issues"]}
+        attached_reviews = {rid: r for rid, r in reviews.items() if r["evidence"] in attached}
         positive = {eid: e for eid, e in live.items() if e["kind"] in {"proof", "source"} and eid not in failed}
         negative = {eid: e for eid, e in live.items() if e["kind"] == "counterexample" and eid not in failed}
+        computations = {eid: e for eid, e in live.items()
+                        if e["kind"] == "computation" and eid not in failed}
         blocked = [d for d in c["dependencies"] if result[d]["status"] not in resolved]
         if positive and negative:
             status = "disputed"
@@ -692,16 +721,35 @@ def project(root, state):
             status = "conditional" if blocked or not unqualified else ("proof-recorded" if any(e["kind"] == "proof" for e in unqualified.values()) else "source-recorded")
         elif live and all(eid in failed for eid in live):
             status = "incomplete"
-        elif any(e["kind"] == "computation" and eid not in failed for eid, e in live.items()):
-            status = "conditional" if blocked else "computation-recorded"
+        elif computations:
+            status = "conditional" if blocked or not any(eid not in uncertain for eid in computations) else "computation-recorded"
         elif attached and not live:
             status = "stale"
         else:
             status = "conjectural"
-        independent = any(r["evidence"] in live and r["evidence"] not in uncertain and r["independent"] and r["outcome"] == "pass" and not r["issues"]
+        independent = any(r["evidence"] in live and r["evidence"] not in uncertain
+                          and r["evidence"] not in failed and r["independent"]
+                          and r["outcome"] == "pass" and not r["issues"]
                           for r in reviews.values())
+        failed_evidence = {r["evidence"] for r in attached_reviews.values()
+                           if r["outcome"] == "fail"}
+        passed_evidence = {r["evidence"] for r in attached_reviews.values()
+                           if r["evidence"] in live and r["outcome"] == "pass"
+                           and not r["issues"]}
+        has_conditional = any(r["outcome"] == "conditional"
+                              for r in attached_reviews.values())
+        if failed_evidence & passed_evidence:
+            review_status = "conflicting-reviews-recorded"
+        elif failed_evidence:
+            review_status = "failed-review-recorded"
+        elif has_conditional:
+            review_status = "conditional-review-recorded"
+        elif independent:
+            review_status = "independent-pass-recorded"
+        else:
+            review_status = "no-independent-pass-recorded"
         result[key] = dict(c, status=status, blocked_by=blocked,
-                          review="independent-pass-recorded" if independent else "no-independent-pass-recorded",
+                          review=review_status, reviews=attached_reviews,
                           evidence=attached)
     issues = [{"event": key, "issue": issue} for key, e in evidence.items() for issue in e["issues"]]
     issues += [{"event": key, "issue": issue} for key, r in reviews.items() for issue in r["issues"]]
@@ -711,7 +759,8 @@ def project(root, state):
                        for issue in artifact_issues(root, [claim["statement_artifact"]])]
     executions = execution_projection(root, state)
     issues += executions.pop("issues")
-    return {"claims": result, "issues": issues, "events": len(state["events"]),
+    return {"claims": result, "route_context": {}, "issues": issues,
+            "events": len(state["events"]),
             **executions}
 
 
@@ -728,13 +777,16 @@ def next_routes(state, projection, goal=None):
     result = []
     for rid, event in state["routes"].items():
         p = event["payload"]
-        if rid in closed or p["claim"] not in selected:
+        if rid in closed or not route_in_scope(p, selected):
             continue
         blocked = [key for key in p["prerequisites"]
                    if claims[key]["status"] not in SUPPORTING_STATUSES]
-        reach = sum(1 for key in selected if key != p["claim"] and p["claim"] in dependencies[key])
+        targets = route_targets(p)
+        reach = sum(1 for key in selected if key not in targets
+                    and any(target in dependencies[key] for target in targets))
         score = (p["gain"] + reach) / p["cost"]
-        result.append(dict(p, ready=not blocked, blocked_by=blocked, score=round(score, 3)))
+        result.append(dict(p, resolves=sorted(targets), ready=not blocked,
+                           blocked_by=blocked, score=round(score, 3)))
     return sorted(result, key=lambda r: (not r["ready"], -r["score"], r["id"]))
 
 
@@ -743,7 +795,7 @@ def closed_routes(state, goal=None):
     result = []
     for eid, event in state["route_closures"].items():
         route = state["routes"][event["payload"]["route"]]
-        if route["payload"]["claim"] in selected:
+        if route_in_scope(route["payload"], selected):
             payload = event["payload"]
             if event["type"] == "route-reconcile":
                 payload = {
@@ -751,7 +803,8 @@ def closed_routes(state, goal=None):
                     "reason": payload["reason"], "next_question": payload["next_question"],
                     "run_results": payload["results"], "conflicts": payload["conflicts"],
                 }
-            result.append(dict(route["payload"], event_id=route["event_id"],
+            result.append(dict(route["payload"], resolves=sorted(route_targets(route["payload"])),
+                               event_id=route["event_id"],
                                result=dict(payload, event_id=eid)))
     return result
 
@@ -759,21 +812,34 @@ def closed_routes(state, goal=None):
 def restrict(projection, state, selected):
     """Goal view: keep the selected claims and only the records reported under them."""
     claims = {key: c for key, c in projection["claims"].items() if key in selected}
-    events = {c["event_id"] for c in claims.values()}
-    events |= {eid for c in claims.values() for eid in c["evidence"]}
+    relevant_routes = [event["payload"] for event in state["routes"].values()
+                       if route_in_scope(event["payload"], selected)]
+    context_ids = {route["claim"] for route in relevant_routes} - selected
+    prerequisite_roots = {key for route in relevant_routes
+                          for key in route["prerequisites"]}
+    for key in prerequisite_roots:
+        context_ids |= closure(state["claims"], key)
+    context_ids -= selected
+    route_context = {key: c for key, c in projection["claims"].items()
+                     if key in context_ids}
+    reported_claims = list(claims.values()) + list(route_context.values())
+    events = {c["event_id"] for c in reported_claims}
+    events |= {eid for c in reported_claims for eid in c["evidence"]}
     events |= {rid for rid, r in state["reviews"].items() if r["payload"]["evidence"] in events}
-    programs = {key: value for key, value in projection["programs"].items()
-                if value["goal"] in selected}
     runs = {key: value for key, value in projection["runs"].items()
-            if value["claim"] in selected}
+            if value["claim"] in selected or set(value["resolves"]) & selected}
+    programs = {key: value for key, value in projection["programs"].items()
+                if value["goal"] in selected
+                or any(run["program"] == key for run in runs.values())}
     reconciliations = [value for value in projection["reconciliations"]
-                       if value["claim"] in selected]
+                       if value["claim"] in selected or set(value["resolves"]) & selected]
     lifecycle_events = {value["event_id"] for value in programs.values()}
     lifecycle_events |= {value["event_id"] for value in runs.values()}
     lifecycle_events |= {value["event_id"] for value in reconciliations}
     lifecycle_events |= {value["last_observed"]["event_id"] for value in programs.values()}
     lifecycle_events |= {value["last_observed"]["event_id"] for value in runs.values()}
-    return dict(projection, claims=claims, programs=programs, runs=runs,
+    return dict(projection, claims=claims, route_context=route_context,
+                programs=programs, runs=runs,
                 reconciliations=reconciliations,
                 issues=[i for i in projection["issues"]
                         if i["event"] in events | lifecycle_events])
@@ -786,12 +852,28 @@ def markdown(projection, routes=None, closed=None):
              "| Claim | Revision | Evidence status | Review | Blocked by |", "|---|---:|---|---|---|"]
     for key, c in sorted(projection["claims"].items()):
         lines.append(f"| {cell(key)} | {c['revision']} | {c['status']} | {c['review']} | {cell(', '.join(c['blocked_by']))} |")
-    for key, c in sorted(projection["claims"].items()):
-        lines.extend(["", f"## {key}", "", c["statement"], "", f"Regime: {c['regime']}. Level: {c['level']}.",
-                      "Hypotheses: " + ("; ".join(c["hypotheses"]) or "none recorded")])
+    def append_claim(key, c, heading="##"):
+        lines.extend(["", f"{heading} {key}", "", c["statement"], "",
+                      f"Regime: {c['regime']}. Level: {c['level']}.",
+                      "Hypotheses: " + ("; ".join(c["hypotheses"]) or "none recorded"),
+                      f"Evidence status: {c['status']}. Review: {c['review']}. "
+                      f"Blocked by: {', '.join(c['blocked_by']) or 'none'}."])
         for eid, e in c["evidence"].items():
             paths = list(dict.fromkeys(a["path"] for a in evidence_artifacts(e)))
             lines.append(f"- {eid} ({e['kind']}): {e['summary']}; artifacts: " + ", ".join(paths))
+        for rid, review in c["reviews"].items():
+            independence = "independent" if review["independent"] else "non-independent"
+            lines.append(f"- Review {rid} ({review['outcome']}, {independence}) of "
+                         f"{review['evidence']}: {review['summary']}; report: "
+                         f"{review['artifact']['path']}")
+
+    for key, c in sorted(projection["claims"].items()):
+        append_claim(key, c)
+    if projection["route_context"]:
+        lines += ["", "## Route context", "",
+                  "Claims needed to interpret relevant routes; these are not theorem dependencies of the goal."]
+        for key, c in sorted(projection["route_context"].items()):
+            append_claim(key, c, "###")
     if projection["issues"]:
         lines += ["", "## Stale records", ""] + [f"- {i['event']}: {i['issue']}" for i in projection["issues"]]
     if projection["programs"]:
@@ -810,12 +892,13 @@ def markdown(projection, routes=None, closed=None):
         lines += ["", "## Candidate routes", "", "Scores order declared gain plus dependency reach per declared cost; they are not success probabilities."]
         for r in routes:
             lines.extend(["", f"- {r['id']} ({'ready' if r['ready'] else 'blocked'}, score {r['score']}): {r['question']}",
+                          f"  Resolves: {', '.join(sorted(route_targets(r)))}",
                           f"  Decisive check: {r['discriminator']}"])
     if closed is not None:
         lines += ["", "## Closed routes", ""]
         for r in closed:
             result = r["result"]
-            lines.extend([f"- {r['id']} (claim {r['claim']}, route event {r['event_id']}): {r['mechanism']}",
+            lines.extend([f"- {r['id']} (claim {r['claim']}, resolves {', '.join(sorted(route_targets(r)))}, route event {r['event_id']}): {r['mechanism']}",
                           f"  Result {result['event_id']}: {result['outcome']}",
                           f"  Reason / obstruction: {result['reason']}",
                           f"  Next question: {result['next_question']}"])
@@ -828,7 +911,8 @@ def main(argv=None):
     parser.add_argument("--json", action="store_true")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init")
-    commands.add_parser("check")
+    check = commands.add_parser("check")
+    check.add_argument("--summary", action="store_true")
     commands.add_parser("status")
     record = commands.add_parser("record")
     record.add_argument("proposal", type=Path)
@@ -862,6 +946,16 @@ def main(argv=None):
                 output = {"state": projection, "routes": routes, "closed_routes": closed}
             else:
                 output = routes
+        elif args.command == "check" and args.summary:
+            statuses = {}
+            reviews = {}
+            for claim in projection["claims"].values():
+                statuses[claim["status"]] = statuses.get(claim["status"], 0) + 1
+                reviews[claim["review"]] = reviews.get(claim["review"], 0) + 1
+            output = {"events": projection["events"], "claims": len(projection["claims"]),
+                      "statuses": dict(sorted(statuses.items())),
+                      "review_statuses": dict(sorted(reviews.items())),
+                      "issues": projection["issues"]}
         else:
             output = projection
         if args.json or args.command in {"next", "impact", "check"}:

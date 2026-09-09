@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Try several alternative mechanisms for these two remaining proof obligations and keep going after failures.",
+    "should_trigger": true
+  },
+  {
     "query": "Audit the proof of Lemma 2.",
     "should_trigger": false
   },

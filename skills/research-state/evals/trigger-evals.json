@@ -12,6 +12,10 @@
     "should_trigger": true
   },
   {
+    "query": "Generate a goal-scoped ledger handoff with active review conditions and route prerequisites.",
+    "should_trigger": true
+  },
+  {
     "query": "Explain the definition of a chain complex.",
     "should_trigger": false
   },
