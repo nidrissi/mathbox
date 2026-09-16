@@ -23,7 +23,7 @@ supporting artifact has changed.
 |---|---|
 | `research-program` | Executes distinct proof, counterexample, source and computation routes from explicit checkpoints; preserves partial results and reconciles sibling returns |
 | `research-state` | Records exact claim revisions, optional statement bindings, transitive dependencies, hashed evidence, separate review provenance, and program/run lifecycle |
-| Dependency impact and handoff | Shows stale evidence, downstream blockers, unresolved parallel state, and the next executable research routes |
+| Dependency impact and handoff | Shows active review conditions, stale evidence, downstream blockers, route-only context, unresolved parallel state, and the next executable research routes |
 | Bounded experiment runner | Records actual argv, input and scientific-result hashes, bounded logs, finite scope, and optional POSIX memory/CPU/affinity limits |
 | Repository retrofit | Detects aliased research roles, ambiguous live files, computation records, cache conventions, and migration material that needs review or quarantine |
 | Executable regression gate | Checks package contracts, synthetic fixture inventory, and state/experiment/inspector/cache behavior; mathematical task evaluation remains separate |

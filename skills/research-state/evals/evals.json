@@ -55,6 +55,18 @@
         "Does not merge or renumber concurrent journals",
         "Does not promote a claim merely because a run or route succeeded"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "In an authorized temporary ledger, record bounded computation evidence with a conditional review, plus a parent-owned route that resolves a goal sub-obligation and depends on an auxiliary claim outside the theorem dependency closure. Generate JSON and Markdown handoffs for the sub-obligation.",
+      "expected_output": "The computation remains conditional; both handoffs expose the exact active review and report, discover the parent-owned route through its resolved obligation, and include the auxiliary claim as separately typed route context without changing theorem dependencies.",
+      "assertions": [
+        "Uses actual helper commands and synthetic durable artifacts",
+        "Applies conditional review handling to computation evidence",
+        "Shows review event IDs, outcomes, summaries and report paths",
+        "Uses resolved obligations for route discovery and run scope",
+        "Keeps route prerequisites separate from theorem dependencies"
+      ]
     }
   ]
 }

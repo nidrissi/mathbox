@@ -15,6 +15,12 @@ spectral-sequence calculation as independent of another route depending on the
 same collapse. An exotic technique is not a route until its first executable
 mathematical step is stated.
 
+The claim dependency graph records jointly required mathematical obligations.
+Routes are alternative mechanisms. If a route is organized under a parent claim
+but attacks a narrower registered obligation, record that obligation as the
+route's resolved target; keep prerequisites needed only to execute that route as
+route context rather than adding false theorem dependencies.
+
 Record only these live decisions at a checkpoint:
 
 1. Checkpoint identifier, base Git revision or ledger event, exact goal and

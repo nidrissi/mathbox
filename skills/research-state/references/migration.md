@@ -25,6 +25,11 @@ generated dashboards that matched the old strings. Do not translate those
 states back to `proved` without applying the project's own audit and approval
 policy.
 
+Routes recorded before obligation targeting remain valid: an absent `resolves`
+field means the route resolves its owning `claim`. Goal handoffs may add active
+review objects and a separately typed `route_context` projection without
+rewriting events or changing the claim dependency graph.
+
 Do not infer that an old launched process is still running. If lifecycle history
 is useful, register a program and route run against the exact historical base,
 then add an `unknown` observation unless liveness was actually observed. Import

@@ -29,7 +29,7 @@ python3 "$TOOL" --root /path/to/project --json status
 python3 "$TOOL" --root /path/to/project impact C_MAIN
 python3 "$TOOL" --root /path/to/project next --goal C_MAIN
 python3 "$TOOL" --root /path/to/project handoff --goal C_MAIN
-python3 "$TOOL" --root /path/to/project check
+python3 "$TOOL" --root /path/to/project check --summary
 ```
 
 `record` prints the event including its assigned `E000001` identifier. Proposals
@@ -37,6 +37,8 @@ contain exactly `type`, `actor`, and `payload`. Generated timestamps, hashes and
 revision snapshots belong to the helper. Exit codes: 0 success; 1 stale evidence
 from `check`; 2 invalid input, unsupported version, integrity or I/O error.
 Open conjectures are valid state and do not make `check` fail.
+`check --summary` prints event and claim counts, counts by evidence/review status,
+and all integrity issues without emitting the full project projection.
 
 ## Claim and evidence proposals
 
@@ -154,7 +156,15 @@ whether the reviewer actually worked independently. Active failed reviews block
 their evidence; conflicting proof/counterexample evidence yields `disputed`.
 A counterexample with an active conditional review leaves the claim
 `conditional` unless another unqualified counterexample supports a negative
-record. Coexisting positive and counterexample evidence yields `disputed`.
+record. The same conditional rule applies to computation evidence. Coexisting
+positive and counterexample evidence yields `disputed`.
+
+Each projected claim contains its active `reviews`, keyed by review event ID,
+with the evidence link, outcome, independence declaration, actor, summary,
+report artifact, timestamp and current artifact issues. The compact `review`
+field reports an independent pass, a conditional review, a failed review, or
+conflicting pass/fail reviews. Inspect the full objects before resolving a
+condition or conflict.
 
 Retract an erroneous evidence or review event with:
 
@@ -200,11 +210,16 @@ their explicit retraction or new evidence is required to resolve the challenge.
 
 ## Routes
 
-A `route` payload has `id`, `claim`, `mechanism`, `question`, `discriminator`,
-`success`, `failure`, `prerequisites` (claim IDs), and integer `gain`/`cost` in
-1..5. These estimates support prioritization, not evidence promotion. Prerequisites
-mean results needed *before* executing the route; do not list the target as its
-own prerequisite. `next` scores `(gain + number of selected downstream claims)
+A `route` payload has `id`, owning `claim`, optional nonempty `resolves` (claim
+IDs), `mechanism`, `question`, `discriminator`, `success`, `failure`,
+`prerequisites` (claim IDs), and integer `gain`/`cost` in 1..5. When `resolves`
+is omitted it defaults to the owning claim. Use it when a route organized under
+a parent claim directly attacks a registered sub-obligation in that claim's
+dependency closure. These estimates
+support prioritization, not evidence promotion. Prerequisites mean results
+needed *before* executing the route; do not list a resolved target as its own
+prerequisite or turn route-only prerequisites into theorem dependencies. `next`
+scores `(gain + number of selected downstream claims)
 / cost`, lists ready routes first and includes blockers for others. It does not
 invent new routes, claim semantic diversity or assign success probabilities.
 
@@ -218,7 +233,10 @@ does not itself create proof evidence.
 
 `handoff` includes open candidates in `routes` and completed history in
 `closed_routes`, filtered to the goal and its transitive dependencies when a
-goal is supplied. Reported stale records are filtered the same way, so a goal
+goal is supplied. A route is relevant when its owner or a claim in `resolves` is
+selected. The handoff keeps route owners and prerequisite closures outside the
+goal dependency closure in the separately typed `state.route_context` object.
+Reported stale records are filtered to the claims and route context shown, so a goal
 handoff never carries an unrelated claim's freshness problem. Use `check` or an
 unfiltered `status` for the whole project. Each closed route includes its
 payload and `event_id`, plus a nested `result` with the outcome,
@@ -276,7 +294,8 @@ Start every execution separately, including parallel executions of one route:
 }
 ```
 
-The route must belong to the program goal or its dependency closure. A
+The route's owner or one of its resolved targets must belong to the program goal
+or its dependency closure. A
 `run-observation` records `run`, state (`active`, `waiting`, `blocked`, or
 `unknown`), `summary`, and `observed_revision`. Its event becomes the generated
 last observation. A `run-result` records `run`, outcome (`succeeded`, `failed`,
@@ -305,7 +324,7 @@ and delayed work without merging or renumbering journals. A run result or
 reconciliation never creates mathematical evidence; record separate evidence
 only after checking the result against the exact claim.
 
-JSON status and handoff output include `programs`, `runs`, and
+JSON status and handoff output include active review objects, `programs`, `runs`, and
 `reconciliations`. Each program/run has a projected lifecycle status and a
 generated `last_observed` event and timestamp. Changed terminal run artifacts
 produce `stale-result` plus a ledger issue; they do not silently change the

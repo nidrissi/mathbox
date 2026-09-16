@@ -96,7 +96,13 @@ of relying on filename proximity.
   or retracted inputs make downstream arguments conditional. Conflicting proof
   and counterexample evidence is displayed as disputed.
 - Audits address exact evidence events. Author self-review cannot be marked
-  independent. Losing a negative audit report cannot silently clear its challenge.
+  independent. Conditional computation reviews affect claim state, active review
+  objects remain visible in handoffs, and pass/fail conflicts cannot display as
+  an unqualified independent pass. Losing a negative audit report cannot silently
+  clear its challenge.
+- Claim dependencies represent jointly required obligations. Routes may name
+  narrower obligations they resolve, while route-only prerequisites remain
+  separately typed handoff context rather than synthetic theorem dependencies.
 - Corrections append events. Revalidated evidence can explicitly supersede old
   evidence while preserving history. No automatic migration promotes old prose.
 - Read-only commands never initialize or mutate the project. Writes serialize
