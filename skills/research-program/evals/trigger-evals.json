@@ -20,7 +20,7 @@
     "should_trigger": true
   },
   {
-    "query": "Write a retrospective closeout for the old multi-route program, keeping its historical outcome separate from later proofs.",
+    "query": "Write a retrospective closeout for the finished descent program, keeping its historical outcome separate from later proofs.",
     "should_trigger": true
   },
   {
@@ -37,6 +37,10 @@
   },
   {
     "query": "Record the failed route and its obstruction in the ledger.",
+    "should_trigger": false
+  },
+  {
+    "query": "Migrate our flat research log into program indexes, with a retrospective closeout for each old program.",
     "should_trigger": false
   }
 ]

@@ -70,7 +70,9 @@ spans and reasons; do not force them into the nearest dated program. Foreign
 or mission-ambiguous entries follow the reviewed legacy-log quarantine policy
 in `SKILL.md`. Reconcile counts or IDs so every old entry is assigned to a
 program/phase, the unclassified inventory, or quarantine. Write one linked
-closeout per material program/phase, carrying exact evidence and review limits.
+closeout per material program/phase, carrying exact evidence and review limits
+and following the `research-program` closeout contract when that skill is
+available.
 A short top-level entry point then links closeouts and route indexes; each route index
 retains one-line links to its immutable records. Do not duplicate every route
 line at the top level.

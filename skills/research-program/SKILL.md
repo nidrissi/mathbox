@@ -1,7 +1,7 @@
 ---
 name: research-program
 description: >-
-  Pursue or close out a substantial mathematical research program across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, continuation until a goal is reached, or an authorized program closeout that compacts live status and history. Coordinate successive attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, or a read-only project retrospective.
+  Pursue or close out a substantial mathematical research program across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, continuation until a goal is reached, or an authorized closeout of one named program or phase that compacts its live status and history. Coordinate successive attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, a read-only project retrospective, or a repository-wide migration of instructions or a flat research log into program indexes.
 ---
 
 # Sustained mathematical research
@@ -12,6 +12,10 @@ suggestions. Do not promise a solution to an open problem or relabel an exhauste
 attempt as one.
 For a closeout-only request, reconcile recorded results and compact the handoff;
 do not start new mathematical routes unless the user also requested research.
+A closeout covers one named program or phase. Restructuring the repository's
+history across programs, such as turning a flat research log into program
+indexes, is a `research-init` migration; its closeouts follow this skill's
+closeout contract.
 
 ## Establish the target once
 

@@ -1,7 +1,7 @@
 ---
 name: research-init
 description: >-
-  Initialize or migrate an AI-assisted mathematical research repository's agent architecture. Use only when the user explicitly asks to set up, plan a retrofit, or substantially revise AGENTS.md, CLAUDE.md, live research status/history, workflow files, or their authority structure. Inspect first, propose a reviewable file plan, and default to no repository-local skills. Do not use for an ordinary research attempt or read-only project retrospective.
+  Initialize or migrate an AI-assisted mathematical research repository's agent architecture. Use only when the user explicitly asks to set up, plan a retrofit, or substantially revise AGENTS.md, CLAUDE.md, live research status/history, workflow files, or their authority structure, including migrating a flat research log across programs into program indexes. Inspect first, propose a reviewable file plan, and default to no repository-local skills. Do not use for an ordinary research attempt, a closeout of one named program or phase, or a read-only project retrospective.
 ---
 
 # Mathematical research repository initializer

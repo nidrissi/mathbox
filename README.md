@@ -197,8 +197,8 @@ forms refer only to standalone installations.
 
 | The task is primarily… | Use |
 |---|---|
-| setting up the research repository or revising its agent architecture | `mathbox:research-init` |
-| pursuing or closing out a substantial goal across successive approaches | `mathbox:research-program` |
+| setting up the research repository, revising its agent architecture, or migrating its history across programs | `mathbox:research-init` |
+| pursuing a substantial goal across successive approaches, or closing out one program or phase | `mathbox:research-program` |
 | checking evidence freshness, dependency impact or a ledger handoff | `mathbox:research-state` |
 | developing new mathematics along one controlled route | `mathbox:research-attempt` |
 | deciding whether an existing argument is correct as written | `mathbox:proof-audit` |
@@ -206,7 +206,7 @@ forms refer only to standalone installations.
 | obtaining or assessing finite computational evidence | `mathbox:computation-audit` |
 | transferring a validated result into the live paper | `mathbox:manuscript-integrate` |
 | correcting grammar, typography, LaTeX, references, or forced local typos | `mathbox:proofread-math` |
-| reviewing the project portfolio and deciding what to try next | `mathbox:research-retrospective` |
+| reviewing the project portfolio and deciding what to try next, read-only | `mathbox:research-retrospective` |
 
 Important boundaries:
 

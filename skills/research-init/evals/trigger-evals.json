@@ -24,7 +24,7 @@
     "should_trigger": true
   },
   {
-    "query": "Migrate old research routes into retrospective program closeouts and keep unassigned routes discoverable.",
+    "query": "Migrate our flat research log's old routes into program indexes with retrospective closeouts, keeping unassigned routes discoverable.",
     "should_trigger": true
   },
   {
@@ -53,6 +53,10 @@
   },
   {
     "query": "Run the tests.",
+    "should_trigger": false
+  },
+  {
+    "query": "Close out the finished descent program and compact its live status, without restructuring the history index.",
     "should_trigger": false
   }
 ]

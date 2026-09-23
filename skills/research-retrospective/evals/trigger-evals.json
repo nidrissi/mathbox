@@ -26,5 +26,13 @@
   {
     "query": "Generate the dependency-aware handoff from the .mathbox event ledger.",
     "should_trigger": false
+  },
+  {
+    "query": "Write a retrospective closeout for the finished descent program.",
+    "should_trigger": false
+  },
+  {
+    "query": "Migrate the flat research log into program indexes.",
+    "should_trigger": false
   }
 ]
