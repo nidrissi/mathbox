@@ -101,6 +101,17 @@
         "Reports run-result pins separately from claim and evidence pins",
         "Does not refresh hashes or treat the edit as mathematically harmless"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "In an authorized temporary ledger, a program has two runs of an open route. One run's result artifact has changed since it was recorded and that result was never reconciled; the other run is still active. Resume from the brief goal handoff and decide the next ledger action.",
+      "expected_output": "Reads the brief handoff's execution section, identifies the stale and unreconciled run and the active run by ID, and reconciles or re-examines them before starting a new run of the same route.",
+      "assertions": [
+        "Uses the brief handoff before opening full or JSON detail",
+        "Names both runs needing attention and the stale result event",
+        "Does not start a duplicate run while those runs remain unresolved",
+        "Does not treat a run result as mathematical evidence without checking the artifact"
+      ]
     }
   ]
 }

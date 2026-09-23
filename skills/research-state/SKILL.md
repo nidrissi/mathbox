@@ -22,7 +22,8 @@ project supplied with `--root`, never to the installed skill.
 For an existing initialized ledger, run `--root PROJECT check --summary`, then
 `--root PROJECT handoff --goal CLAIM` when that goal has been registered. These default
 reports are brief: they give counts, actionable IDs, and an explicit omitted
-count. Use `--full` after the subcommand or `--json` before it when the exact
+count, including runs that are live, `stale-result`, or awaiting
+reconciliation. Use `--full` after the subcommand or `--json` before it when the exact
 claim contract, review, route result, or complete issue list is needed. Do not
 paste a full projection into the live dashboard. For an authorized new project,
 create its directory, initialize and register claims first; do not run handoff

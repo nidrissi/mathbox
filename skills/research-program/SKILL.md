@@ -33,8 +33,10 @@ Use existing project records, starting with the current summary and nearest
 relevant records rather than the complete status/history archive. When an
 executable `.mathbox/` ledger is present, use the available `research-state`
 skill's brief goal handoff and freshness check; open full claim/review details
-only for the active decision. Initialize it only when useful and authorized; its absence never
-blocks research. Read [program protocol](references/program-protocol.md) for
+only for the active decision. Resolve its runs needing attention (live,
+stale, or unreconciled) before starting another run of the same route.
+Initialize it only when useful and authorized; its absence never blocks
+research. Read [program protocol](references/program-protocol.md) for
 route selection and checkpoints when executing routes; for a closeout-only
 request, go to [program closeout](references/program-closeout.md).
 

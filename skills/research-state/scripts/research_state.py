@@ -895,6 +895,21 @@ def restrict(projection, state, selected):
                         if i["event"] in events | lifecycle_events])
 
 
+def run_attention(projection):
+    """Runs a resuming agent must act on, with notes: live, stale, or unreconciled."""
+    reconciled = {result for item in projection.get("reconciliations", [])
+                  for result in item["results"]}
+    attention = {}
+    for key, run in projection.get("runs", {}).items():
+        terminal = run["terminal"]
+        notes = [f"result {terminal['event_id']} unreconciled"] \
+            if terminal and terminal["event_id"] not in reconciled else []
+        if not terminal or notes or run["status"] == "stale-result":
+            attention[key] = notes
+    return dict(sorted(attention.items(), key=lambda item: (
+        projection["runs"][item[0]]["status"] != "stale-result", not item[1], item[0])))
+
+
 def markdown(projection, routes=None, closed=None):
     def cell(value):
         return str(value).replace("|", "\\|").replace("\n", " ")
@@ -932,8 +947,10 @@ def markdown(projection, routes=None, closed=None):
             lines.append(f"- {p['id']} ({p['status']}): goal {p['goal']}; base {p['base_event']} at {p['base_revision']}; last observed {p['last_observed']['event_id']}")
     if projection["runs"]:
         lines += ["", "## Route executions", ""]
+        attention = run_attention(projection)
         for run in projection["runs"].values():
-            lines.append(f"- {run['id']} ({run['status']}): route {run['route']}; base {run['base_event']} at {run['base_revision']}; last observed {run['last_observed']['event_id']}")
+            notes = "".join(f"; {note}" for note in attention.get(run["id"], []))
+            lines.append(f"- {run['id']} ({run['status']}): route {run['route']}; base {run['base_event']} at {run['base_revision']}; last observed {run['last_observed']['event_id']}{notes}")
     if projection["reconciliations"]:
         lines += ["", "## Reconciliations", ""]
         for item in projection["reconciliations"]:
@@ -994,6 +1011,32 @@ def brief_markdown(projection, routes=None, closed=None):
             lines.append(f"- {issue['event']}: {detail}")
         if len(issues) > 8:
             lines.append(f"- … {len(issues) - 8} more issues; use --full or --json for all.")
+    programs, runs = projection.get("programs", {}), projection.get("runs", {})
+    reconciliations = projection.get("reconciliations", [])
+    attention = run_attention(projection)
+    if programs or runs or reconciliations:
+        def by_status(items):
+            counts = Counter(item["status"] for item in items.values())
+            detail = ", ".join(f"{key} {count}" for key, count in sorted(counts.items()))
+            return f"{len(items)} ({detail})" if items else "0"
+        lines += ["", "## Executions", "",
+                  f"Programs: {by_status(programs)}; runs: {by_status(runs)}; "
+                  f"reconciliations: {len(reconciliations)}; "
+                  f"runs needing attention: {len(attention)}."]
+        live = [f"{key} ({program['status']})" for key, program in sorted(programs.items())
+                if program["terminal"] is None]
+        if live:
+            lines.append("Open programs: " + ", ".join(live[:8])
+                         + (f", … {len(live) - 8} more" if len(live) > 8 else "") + ".")
+        for key, notes in list(attention.items())[:8]:
+            run = runs[key]
+            lines.append(f"- {key}: " + "; ".join(
+                [run["status"], f"route {run['route']}", f"program {run['program']}", *notes]))
+        if len(attention) > 8:
+            lines.append(f"- … {len(attention) - 8} more runs needing attention; use --full or --json.")
+    route_runs = {}
+    for key in attention:
+        route_runs.setdefault(runs[key]["route"], []).append(f"{key} ({runs[key]['status']})")
     if routes is not None:
         lines += ["", f"## Open routes ({len(routes)})", ""]
         for route in routes[:8]:
@@ -1001,6 +1044,11 @@ def brief_markdown(projection, routes=None, closed=None):
             resolves = ", ".join(targets[:6])
             if len(targets) > 6:
                 resolves += f", … {len(targets) - 6} more"
+            active = route_runs.get(route["id"], [])
+            if active:
+                resolves += "; runs " + ", ".join(active[:3])
+                if len(active) > 3:
+                    resolves += f", … {len(active) - 3} more"
             lines.append(f"- {route['id']}: {'ready' if route['ready'] else 'blocked'}; "
                          f"resolves {resolves}")
         if len(routes) > 8:

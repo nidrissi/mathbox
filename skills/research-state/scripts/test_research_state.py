@@ -851,6 +851,53 @@ class ResearchStateTests(unittest.TestCase):
         self.assertIn("integrity/freshness issues: 1700", report)
         self.assertIn("1692 more issues", report)
 
+    def test_brief_handoff_surfaces_runs_needing_attention(self):
+        self.claim()
+        route_event = self.route()
+        program = self.record("program", {
+            "id": "P", "goal": "A", "objective": "Resolve the synthetic goal",
+            "base_event": route_event, "base_revision": "revision-1",
+        })
+        for run in ("DONE", "LIVE", "SETTLED"):
+            self.record("route-run", {
+                "id": run, "program": "P", "route": "R", "base_event": program,
+                "base_revision": "revision-1", "executor": run.lower(),
+                "work_scope": [run.lower() + " branch"],
+            })
+        settled = self.record("run-result", {
+            "run": "SETTLED", "outcome": "inconclusive", "reason": "No decisive result",
+            "next_question": "Try another invariant", "result_revision": "revision-2",
+        })
+        self.record("route-reconcile", {
+            "route": "R", "results": [settled], "decision": "continue",
+            "reason": "Wait for the other branches", "next_question": "Do they agree?",
+            "base_event": program, "base_revision": "revision-1",
+            "current_revision": "revision-2", "conflicts": [],
+        })
+        done = self.record("run-result", {
+            "run": "DONE", "outcome": "succeeded", "reason": "Constructed a candidate",
+            "next_question": "Does it generalize?", "result_revision": "revision-2",
+            "artifacts": [{"path": "review.md"}],
+        })
+        (self.root / "review.md").write_text("Changed report")
+
+        def run(*args):
+            output = StringIO()
+            with redirect_stdout(output):
+                self.assertEqual(main(["--root", str(self.root), *args]), 0)
+            return output.getvalue()
+
+        brief = run("handoff", "--goal", "A")
+        self.assertIn("Programs: 1 (active 1); runs: 3 (active 1, inconclusive 1, stale-result 1); "
+                      "reconciliations: 1; runs needing attention: 2.", brief)
+        self.assertIn("Open programs: P (active).", brief)
+        self.assertIn(f"- DONE: stale-result; route R; program P; result {done} unreconciled", brief)
+        self.assertIn("- LIVE: active; route R; program P\n", brief)
+        self.assertNotIn("- SETTLED:", brief)
+        self.assertIn("- R: ready; resolves A; runs DONE (stale-result), LIVE (active)", brief)
+        self.assertIn("runs needing attention: 2.", run("status"))
+        self.assertIn(f"result {done} unreconciled", run("handoff", "--goal", "A", "--full"))
+
     def test_pin_impact_reports_direct_and_transitive_claims(self):
         self.claim("A", statement_artifact={"path": "proof.md", "locator": "Theorem A"})
         self.evidence("A")

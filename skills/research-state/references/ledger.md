@@ -44,8 +44,11 @@ the total issue count and at most eight example issues. The omitted count is
 explicit. `check --summary --full` prints every issue; `--json check` prints
 the complete projection. Human `status` and `handoff` likewise default to brief
 views; add `--full` after either subcommand for the complete Markdown report,
-or put `--json` before the subcommand for the complete machine view. Neither
-display mode changes freshness checks or exit codes.
+or put `--json` before the subcommand for the complete machine view. When
+programs or runs exist, the brief view counts them by status and lists runs
+needing attention: live, `stale-result`, or with a result not yet named by a
+reconciliation. Open routes name those runs. Neither display mode changes
+freshness checks or exit codes.
 
 ## Record several distinct events efficiently
 
