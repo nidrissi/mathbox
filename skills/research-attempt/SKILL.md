@@ -128,8 +128,11 @@ material blocker, a convention decision, or a claim-supporting computation.
 - Update live status or claim obligations only when project state changed.
 - Treat live status as current state, not chronology. Keep its latest full
   verification summary and link the route record or manifests for older runs.
-  Replace stacked dated narratives with current facts and links when the
-  project's edit policy permits it; do not add another full checkpoint story.
+  Do not add another full checkpoint story. Replace a stacked dated narrative
+  with current facts and a link only when that narrative already has a durable
+  home (an indexed record, manifest, or closeout) and the project's edit policy
+  permits it. Otherwise leave it in place and report that compaction needs a
+  `research-program` closeout or `mathbox:research-init` migration.
 - In an executable ledger, record only changed contracts, evidence, reviews,
   and route outcomes. A session alone needs no event. Use a prevalidated batch
   for several necessary events while preserving their distinct types.

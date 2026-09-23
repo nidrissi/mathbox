@@ -5,9 +5,13 @@
 - Exact live filename is `AGENTS.md`.
 - Root instructions point to the charter for the mission, current deliverable,
   success/fallback, and exclusions; mutable values are not copied into AGENTS.md.
-- Source-of-truth order is unambiguous.
+  Without a separate charter, root instructions state them; they are never
+  left unrecorded.
+- Source-of-truth order is unambiguous. User direction sets scope and
+  priorities but does not outrank durable proof on mathematical status.
 - Mutable status is referenced, not duplicated.
-- Evidence labels and claim-promotion standards are defined.
+- Evidence labels and claim-promotion standards are defined, including fresh
+  adversarial review before a material new claim is promoted.
 - Protected, read-only, and routine paths are explicit.
 - Commands are verified and concrete.
 - Git, network, confidentiality, and handoff policies are explicit.

@@ -145,6 +145,17 @@
         "Uses quarantine only for foreign or mission-ambiguous material",
         "Accounts for all old entries and verifies links before changing the default entry point"
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "Set up root agent instructions for a small research repository that will not have a separate charter file. The owner wants agents to follow their current direction.",
+      "expected_output": "States the main question, deliverable, success criterion, fallback, and exclusions in AGENTS.md; lets current user direction set scope and priorities without ranking it above durable proof on mathematical status; and requires fresh adversarial review before a material new claim is promoted.",
+      "assertions": [
+        "Records mission, success, fallback, and exclusions somewhere durable rather than deleting the charter pointer",
+        "Keeps durable proof above chat or user assertion for mathematical status",
+        "Requires fresh adversarial review before promoting a material new claim",
+        "Replaces every template placeholder"
+      ]
     }
   ]
 }

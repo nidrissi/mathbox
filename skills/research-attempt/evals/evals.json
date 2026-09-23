@@ -97,6 +97,17 @@
         "Does not duplicate the route line in the top-level program entry point",
         "Does not close the mathematical goal merely because the route ended"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "Run one bounded route and persist its result. The project's edit policy lets agents edit the live status, which stacks six dated checkpoint narratives; only the two most recent have indexed research records.",
+      "expected_output": "Records the new route in one durable record and index entry, updates the current facts, replaces only narratives that already have a durable home with links, leaves the four unrecorded narratives intact, and reports that compacting them needs a closeout or migration.",
+      "assertions": [
+        "Does not add another full checkpoint story to the live status",
+        "Replaces a dated narrative with a link only when its durable record exists",
+        "Does not delete or silently summarize unrecorded historical narratives",
+        "Reports the remaining compaction as a separate closeout or migration step"
+      ]
     }
   ]
 }

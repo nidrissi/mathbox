@@ -203,6 +203,9 @@ Use the assets selectively; delete unused sections and replace every
 placeholder. A normal setup has:
 
 - concise root `AGENTS.md`;
+- a charter stating the main question, current deliverable, success criterion,
+  valuable fallback, and out-of-scope boundaries; a small project may state
+  them in root `AGENTS.md` instead, but never leaves them unrecorded;
 - optional `CLAUDE.md` importing `@AGENTS.md` for sessions that cannot load
   `AGENTS.md` directly or need genuine Claude-specific additions;
 - at most one live dashboard;
