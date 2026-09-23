@@ -35,8 +35,9 @@ skills supplied by the `mathbox` plugin inside it.
    clean Git worktree from unavailable Git metadata; do not report both as an
    empty status.
 2. Locate root/nested `AGENTS.md`, Claude memory/rules, current skill folders,
-   and any unrecognized `skills/` folders. If root `AGENTS.md` exists, check
-   whether root `CLAUDE.md` exists and imports `@AGENTS.md`.
+   and any unrecognized `skills/` folders. If root `CLAUDE.md` exists alongside
+   `AGENTS.md`, check whether it imports `@AGENTS.md`. A missing `CLAUDE.md` is
+   expected when Claude Code loads `AGENTS.md` directly.
 3. Locate likely charter, status, claims, conventions, proof/manuscript,
    literature, log, computation, tests, CI, and build artifacts. Recognize
    semantic aliases and variants, including `PLAN`, `STATUS`, `OUTLINE`,
@@ -166,7 +167,8 @@ Use the assets selectively; delete unused sections and replace every
 placeholder. A normal setup has:
 
 - concise root `AGENTS.md`;
-- `CLAUDE.md` importing `@AGENTS.md` plus genuine Claude-specific additions;
+- optional `CLAUDE.md` importing `@AGENTS.md` for sessions that cannot load
+  `AGENTS.md` directly or need genuine Claude-specific additions;
 - at most one live dashboard;
 - optional claims, conventions, literature, a compact append-only research
   index, and immutable standalone route records;

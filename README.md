@@ -256,7 +256,6 @@ mathbox/
 ├── assets/
 │   └── mathbox.svg                       # Codex square icon and logo
 ├── AGENTS.md                             # shared contributor instructions
-├── CLAUDE.md                             # imports AGENTS.md for Claude Code
 ├── README.md
 └── skills/
     └── <skill-name>/
