@@ -31,7 +31,8 @@ generic venue practice, or the current rendered length.
 
 - Which file is the live dashboard?
 - Where do durable proofs, claim obligations, conventions, literature checks,
-  computations, the history index, and standalone research records live?
+  computations, the history entry point, program/phase route indexes, and
+  standalone research records live?
 - What review is required before “proved” or manuscript integration?
 - Which old files are historical rather than authoritative?
 
@@ -49,8 +50,8 @@ generic venue practice, or the current rendered length.
 - Which semantic files may be edited autonomously?
 - Which paths are read-only or historical?
 - Which convention changes require explicit approval?
-- May the agent create standalone records and append history-index entries
-  automatically at route checkpoints?
+- May the agent create standalone route records, append to the designated route
+  index, and write a linked program closeout at material checkpoints?
 - What Git actions are authorized?
 
 ## Verification and resources

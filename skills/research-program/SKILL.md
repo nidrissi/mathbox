@@ -1,7 +1,7 @@
 ---
 name: research-program
 description: >-
-  Pursue a substantial mathematical research goal across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, a breakthrough, or continuation until a goal is reached. Coordinate successive research attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, or a read-only project retrospective.
+  Pursue or close out a substantial mathematical research program across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, continuation until a goal is reached, or an authorized closeout of one named program or phase that compacts its live status and history. Coordinate successive attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, a read-only project retrospective, or a repository-wide migration of instructions or a flat research log into program indexes.
 ---
 
 # Sustained mathematical research
@@ -10,6 +10,12 @@ Own the user's mathematical objective across route changes. A route ending is
 not the assignment ending. Produce mathematics, not a portfolio of unexecuted
 suggestions. Do not promise a solution to an open problem or relabel an exhausted
 attempt as one.
+For a closeout-only request, reconcile recorded results and compact the handoff;
+do not start new mathematical routes unless the user also requested research.
+A closeout covers one named program or phase. Restructuring the repository's
+history across programs, such as turning a flat research log into program
+indexes, is a `research-init` migration; its closeouts follow this skill's
+closeout contract.
 
 ## Establish the target once
 
@@ -27,11 +33,20 @@ For work that may cross sessions, branches or delegated agents, record a
 checkpoint identifier and the exact Git revision or ledger event from which the
 work starts. A timestamp or display order is not a reliable ancestry relation.
 
-Use existing project records. When an executable `.mathbox/` ledger is present,
-use the available `research-state` skill for a goal-scoped handoff and stale
-evidence check. Initialize it only when useful and authorized; its absence never
-blocks research. Read [program protocol](references/program-protocol.md) for
-route selection and checkpoints.
+Use existing project records, starting with the current summary and nearest
+relevant records rather than the complete status/history archive. When an
+executable `.mathbox/` ledger is present, use the available `research-state`
+skill's brief goal handoff and freshness check; open full claim/review details
+only for the active decision. Before starting a run, inspect live, stale, and
+unreconciled runs of the same route. Recheck stale results that bear on the
+decision and reconcile completed results before relying on them. Compare a
+proposed run's work scope with live runs to avoid duplicate work. Distinct
+parallel runs may proceed from an explicit base with disjoint write scopes
+without closing existing live runs.
+Initialize it only when useful and authorized; its absence never blocks
+research. Read [program protocol](references/program-protocol.md) for
+route selection and checkpoints when executing routes; for a closeout-only
+request, go to [program closeout](references/program-closeout.md).
 
 ## Build and execute a diverse portfolio
 
@@ -52,10 +67,11 @@ checkpoint using `research-attempt` if available. Its one-route boundary applies
 to each work package, not to this whole program. Follow the user's breadth
 requirement: if they ask to try every proposed route, execute each one.
 
-When routes run in parallel, give each one an owner, base checkpoint and
-disjoint write scope. Require returned artifacts to identify that base and their
-actual inputs. Reconcile them against the common base; do not infer chronology
-or supersession from response order, directory names or wall-clock completion.
+When routes or runs execute in parallel, give each one an owner, base
+checkpoint and disjoint write scope. Require returned artifacts to identify
+that base and their actual inputs. Reconcile them against the common base; do
+not infer chronology or supersession from response order, directory names or
+wall-clock completion.
 Preserve incompatible results as competing evidence until their mathematics is
 resolved.
 
@@ -112,8 +128,20 @@ when delegating or resuming.
 
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
-Update only state that actually changed; do not rewrite indexed history.
+Update only state that actually changed; replace old dashboard checkpoint prose
+with links only once it has a durable home and the project permits, and do not
+rewrite indexed history.
 User-authorized repository deliverables remain part of completion.
+
+At a substantial program boundary, or when the user explicitly requests
+compaction, follow [program closeout](references/program-closeout.md). Produce
+one linked synthesis of decisive outcomes and a small current decision view;
+keep route records and ledger events intact. Closeout is not required after
+every session and does not close an unresolved mathematical goal. If the
+history index has become a long flat list, use the project's hierarchical
+program/route index policy rather than copying all routes into the live view.
+For retrospective closeout, distinguish the historical cutoff from the later
+assessment; do not attribute later evidence to the old program.
 
 For a long or externally executed route, distinguish queued, running,
 last-observed, completed, failed, timed out and abandoned states. Do not keep a

@@ -67,6 +67,52 @@
         "Uses resolved obligations for route discovery and run scope",
         "Keeps route prerequisites separate from theorem dependencies"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "In a synthetic initialized ledger with hundreds of claims and many stale artifact issues, check integrity and prepare a goal handoff without flooding the conversation. Then inspect the exact report for one conditional review.",
+      "expected_output": "Uses brief reports for orientation, reports total and omitted issue counts, retrieves the relevant full review before interpreting it, and keeps the check exit status and mathematical evidence boundary intact.",
+      "assertions": [
+        "Does not paste a full project projection merely to find the current blocker",
+        "Reports the complete count of omitted issues rather than implying none exist",
+        "Uses full or JSON detail for the exact active review and its report",
+        "Does not interpret clean ledger bookkeeping as proof certification"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "In an authorized temporary ledger, a checkpoint requires a new claim, proof evidence and a fresh review. Record them efficiently, then report what editing their shared statement file would affect. One proposed dependency in a separate trial batch is invalid.",
+      "expected_output": "Prevalidates and records separate hash-chained events with a batch reference to the new evidence, leaves no events from the invalid trial batch, and reports direct pins and dependent claims without refreshing hashes.",
+      "assertions": [
+        "Uses a dry-run before the actual batch append",
+        "Checks each dry-run receipt's subject and pinned paths before appending",
+        "Keeps claim, evidence and review as distinct events",
+        "Leaves the journal unchanged after invalid batch validation",
+        "Uses pin-impact as a read-only diagnostic",
+        "Does not treat a formatting-only description as mathematical revalidation"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "In an authorized temporary ledger, proof evidence was recorded with its artifact path typed as ./proofs//a.md, and a closed route run pins reports/run.md in its run result. Before editing both files, report what each edit would affect.",
+      "expected_output": "Uses pin-impact with the ordinary spelling proofs/a.md and still finds the evidence pin and dependent claims; reports that editing reports/run.md stales the run result without affecting any claim; changes no ledger event or hash.",
+      "assertions": [
+        "Uses pin-impact as a read-only diagnostic for each file",
+        "Does not conclude that a file is unpinned because its recorded spelling differs",
+        "Reports run-result pins separately from claim and evidence pins",
+        "Does not refresh hashes or treat the edit as mathematically harmless"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "In an authorized temporary ledger, a program has two runs of an open route. One run's result artifact has changed since it was recorded and that result was never reconciled; the other run remains active on a disjoint task. Resume from the brief goal handoff and decide how to handle those runs before a separate parallel check of the same route.",
+      "expected_output": "Reads the brief handoff's execution section, identifies the stale and unreconciled run and the active run by ID, re-examines the stale result before relying on it, checks the active run's scope, and allows a distinct parallel check to have its own run and base without closing the active run.",
+      "assertions": [
+        "Uses the brief handoff before opening full or JSON detail",
+        "Names both runs needing attention and the stale result event",
+        "Does not duplicate the active run's work scope or close it to permit distinct parallel work",
+        "Does not treat a run result as mathematical evidence without checking the artifact"
+      ]
     }
   ]
 }

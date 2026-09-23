@@ -7,7 +7,8 @@ Use explicit paths in the applicable `AGENTS.md` first. Otherwise prefer:
 - claims: `PROOF_OBLIGATIONS.md`, then `CLAIMS.md`;
 - conventions: `CONVENTION_REGISTRY.md`, then `CONVENTIONS.md`;
 - literature: `LITERATURE_LEDGER.md`, then `LITERATURE.md`;
-- history index: `RESEARCH_LOG.md`;
+- history entry point: `RESEARCH_LOG.md`; follow its program/phase links to the
+  designated route index when the project uses a hierarchical history;
 - detailed history: `research/records/`;
 - verification: `VERIFICATION.md`;
 - repository map: `README.md` or `CODE_MAP.md`.

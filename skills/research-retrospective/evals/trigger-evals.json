@@ -8,6 +8,10 @@
     "should_trigger": true
   },
   {
+    "query": "Review this bloated research dashboard and prioritize the next mathematical routes without editing it.",
+    "should_trigger": true
+  },
+  {
     "query": "Search the literature for the exact version of this theorem.",
     "should_trigger": false
   },
@@ -21,6 +25,14 @@
   },
   {
     "query": "Generate the dependency-aware handoff from the .mathbox event ledger.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a retrospective closeout for the finished descent program.",
+    "should_trigger": false
+  },
+  {
+    "query": "Migrate the flat research log into program indexes.",
     "should_trigger": false
   }
 ]

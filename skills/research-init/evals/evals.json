@@ -68,7 +68,8 @@
         "Does not require a CLAUDE.md bridge when AGENTS.md is present",
         "Flags multiple handoff candidates for authority review",
         "Classifies the research log structurally as mixed",
-        "Schedules exact source verification before source-derived inventory entries become foundations"
+        "Schedules exact source verification before source-derived inventory entries become foundations",
+        "Reports misplaced root skills and the log classification from the default brief inspection"
       ]
     },
     {
@@ -92,6 +93,68 @@
         "Asks for an exact deadline and timezone",
         "Asks what the page-count convention includes",
         "Requires explicit budget for front matter, main text, bibliography, figures/tables, appendices/supplement and contingency"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Refresh this research repository's agent architecture. The current status is a long sequence of dated checkpoints, AGENTS.md repeats the current deliverable, and a preserved import directory contains hundreds of links that are broken only in that historical location.",
+      "expected_output": "Produces a reviewed plan for one compact current dashboard, leaves durable history linked and discoverable, moves mutable deliverable facts to the charter/status, and separates current-path inspection findings from historical candidates before proposing edits.",
+      "assertions": [
+        "Uses the brief inspector first and drills into omitted current-path findings",
+        "Does not treat historical import links as automatically live broken references",
+        "Keeps project-specific authorization and mathematical safeguards in root instructions",
+        "Preserves old checkpoint evidence before replacing live-status narratives",
+        "Does not require reading the whole growing status file in every future task"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Plan the migration of this existing research repository to compact instructions and one live status. Its AGENTS.md requires reading a 150 KB status file; dated checkpoints mix current and historical claims; its schema-v1 ledger has pre-existing stale issues and a charter pinned by many active claims. Do not edit yet.",
+      "expected_output": "Produces a read-only section inventory, proposed source-to-destination crosswalk and baseline, marks uninspected ranges, identifies authority conflicts and pin fanout, and stops before editing or refreshing hashes.",
+      "assertions": [
+        "Treats the request as a plan, not authorization to edit",
+        "Uses brief inspector and ledger queries before targeted detail",
+        "Plans complete accounting for substantive old status sections and unique AGENTS rules before replacement",
+        "Does not move mutable facts into the pinned charter merely to match a template",
+        "Distinguishes pre-existing ledger issues from migration regressions",
+        "Captures the complete baseline issue list rather than the eight-issue summary sample",
+        "Does not rewrite schema-v1 events or infer proved from historical prose"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Retrofit this research repository's history now. Its RESEARCH_LOG.md is a large flat index with working relative links, several long-running programs and one route of uncertain provenance. Keep ordinary route records immutable and make routine navigation compact.",
+      "expected_output": "Builds a reviewed route-to-program mapping, preserves the old flat index and links, creates a small designated program/phase entry point with closeouts and route indexes, leaves the uncertain route unpromoted, and verifies link reachability before replacement.",
+      "assertions": [
+        "Does not infer program membership from filenames or dates alone",
+        "Keeps old index text reachable, preferably as a frozen legacy index",
+        "Does not duplicate all route lines in the new top-level entry point",
+        "Does not turn uncertain historical material into a current program result",
+        "Checks links and source-to-destination coverage before replacing the live entry point",
+        "Treats broken links inside current route records as current findings, not archived history"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Migrate a 2023 flat research log into program indexes. A theorem was proved only in a 2025 revision; the 2023 program cutoff is inferred from Git history, and two mission-relevant route entries have no defensible program assignment. Preserve all old links.",
+      "expected_output": "Builds retrospective closeouts that label the 2023 cutoff as inferred and distinguish the 2025 assessment, preserves the two routes in a linked unclassified inventory, reconciles every old entry to a program, unclassified inventory, or quarantine, and retains the old index and working links.",
+      "assertions": [
+        "Does not turn first Git appearance into a certain mathematical completion date",
+        "Does not backdate the 2025 proof to a 2023 closeout",
+        "Keeps mission-relevant but unassigned routes linked and outside program verdicts",
+        "Uses quarantine only for foreign or mission-ambiguous material",
+        "Accounts for all old entries and verifies links before changing the default entry point"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Set up root agent instructions for a small research repository that will not have a separate charter file. The owner wants agents to follow their current direction.",
+      "expected_output": "States the main question, deliverable, success criterion, fallback, and exclusions in AGENTS.md; lets current user direction set scope and priorities without ranking it above durable proof on mathematical status; and requires fresh adversarial review before a material new claim is promoted.",
+      "assertions": [
+        "Records mission, success, fallback, and exclusions somewhere durable rather than deleting the charter pointer",
+        "Keeps durable proof above chat or user assertion for mathematical status",
+        "Requires fresh adversarial review before promoting a material new claim",
+        "Replaces every template placeholder"
       ]
     }
   ]

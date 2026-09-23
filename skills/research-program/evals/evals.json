@@ -44,6 +44,62 @@
         "Names the sub-obligation resolved by the parent-owned route",
         "Does not alter theorem dependencies to make the handoff include route context"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Continue a multi-route research program whose live dashboard has grown through twenty dated checkpoint sections. The ledger has a goal-scoped handoff, and the next mathematical move depends on one conditional review.",
+      "expected_output": "Uses a brief goal handoff to locate the live blocker, opens the exact conditional review and source artifacts, continues a distinct route, and keeps the live dashboard current by linking prior checkpoints rather than appending another full narrative.",
+      "assertions": [
+        "Does not load or reproduce all twenty historical dashboard sections",
+        "Inspects the conditional review before treating evidence as settled",
+        "Preserves the original theorem target across route changes",
+        "Keeps historical checkpoint records discoverable"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Close out this authorized multi-route research program without starting new research. Its goal remains open, the live status contains fifteen dated checkpoint narratives, and a flat history index lists many route records. The ledger already records the latest claim and review states.",
+      "expected_output": "Checks the exact recorded evidence and base, writes one linked program synthesis without promoting the open goal, replaces superseded live narratives with a compact current decision view, and proposes or uses a program/route index hierarchy while preserving historical entries and ledger events.",
+      "assertions": [
+        "Does not execute a new mathematical route in a closeout-only request",
+        "Separates the still-open goal from strongest partial results and failed mechanisms",
+        "Links exact proofs, reviews and route records instead of copying them into live status",
+        "Does not add ledger events solely because a closeout occurred",
+        "Keeps old flat index entries and links reachable before changing the default entry point"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Write a retrospective closeout for a 2024 program. Its last recorded route was inconclusive; a valid proof and independent review appeared in 2026. The exact 2024 ledger head is available, but one mission-relevant route cannot be assigned confidently to this or the next program.",
+      "expected_output": "States the outcome supported at the 2024 cutoff separately from the 2026 assessment, cites both checkpoints, leaves the old route outside the program verdict in a linked unclassified inventory, and does not fabricate a 2024 proof or review.",
+      "assertions": [
+        "Records both historical cutoff and later assessment dates and revisions",
+        "Does not backdate the 2026 proof or independent review",
+        "Keeps the inconclusive 2024 outcome distinct from current status",
+        "Preserves the uncertain route with its source and reason outside the program outcome",
+        "Treats unclassified membership as an indexing question, not a mathematical evidence label"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Prepare a retrospective closeout for an old route collection whose dates conflict and whose cutoff revision cannot be recovered. A proof is available now, but there is no evidence that it existed during the old program.",
+      "expected_output": "Marks the historical cutoff and its outcome indeterminate, records the current assessment checkpoint and proof separately, and preserves the old routes without inventing a completion date.",
+      "assertions": [
+        "Marks cutoff provenance unavailable rather than picking a convenient date",
+        "Does not backdate the current proof",
+        "Keeps current proof status separate from the indeterminate historical outcome"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Continue an authorized program. The brief ledger handoff shows one live run constructing a lift for route R from checkpoint P17. Start a parallel obstruction search for R from the same checkpoint; it has a separate owner and disjoint output files.",
+      "expected_output": "Checks the live run's work scope, starts the distinct obstruction search as its own run from P17 with a separate owner and disjoint write scope, and leaves the lift run active for later reconciliation.",
+      "assertions": [
+        "Inspects the existing run before assigning the new one",
+        "Does not treat a live run as a blanket block on distinct parallel work for the same route",
+        "Records separate run identities, owners, base checkpoints and write scopes",
+        "Does not close or abandon the lift run merely to launch the obstruction search"
+      ]
     }
   ]
 }

@@ -15,16 +15,19 @@ transcript.
 
 ## Resolve project context
 
-Determine the repository root first. Read the applicable `AGENTS.md` and only
-the current files relevant to the target. Resolve project roles from the paths
+Determine the repository root first. Read the applicable `AGENTS.md`, the
+current status summary when present, and only the files relevant to the target.
+Search a large status, claims file, or history index for relevant sections
+rather than loading it wholesale. Resolve project roles from the paths
 named there. When not explicit, look for the standard alternatives in
 [project-context.md](references/project-context.md). Interpret every project
 path relative to the repository root, never relative to this installed
 `mathbox:research-attempt` plugin skill (or its standalone installation).
 
-If the project uses `.mathbox/`, use the available `research-state` skill to
-check freshness and obtain the target's dependency closure before trusting a
-status label. Otherwise use the existing prose evidence records. A clean ledger
+If the project uses `.mathbox/`, use the available `research-state` skill's
+brief check and goal handoff, opening full details only for the relevant
+contracts and evidence. Check freshness and the target's dependency closure
+before trusting a status label. Otherwise use the existing prose evidence records. A clean ledger
 is bookkeeping evidence, not mathematical verification.
 
 ## Open the route
@@ -36,8 +39,9 @@ is bookkeeping evidence, not mathematical verification.
    - hypotheses, coefficient domain, grading, variance, signs, finiteness,
      completion, equivariance, and range;
    - current evidence status and dependencies.
-3. Read the research-history index, then open only the nearest relevant record
-   needed to find the first failed or unproved implication.
+3. Search the research-history index for the target and nearby mechanisms,
+   then open only the nearest relevant records needed to find the first failed
+   or unproved implication.
 4. State a falsifiable success criterion, a failure/no-go criterion, and the
    cheapest decisive example, source check, or computation.
 5. Choose one route within the current program. Match it against prior failed
@@ -114,13 +118,27 @@ material blocker, a convention decision, or a claim-supporting computation.
 - Write one self-contained route record in the project-designated research
   records directory, or `research/records/` when none is designated. Use the
   format and filename rules in [route-card.md](references/route-card.md).
-- Append one compact linked entry to the research-history index, normally
-  `RESEARCH_LOG.md`; do not put route details, commands, or dead ends there.
+- Append one compact linked entry to the project-designated route index. In a
+  small flat history this is normally `RESEARCH_LOG.md`; in a sustained
+  program it may be a program/phase index reached from the short top-level
+  history entry point. Do not add the same route to both levels or put route
+  details, commands, or dead ends in an index. If a hierarchical project has
+  no designated route index, resolve that location under its edit rules before
+  appending; do not turn the top-level program entry into a flat route log.
 - Update live status or claim obligations only when project state changed.
 - Treat live status as current state, not chronology. Keep its latest full
   verification summary and link the route record or manifests for older runs.
+  Do not add another full checkpoint story. Replace a stacked dated narrative
+  with current facts and a link only when that narrative already has a durable
+  home (an indexed record, manifest, or closeout) and the project's edit policy
+  permits it. Otherwise leave it in place and report that compaction needs a
+  `research-program` closeout or `mathbox:research-init` migration.
+- In an executable ledger, record only changed contracts, evidence, reviews,
+  and route outcomes. A session alone needs no event. Use a prevalidated batch
+  for several necessary events while preserving their distinct types.
 - Once indexed, keep the record and index entry immutable. Record a correction
-  in a new file with a `Corrects:` link and append a new index entry.
+  in a new file with a `Corrects:` link and append it to the same designated
+  route index. Do not create a program closeout for each attempt.
 - If the index still contains legacy long-form entries, do not rewrite them as
   a side effect of this attempt. Use the new format prospectively and report
   that a `mathbox:research-init` migration remains pending.

@@ -1,7 +1,7 @@
 ---
 name: research-retrospective
 description: >-
-  Reconcile a mathematical research repository's current claims, proofs, computations, status, literature dependencies, and failed routes, then recommend the next bounded research moves. Use only when the user asks for a project review, weekly/monthly retrospective, prioritization, a prose project handoff, or “what should I do next?”. Do not use to operate a .mathbox ledger or to generate its dependency-aware handoff. Default to read-only.
+  Reconcile a mathematical research repository's current claims, proofs, computations, status, literature dependencies, and failed routes, then recommend the next bounded research moves. Use only when the user asks for a project review, weekly/monthly retrospective, prioritization, a prose project handoff, or “what should I do next?”. Do not use to write a program closeout, migrate research history, operate a .mathbox ledger, or generate its dependency-aware handoff. Default to read-only.
 ---
 
 # Research retrospective
@@ -17,17 +17,21 @@ Default to no edits unless the user asks to reconcile files.
    record directory.
    Verify that referenced live-role paths exist and expose competing aliases or
    broken authority links.
-3. Read current summaries and the compact history index first, then open only
-   the proof or research records needed to verify conflicts or load-bearing
-   claims.
+3. Read the current summary and search the compact history index for relevant
+   routes. Do not load a long dashboard, claims inventory or index in full just
+   to find the latest state. Open only the proof or research records needed to
+   verify conflicts or load-bearing claims.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
    authority conflicts.
 5. Compare the live dashboard's review/checkpoint revision with later changes to
    authoritative manuscripts, proofs and declared deliverables. A stale date is
    a prompt to inspect, not by itself proof that the mathematics changed.
 
-If `.mathbox/` is present, use the available `research-state` skill's read-only
-check, impact and handoff commands. Reconstruct affected proofs from artifacts;
+If `.mathbox/` is present, use the available `research-state` skill's brief
+read-only check and goal handoff, then inspect full details for affected claims,
+review conditions and routes. Use `impact CLAIM` for a named claim's
+dependents and `pin-impact PATH` for the pins of a named file. Reconstruct
+affected proofs from artifacts;
 do not merely repeat generated labels. Do not initialize or migrate state as a
 side effect of a read-only retrospective.
 

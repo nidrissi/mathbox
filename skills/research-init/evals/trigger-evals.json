@@ -8,6 +8,26 @@
     "should_trigger": true
   },
   {
+    "query": "Rework this project's oversized AGENTS.md and live status into a compact research repository setup.",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan a safe migration of this research repository's oversized status, agent instructions, and existing ledger without editing yet.",
+    "should_trigger": true
+  },
+  {
+    "query": "Migrate our existing mathematical research handoff into one current dashboard while preserving dated history.",
+    "should_trigger": true
+  },
+  {
+    "query": "Retrofit our long flat research log into a compact program index and linked route indexes.",
+    "should_trigger": true
+  },
+  {
+    "query": "Migrate our flat research log's old routes into program indexes with retrospective closeouts, keeping unassigned routes discoverable.",
+    "should_trigger": true
+  },
+  {
     "query": "Use the mathbox plugin to initialize this mathematical research repository.",
     "should_trigger": true
   },
@@ -24,7 +44,19 @@
     "should_trigger": false
   },
   {
+    "query": "Record the outcome of this single bounded research route in its existing phase index.",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize what changed in the current research status, without editing the repository.",
+    "should_trigger": false
+  },
+  {
     "query": "Run the tests.",
+    "should_trigger": false
+  },
+  {
+    "query": "Close out the finished descent program and compact its live status, without restructuring the history index.",
     "should_trigger": false
   }
 ]

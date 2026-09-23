@@ -35,6 +35,23 @@ labels such as `proof-recorded` and `source-recorded` describe mechanically
 current evidence; they do not certify a proof or replace a project's promotion
 policy.
 
+In v3.1, human-facing ledger and repository-inspector reports open with a brief
+view; complete Markdown and JSON remain available on demand. The ledger also
+supports prevalidated batches of distinct events and a read-only query for
+claims affected by a pinned file. Repository setup now keeps mutable progress
+out of root instructions and old checkpoint prose out of the live dashboard.
+For an existing repository, `research-init` now provides a reviewed,
+[pin-aware migration workflow](skills/research-init/references/existing-repo-migration.md)
+for its instructions and live research state; it does not rewrite ledger events
+or turn historical prose into proof automatically.
+Program closeout now links one checked synthesis to route records, while a
+program-level history entry point keeps growing route indexes out of routine
+context; small projects may retain a flat index.
+
+```text
+$mathbox:research-init Plan a migration of this repository's AGENTS.md and live status; preserve history and inspect ledger pins before editing.
+```
+
 Start a sustained investigation with:
 
 ```text
@@ -156,9 +173,9 @@ install SageMath, LaTeX, or other project dependencies.
 
 | Plugin skill | Purpose | Selection |
 |---|---|---|
-| [`mathbox:research-program`](skills/research-program/) | Pursue a substantial research goal across successive, distinct routes | matching sustained research request |
+| [`mathbox:research-program`](skills/research-program/) | Pursue or close out a substantial program across distinct routes, preserving compact current state | matching sustained research or closeout request |
 | [`mathbox:research-state`](skills/research-state/) | Track claim revisions, evidence freshness and dependency impact | existing ledger or tracking request |
-| [`mathbox:research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
+| [`mathbox:research-init`](skills/research-init/) | Initialize or migrate a mathematical research repository's agent architecture | explicit request |
 | [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
 | [`mathbox:proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
 | [`mathbox:literature-check`](skills/literature-check/) | Verify or locally cache an external result, citation, notation translation, or bounded novelty claim | automatic |
@@ -180,8 +197,8 @@ forms refer only to standalone installations.
 
 | The task is primarily… | Use |
 |---|---|
-| setting up the research repository or revising its agent architecture | `mathbox:research-init` |
-| pursuing a substantial goal across successive approaches | `mathbox:research-program` |
+| setting up the research repository, revising its agent architecture, or migrating its history across programs | `mathbox:research-init` |
+| pursuing a substantial goal across successive approaches, or closing out one program or phase | `mathbox:research-program` |
 | checking evidence freshness, dependency impact or a ledger handoff | `mathbox:research-state` |
 | developing new mathematics along one controlled route | `mathbox:research-attempt` |
 | deciding whether an existing argument is correct as written | `mathbox:proof-audit` |
@@ -189,7 +206,7 @@ forms refer only to standalone installations.
 | obtaining or assessing finite computational evidence | `mathbox:computation-audit` |
 | transferring a validated result into the live paper | `mathbox:manuscript-integrate` |
 | correcting grammar, typography, LaTeX, references, or forced local typos | `mathbox:proofread-math` |
-| reviewing the project portfolio and deciding what to try next | `mathbox:research-retrospective` |
+| reviewing the project portfolio and deciding what to try next, read-only | `mathbox:research-retrospective` |
 
 Important boundaries:
 

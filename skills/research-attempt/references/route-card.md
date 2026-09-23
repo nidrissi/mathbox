@@ -38,7 +38,11 @@ collision, append `-2`, then `-3`, and so on. Use the checkpoint date; for
 migrated legacy entries, add a `Date provenance:` field when the date was
 inferred or unavailable.
 
-Append one line to the history index, with a link relative to that index:
+Append one line to the designated route index, with a link relative to that
+index. A sustained program may use a program/phase route index linked from the
+short top-level history entry point; do not duplicate the route line there.
+The path below illustrates a root-level `RESEARCH_LOG.md`; adjust its relative
+path for a nested index:
 
 ```markdown
 - YYYY-MM-DD — [Short title](research/records/YYYY-MM-DD-normalized-title.md) — **evidence label** — One-sentence strongest result or blocker.

@@ -16,6 +16,10 @@
     "should_trigger": true
   },
   {
+    "query": "Batch these claim and evidence proposals into the .mathbox journal, then show which claims pin this manuscript file.",
+    "should_trigger": true
+  },
+  {
     "query": "Explain the definition of a chain complex.",
     "should_trigger": false
   },

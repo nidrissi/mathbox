@@ -75,6 +75,39 @@
         "Separates the implemented sample from the full claim",
         "Names full enumeration or a coverage lemma as the decisive next step"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "Run one bounded route in a project with a 1,000-line status dashboard, a compact linked history index and an initialized ledger. The route finds no new mathematical evidence and only reconfirms the current blocker.",
+      "expected_output": "Searches the current summary and relevant history records without loading the entire dashboard, reports the unchanged blocker, and does not create redundant claim, evidence, review or checkpoint entries merely because a session occurred.",
+      "assertions": [
+        "Uses the relevant current status and ledger closure",
+        "Does not read unrelated historical checkpoint narratives",
+        "Does not append a route record or ledger event without a material state change",
+        "Does not promote the unchanged blocker"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "A bounded route in a sustained program finds a reusable obstruction. Project instructions designate RESEARCH_LOG.md as a short program entry point and research/indexes/phase-b.md as this route's index. Persist the result without closing the overall program.",
+      "expected_output": "Writes one durable route record and one compact linked outcome in the designated phase-b index, leaves the top-level program entry point unchanged, and does not create a program closeout or duplicate route line.",
+      "assertions": [
+        "Uses the project-designated route index rather than assuming a root-level flat log",
+        "Constructs the route link relative to the nested index",
+        "Does not duplicate the route line in the top-level program entry point",
+        "Does not close the mathematical goal merely because the route ended"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Run one bounded route and persist its result. The project's edit policy lets agents edit the live status, which stacks six dated checkpoint narratives; only the two most recent have indexed research records.",
+      "expected_output": "Records the new route in one durable record and index entry, updates the current facts, replaces only narratives that already have a durable home with links, leaves the four unrecorded narratives intact, and reports that compacting them needs a closeout or migration.",
+      "assertions": [
+        "Does not add another full checkpoint story to the live status",
+        "Replaces a dated narrative with a link only when its durable record exists",
+        "Does not delete or silently summarize unrecorded historical narratives",
+        "Reports the remaining compaction as a separate closeout or migration step"
+      ]
     }
   ]
 }

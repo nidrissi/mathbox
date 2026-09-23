@@ -12,6 +12,18 @@
     "should_trigger": true
   },
   {
+    "query": "Continue this research program across the remaining routes and maintain a concise current handoff.",
+    "should_trigger": true
+  },
+  {
+    "query": "Close out this completed research phase and compact its status and route history without starting another proof attempt.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a retrospective closeout for the finished descent program, keeping its historical outcome separate from later proofs.",
+    "should_trigger": true
+  },
+  {
     "query": "Audit the proof of Lemma 2.",
     "should_trigger": false
   },
@@ -25,6 +37,10 @@
   },
   {
     "query": "Record the failed route and its obstruction in the ledger.",
+    "should_trigger": false
+  },
+  {
+    "query": "Migrate our flat research log into program indexes, with a retrospective closeout for each old program.",
     "should_trigger": false
   }
 ]

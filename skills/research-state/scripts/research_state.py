@@ -7,6 +7,7 @@ Python 3.10+, standard library only. See ../references/ledger.md for the contrac
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
@@ -72,6 +73,11 @@ def inside(root, name):
         require(not current.is_symlink(), f"symlink not supported: {name}")
     require(current.resolve().is_relative_to(root), f"path escapes project: {name}")
     return current
+
+
+def pinned_path(name):
+    """Lexical spelling used to compare recorded pins, e.g. ./a//b.md -> a/b.md."""
+    return Path(name).as_posix()
 
 
 def text_field(obj, key):
@@ -479,7 +485,8 @@ class Ledger:
         actual = file_hash(path)
         if "sha256" in artifact:
             require(artifact["sha256"] == actual, "supplied artifact hash differs from disk")
-        return dict(artifact, sha256=actual)
+        # One stored spelling per file, so later path lookups compare like with like.
+        return dict(artifact, path=path.relative_to(self.root).as_posix(), sha256=actual)
 
     def pin_computation_manifest(self, artifact, claim):
         """Pin a manifest plus the exact input/output closure it declares.
@@ -538,56 +545,99 @@ class Ledger:
         require(len(paths) == len(set(paths)), "manifest artifact paths must be unique")
         return pinned, pinned_inputs, pinned_outputs
 
-    def record(self, proposal):
-        require(self.base.is_dir(), "ledger not initialized")
+    def prepare_event(self, proposal, state):
         require(isinstance(proposal, dict) and set(proposal) == {"type", "actor", "payload"},
                 "proposal fields must be type, actor, payload")
+        event = json.loads(json.dumps(proposal))
+        require(isinstance(event["payload"], dict), "payload must be an object")
+        p = event["payload"]
+        if event["type"] == "claim" and "statement_artifact" in p:
+            require(isinstance(p["statement_artifact"], dict),
+                    "statement artifact must be an object")
+            text_field(p["statement_artifact"], "locator")
+            p["statement_artifact"] = self.pin(p["statement_artifact"])
+        elif event["type"] == "evidence":
+            require(p.get("claim") in state["claims"], "unknown evidence claim")
+            require(isinstance(p.get("artifacts", []), list), "artifacts must be a list")
+            p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
+            if p.get("kind") == "computation" and "manifest" in p:
+                p["manifest"], p["manifest_inputs"], p["manifest_outputs"] = \
+                    self.pin_computation_manifest(p["manifest"], p["claim"])
+            p["snapshot"] = snapshot(state["claims"], p["claim"])
+        elif event["type"] == "review":
+            p["artifact"] = self.pin(p.get("artifact"))
+            target = state["evidence"].get(p.get("evidence"))
+            require(target is not None, "unknown evidence to review")
+            require(not evidence_issues(self.root, state, target), "cannot review stale evidence; record fresh evidence first")
+        elif event["type"] == "run-result":
+            require(isinstance(p.get("artifacts", []), list),
+                    "run result artifacts must be a list")
+            p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
+        number = len(state["events"]) + 1
+        event.update(event_id=f"E{number:06d}",
+                     created_at=datetime.now(timezone.utc).isoformat(),
+                     previous=next(reversed(state["events"].values()))["sha256"] if state["events"] else None)
+        apply(state, event)
+        event["sha256"] = digest(event)
+        return event
+
+    def write_event(self, event):
+        # A complete file becomes visible atomically; writers serialize via the lock.
+        fd, temp = tempfile.mkstemp(prefix="pending-", dir=self.base)
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                stream.write(json.dumps(event, indent=2, ensure_ascii=False) + "\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+            dest = self.events / f"{int(event['event_id'][1:]):06d}.json"
+            require(not dest.exists(), "event collision")
+            os.replace(temp, dest)
+        finally:
+            Path(temp).unlink(missing_ok=True)
+
+    def record_many(self, proposals, dry_run=False):
+        require(self.base.is_dir(), "ledger not initialized")
+        require(isinstance(proposals, list) and proposals, "batch must be a nonempty list")
         with self.lock():
             state = self.read()
-            event = json.loads(json.dumps(proposal))
-            require(isinstance(event["payload"], dict), "payload must be an object")
-            p = event["payload"]
-            if event["type"] == "claim" and "statement_artifact" in p:
-                require(isinstance(p["statement_artifact"], dict),
-                        "statement artifact must be an object")
-                text_field(p["statement_artifact"], "locator")
-                p["statement_artifact"] = self.pin(p["statement_artifact"])
-            elif event["type"] == "evidence":
-                require(p.get("claim") in state["claims"], "unknown evidence claim")
-                require(isinstance(p.get("artifacts", []), list), "artifacts must be a list")
-                p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
-                if p.get("kind") == "computation" and "manifest" in p:
-                    p["manifest"], p["manifest_inputs"], p["manifest_outputs"] = \
-                        self.pin_computation_manifest(p["manifest"], p["claim"])
-                p["snapshot"] = snapshot(state["claims"], p["claim"])
-            elif event["type"] == "review":
-                p["artifact"] = self.pin(p.get("artifact"))
-                target = state["evidence"].get(p.get("evidence"))
-                require(target is not None, "unknown evidence to review")
-                require(not evidence_issues(self.root, state, target), "cannot review stale evidence; record fresh evidence first")
-            elif event["type"] == "run-result":
-                require(isinstance(p.get("artifacts", []), list),
-                        "run result artifacts must be a list")
-                p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
-            number = len(state["events"]) + 1
-            event.update(event_id=f"E{number:06d}",
-                         created_at=datetime.now(timezone.utc).isoformat(),
-                         previous=next(reversed(state["events"].values()))["sha256"] if state["events"] else None)
-            apply(state, event)
-            event["sha256"] = digest(event)
-            # A complete file becomes visible atomically; writers serialize via the lock.
-            fd, temp = tempfile.mkstemp(prefix="pending-", dir=self.base)
-            try:
-                with os.fdopen(fd, "w", encoding="utf-8") as stream:
-                    stream.write(json.dumps(event, indent=2, ensure_ascii=False) + "\n")
-                    stream.flush()
-                    os.fsync(stream.fileno())
-                dest = self.events / f"{number:06d}.json"
-                require(not dest.exists(), "event collision")
-                os.replace(temp, dest)
-            finally:
-                Path(temp).unlink(missing_ok=True)
-            return event
+            aliases, events = {}, []
+
+            def resolve(value):
+                if isinstance(value, dict) and set(value) == {"$event"}:
+                    alias = value["$event"]
+                    require(isinstance(alias, str) and alias in aliases,
+                            f"unknown or forward batch event alias: {alias}")
+                    return aliases[alias]
+                if isinstance(value, dict):
+                    return {key: resolve(item) for key, item in value.items()}
+                if isinstance(value, list):
+                    return [resolve(item) for item in value]
+                return value
+
+            for proposal in proposals:
+                require(isinstance(proposal, dict), "each batch proposal must be an object")
+                alias = proposal.get("alias")
+                require(alias is None or isinstance(alias, str) and
+                        bool(re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,79}", alias)) and alias not in aliases,
+                        "batch aliases must be unique identifiers")
+                clean = {key: value for key, value in proposal.items() if key != "alias"}
+                event = self.prepare_event(resolve(clean), state)
+                events.append(event)
+                if alias is not None:
+                    aliases[alias] = event["event_id"]
+            if not dry_run:
+                for event in events:
+                    try:
+                        self.write_event(event)
+                    except (OSError, LedgerError) as exc:
+                        raise LedgerError("batch append interrupted; a valid event prefix may remain; "
+                                          f"inspect the journal head before retrying: {exc}") from exc
+            return events
+
+    def record(self, proposal):
+        require(isinstance(proposal, dict) and set(proposal) == {"type", "actor", "payload"},
+                "proposal fields must be type, actor, payload")
+        return self.record_many([proposal])[0]
 
 
 def artifact_issues(root, artifacts):
@@ -845,6 +895,21 @@ def restrict(projection, state, selected):
                         if i["event"] in events | lifecycle_events])
 
 
+def run_attention(projection):
+    """Runs a resuming agent must act on, with notes: live, stale, or unreconciled."""
+    reconciled = {result for item in projection.get("reconciliations", [])
+                  for result in item["results"]}
+    attention = {}
+    for key, run in projection.get("runs", {}).items():
+        terminal = run["terminal"]
+        notes = [f"result {terminal['event_id']} unreconciled"] \
+            if terminal and terminal["event_id"] not in reconciled else []
+        if not terminal or notes or run["status"] == "stale-result":
+            attention[key] = notes
+    return dict(sorted(attention.items(), key=lambda item: (
+        projection["runs"][item[0]]["status"] != "stale-result", not item[1], item[0])))
+
+
 def markdown(projection, routes=None, closed=None):
     def cell(value):
         return str(value).replace("|", "\\|").replace("\n", " ")
@@ -882,8 +947,10 @@ def markdown(projection, routes=None, closed=None):
             lines.append(f"- {p['id']} ({p['status']}): goal {p['goal']}; base {p['base_event']} at {p['base_revision']}; last observed {p['last_observed']['event_id']}")
     if projection["runs"]:
         lines += ["", "## Route executions", ""]
+        attention = run_attention(projection)
         for run in projection["runs"].values():
-            lines.append(f"- {run['id']} ({run['status']}): route {run['route']}; base {run['base_event']} at {run['base_revision']}; last observed {run['last_observed']['event_id']}")
+            notes = "".join(f"; {note}" for note in attention.get(run["id"], []))
+            lines.append(f"- {run['id']} ({run['status']}): route {run['route']}; base {run['base_event']} at {run['base_revision']}; last observed {run['last_observed']['event_id']}{notes}")
     if projection["reconciliations"]:
         lines += ["", "## Reconciliations", ""]
         for item in projection["reconciliations"]:
@@ -905,22 +972,188 @@ def markdown(projection, routes=None, closed=None):
     return "\n".join(lines) + "\n"
 
 
+def brief_markdown(projection, routes=None, closed=None):
+    claims = projection["claims"]
+    statuses = Counter(claim["status"] for claim in claims.values())
+    issues = projection["issues"]
+    lines = ["# Research state: brief view", "",
+             "Recorded evidence only; inspect the exact artifacts before a mathematical verdict.", "",
+             f"Events: {projection['events']}; selected claims: {len(claims)}; "
+             f"integrity/freshness issues: {len(issues)}.",
+             "Evidence states: " + (", ".join(f"{key} {count}" for key, count in sorted(statuses.items())) or "none") + "."]
+    candidates = sorted(claims.items(), key=lambda item: (item[1]["status"] in SUPPORTING_STATUSES, item[0]))
+    if candidates:
+        lines += ["", "## Claim sample", ""]
+        for key, claim in candidates[:10]:
+            blocked = claim["blocked_by"]
+            blockers = ", ".join(blocked[:6]) or "none"
+            if len(blocked) > 6:
+                blockers += f", … {len(blocked) - 6} more"
+            lines.append(f"- {key}: {claim['status']}; review {claim['review']}; "
+                         f"blocked by {blockers}")
+        if len(candidates) > 10:
+            lines.append(f"- … {len(candidates) - 10} more claims; use --full or --json for details.")
+    active_reviews = [(key, rid, review) for key, claim in sorted(claims.items())
+                      for rid, review in claim["reviews"].items()
+                      if review["outcome"] != "pass" or review["issues"]]
+    if active_reviews:
+        lines += ["", f"## Review conditions ({len(active_reviews)})", ""]
+        for key, rid, review in active_reviews[:8]:
+            lines.append(f"- {rid} on {key}: {review['outcome']}; report {review['artifact']['path']}")
+        if len(active_reviews) > 8:
+            lines.append(f"- … {len(active_reviews) - 8} more review conditions; use --full or --json.")
+    if issues:
+        lines += ["", "## Issue sample", ""]
+        for issue in issues[:8]:
+            detail = issue["issue"]
+            if len(detail) > 180:
+                detail = detail[:177] + "…"
+            lines.append(f"- {issue['event']}: {detail}")
+        if len(issues) > 8:
+            lines.append(f"- … {len(issues) - 8} more issues; use --full or --json for all.")
+    programs, runs = projection.get("programs", {}), projection.get("runs", {})
+    reconciliations = projection.get("reconciliations", [])
+    attention = run_attention(projection)
+    if programs or runs or reconciliations:
+        def by_status(items):
+            counts = Counter(item["status"] for item in items.values())
+            detail = ", ".join(f"{key} {count}" for key, count in sorted(counts.items()))
+            return f"{len(items)} ({detail})" if items else "0"
+        lines += ["", "## Executions", "",
+                  f"Programs: {by_status(programs)}; runs: {by_status(runs)}; "
+                  f"reconciliations: {len(reconciliations)}; "
+                  f"runs needing attention: {len(attention)}."]
+        live = [f"{key} ({program['status']})" for key, program in sorted(programs.items())
+                if program["terminal"] is None]
+        if live:
+            lines.append("Open programs: " + ", ".join(live[:8])
+                         + (f", … {len(live) - 8} more" if len(live) > 8 else "") + ".")
+        for key, notes in list(attention.items())[:8]:
+            run = runs[key]
+            lines.append(f"- {key}: " + "; ".join(
+                [run["status"], f"route {run['route']}", f"program {run['program']}", *notes]))
+        if len(attention) > 8:
+            lines.append(f"- … {len(attention) - 8} more runs needing attention; use --full or --json.")
+    route_runs = {}
+    for key in attention:
+        route_runs.setdefault(runs[key]["route"], []).append(f"{key} ({runs[key]['status']})")
+    if routes is not None:
+        lines += ["", f"## Open routes ({len(routes)})", ""]
+        for route in routes[:8]:
+            targets = sorted(route_targets(route))
+            resolves = ", ".join(targets[:6])
+            if len(targets) > 6:
+                resolves += f", … {len(targets) - 6} more"
+            active = route_runs.get(route["id"], [])
+            if active:
+                resolves += "; runs " + ", ".join(active[:3])
+                if len(active) > 3:
+                    resolves += f", … {len(active) - 3} more"
+            lines.append(f"- {route['id']}: {'ready' if route['ready'] else 'blocked'}; "
+                         f"resolves {resolves}")
+        if len(routes) > 8:
+            lines.append(f"- … {len(routes) - 8} more routes; use --full or --json for all.")
+    if closed is not None:
+        lines += ["", f"## Closed routes ({len(closed)})", ""]
+        for route in closed[-8:]:
+            result = route["result"]
+            lines.append(f"- {route['id']}: {result['outcome']} at {result['event_id']}")
+        if len(closed) > 8:
+            lines.append(f"- … {len(closed) - 8} earlier results; use --full or --json.")
+    if projection["route_context"]:
+        lines.append(f"Route-context claims: {len(projection['route_context'])}; use --full for their contracts.")
+    return "\n".join(lines) + "\n"
+
+
+def pin_impact(state, path):
+    """Active pins of one normalized path, found lexically without hashing artifacts."""
+    def pins(artifacts):
+        return any(pinned_path(item["path"]) == path for item in artifacts)
+
+    inactive = state["retracted"] | state["superseded"]
+    direct, evidence_ids, review_ids, result_ids = set(), set(), set(), set()
+    for key, claim in state["claims"].items():
+        if "statement_artifact" in claim and pins([claim["statement_artifact"]]):
+            direct.add(key)
+    for eid, event in state["evidence"].items():
+        if eid not in inactive and pins(evidence_artifacts(event["payload"])):
+            direct.add(event["payload"]["claim"])
+            evidence_ids.add(eid)
+    for rid, event in state["reviews"].items():
+        target = event["payload"]["evidence"]
+        if rid not in state["retracted"] and target not in inactive \
+                and pins([event["payload"]["artifact"]]):
+            direct.add(state["evidence"][target]["payload"]["claim"])
+            review_ids.add(rid)
+    # Run results are hash-checked too; a change makes the run stale-result.
+    for eid, event in state["run_results"].items():
+        if pins(event["payload"].get("artifacts", [])):
+            result_ids.add(eid)
+    dependencies = dependency_map(state["claims"])
+    dependents = {key for key, closure_ids in dependencies.items()
+                  if key not in direct and closure_ids & direct}
+    return {"path": path, "direct_claims": sorted(direct),
+            "dependent_claims": sorted(dependents),
+            "evidence_events": sorted(evidence_ids), "review_events": sorted(review_ids),
+            "run_result_events": sorted(result_ids),
+            "runs": sorted({state["run_results"][eid]["payload"]["run"] for eid in result_ids})}
+
+
+def event_pins(event):
+    """Artifacts an event pins, so a receipt can show what a dry-run would bind."""
+    p, kind = event["payload"], event["type"]
+    if kind == "claim":
+        return [p["statement_artifact"]] if "statement_artifact" in p else []
+    if kind == "evidence":
+        return evidence_artifacts(p)
+    if kind == "review":
+        return [p["artifact"]]
+    if kind == "run-result":
+        return p.get("artifacts", [])
+    return []
+
+
+def receipt(event):
+    payload = event["payload"]
+    identity = next((payload[key] for key in
+                     ("id", "claim", "route", "evidence", "target", "run", "program")
+                     if key in payload), None)
+    result = {"event_id": event["event_id"], "type": event["type"],
+              "subject": identity, "sha256": event["sha256"]}
+    pins = [{"path": item["path"], "sha256": item["sha256"]} for item in event_pins(event)]
+    if pins:
+        result["pins"] = pins[:8]
+        if len(pins) > 8:
+            result["pins_omitted"] = len(pins) - 8
+    return result
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument("--json", action="store_true")
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("init")
-    check = commands.add_parser("check")
+    commands.add_parser("init", help="initialize a new ledger")
+    check = commands.add_parser("check", help="check freshness and integrity; brief by default")
     check.add_argument("--summary", action="store_true")
-    commands.add_parser("status")
-    record = commands.add_parser("record")
+    check.add_argument("--full", action="store_true")
+    status = commands.add_parser("status", help="show recorded claim state; brief by default")
+    status.add_argument("--full", action="store_true")
+    record = commands.add_parser("record", help="append one proposal and print a receipt")
     record.add_argument("proposal", type=Path)
+    batch = commands.add_parser("record-batch", help="prevalidate and append distinct proposals in one pass")
+    batch.add_argument("proposals", type=Path)
+    batch.add_argument("--dry-run", action="store_true")
     for name in ("next", "handoff"):
-        sub = commands.add_parser(name)
+        sub = commands.add_parser(name, help="show goal routes or a brief goal handoff")
         sub.add_argument("--goal")
-    sub = commands.add_parser("impact")
+        if name == "handoff":
+            sub.add_argument("--full", action="store_true")
+    sub = commands.add_parser("impact", help="list dependents of one claim")
     sub.add_argument("claim")
+    sub = commands.add_parser("pin-impact", help="show claim and evidence pins of one project file")
+    sub.add_argument("path")
+    sub.add_argument("--full", action="store_true")
     args = parser.parse_args(argv)
     try:
         ledger = Ledger(args.root)
@@ -929,15 +1162,44 @@ def main(argv=None):
             print(json.dumps({"initialized": str(ledger.base)}))
             return 0
         if args.command == "record":
-            print(json.dumps(ledger.record(json.loads(args.proposal.read_text(encoding="utf-8"))), indent=2, ensure_ascii=False))
+            event = ledger.record(json.loads(args.proposal.read_text(encoding="utf-8")))
+            print(json.dumps(event if args.json else receipt(event), ensure_ascii=False))
+            return 0
+        if args.command == "record-batch":
+            events = ledger.record_many(json.loads(args.proposals.read_text(encoding="utf-8")),
+                                        dry_run=args.dry_run)
+            if args.json:
+                output = {"dry_run": args.dry_run, "events": events}
+            else:
+                output = {"dry_run": args.dry_run, "count": len(events),
+                          "first_event": events[0]["event_id"], "last_event": events[-1]["event_id"],
+                          "types": dict(sorted(Counter(e["type"] for e in events).items())),
+                          "sample": [receipt(e) for e in events[:8]],
+                          "receipts_omitted": max(0, len(events) - 8)}
+            print(json.dumps(output, ensure_ascii=False))
             return 0
         state = ledger.read()
+        # Dependency lookups need no artifact hashing, so they skip the projection.
+        if args.command == "impact":
+            output = {"claim": args.claim, "dependents": impact(state["claims"], args.claim)}
+            print(json.dumps(output, indent=2, ensure_ascii=False))
+            return 0
+        if args.command == "pin-impact":
+            path = inside(ledger.root, args.path).relative_to(ledger.root).as_posix()
+            output = pin_impact(state, path)
+            if args.json or args.full:
+                print(json.dumps(output, indent=2, ensure_ascii=False))
+            else:
+                lists = {key: value for key, value in output.items() if isinstance(value, list)}
+                print(json.dumps({"path": path,
+                                  "counts": {key: len(value) for key, value in lists.items()},
+                                  "samples": {key: value[:8] for key, value in lists.items()},
+                                  "detail_command": "--json pin-impact PATH"}, ensure_ascii=False))
+            return 0
         projection = project(ledger.root, state)
         routes = None
         closed = None
-        if args.command == "impact":
-            output = {"claim": args.claim, "dependents": impact(state["claims"], args.claim)}
-        elif args.command in {"next", "handoff"}:
+        if args.command in {"next", "handoff"}:
             routes = next_routes(state, projection, args.goal)
             if args.goal:
                 projection = restrict(projection, state, closure(state["claims"], args.goal))
@@ -946,22 +1208,28 @@ def main(argv=None):
                 output = {"state": projection, "routes": routes, "closed_routes": closed}
             else:
                 output = routes
-        elif args.command == "check" and args.summary:
+        elif args.command == "check" and (args.summary or not (args.json or args.full)):
             statuses = {}
             reviews = {}
             for claim in projection["claims"].values():
                 statuses[claim["status"]] = statuses.get(claim["status"], 0) + 1
                 reviews[claim["review"]] = reviews.get(claim["review"], 0) + 1
+            issues = projection["issues"]
+            shown = issues if args.full else issues[:8]
             output = {"events": projection["events"], "claims": len(projection["claims"]),
                       "statuses": dict(sorted(statuses.items())),
                       "review_statuses": dict(sorted(reviews.items())),
-                      "issues": projection["issues"]}
+                      "issue_count": len(issues), "issues": shown,
+                      "issues_omitted": len(issues) - len(shown),
+                      "detail_command": "--json check" if not args.full else None}
         else:
             output = projection
-        if args.json or args.command in {"next", "impact", "check"}:
+        if args.json or args.command in {"next", "check"}:
             print(json.dumps(output, indent=2, ensure_ascii=False))
-        else:
+        elif getattr(args, "full", False):
             print(markdown(projection, routes, closed), end="")
+        else:
+            print(brief_markdown(projection, routes, closed), end="")
         return 1 if args.command == "check" and projection["issues"] else 0
     except (LedgerError, OSError, ValueError, TypeError, KeyError) as exc:
         print(f"research-state: {exc}", file=sys.stderr)

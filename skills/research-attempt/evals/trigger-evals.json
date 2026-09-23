@@ -8,6 +8,14 @@
     "should_trigger": true
   },
   {
+    "query": "Test one bounded route against the current blocker in this research repository.",
+    "should_trigger": true
+  },
+  {
+    "query": "Run one bounded proof route in a program with a separate phase-level route index.",
+    "should_trigger": true
+  },
+  {
     "query": "Look up the exact hypotheses of Theorem 4.3 in the cited paper.",
     "should_trigger": false
   },
@@ -21,6 +29,10 @@
   },
   {
     "query": "Pursue the conjecture across many approaches and keep trying after failed routes.",
+    "should_trigger": false
+  },
+  {
+    "query": "Migrate our entire flat research-history index into a program-level hierarchy.",
     "should_trigger": false
   }
 ]
