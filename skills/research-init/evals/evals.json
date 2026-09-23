@@ -130,6 +130,18 @@
         "Does not turn uncertain historical material into a current program result",
         "Checks links and source-to-destination coverage before replacing the live entry point"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "Migrate a 2023 flat research log into program indexes. A theorem was proved only in a 2025 revision; the 2023 program cutoff is inferred from Git history, and two mission-relevant route entries have no defensible program assignment. Preserve all old links.",
+      "expected_output": "Builds retrospective closeouts that label the 2023 cutoff as inferred and distinguish the 2025 assessment, preserves the two routes in a linked unclassified inventory, reconciles every old entry to a program, unclassified inventory, or quarantine, and retains the old index and working links.",
+      "assertions": [
+        "Does not turn first Git appearance into a certain mathematical completion date",
+        "Does not backdate the 2025 proof to a 2023 closeout",
+        "Keeps mission-relevant but unassigned routes linked and outside program verdicts",
+        "Uses quarantine only for foreign or mission-ambiguous material",
+        "Accounts for all old entries and verifies links before changing the default entry point"
+      ]
     }
   ]
 }

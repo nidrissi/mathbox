@@ -13,8 +13,16 @@ summary. Search the designated history entry point for the program, then open
 its route index and only the records needed for decisive or conflicting
 outcomes. With a ledger, use a brief goal handoff and freshness check; inspect
 full contracts, active review reports, and artifacts for every status used in
-the synthesis. Record the base Git revision or ledger head and the relevant
-pre-existing issue IDs. Do not infer proof from a generated label.
+the synthesis. Record the assessment Git revision or ledger head and the
+relevant pre-existing issue IDs. Do not infer proof from a generated label.
+
+For a retrospective closeout, record two distinct provenance points: the
+historical cutoff (date and exact Git revision or ledger event when available)
+and the migration-time assessment (date and current revision/head). Say whether
+the cutoff date was recorded, inferred from Git, or unavailable. A first Git
+appearance is only a bound on when text was present, not proof of when the
+mathematics was established. If the cutoff cannot be identified, mark it
+unknown and do not manufacture an as-of verdict.
 
 ## Write one durable closeout
 
@@ -24,15 +32,32 @@ program/phase identifier and link the exact authoritative artifacts. Use the
 remove empty fields rather than filling them with speculation. State:
 
 - original target and whether it was reached, partially advanced, refuted, or
-  remains open, with exact hypotheses, range and evidence/review conditions;
-- the strongest surviving results and claim IDs, each linked to its proof,
-  source check, or bounded computation rather than reprinting them;
-- decisive closed mechanisms and their first failed implication, plus the new
-  mathematical input required to reopen any of them;
+  remained open at the cutoff, with exact hypotheses, range and then-known
+  evidence/review conditions;
+- the strongest results supported at the cutoff and their claim IDs, each
+  linked to its proof, source check, or bounded computation rather than
+  reprinting them;
+- mechanisms closed by the cutoff and their first failed implication, plus the
+  new mathematical input required to reopen any of them;
 - unresolved dependencies, active route, cheapest discriminating next action,
   and any conflicting review or stale evidence;
-- base revision/ledger head, relevant verification scope, and links to the
-  route index or records that support the synthesis.
+- cutoff and assessment identifiers, relevant verification scope, and links
+  to the route index or records that support the synthesis.
+
+State the program outcome **as of the historical cutoff** using only evidence
+then recorded or otherwise provenance-checked. Separately state what the
+migration-time review establishes now, including later proofs, retractions,
+reviews, and stale artifacts. A later proof must not retroactively turn an
+earlier open program into a completed one. For a contemporaneous closeout,
+identify the cutoff and assessment as the same checkpoint; omit a redundant
+later-assessment narrative.
+
+If a legacy route is mission-relevant but its program membership cannot be
+established, leave it in a linked unclassified-route inventory with its source
+span and reason. Do not count it as a route of this program or silently call
+it failed, successful, or irrelevant. Unknown mission relevance instead follows
+the reviewed legacy-log quarantine policy in `research-init`. Unclassified is
+an index-migration state, not a mathematical evidence label.
 
 Do not add a claim/evidence/review ledger event solely for a closeout. Record
 one only when the mathematical state actually changed, under `research-state`

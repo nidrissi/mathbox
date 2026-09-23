@@ -43,6 +43,8 @@
   closeouts and route indexes, without repeating all route lines at the top.
 - Program closeouts preserve the original target, strongest surviving result,
   first failed steps, evidence/review conditions, and next decision with links.
+- Retrospective closeouts distinguish a provenance-labeled historical cutoff
+  from the later assessment checkpoint; later evidence is not backdated.
 - Standalone records have a title, date, normalized filename, outcome/evidence
   label, decisive evidence, and next unresolved question.
 - Indexed records and historical entries are append-only; corrections are new
@@ -70,7 +72,9 @@
 - Existing numbered ledger events and immutable indexed records stay intact.
   A prose-only project is not forced to adopt a ledger.
 - If a flat index is sharded, its old entries and working links remain
-  reachable; uncertain routes are not silently promoted to a program verdict.
+  reachable. Mission-relevant routes of uncertain program membership stay in
+  a linked unclassified inventory; foreign or mission-ambiguous text follows
+  the reviewed quarantine policy. Neither is silently promoted to a verdict.
 - Before/after checks compare exact claim, review, issue, link, and instruction
   state; pre-existing stale issues are distinguished from introduced ones.
 

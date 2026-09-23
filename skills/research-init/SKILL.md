@@ -188,8 +188,9 @@ relevance or ambiguous provenance.
    working links through a reviewed migration; see
    [existing-repo-migration.md](references/existing-repo-migration.md).
    Verify that every substantive part of the old log is represented in an
-   indexed record or quarantine before replacing its body or changing the
-   designated entry point.
+   indexed record, a linked unclassified-route inventory, or quarantine before
+   replacing its body or changing the designated entry point. Retrospective
+   closeouts distinguish the historical cutoff from their later assessment.
 8. After migration, treat records and index entries as immutable. Append a new
    correction record and index entry instead of rewriting history.
 

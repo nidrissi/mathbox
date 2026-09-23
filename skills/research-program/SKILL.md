@@ -128,6 +128,8 @@ keep route records and ledger events intact. Closeout is not required after
 every session and does not close an unresolved mathematical goal. If the
 history index has become a long flat list, use the project's hierarchical
 program/route index policy rather than copying all routes into the live view.
+For retrospective closeout, distinguish the historical cutoff from the later
+assessment; do not attribute later evidence to the old program.
 
 For a long or externally executed route, distinguish queued, running,
 last-observed, completed, failed, timed out and abandoned states. Do not keep a

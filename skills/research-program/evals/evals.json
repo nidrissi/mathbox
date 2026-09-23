@@ -67,6 +67,28 @@
         "Does not add ledger events solely because a closeout occurred",
         "Keeps old flat index entries and links reachable before changing the default entry point"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Write a retrospective closeout for a 2024 program. Its last recorded route was inconclusive; a valid proof and independent review appeared in 2026. The exact 2024 ledger head is available, but one mission-relevant route cannot be assigned confidently to this or the next program.",
+      "expected_output": "States the outcome supported at the 2024 cutoff separately from the 2026 assessment, cites both checkpoints, leaves the old route outside the program verdict in a linked unclassified inventory, and does not fabricate a 2024 proof or review.",
+      "assertions": [
+        "Records both historical cutoff and later assessment dates and revisions",
+        "Does not backdate the 2026 proof or independent review",
+        "Keeps the inconclusive 2024 outcome distinct from current status",
+        "Preserves the uncertain route with its source and reason outside the program outcome",
+        "Treats unclassified membership as an indexing question, not a mathematical evidence label"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Prepare a retrospective closeout for an old route collection whose dates conflict and whose cutoff revision cannot be recovered. A proof is available now, but there is no evidence that it existed during the old program.",
+      "expected_output": "Marks the historical cutoff and its outcome indeterminate, records the current assessment checkpoint and proof separately, and preserves the old routes without inventing a completion date.",
+      "assertions": [
+        "Marks cutoff provenance unavailable rather than picking a convenient date",
+        "Does not backdate the current proof",
+        "Keeps current proof status separate from the indeterminate historical outcome"
+      ]
     }
   ]
 }

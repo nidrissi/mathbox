@@ -24,6 +24,10 @@
     "should_trigger": true
   },
   {
+    "query": "Migrate old research routes into retrospective program closeouts and keep unassigned routes discoverable.",
+    "should_trigger": true
+  },
+  {
     "query": "Use the mathbox plugin to initialize this mathematical research repository.",
     "should_trigger": true
   },

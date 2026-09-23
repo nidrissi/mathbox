@@ -63,12 +63,23 @@ PR; do not create a permanent duplicate inventory unless the project needs it.
 If a flat `RESEARCH_LOG.md` has itself become large, do not merely rename it or
 summarize its lines into one confident program verdict. Inventory its entries
 in bounded sections. Map each relevant route to a program or phase by the
-actual target and mechanism; preserve uncertain or foreign entries under the
-reviewed legacy-log classification in `SKILL.md`. Write one linked closeout
-per material program/phase, carrying exact evidence and review limits. A short
-top-level entry point then links closeouts and route indexes; each route index
+actual target and mechanism. Keep mission-relevant routes with unresolved
+program membership in a linked unclassified-route inventory, with source
+spans and reasons; do not force them into the nearest dated program. Foreign
+or mission-ambiguous entries follow the reviewed legacy-log quarantine policy
+in `SKILL.md`. Reconcile counts or IDs so every old entry is assigned to a
+program/phase, the unclassified inventory, or quarantine. Write one linked
+closeout per material program/phase, carrying exact evidence and review limits.
+A short top-level entry point then links closeouts and route indexes; each route index
 retains one-line links to its immutable records. Do not duplicate every route
 line at the top level.
+
+Each retrospective closeout identifies its historical cutoff and the date and
+revision of the migration assessment. Report the result supported at the
+cutoff separately from later proof, audit, or retraction. If the cutoff is
+unknown, label it unknown rather than inventing a completion date or verdict.
+Link the unclassified inventory from the new entry point without treating its
+routes as part of any program outcome.
 
 Prefer keeping the old flat file intact as a frozen legacy route index and
 designating a new compact entry point in project instructions, with a link to

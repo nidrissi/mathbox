@@ -20,6 +20,10 @@
     "should_trigger": true
   },
   {
+    "query": "Write a retrospective closeout for the old multi-route program, keeping its historical outcome separate from later proofs.",
+    "should_trigger": true
+  },
+  {
     "query": "Audit the proof of Lemma 2.",
     "should_trigger": false
   },
