@@ -33,8 +33,9 @@ python3 "$TOOL" --root /path/to/project handoff --goal C_MAIN
 python3 "$TOOL" --root /path/to/project pin-impact statements/parity.md
 ```
 
-`record` prints a short receipt including its assigned `E000001` identifier;
-`--json record` prints the complete event. Proposals
+`record` prints a short receipt with its assigned `E000001` identifier, its
+subject (claim, evidence, route, run, program or retraction target) and the
+paths and hashes it pinned; `--json record` prints the complete event. Proposals
 contain exactly `type`, `actor`, and `payload`. Generated timestamps, hashes and
 revision snapshots belong to the helper. Exit codes: 0 success; 1 stale evidence
 from `check`; 2 invalid input, unsupported version, integrity or I/O error.
@@ -74,8 +75,9 @@ validates every proposal before appending any event, while still writing a
 separate hash-chained file for each event. A filesystem interruption during
 the append can leave a valid prefix of the batch. Inspect the current ledger
 head before retrying; do not blindly replay the whole input. The default output
-gives the event range, counts by type, and at most eight receipt examples with
-an omitted count. `--json` prints every complete event; capture or inspect
+gives the event range, counts by type, and at most eight receipts with an
+omitted count. Each receipt lists up to eight pinned paths and hashes, with a
+`pins_omitted` count beyond that. `--json` prints every complete event; capture or inspect
 that output selectively for a large batch.
 
 `pin-impact PATH` reports current statement, evidence, and review pins of a

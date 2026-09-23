@@ -1099,12 +1099,33 @@ def pin_impact(state, path):
             "runs": sorted({state["run_results"][eid]["payload"]["run"] for eid in result_ids})}
 
 
+def event_pins(event):
+    """Artifacts an event pins, so a receipt can show what a dry-run would bind."""
+    p, kind = event["payload"], event["type"]
+    if kind == "claim":
+        return [p["statement_artifact"]] if "statement_artifact" in p else []
+    if kind == "evidence":
+        return evidence_artifacts(p)
+    if kind == "review":
+        return [p["artifact"]]
+    if kind == "run-result":
+        return p.get("artifacts", [])
+    return []
+
+
 def receipt(event):
     payload = event["payload"]
-    identity = next((payload[key] for key in ("id", "claim", "route", "evidence")
+    identity = next((payload[key] for key in
+                     ("id", "claim", "route", "evidence", "target", "run", "program")
                      if key in payload), None)
-    return {"event_id": event["event_id"], "type": event["type"],
-            "subject": identity, "sha256": event["sha256"]}
+    result = {"event_id": event["event_id"], "type": event["type"],
+              "subject": identity, "sha256": event["sha256"]}
+    pins = [{"path": item["path"], "sha256": item["sha256"]} for item in event_pins(event)]
+    if pins:
+        result["pins"] = pins[:8]
+        if len(pins) > 8:
+            result["pins_omitted"] = len(pins) - 8
+    return result
 
 
 def main(argv=None):

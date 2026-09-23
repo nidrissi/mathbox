@@ -777,6 +777,38 @@ class ResearchStateTests(unittest.TestCase):
         self.assertNotIn("payload", recorded["sample"][0])
         self.assertEqual(len(self.ledger.read()["events"]), 1)
 
+    def test_batch_receipts_name_subjects_and_pins(self):
+        self.claim()
+        evidence = self.evidence()
+        route_event = self.route()
+        program = self.record("program", {
+            "id": "P", "goal": "A", "objective": "Resolve the synthetic goal",
+            "base_event": route_event, "base_revision": "revision-1",
+        })
+        self.record("route-run", {
+            "id": "RUN", "program": "P", "route": "R", "base_event": program,
+            "base_revision": "revision-1", "executor": "worker", "work_scope": ["one branch"],
+        })
+        proposals = [
+            {"type": "retract", "actor": "author", "payload": {
+                "target": evidence, "reason": "Sign error"}},
+            {"type": "run-result", "actor": "worker", "payload": {
+                "run": "RUN", "outcome": "failed", "reason": "Obstruction",
+                "next_question": "Change the filtration?", "result_revision": "revision-2",
+                "artifacts": [{"path": "./review.md"}]}},
+        ]
+        batch = self.root / "batch.json"
+        batch.write_text(json.dumps(proposals), encoding="utf-8")
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "record-batch",
+                                   str(batch), "--dry-run"]), 0)
+        sample = json.loads(output.getvalue())["sample"]
+        self.assertEqual([item["subject"] for item in sample], [evidence, "RUN"])
+        self.assertNotIn("pins", sample[0])
+        self.assertEqual(sample[1]["pins"],
+                         [{"path": "review.md", "sha256": file_hash(self.root / "review.md")}])
+
     def test_interrupted_batch_leaves_valid_prefix(self):
         proposals = [{"type": "claim", "actor": "author", "payload": {
             "id": key, "statement": "Exact assertion " + key, "hypotheses": [],

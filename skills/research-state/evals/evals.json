@@ -85,6 +85,7 @@
       "expected_output": "Prevalidates and records separate hash-chained events with a batch reference to the new evidence, leaves no events from the invalid trial batch, and reports direct pins and dependent claims without refreshing hashes.",
       "assertions": [
         "Uses a dry-run before the actual batch append",
+        "Checks each dry-run receipt's subject and pinned paths before appending",
         "Keeps claim, evidence and review as distinct events",
         "Leaves the journal unchanged after invalid batch validation",
         "Uses pin-impact as a read-only diagnostic",
