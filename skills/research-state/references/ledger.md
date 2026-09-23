@@ -76,9 +76,14 @@ an omitted count. `--json` prints every complete event; capture or inspect
 that output selectively for a large batch.
 
 `pin-impact PATH` reports current statement, evidence, and review pins of a
-project-relative file, plus dependents of directly affected claims. Its brief
-view shows counts and samples; `--json pin-impact PATH` gives every ID. It is a
-diagnostic, not permission to treat byte changes as mathematically harmless.
+project-relative file, plus dependents of directly affected claims. It also
+reports run-result pins: those runs become `stale-result` when the file
+changes, although no claim does. Paths match after lexical normalization, so
+`./proofs//a.md` and `proofs/a.md` name one file; new pins are stored in the
+normalized spelling. The lookup reads recorded pins without hashing artifacts.
+Its brief view shows counts and samples; `--json pin-impact PATH` gives every
+ID. It is a diagnostic, not permission to treat byte changes as mathematically
+harmless.
 
 ## Claim and evidence proposals
 

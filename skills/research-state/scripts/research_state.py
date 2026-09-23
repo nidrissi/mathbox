@@ -75,6 +75,11 @@ def inside(root, name):
     return current
 
 
+def pinned_path(name):
+    """Lexical spelling used to compare recorded pins, e.g. ./a//b.md -> a/b.md."""
+    return Path(name).as_posix()
+
+
 def text_field(obj, key):
     value = obj.get(key)
     require(isinstance(value, str) and bool(value.strip()), f"{key} must be nonempty text")
@@ -480,7 +485,8 @@ class Ledger:
         actual = file_hash(path)
         if "sha256" in artifact:
             require(artifact["sha256"] == actual, "supplied artifact hash differs from disk")
-        return dict(artifact, sha256=actual)
+        # One stored spelling per file, so later path lookups compare like with like.
+        return dict(artifact, path=path.relative_to(self.root).as_posix(), sha256=actual)
 
     def pin_computation_manifest(self, artifact, claim):
         """Pin a manifest plus the exact input/output closure it declares.
@@ -1011,26 +1017,38 @@ def brief_markdown(projection, routes=None, closed=None):
     return "\n".join(lines) + "\n"
 
 
-def pin_impact(state, projection, path):
-    claims = projection["claims"]
-    direct, evidence_ids, review_ids = set(), set(), set()
-    for key, claim in claims.items():
-        if claim.get("statement_artifact", {}).get("path") == path:
+def pin_impact(state, path):
+    """Active pins of one normalized path, found lexically without hashing artifacts."""
+    def pins(artifacts):
+        return any(pinned_path(item["path"]) == path for item in artifacts)
+
+    inactive = state["retracted"] | state["superseded"]
+    direct, evidence_ids, review_ids, result_ids = set(), set(), set(), set()
+    for key, claim in state["claims"].items():
+        if "statement_artifact" in claim and pins([claim["statement_artifact"]]):
             direct.add(key)
-        for eid, evidence in claim["evidence"].items():
-            if any(item["path"] == path for item in evidence_artifacts(evidence)):
-                direct.add(key)
-                evidence_ids.add(eid)
-        for rid, review in claim["reviews"].items():
-            if review["artifact"]["path"] == path:
-                direct.add(key)
-                review_ids.add(rid)
+    for eid, event in state["evidence"].items():
+        if eid not in inactive and pins(evidence_artifacts(event["payload"])):
+            direct.add(event["payload"]["claim"])
+            evidence_ids.add(eid)
+    for rid, event in state["reviews"].items():
+        target = event["payload"]["evidence"]
+        if rid not in state["retracted"] and target not in inactive \
+                and pins([event["payload"]["artifact"]]):
+            direct.add(state["evidence"][target]["payload"]["claim"])
+            review_ids.add(rid)
+    # Run results are hash-checked too; a change makes the run stale-result.
+    for eid, event in state["run_results"].items():
+        if pins(event["payload"].get("artifacts", [])):
+            result_ids.add(eid)
     dependencies = dependency_map(state["claims"])
     dependents = {key for key, closure_ids in dependencies.items()
                   if key not in direct and closure_ids & direct}
     return {"path": path, "direct_claims": sorted(direct),
             "dependent_claims": sorted(dependents),
-            "evidence_events": sorted(evidence_ids), "review_events": sorted(review_ids)}
+            "evidence_events": sorted(evidence_ids), "review_events": sorted(review_ids),
+            "run_result_events": sorted(result_ids),
+            "runs": sorted({state["run_results"][eid]["payload"]["run"] for eid in result_ids})}
 
 
 def receipt(event):
@@ -1092,15 +1110,27 @@ def main(argv=None):
             print(json.dumps(output, ensure_ascii=False))
             return 0
         state = ledger.read()
+        # Dependency lookups need no artifact hashing, so they skip the projection.
+        if args.command == "impact":
+            output = {"claim": args.claim, "dependents": impact(state["claims"], args.claim)}
+            print(json.dumps(output, indent=2, ensure_ascii=False))
+            return 0
+        if args.command == "pin-impact":
+            path = inside(ledger.root, args.path).relative_to(ledger.root).as_posix()
+            output = pin_impact(state, path)
+            if args.json or args.full:
+                print(json.dumps(output, indent=2, ensure_ascii=False))
+            else:
+                lists = {key: value for key, value in output.items() if isinstance(value, list)}
+                print(json.dumps({"path": path,
+                                  "counts": {key: len(value) for key, value in lists.items()},
+                                  "samples": {key: value[:8] for key, value in lists.items()},
+                                  "detail_command": "--json pin-impact PATH"}, ensure_ascii=False))
+            return 0
         projection = project(ledger.root, state)
         routes = None
         closed = None
-        if args.command == "impact":
-            output = {"claim": args.claim, "dependents": impact(state["claims"], args.claim)}
-        elif args.command == "pin-impact":
-            path = inside(ledger.root, args.path).relative_to(ledger.root).as_posix()
-            output = pin_impact(state, projection, path)
-        elif args.command in {"next", "handoff"}:
+        if args.command in {"next", "handoff"}:
             routes = next_routes(state, projection, args.goal)
             if args.goal:
                 projection = restrict(projection, state, closure(state["claims"], args.goal))
@@ -1125,15 +1155,7 @@ def main(argv=None):
                       "detail_command": "--json check" if not args.full else None}
         else:
             output = projection
-        if args.command == "pin-impact":
-            if args.json or args.full:
-                print(json.dumps(output, indent=2, ensure_ascii=False))
-            else:
-                print(json.dumps({"path": output["path"],
-                                  "counts": {key: len(value) for key, value in output.items() if isinstance(value, list)},
-                                  "samples": {key: value[:8] for key, value in output.items() if isinstance(value, list)},
-                                  "detail_command": "--json pin-impact PATH"}, ensure_ascii=False))
-        elif args.json or args.command in {"next", "impact", "check"}:
+        if args.json or args.command in {"next", "check"}:
             print(json.dumps(output, indent=2, ensure_ascii=False))
         elif getattr(args, "full", False):
             print(markdown(projection, routes, closed), end="")

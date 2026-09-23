@@ -7,7 +7,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from research_state import Ledger, LedgerError, brief_markdown, file_hash, impact, main, next_routes, project, restrict
+from research_state import (Ledger, LedgerError, brief_markdown, file_hash, impact, main, next_routes,
+                            pin_impact, project, restrict)
 
 
 class ResearchStateTests(unittest.TestCase):
@@ -865,6 +866,48 @@ class ResearchStateTests(unittest.TestCase):
         with redirect_stdout(output):
             self.assertEqual(main(["--root", str(self.root), "pin-impact", "proof.md", "--full"]), 0)
         self.assertEqual(json.loads(output.getvalue()), result)
+
+    def pins(self, path):
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "--json", "pin-impact", path]), 0)
+        return json.loads(output.getvalue())
+
+    def test_pin_impact_matches_path_spellings(self):
+        (self.root / "proofs").mkdir()
+        (self.root / "proofs" / "a.md").write_text("A complete argument.")
+        self.claim()
+        evidence = self.record("evidence", dict(claim="A", kind="proof", summary="Durable result",
+                               artifacts=[{"path": "./proofs//a.md"}]))
+        state = self.ledger.read()
+        self.assertEqual(state["evidence"][evidence]["payload"]["artifacts"][0]["path"], "proofs/a.md")
+        self.assertEqual(self.pins("proofs/a.md")["evidence_events"], [evidence])
+        self.assertEqual(self.pins("proofs/./a.md")["direct_claims"], ["A"])
+        # Ledgers written before normalization keep the spelling that was typed.
+        state["evidence"][evidence]["payload"]["artifacts"][0]["path"] = "./proofs//a.md"
+        self.assertEqual(pin_impact(state, "proofs/a.md")["evidence_events"], [evidence])
+
+    def test_pin_impact_reports_run_result_pins_and_skips_hashing(self):
+        self.claim()
+        route_event = self.route()
+        program = self.record("program", {
+            "id": "P", "goal": "A", "objective": "Resolve the synthetic goal",
+            "base_event": route_event, "base_revision": "revision-1",
+        })
+        self.record("route-run", {
+            "id": "RUN", "program": "P", "route": "R", "base_event": program,
+            "base_revision": "revision-1", "executor": "worker", "work_scope": ["one branch"],
+        })
+        result = self.record("run-result", {
+            "run": "RUN", "outcome": "succeeded", "reason": "Constructed a candidate",
+            "next_question": "Does it generalize?", "result_revision": "revision-2",
+            "artifacts": [{"path": "review.md"}],
+        })
+        with patch("research_state.file_hash", side_effect=AssertionError("hashed")):
+            pinned = self.pins("review.md")
+        self.assertEqual(pinned["run_result_events"], [result])
+        self.assertEqual(pinned["runs"], ["RUN"])
+        self.assertEqual(pinned["direct_claims"], [])
 
 
 if __name__ == "__main__":

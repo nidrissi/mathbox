@@ -90,6 +90,17 @@
         "Uses pin-impact as a read-only diagnostic",
         "Does not treat a formatting-only description as mathematical revalidation"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "In an authorized temporary ledger, proof evidence was recorded with its artifact path typed as ./proofs//a.md, and a closed route run pins reports/run.md in its run result. Before editing both files, report what each edit would affect.",
+      "expected_output": "Uses pin-impact with the ordinary spelling proofs/a.md and still finds the evidence pin and dependent claims; reports that editing reports/run.md stales the run result without affecting any claim; changes no ledger event or hash.",
+      "assertions": [
+        "Uses pin-impact as a read-only diagnostic for each file",
+        "Does not conclude that a file is unpinned because its recorded spelling differs",
+        "Reports run-result pins separately from claim and evidence pins",
+        "Does not refresh hashes or treat the edit as mathematically harmless"
+      ]
     }
   ]
 }
