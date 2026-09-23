@@ -107,24 +107,33 @@ Record a route's owning claim and, when different, the exact obligations it
 success/failure criteria and rough gain/cost estimates. Keep alternative routes
 distinct from jointly required claim dependencies. `next` orders ready
 routes by a transparent heuristic; use mathematical judgment over its ordering.
-Separate an attempt's outcome from route closure. Before closing an unresolved
-route, account for known continuations and explain why none remains executable
-within the route's stated scope. An inconclusive attempt, resource limit or
-priority change alone does not justify closure. Keep untried or deferred
-continuations in the route record and current handoff with their next steps and resumption
-conditions. Retrying an obstructed mechanism requires input addressing the
-obstruction; resuming unfinished work does not require a new mathematical input.
+Separate an attempt's outcome from route closure. Close a route with its exact
+outcome, obstruction or scoped reason, and next question. Before closing an
+unresolved route, account for known continuations and explain why none remains
+executable within the route's stated scope. An inconclusive attempt, resource
+limit or priority change alone does not justify closure. Keep untried or
+deferred continuations in the route record and current handoff with their next
+steps and resumption conditions. Reopening a closed route requires its prior
+result and a `changed_input` addressing any recorded obstruction; resuming an
+open route's unfinished work does not require a new mathematical input.
 
 For sustained or parallel work, record a program and a distinct route run for
 each executor. Pin the ledger base event and external revision at which each run
 started; observations supply the last-seen revision, and run results close or
 abandon executions without automatically closing the mathematical route.
 Reconcile an inconclusive run with `continue` when the route remains open,
-including when its next action is deferred. A later run uses the same route ID.
-For prose-only attempts, update the durable record/handoff without introducing
-run events solely to record a pause. To correct an earlier premature closure,
+including when its next action is deferred; `next` and `handoff` show that
+reconciliation's next step and reason under the route. A later run uses the
+same route ID. A route event cannot hold a deferred step: when a ledger route's
+unfinished continuation must survive to a later session, record the attempt as
+a run with its result and a `continue` reconciliation. A prose record alone
+leaves the generated handoff showing only the route's original question. Do not
+add run events to mirror an attempt whose follow-up finishes in the same
+session. To correct an earlier premature closure that recorded no obstruction,
 use the append-only reopening contract in [ledger.md](references/ledger.md);
 identify the overlooked continuation rather than inventing new mathematics.
+Relabelling a `failed` result or recorded obstruction as premature does not
+reopen it.
 Reconcile completed runs serially in the one writer's ledger. Record conflicts
 and give delayed results an explicit late disposition rather than reconstructing
 or merging numbered event streams. See [ledger.md](references/ledger.md) for the

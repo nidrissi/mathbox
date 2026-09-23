@@ -101,7 +101,11 @@ method, an implementation bug, and an inaccessible source.
   attempt's limits from evidence against the mechanism. Try an untested
   continuation or identify a different input, construction, invariant or source.
   Repeating a mechanism with an established obstruction requires a change that
-  addresses that obstruction; resuming unfinished work does not.
+  addresses that obstruction. Resuming unfinished work needs no new premise,
+  but it must change something at the recorded stuck step: a narrower sub-step,
+  another method or tool, or more resources. Do not rerun a stalled step
+  unchanged; when resumptions keep stalling there, record that step as the
+  route's bottleneck and reprioritize the portfolio.
 - Another finite case is useful only if it distinguishes alternatives, checks
   an independent invariant, or reaches a new regime.
 
@@ -111,10 +115,11 @@ remains untried, what evidence rules one out, and what is deferred with a reason
 and resumption condition. An obstruction to one construction closes only that
 construction unless it applies to the whole mechanism. Keep a route open while a plausible
 continuation remains; execute it within the authorized resources or preserve it
-in the handoff. Time, capability or priority limits justify deferring work, not
-declaring the mechanism exhausted. Reserve terminal `inconclusive` for a scoped
-route whose known continuations have been accounted for and have no presently
-executable next step; state the scope and reason without claiming impossibility.
+in the handoff. A continuation that awaits time, tools, access or priority is
+deferred, not exhausted; keep its route open. Reserve terminal `inconclusive`
+for a scoped route whose known continuations have all been tried or ruled out
+by evidence, with no further plausible continuation identified; state the scope
+and reason without claiming impossibility.
 
 Continue successive cycles while there is an executable, plausible route within
 the authorized resources. Do not stop just because the initial three failed.
@@ -167,5 +172,6 @@ Lead with whether the original goal was reached and the exact result. State the
 proof/review status, decisive mechanism, files and meaningful checks. If it
 remains open, distinguish partial results from the goal, list executed routes
 with their precise obstructions, and preserve an executable next handoff.
-When all presently available routes are exhausted or tools/resources block
-continuation, say so honestly; never invent progress to satisfy “do not stop”.
+When all presently available routes are exhausted, or tools/resources block
+every remaining continuation, say so honestly; leave blocked routes open with
+their deferred next steps. Never invent progress to satisfy “do not stop”.

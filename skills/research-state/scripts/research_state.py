@@ -824,6 +824,13 @@ def next_routes(state, projection, goal=None):
     selected = closure(claims, goal) if goal else set(claims)
     dependencies = dependency_map(claims)
     closed = {r["payload"]["route"] for r in state["route_closures"].values()}
+    # The latest `continue` carries an open route's deferred or next step.
+    continuations = {}
+    for eid, event in state["reconciliations"].items():
+        p = event["payload"]
+        if p["decision"] == "continue":
+            continuations[p["route"]] = {"event_id": eid, "reason": p["reason"],
+                                         "next_question": p["next_question"]}
     result = []
     for rid, event in state["routes"].items():
         p = event["payload"]
@@ -836,7 +843,8 @@ def next_routes(state, projection, goal=None):
                     and any(target in dependencies[key] for target in targets))
         score = (p["gain"] + reach) / p["cost"]
         result.append(dict(p, resolves=sorted(targets), ready=not blocked,
-                           blocked_by=blocked, score=round(score, 3)))
+                           blocked_by=blocked, score=round(score, 3),
+                           continuation=continuations.get(rid)))
     return sorted(result, key=lambda r: (not r["ready"], -r["score"], r["id"]))
 
 
@@ -954,13 +962,18 @@ def markdown(projection, routes=None, closed=None):
     if projection["reconciliations"]:
         lines += ["", "## Reconciliations", ""]
         for item in projection["reconciliations"]:
-            lines.append(f"- {item['event_id']}: route {item['route']}, {item['decision']}; run results {', '.join(item['results'])}")
+            lines.append(f"- {item['event_id']}: route {item['route']}, {item['decision']}; run results {', '.join(item['results'])}; "
+                         f"reason: {item['reason']}; next question: {item['next_question']}")
     if routes is not None:
         lines += ["", "## Candidate routes", "", "Scores order declared gain plus dependency reach per declared cost; they are not success probabilities."]
         for r in routes:
             lines.extend(["", f"- {r['id']} ({'ready' if r['ready'] else 'blocked'}, score {r['score']}): {r['question']}",
                           f"  Resolves: {', '.join(sorted(route_targets(r)))}",
                           f"  Decisive check: {r['discriminator']}"])
+            if r.get("continuation"):
+                c = r["continuation"]
+                lines.extend([f"  Continuation {c['event_id']}: {c['next_question']}",
+                              f"  Continuation reason: {c['reason']}"])
     if closed is not None:
         lines += ["", "## Closed routes", ""]
         for r in closed:
@@ -973,6 +986,9 @@ def markdown(projection, routes=None, closed=None):
 
 
 def brief_markdown(projection, routes=None, closed=None):
+    def clip(text, limit=180):
+        return text if len(text) <= limit else text[:limit - 3] + "…"
+
     claims = projection["claims"]
     statuses = Counter(claim["status"] for claim in claims.values())
     issues = projection["issues"]
@@ -1005,10 +1021,7 @@ def brief_markdown(projection, routes=None, closed=None):
     if issues:
         lines += ["", "## Issue sample", ""]
         for issue in issues[:8]:
-            detail = issue["issue"]
-            if len(detail) > 180:
-                detail = detail[:177] + "…"
-            lines.append(f"- {issue['event']}: {detail}")
+            lines.append(f"- {issue['event']}: {clip(issue['issue'])}")
         if len(issues) > 8:
             lines.append(f"- … {len(issues) - 8} more issues; use --full or --json for all.")
     programs, runs = projection.get("programs", {}), projection.get("runs", {})
@@ -1051,6 +1064,10 @@ def brief_markdown(projection, routes=None, closed=None):
                     resolves += f", … {len(active) - 3} more"
             lines.append(f"- {route['id']}: {'ready' if route['ready'] else 'blocked'}; "
                          f"resolves {resolves}")
+            if route.get("continuation"):
+                c = route["continuation"]
+                lines.append(f"  Continue ({c['event_id']}): {clip(c['next_question'])}; "
+                             f"reason: {clip(c['reason'])}")
         if len(routes) > 8:
             lines.append(f"- … {len(routes) - 8} more routes; use --full or --json for all.")
     if closed is not None:

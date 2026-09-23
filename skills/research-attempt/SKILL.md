@@ -49,7 +49,9 @@ is bookkeeping evidence, not mathematical verification.
    obstruction requires a new input, invariant, construction or hypothesis that
    addresses its first failed step. An unresolved step is not an obstruction;
    resuming an untried or deferred continuation needs a concrete next action,
-   not a new mathematical premise.
+   not a new mathematical premise. When resuming a stalled step, state what
+   differs from the stalled attempt: a narrower sub-step, method, tool or
+   resource. Do not rerun it unchanged.
 
 Use the route card in [route-card.md](references/route-card.md) when a durable
 entry will be needed.

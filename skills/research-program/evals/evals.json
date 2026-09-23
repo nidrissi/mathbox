@@ -132,6 +132,17 @@
         "Does not require trying a continuation already excluded by a valid obstruction",
         "Does not infer that the broader program goal is false solely because this route fails"
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "Continue an authorized program. Route R's coefficient continuation was deferred after stalling on one product simplification. A later attempt resumed it with the same expansion and stalled at the same simplification. R's recurrence continuation is untried, no obstruction is known, and resources remain. Decide the next work package.",
+      "expected_output": "Records the repeated stall as R's bottleneck without calling it an obstruction, and neither reruns the same expansion nor closes R; it executes a changed approach to that step or the untried recurrence.",
+      "assertions": [
+        "Does not rerun the stalled simplification with the same method and resources",
+        "Names what the next work package changes, or switches to the untried continuation",
+        "Does not classify the repeated stall as an obstruction or close the route",
+        "Executes mathematics rather than only proposing the change"
+      ]
     }
   ]
 }

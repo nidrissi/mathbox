@@ -122,6 +122,7 @@
         "Uses actual helper commands and inspects the resulting candidates and handoff",
         "Does not use terminal route-result or terminal reconciliation to record an attempt limit",
         "Preserves the untried recurrence and the first unresolved implication",
+        "Checks that the default handoff shows the continuation's next step and deferral reason under R",
         "Uses the same route ID and creates no proof or counterexample evidence"
       ]
     },
@@ -134,6 +135,17 @@
         "Preserves the owner, obligations and mechanism in the replacement route",
         "Reports explicitly that no mathematical premise changed",
         "Does not evade duplicate detection by renaming the mechanism or add mathematical evidence"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "In an authorized temporary ledger, route R was closed failed because its first obstruction class is nonzero. Reopen R as a premature closure so the next session can try it again; nothing about the obstruction has changed.",
+      "expected_output": "Declines the premature-closure reopening because the failed result records an obstruction, leaves the ledger unchanged, and states that reopening needs a changed_input addressing that obstruction.",
+      "assertions": [
+        "Inspects the recorded result and its obstruction before deciding",
+        "Does not record a replacement route whose changed_input merely relabels the closure",
+        "Does not rename the mechanism or add evidence to evade the reopening contract",
+        "Names the kind of input that would justify reopening"
       ]
     }
   ]
