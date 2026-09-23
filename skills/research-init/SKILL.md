@@ -51,9 +51,10 @@ skills supplied by the `mathbox` plugin inside it.
    Treat theorem/fact inventory entries derived from literature as candidate
    assertions until their exact source records are checked; schedule that
    verification before dependent proof or manuscript work treats them as facts.
-4. Classify `RESEARCH_LOG.md`, when present, as a compact linked index,
-   long-form legacy history, or a mixture. Locate any separate research-record
-   directory and check whether the log links to it.
+4. Classify the designated history entry point, often `RESEARCH_LOG.md`, as a
+   compact flat index, a program-level index, long-form legacy history, or a
+   mixture. Locate any program/phase route indexes and standalone records;
+   check that the entry point reaches them.
    Detect `.mathbox/config.json` without replaying all history during inventory.
 5. Detect duplicate `mathbox` plugin skill names and paths hard-coded relative
    to a skill installation. Report multiple dashboard or handoff candidates for
@@ -180,10 +181,15 @@ relevance or ambiguous provenance.
 6. For mapping review, show source boundaries, original/inferred date, proposed
    filename, relevance class, evidence label carried forward, and any unresolved
    provenance or authority question. Revise the mapping in response to review.
-7. Only after that mapping is reviewed, build a compact `RESEARCH_LOG.md` index
-   with one chronological linked line per approved mission-relevant record.
-   Verify that every substantive part of the old log is represented either in
-   an indexed record or in quarantine before replacing its body.
+7. Only after that mapping is reviewed, build a compact history entry point.
+   A small project may use one chronological linked line per approved route;
+   sustained programs should keep a short program/phase entry point with
+   route-level indexes below it. Preserve the original flat index and its
+   working links through a reviewed migration; see
+   [existing-repo-migration.md](references/existing-repo-migration.md).
+   Verify that every substantive part of the old log is represented in an
+   indexed record or quarantine before replacing its body or changing the
+   designated entry point.
 8. After migration, treat records and index entries as immutable. Append a new
    correction record and index entry instead of rewriting history.
 
@@ -196,8 +202,8 @@ placeholder. A normal setup has:
 - optional `CLAUDE.md` importing `@AGENTS.md` for sessions that cannot load
   `AGENTS.md` directly or need genuine Claude-specific additions;
 - at most one live dashboard;
-- optional claims, conventions, literature, a compact append-only research
-  index, and immutable standalone route records;
+- optional claims, conventions, literature, one compact history entry point,
+  program/phase route indexes when useful, and immutable standalone records;
 - when local source retention is authorized, a documented
   `.research-cache/literature/` convention and tracked Git ignore rule;
 - nested instructions only for genuinely local invariants;
@@ -213,6 +219,9 @@ entire growing records; search for relevant contracts and history as needed.
 Preserve old checkpoint material before replacing live narratives with current
 state and links. Inspector size and dated-marker counts are prompts, not
 authority or mathematical verdicts.
+For a sustained program, keep the top-level history navigational; route lines
+belong in its designated program/phase index. Project-specific size budgets
+are advisory review triggers, not permission to truncate current conditions.
 
 For a project whose claim dependencies and evidence frequently change, consider
 the available `research-state` skill and its optional `.mathbox/` ledger. Use its

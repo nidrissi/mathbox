@@ -40,11 +40,11 @@ PR; do not create a permanent duplicate inventory unless the project needs it.
 
 - Keep the live view to current result, exact evidence and review status,
   principal blocker, active route, and bounded next action. Move chronology to
-  existing immutable route records and their compact index. If a historical
-  passage has no durable home, preserve it with provenance in a linked record
-  or archived snapshot before replacing the live body. Git history alone is
-  not a discoverable research index. Do not copy the same narrative into both
-  the dashboard and a new record.
+  linked program closeouts, immutable route records, and their indexes. If a
+  historical passage has no durable home, preserve it with provenance in a
+  linked record or archived snapshot before replacing the live body. Git
+  history alone is not a discoverable research index. Do not copy the same
+  narrative into both the dashboard and a new record.
 - Retain every unique mathematical convention, protected-path rule,
   authorization boundary, confidentiality rule, and verified check when
   shortening `AGENTS.md`. Point to the authoritative charter and live view;
@@ -57,6 +57,27 @@ PR; do not create a permanent duplicate inventory unless the project needs it.
 - Keep contradictory mathematical statuses visible as unresolved until the
   exact proof, source, or computation has been checked. Never choose the newest
   confident sentence merely because it is newer.
+
+## Migrate a long flat history index
+
+If a flat `RESEARCH_LOG.md` has itself become large, do not merely rename it or
+summarize its lines into one confident program verdict. Inventory its entries
+in bounded sections. Map each relevant route to a program or phase by the
+actual target and mechanism; preserve uncertain or foreign entries under the
+reviewed legacy-log classification in `SKILL.md`. Write one linked closeout
+per material program/phase, carrying exact evidence and review limits. A short
+top-level entry point then links closeouts and route indexes; each route index
+retains one-line links to its immutable records. Do not duplicate every route
+line at the top level.
+
+Prefer keeping the old flat file intact as a frozen legacy route index and
+designating a new compact entry point in project instructions, with a link to
+that legacy index. Future routes go to program/phase indexes. If the project
+instead needs the old filename for the new entry point, preserve a lossless
+snapshot of the old index, rebase moved relative links mechanically, verify
+every destination, and obtain the required mapping review before replacement.
+Old entry text and evidence labels remain historical; program summaries do
+not upgrade them. A small project may keep its flat index without sharding.
 
 ## Handle ledger and artifact pins conservatively
 
@@ -86,6 +107,8 @@ counts instead of demanding that pre-existing problems disappear. Use full
 ledger detail only for affected claims or issues. Inspect the full diff and
 `git diff --check`; use risk-based full checks for semantic-core or broad
 changes. Report skipped checks and remaining conflicts.
+Use project-specific advisory size or repeated-checkpoint triggers for the
+live view and top-level index; exceeding one calls for review, not deletion.
 
 Stop the affected migration step when authority, historical provenance, or a
 pinned mathematical claim cannot be resolved under current authorization.

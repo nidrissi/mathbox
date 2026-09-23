@@ -3,7 +3,8 @@
 Last reconciled: {{DATE}}
 
 This file describes current state. Find earlier checkpoints through the
-research-history index and its linked records.
+research-history entry point, program closeouts, and linked records. Do not
+append dated checkpoint narratives here.
 
 ## Current result
 

@@ -38,7 +38,11 @@
 - Computations state exact range and provenance.
 - Blockers name the missing implication.
 - Logging threshold is route-level, not command-level.
-- `RESEARCH_LOG.md` is a compact index whose entries link to standalone records.
+- The designated history entry point is compact. A flat route index is valid
+  for small projects; sustained programs use program/phase entries leading to
+  closeouts and route indexes, without repeating all route lines at the top.
+- Program closeouts preserve the original target, strongest surviving result,
+  first failed steps, evidence/review conditions, and next decision with links.
 - Standalone records have a title, date, normalized filename, outcome/evidence
   label, decisive evidence, and next unresolved question.
 - Indexed records and historical entries are append-only; corrections are new
@@ -65,6 +69,8 @@
   to conform to a template; unresolved claim conflicts remain explicit.
 - Existing numbered ledger events and immutable indexed records stay intact.
   A prose-only project is not forced to adopt a ledger.
+- If a flat index is sharded, its old entries and working links remain
+  reachable; uncertain routes are not silently promoted to a program verdict.
 - Before/after checks compare exact claim, review, issue, link, and instruction
   state; pre-existing stale issues are distinguished from introduced ones.
 
@@ -93,6 +99,8 @@
   links/path-shaped code spans. Its brief report counts omitted candidates and
   separates historical-path examples from current-path examples. Dated
   checkpoint-marker counts remain tentative and never decide claim status.
+- Project-specific size or repeated-checkpoint triggers prompt compaction review
+  but never license automatic truncation of current mathematical conditions.
 
 ## Skills
 

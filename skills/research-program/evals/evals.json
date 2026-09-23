@@ -55,6 +55,18 @@
         "Preserves the original theorem target across route changes",
         "Keeps historical checkpoint records discoverable"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Close out this authorized multi-route research program without starting new research. Its goal remains open, the live status contains fifteen dated checkpoint narratives, and a flat history index lists many route records. The ledger already records the latest claim and review states.",
+      "expected_output": "Checks the exact recorded evidence and base, writes one linked program synthesis without promoting the open goal, replaces superseded live narratives with a compact current decision view, and proposes or uses a program/route index hierarchy while preserving historical entries and ledger events.",
+      "assertions": [
+        "Does not execute a new mathematical route in a closeout-only request",
+        "Separates the still-open goal from strongest partial results and failed mechanisms",
+        "Links exact proofs, reviews and route records instead of copying them into live status",
+        "Does not add ledger events solely because a closeout occurred",
+        "Keeps old flat index entries and links reachable before changing the default entry point"
+      ]
     }
   ]
 }

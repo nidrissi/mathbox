@@ -16,6 +16,10 @@
     "should_trigger": true
   },
   {
+    "query": "Close out this completed research phase and compact its status and route history without starting another proof attempt.",
+    "should_trigger": true
+  },
+  {
     "query": "Audit the proof of Lemma 2.",
     "should_trigger": false
   },

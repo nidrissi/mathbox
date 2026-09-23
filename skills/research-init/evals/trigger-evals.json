@@ -20,6 +20,10 @@
     "should_trigger": true
   },
   {
+    "query": "Retrofit our long flat research log into a compact program index and linked route indexes.",
+    "should_trigger": true
+  },
+  {
     "query": "Use the mathbox plugin to initialize this mathematical research repository.",
     "should_trigger": true
   },
@@ -33,6 +37,10 @@
   },
   {
     "query": "Work on the main theorem.",
+    "should_trigger": false
+  },
+  {
+    "query": "Record the outcome of this single bounded research route in its existing phase index.",
     "should_trigger": false
   },
   {

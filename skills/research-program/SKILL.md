@@ -1,7 +1,7 @@
 ---
 name: research-program
 description: >-
-  Pursue a substantial mathematical research goal across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, a breakthrough, or continuation until a goal is reached. Coordinate successive research attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, or a read-only project retrospective.
+  Pursue or close out a substantial mathematical research program across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, continuation until a goal is reached, or an authorized program closeout that compacts live status and history. Coordinate successive attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, or a read-only project retrospective.
 ---
 
 # Sustained mathematical research
@@ -10,6 +10,8 @@ Own the user's mathematical objective across route changes. A route ending is
 not the assignment ending. Produce mathematics, not a portfolio of unexecuted
 suggestions. Do not promise a solution to an open problem or relabel an exhausted
 attempt as one.
+For a closeout-only request, reconcile recorded results and compact the handoff;
+do not start new mathematical routes unless the user also requested research.
 
 ## Establish the target once
 
@@ -33,7 +35,8 @@ executable `.mathbox/` ledger is present, use the available `research-state`
 skill's brief goal handoff and freshness check; open full claim/review details
 only for the active decision. Initialize it only when useful and authorized; its absence never
 blocks research. Read [program protocol](references/program-protocol.md) for
-route selection and checkpoints.
+route selection and checkpoints when executing routes; for a closeout-only
+request, go to [program closeout](references/program-closeout.md).
 
 ## Build and execute a diverse portfolio
 
@@ -117,6 +120,14 @@ failed mechanisms in linked route records, and current status in one live view.
 Update only state that actually changed; replace old dashboard checkpoint prose
 with links when the project permits, and do not rewrite indexed history.
 User-authorized repository deliverables remain part of completion.
+
+At a substantial program boundary, or when the user explicitly requests
+compaction, follow [program closeout](references/program-closeout.md). Produce
+one linked synthesis of decisive outcomes and a small current decision view;
+keep route records and ledger events intact. Closeout is not required after
+every session and does not close an unresolved mathematical goal. If the
+history index has become a long flat list, use the project's hierarchical
+program/route index policy rather than copying all routes into the live view.
 
 For a long or externally executed route, distinguish queued, running,
 last-observed, completed, failed, timed out and abandoned states. Do not keep a

@@ -118,6 +118,18 @@
         "Distinguishes pre-existing ledger issues from migration regressions",
         "Does not rewrite schema-v1 events or infer proved from historical prose"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "Retrofit this research repository's history now. Its RESEARCH_LOG.md is a large flat index with working relative links, several long-running programs and one route of uncertain provenance. Keep ordinary route records immutable and make routine navigation compact.",
+      "expected_output": "Builds a reviewed route-to-program mapping, preserves the old flat index and links, creates a small designated program/phase entry point with closeouts and route indexes, leaves the uncertain route unpromoted, and verifies link reachability before replacement.",
+      "assertions": [
+        "Does not infer program membership from filenames or dates alone",
+        "Keeps old index text reachable, preferably as a frozen legacy index",
+        "Does not duplicate all route lines in the new top-level entry point",
+        "Does not turn uncertain historical material into a current program result",
+        "Checks links and source-to-destination coverage before replacing the live entry point"
+      ]
     }
   ]
 }

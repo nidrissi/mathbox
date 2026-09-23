@@ -44,6 +44,9 @@ For an existing repository, `research-init` now provides a reviewed,
 [pin-aware migration workflow](skills/research-init/references/existing-repo-migration.md)
 for its instructions and live research state; it does not rewrite ledger events
 or turn historical prose into proof automatically.
+Program closeout now links one checked synthesis to route records, while a
+program-level history entry point keeps growing route indexes out of routine
+context; small projects may retain a flat index.
 
 ```text
 $mathbox:research-init Plan a migration of this repository's AGENTS.md and live status; preserve history and inspect ledger pins before editing.
@@ -170,7 +173,7 @@ install SageMath, LaTeX, or other project dependencies.
 
 | Plugin skill | Purpose | Selection |
 |---|---|---|
-| [`mathbox:research-program`](skills/research-program/) | Pursue a substantial research goal across successive, distinct routes | matching sustained research request |
+| [`mathbox:research-program`](skills/research-program/) | Pursue or close out a substantial program across distinct routes, preserving compact current state | matching sustained research or closeout request |
 | [`mathbox:research-state`](skills/research-state/) | Track claim revisions, evidence freshness and dependency impact | existing ledger or tracking request |
 | [`mathbox:research-init`](skills/research-init/) | Initialize or migrate a mathematical research repository's agent architecture | explicit request |
 | [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
@@ -195,7 +198,7 @@ forms refer only to standalone installations.
 | The task is primarily… | Use |
 |---|---|
 | setting up the research repository or revising its agent architecture | `mathbox:research-init` |
-| pursuing a substantial goal across successive approaches | `mathbox:research-program` |
+| pursuing or closing out a substantial goal across successive approaches | `mathbox:research-program` |
 | checking evidence freshness, dependency impact or a ledger handoff | `mathbox:research-state` |
 | developing new mathematics along one controlled route | `mathbox:research-attempt` |
 | deciding whether an existing argument is correct as written | `mathbox:proof-audit` |

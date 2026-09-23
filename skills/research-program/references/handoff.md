@@ -4,6 +4,8 @@ Supply the exact target, definitions/conventions, applicable instructions and
 raw artifacts needed for the next mathematical move. Use claim and route IDs
 when the project has them. Include failed steps relevant to continuation, not a
 transcript of every attempt.
+When a program closeout exists, link it and carry only the current decision
+and relevant conditions into the handoff; do not paste its route history.
 
 For continuation:
 

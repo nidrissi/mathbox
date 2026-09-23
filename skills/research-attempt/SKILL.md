@@ -118,8 +118,13 @@ material blocker, a convention decision, or a claim-supporting computation.
 - Write one self-contained route record in the project-designated research
   records directory, or `research/records/` when none is designated. Use the
   format and filename rules in [route-card.md](references/route-card.md).
-- Append one compact linked entry to the research-history index, normally
-  `RESEARCH_LOG.md`; do not put route details, commands, or dead ends there.
+- Append one compact linked entry to the project-designated route index. In a
+  small flat history this is normally `RESEARCH_LOG.md`; in a sustained
+  program it may be a program/phase index reached from the short top-level
+  history entry point. Do not add the same route to both levels or put route
+  details, commands, or dead ends in an index. If a hierarchical project has
+  no designated route index, resolve that location under its edit rules before
+  appending; do not turn the top-level program entry into a flat route log.
 - Update live status or claim obligations only when project state changed.
 - Treat live status as current state, not chronology. Keep its latest full
   verification summary and link the route record or manifests for older runs.
@@ -129,7 +134,8 @@ material blocker, a convention decision, or a claim-supporting computation.
   and route outcomes. A session alone needs no event. Use a prevalidated batch
   for several necessary events while preserving their distinct types.
 - Once indexed, keep the record and index entry immutable. Record a correction
-  in a new file with a `Corrects:` link and append a new index entry.
+  in a new file with a `Corrects:` link and append it to the same designated
+  route index. Do not create a program closeout for each attempt.
 - If the index still contains legacy long-form entries, do not rewrite them as
   a side effect of this attempt. Use the new format prospectively and report
   that a `mathbox:research-init` migration remains pending.

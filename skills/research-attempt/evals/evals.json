@@ -86,6 +86,17 @@
         "Does not append a route record or ledger event without a material state change",
         "Does not promote the unchanged blocker"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "A bounded route in a sustained program finds a reusable obstruction. Project instructions designate RESEARCH_LOG.md as a short program entry point and research/indexes/phase-b.md as this route's index. Persist the result without closing the overall program.",
+      "expected_output": "Writes one durable route record and one compact linked outcome in the designated phase-b index, leaves the top-level program entry point unchanged, and does not create a program closeout or duplicate route line.",
+      "assertions": [
+        "Uses the project-designated route index rather than assuming a root-level flat log",
+        "Constructs the route link relative to the nested index",
+        "Does not duplicate the route line in the top-level program entry point",
+        "Does not close the mathematical goal merely because the route ended"
+      ]
     }
   ]
 }
