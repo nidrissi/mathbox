@@ -34,5 +34,13 @@
   {
     "query": "Migrate our entire flat research-history index into a program-level hierarchy.",
     "should_trigger": false
+  },
+  {
+    "query": "Try one bounded construction and hand any unfinished continuation back to the program.",
+    "should_trigger": true
+  },
+  {
+    "query": "Keep pursuing the program across its untried continuations after an inconclusive attempt.",
+    "should_trigger": false
   }
 ]

@@ -273,9 +273,13 @@ class ResearchStateTests(unittest.TestCase):
                                                   next_question="Does a different filtration remove it?"))
         with self.assertRaises(LedgerError):
             self.route("R2")
+        before = {path.name: path.read_bytes() for path in self.ledger.events.glob("*.json")}
         self.route("R2", reopens=result, changed_input="New filtration changes the obstruction group")
         state = self.ledger.read()
         self.assertEqual([r["id"] for r in next_routes(state, self.view(), "A")], ["R2"])
+        self.assertEqual(state["evidence"], {})
+        for name, contents in before.items():
+            self.assertEqual((self.ledger.events / name).read_bytes(), contents)
 
     def test_route_success_never_promotes_claim(self):
         self.claim()
@@ -283,6 +287,61 @@ class ResearchStateTests(unittest.TestCase):
         self.record("route-result", dict(route="R", outcome="succeeded", reason="Calculated a useful example",
                                          next_question="Can it be made uniform?"))
         self.assertEqual(self.view()["claims"]["A"]["status"], "conjectural")
+
+    def test_inconclusive_run_keeps_route_available_for_later_continuation(self):
+        self.claim()
+        route_event = self.route()
+        program = self.record("program", {
+            "id": "P", "goal": "A", "objective": "Resolve the synthetic goal",
+            "base_event": route_event, "base_revision": "revision-1",
+        })
+        self.record("route-run", {
+            "id": "ANSATZ", "program": "P", "route": "R", "base_event": program,
+            "base_revision": "revision-1", "executor": "worker",
+            "work_scope": ["coefficient construction"],
+        })
+        next_question = "Derive the untried recurrence when the next session's budget is available"
+        reason = "Recurrence remains untried; defer it until the next session"
+        result = self.record("run-result", {
+            "run": "ANSATZ", "outcome": "inconclusive",
+            "reason": "Coefficient equations remain unresolved at the work package limit",
+            "next_question": next_question, "result_revision": "revision-2",
+        })
+        continuation = self.record("route-reconcile", {
+            "route": "R", "results": [result], "decision": "continue",
+            "reason": reason, "next_question": next_question, "base_event": program,
+            "base_revision": "revision-1", "current_revision": "revision-2", "conflicts": [],
+        })
+
+        def run(*args):
+            output = StringIO()
+            with redirect_stdout(output):
+                self.assertEqual(main(["--root", str(self.root), *args]), 0)
+            return output.getvalue()
+
+        handoff = json.loads(run("--json", "handoff", "--goal", "A"))
+        self.assertEqual([r["id"] for r in handoff["routes"]], ["R"])
+        self.assertEqual(handoff["closed_routes"], [])
+        self.assertEqual(handoff["state"]["runs"]["ANSATZ"]["status"], "inconclusive")
+        expected = {"event_id": continuation, "next_question": next_question, "reason": reason}
+        self.assertEqual(handoff["routes"][0]["continuation"], expected)
+        self.assertEqual(json.loads(run("next", "--goal", "A"))[0]["continuation"], expected)
+        self.assertIn(f"- R: ready; resolves A\n  Continue ({continuation}): {next_question}; "
+                      f"reason: {reason}\n", run("handoff", "--goal", "A"))
+        full = run("handoff", "--goal", "A", "--full")
+        self.assertIn(f"  Continuation {continuation}: {next_question}\n"
+                      f"  Continuation reason: {reason}\n", full)
+        self.assertIn(f"- {continuation}: route R, continue; run results {result}; "
+                      f"reason: {reason}; next question: {next_question}\n", full)
+        self.record("route-run", {
+            "id": "RECURRENCE", "program": "P", "route": "R", "base_event": continuation,
+            "base_revision": "revision-2", "executor": "worker",
+            "work_scope": ["recurrence construction"],
+        })
+        self.assertEqual(self.view()["runs"]["RECURRENCE"]["status"], "active")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "conjectural")
+        self.assertEqual(len(self.ledger.read()["routes"]), 1)
+        self.assertEqual(self.ledger.read()["evidence"], {})
 
     def test_handoff_retains_goal_relevant_closed_routes(self):
         self.claim()

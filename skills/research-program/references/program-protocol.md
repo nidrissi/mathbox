@@ -26,8 +26,11 @@ Record only these live decisions at a checkpoint:
 1. Checkpoint identifier, base Git revision or ledger event, exact goal and
    remaining implication.
 2. New evidence and what it rules in/out.
-3. Active routes and their distinct mechanisms.
-4. First failed step of closed routes and the input needed to reopen them.
+3. Active and deferred routes, with tried, untried, obstructed and deferred
+   continuations; give evidence for exclusions and conditions for resumption.
+4. First failed or unresolved step of closed routes, the scope of closure, the
+   reason no known continuation remains executable, and the input needed to
+   reopen them.
 5. Next action, expected discriminating outcome, and resource bound.
 
 For parallel or delayed results, retain each route's base checkpoint, artifact

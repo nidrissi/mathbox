@@ -42,5 +42,13 @@
   {
     "query": "Migrate our flat research log into program indexes, with a retrospective closeout for each old program.",
     "should_trigger": false
+  },
+  {
+    "query": "Continue the research program after an inconclusive attempt; another proposed continuation remains untried.",
+    "should_trigger": true
+  },
+  {
+    "query": "Only record this inconclusive run and its remaining continuation in the existing .mathbox ledger.",
+    "should_trigger": false
   }
 ]

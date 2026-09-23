@@ -39,6 +39,7 @@ of tool calls or reproducing a preferred proof.
 | `fixtures/absolute-grading.md` | Detect an absolute degree error hidden by parity-only tests. |
 | `fixtures/novelty-vocabulary.md` | Recheck novelty using historical terminology and citation chains. |
 | `fixtures/parallel-reconciliation.md` | Reconcile conflicting parallel returns from a common checkpoint. |
+| `fixtures/inconclusive-continuation.md` | Resume a recurrence program after one inconclusive attempt with another continuation untried. |
 
 These cases test specific failure mechanisms using synthetic, publishable
 artifacts. They contain no project-derived names, paths, statements, outputs or

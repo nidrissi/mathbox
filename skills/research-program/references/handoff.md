@@ -15,6 +15,8 @@ For continuation:
 - Relevant proof/source/computation paths and their checked versions.
 - Active review event IDs, outcomes, conditions and report paths.
 - Active mechanism, cheapest discriminator and already exhausted alternatives.
+- Untried and deferred continuations, their next executable steps and resumption
+  conditions; distinguish attempt outcomes from decisions to close a route.
 - Route ownership, resolved obligations, and route-only prerequisite context
   without promoting those prerequisites to theorem dependencies.
 - Authorized scope, resource bounds, next executable action.

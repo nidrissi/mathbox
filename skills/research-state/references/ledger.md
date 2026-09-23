@@ -48,7 +48,8 @@ views; add `--full` after either subcommand for the complete Markdown report,
 or put `--json` before the subcommand for the complete machine view. When
 programs or runs exist, the brief view counts them by status and lists runs
 needing attention: live, `stale-result`, or with a result not yet named by a
-reconciliation. Open routes name those runs. Neither display mode changes
+reconciliation. Open routes name those runs and their latest `continue` next
+step and reason. Neither display mode changes
 freshness checks or exit codes.
 
 ## Record several distinct events efficiently
@@ -275,11 +276,28 @@ invent new routes, claim semantic diversity or assign success probabilities.
 
 A `route-result` payload has `route`, `outcome` (`succeeded`, `failed`, `blocked`,
 `inconclusive`), `reason`, and `next_question`. A route can close only once.
+All four outcomes are terminal and remove the route from `next`. For an
+unresolved route, first check its known continuations and record why none remains
+executable within its stated scope. `inconclusive` does not mean the mechanism
+is impossible. Do not use terminal `blocked` or `inconclusive` merely to park an
+unfinished attempt for time, tools or priority; keep the route open and describe
+the deferred action and resumption condition in its durable record and handoff.
 Correction/reopening is a new route ID with `reopens` equal to the terminal
 route-result or reconciliation event ID and a `changed_input` explanation. An exact repeated target/mechanism
 without this explanation is rejected, whether the earlier route is open or
 closed. Semantic duplicates still need human or agent judgment. Route success
 does not itself create proof evidence.
+
+For an established mathematical obstruction, `changed_input` must explain what
+addresses that obstruction. Only when the prior result recorded no mathematical
+obstruction, such as a premature or legacy `inconclusive` or `blocked` closure
+for time, tools or priority, may it instead identify the closure error, the
+overlooked unfinished continuation or restored resource, and the concrete next
+action. Explicitly say when no mathematical premise changed. A `failed` result,
+or any result whose reason records an obstruction, cannot be reopened by
+relabelling its closure as premature. Preserve the old event; do not fabricate
+new evidence or rename the mechanism to evade the reopening link. These are
+semantic checks by the agent; the helper validates the event structure only.
 
 `handoff` includes open candidates in `routes` and completed history in
 `closed_routes`, filtered to the goal and its transitive dependencies when a
@@ -292,7 +310,10 @@ unfiltered `status` for the whole project. Each closed route includes its
 payload and `event_id`, plus a nested `result` with the outcome,
 reason/obstruction, next question and result `event_id` needed for `reopens`.
 Markdown handoffs also show these continuation details. `next` continues to
-list only open candidates.
+list only open candidates. Each open candidate in `next` and `handoff` carries
+`continuation`: `null`, or the `event_id`, `reason` and `next_question` of the
+route's latest `continue` reconciliation. Both Markdown handoff views print it
+under the route.
 
 ## Programs, executions and reconciliation
 
@@ -365,6 +386,15 @@ conflict record. Decisions are:
 - `succeeded`, `failed`, `blocked`, or `inconclusive`: close an open route;
 - `late-consistent`, `late-conflict`, `late-superseded`, or
   `late-not-applicable`: disposition a newly arrived result after closure.
+
+For example, if a coefficient ansatz is inconclusive and a recurrence remains
+untried, record the run's outcome as `inconclusive` and reconcile with `continue`.
+Name the recurrence as the next action, or state why it is deferred and when to
+resume it. The route stays in `next` and `handoff` with that next action and
+reason as its `continuation`; a later run of that same route does not need
+`reopens` or `changed_input`. These helpers do not schedule deferred work or
+lower its score; read each candidate's `continuation` and apply the recorded
+resource and priority conditions when choosing among candidates.
 
 Each reconciliation must add at least one result not previously reconciled; a
 later cumulative reconciliation may also cite earlier results. A terminal

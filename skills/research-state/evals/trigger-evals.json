@@ -34,5 +34,13 @@
   {
     "query": "Pursue this conjecture through several approaches until one works.",
     "should_trigger": false
+  },
+  {
+    "query": "Reconcile this inconclusive run in .mathbox and preserve its untried continuation for a later run.",
+    "should_trigger": true
+  },
+  {
+    "query": "Correct a premature route closure in the .mathbox ledger without changing the mathematical premises.",
+    "should_trigger": true
   }
 ]

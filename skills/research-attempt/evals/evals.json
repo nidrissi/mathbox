@@ -108,6 +108,17 @@
         "Does not delete or silently summarize unrecorded historical narratives",
         "Reports the remaining compaction as a separate closeout or migration step"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "Run only one bounded coefficient-construction attempt for route R. At its resource boundary the comparison equations remain unresolved. The program also lists a recurrence continuation, outside this work package. Report and persist the outcome.",
+      "expected_output": "Reports this attempt as inconclusive, states the unresolved equations, and returns the untried recurrence to the program while leaving R open.",
+      "assertions": [
+        "Does not extend the bounded authorization to execute the recurrence",
+        "Does not close the whole route from one unresolved construction",
+        "Separates attempt outcome and route disposition in the durable record",
+        "Preserves the next executable action without inventing an obstruction"
+      ]
     }
   ]
 }
