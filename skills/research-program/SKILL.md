@@ -124,7 +124,8 @@ when delegating or resuming.
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
 Update only state that actually changed; replace old dashboard checkpoint prose
-with links when the project permits, and do not rewrite indexed history.
+with links only once it has a durable home and the project permits, and do not
+rewrite indexed history.
 User-authorized repository deliverables remain part of completion.
 
 At a substantial program boundary, or when the user explicitly requests
