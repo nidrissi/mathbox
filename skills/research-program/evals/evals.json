@@ -89,6 +89,17 @@
         "Does not backdate the current proof",
         "Keeps current proof status separate from the indeterminate historical outcome"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "Continue an authorized program. The brief ledger handoff shows one live run constructing a lift for route R from checkpoint P17. Start a parallel obstruction search for R from the same checkpoint; it has a separate owner and disjoint output files.",
+      "expected_output": "Checks the live run's work scope, starts the distinct obstruction search as its own run from P17 with a separate owner and disjoint write scope, and leaves the lift run active for later reconciliation.",
+      "assertions": [
+        "Inspects the existing run before assigning the new one",
+        "Does not treat a live run as a blanket block on distinct parallel work for the same route",
+        "Records separate run identities, owners, base checkpoints and write scopes",
+        "Does not close or abandon the lift run merely to launch the obstruction search"
+      ]
     }
   ]
 }

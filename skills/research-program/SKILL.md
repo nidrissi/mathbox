@@ -37,8 +37,12 @@ Use existing project records, starting with the current summary and nearest
 relevant records rather than the complete status/history archive. When an
 executable `.mathbox/` ledger is present, use the available `research-state`
 skill's brief goal handoff and freshness check; open full claim/review details
-only for the active decision. Resolve its runs needing attention (live,
-stale, or unreconciled) before starting another run of the same route.
+only for the active decision. Before starting a run, inspect live, stale, and
+unreconciled runs of the same route. Recheck stale results that bear on the
+decision and reconcile completed results before relying on them. Compare a
+proposed run's work scope with live runs to avoid duplicate work. Distinct
+parallel runs may proceed from an explicit base with disjoint write scopes
+without closing existing live runs.
 Initialize it only when useful and authorized; its absence never blocks
 research. Read [program protocol](references/program-protocol.md) for
 route selection and checkpoints when executing routes; for a closeout-only
@@ -63,10 +67,11 @@ checkpoint using `research-attempt` if available. Its one-route boundary applies
 to each work package, not to this whole program. Follow the user's breadth
 requirement: if they ask to try every proposed route, execute each one.
 
-When routes run in parallel, give each one an owner, base checkpoint and
-disjoint write scope. Require returned artifacts to identify that base and their
-actual inputs. Reconcile them against the common base; do not infer chronology
-or supersession from response order, directory names or wall-clock completion.
+When routes or runs execute in parallel, give each one an owner, base
+checkpoint and disjoint write scope. Require returned artifacts to identify
+that base and their actual inputs. Reconcile them against the common base; do
+not infer chronology or supersession from response order, directory names or
+wall-clock completion.
 Preserve incompatible results as competing evidence until their mathematics is
 resolved.
 
