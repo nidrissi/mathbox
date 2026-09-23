@@ -12,6 +12,14 @@
     "should_trigger": true
   },
   {
+    "query": "Plan a safe migration of this research repository's oversized status, agent instructions, and existing ledger without editing yet.",
+    "should_trigger": true
+  },
+  {
+    "query": "Migrate our existing mathematical research handoff into one current dashboard while preserving dated history.",
+    "should_trigger": true
+  },
+  {
     "query": "Use the mathbox plugin to initialize this mathematical research repository.",
     "should_trigger": true
   },
@@ -25,6 +33,10 @@
   },
   {
     "query": "Work on the main theorem.",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize what changed in the current research status, without editing the repository.",
     "should_trigger": false
   },
   {

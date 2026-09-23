@@ -40,6 +40,14 @@ view; complete Markdown and JSON remain available on demand. The ledger also
 supports prevalidated batches of distinct events and a read-only query for
 claims affected by a pinned file. Repository setup now keeps mutable progress
 out of root instructions and old checkpoint prose out of the live dashboard.
+For an existing repository, `research-init` now provides a reviewed,
+[pin-aware migration workflow](skills/research-init/references/existing-repo-migration.md)
+for its instructions and live research state; it does not rewrite ledger events
+or turn historical prose into proof automatically.
+
+```text
+$mathbox:research-init Plan a migration of this repository's AGENTS.md and live status; preserve history and inspect ledger pins before editing.
+```
 
 Start a sustained investigation with:
 
@@ -164,7 +172,7 @@ install SageMath, LaTeX, or other project dependencies.
 |---|---|---|
 | [`mathbox:research-program`](skills/research-program/) | Pursue a substantial research goal across successive, distinct routes | matching sustained research request |
 | [`mathbox:research-state`](skills/research-state/) | Track claim revisions, evidence freshness and dependency impact | existing ledger or tracking request |
-| [`mathbox:research-init`](skills/research-init/) | Initialize, retrofit, or refresh a mathematical research repository | explicit request |
+| [`mathbox:research-init`](skills/research-init/) | Initialize or migrate a mathematical research repository's agent architecture | explicit request |
 | [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
 | [`mathbox:proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
 | [`mathbox:literature-check`](skills/literature-check/) | Verify or locally cache an external result, citation, notation translation, or bounded novelty claim | automatic |

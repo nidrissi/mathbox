@@ -55,6 +55,19 @@
 - Source boundaries, dates, destinations, carried evidence labels and unresolved
   provenance are reviewed before the compact index replaces the legacy log.
 
+## Existing-repository migration, when requested
+
+- The plan identifies existing authority, protected rules, baseline ledger
+  issues, and active file pins; a plugin upgrade alone does not trigger edits.
+- A source-to-destination crosswalk accounts for substantive live-status and
+  instruction material before replacing it, without duplicating chronology.
+- Pinned charter, proof, or evidence files are not rewritten or rehashed just
+  to conform to a template; unresolved claim conflicts remain explicit.
+- Existing numbered ledger events and immutable indexed records stay intact.
+  A prose-only project is not forced to adopt a ledger.
+- Before/after checks compare exact claim, review, issue, link, and instruction
+  state; pre-existing stale issues are distinguished from introduced ones.
+
 ## Manuscript constraints, when applicable
 
 - Venue, call/template and submission category are confirmed, not inferred.

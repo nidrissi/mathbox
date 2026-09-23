@@ -1,7 +1,7 @@
 ---
 name: research-init
 description: >-
-  Initialize, retrofit, or refresh an AI-assisted mathematical research repository. Use only when the user explicitly asks to set up or substantially revise AGENTS.md, CLAUDE.md, research workflow files, or the repository's agent architecture. Inspect first, interview adaptively, propose a reviewed file plan, and default to no repository-local skills because canonical workflows come from the mathbox plugin.
+  Initialize or migrate an AI-assisted mathematical research repository's agent architecture. Use only when the user explicitly asks to set up, plan a retrofit, or substantially revise AGENTS.md, CLAUDE.md, live research status/history, workflow files, or their authority structure. Inspect first, propose a reviewable file plan, and default to no repository-local skills. Do not use for an ordinary research attempt or read-only project retrospective.
 ---
 
 # Mathematical research repository initializer
@@ -12,6 +12,8 @@ skills supplied by the `mathbox` plugin inside it.
 ## Non-negotiable behavior
 
 - Run only after an explicit request.
+- A request for a migration plan is read-only; a plugin upgrade alone does not
+  authorize rewriting an existing project's files.
 - Inspect before asking questions; do not ask for facts safely available in the
   repository.
 - Ask at most five material questions at a time.
@@ -124,11 +126,26 @@ Present:
    complete page budget, with every unresolved item left explicitly unknown.
 11. source-dependent inventory entries that remain unverified, and a literature-
     check work package ordered before any dependent claim is promoted or used.
+12. for existing live-file migration, a section inventory and proposed content
+    crosswalk, current ledger/pin baseline where present, and unresolved
+    authority conflicts. Complete the mapping before replacing old content.
 
 When this explicitly requested setup, retrofit, or refresh finds route-level
 prose in `RESEARCH_LOG.md`, the proposed plan must include the legacy migration
 below. Trigger on the log's structure, not its line count. Detection does not
 authorize the rewrite.
+
+## Existing instruction and live-state migration
+
+For an explicit request to plan or perform migration of an existing repository's
+large `AGENTS.md`, dashboard, or handoff, follow
+[existing-repo-migration.md](references/existing-repo-migration.md). It defines
+the baseline, content crosswalk, pin-aware edits, and before/after checks. A
+plan-only request stops at the reviewed plan. Do not treat a plugin update as a
+reason to rewrite a ledger, refresh hashes, or import confident prose as proof.
+Use the separate legacy research-log process below if that log contains
+route-level prose; use the available `research-state` skill for any optional
+ledger adoption or claim/evidence revision.
 
 ## Legacy research-log migration
 
@@ -186,18 +203,16 @@ placeholder. A normal setup has:
 - nested instructions only for genuinely local invariants;
 - documented verification commands and benchmark cases.
 
-Do not duplicate mutable state in persistent instructions.
-Put the current deliverable, success criterion and fallback in the charter,
-and current evidence, blocker and next action in the live dashboard. Root
-instructions should point to those files and contain only stable local rules,
-authorization boundaries and checks. Avoid a standing instruction to load an
-entire growing dashboard, claims file or research log before every task: read
-their current summary and search for relevant contracts/records as needed.
-Keep dated checkpoint narratives in standalone records and link them from the
-history index. When refreshing an existing dashboard, preserve old material in
-its authoritative records before replacing stacked narratives with current
-state and links. The inspector reports size and candidate links; mathematical
-status conflicts still require source review, not automatic resolution.
+Do not duplicate mutable state in persistent instructions. For new setup, put
+the deliverable, success criterion and fallback in the charter, and current
+evidence, blocker and next action in the live dashboard. Root instructions
+should point to those files and contain only stable local rules, authorization
+boundaries and checks. During migration, respect existing artifact pins and
+authority before moving any mutable fact. Avoid standing instructions to load
+entire growing records; search for relevant contracts and history as needed.
+Preserve old checkpoint material before replacing live narratives with current
+state and links. Inspector size and dated-marker counts are prompts, not
+authority or mathematical verdicts.
 
 For a project whose claim dependencies and evidence frequently change, consider
 the available `research-state` skill and its optional `.mathbox/` ledger. Use its
@@ -246,6 +261,8 @@ component skills rather than rewriting them.
 9. Run the cheapest verified project check when authorized.
 10. Inspect `git diff --check` and the full diff.
 11. Tell the user how to verify loaded instructions and skills in a fresh session.
+12. For a migration, reconcile the content crosswalk and compare relevant
+    ledger issues, pins, claims, links, and protected instructions to baseline.
 
 Do not commit unless explicitly authorized.
 
@@ -254,6 +271,8 @@ Do not commit unless explicitly authorized.
 Report files changed, hierarchy rationale, rules moved and destinations,
 validation, unresolved questions/commands, `mathbox` plugin availability, any
 archived duplicate skills, and one recommended namespaced plugin invocation.
+For a migration, also report preserved history, unresolved authority conflicts,
+and any pre-existing versus newly introduced freshness issues.
 
 Use [output-contract.md](references/output-contract.md) as the acceptance
 checklist.

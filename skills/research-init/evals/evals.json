@@ -105,6 +105,19 @@
         "Preserves old checkpoint evidence before replacing live-status narratives",
         "Does not require reading the whole growing status file in every future task"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "Plan the migration of this existing research repository to compact instructions and one live status. Its AGENTS.md requires reading a 150 KB status file; dated checkpoints mix current and historical claims; its schema-v1 ledger has pre-existing stale issues and a charter pinned by many active claims. Do not edit yet.",
+      "expected_output": "Produces a read-only section inventory, proposed source-to-destination crosswalk and baseline, marks uninspected ranges, identifies authority conflicts and pin fanout, and stops before editing or refreshing hashes.",
+      "assertions": [
+        "Treats the request as a plan, not authorization to edit",
+        "Uses brief inspector and ledger queries before targeted detail",
+        "Plans complete accounting for substantive old status sections and unique AGENTS rules before replacement",
+        "Does not move mutable facts into the pinned charter merely to match a template",
+        "Distinguishes pre-existing ledger issues from migration regressions",
+        "Does not rewrite schema-v1 events or infer proved from historical prose"
+      ]
     }
   ]
 }
