@@ -29,8 +29,9 @@ Default to no edits unless the user asks to reconcile files.
 
 If `.mathbox/` is present, use the available `research-state` skill's brief
 read-only check and goal handoff, then inspect full details for affected claims,
-review conditions and routes. Use impact when a named claim or artifact is
-relevant. Reconstruct affected proofs from artifacts;
+review conditions and routes. Use `impact CLAIM` for a named claim's
+dependents and `pin-impact PATH` for the pins of a named file. Reconstruct
+affected proofs from artifacts;
 do not merely repeat generated labels. Do not initialize or migrate state as a
 side effect of a read-only retrospective.
 

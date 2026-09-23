@@ -116,6 +116,7 @@
         "Plans complete accounting for substantive old status sections and unique AGENTS rules before replacement",
         "Does not move mutable facts into the pinned charter merely to match a template",
         "Distinguishes pre-existing ledger issues from migration regressions",
+        "Captures the complete baseline issue list rather than the eight-issue summary sample",
         "Does not rewrite schema-v1 events or infer proved from historical prose"
       ]
     },

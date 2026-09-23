@@ -18,11 +18,12 @@ second manually maintained claims dashboard.
   If authority is ambiguous, leave the affected text in place and request the
   specific decision before replacing it.
 - Where `.mathbox/` exists, use the available `research-state` skill to capture
-  `check --summary`, relevant goal handoffs, and `pin-impact PATH` for each file
-  proposed for editing. Record issue counts and representative IDs, including
-  pre-existing stale evidence. Inspect exact artifacts for material conflicts;
-  a clean ledger check is not a proof audit. Querying active pins does not prove
-  that an unpinned document is semantically safe to change. If that skill is
+  `check --summary --full`, relevant goal handoffs, and `pin-impact PATH` for
+  each file proposed for editing. Keep the complete baseline issue list,
+  including pre-existing stale evidence; plain `check --summary` samples only
+  eight issues. Inspect exact artifacts for material conflicts; a clean ledger
+  check is not a proof audit. Querying active pins does not prove that an
+  unpinned document is semantically safe to change. If that skill is
   unavailable, report the limit and inspect existing records without copying
   its code into the repository.
 
@@ -113,11 +114,13 @@ Before replacing a live file, verify that every substantive old span has a
 durable destination or is explicitly retained as unresolved. Compare exact
 claim wording, evidence and review conditions, current blockers, active route,
 protected rules, and all edited links against the baseline. Rerun the targeted
-project checks and ledger `check --summary` when present; compare issue IDs and
-counts instead of demanding that pre-existing problems disappear. Use full
-ledger detail only for affected claims or issues. Inspect the full diff and
-`git diff --check`; use risk-based full checks for semantic-core or broad
-changes. Report skipped checks and remaining conflicts.
+project checks and ledger `check --summary --full` when present; compare the
+complete issue lists and counts with the baseline instead of demanding that
+pre-existing problems disappear. A sampled summary can hide a new issue behind
+old ones. Open full claim and review detail only for affected claims or
+issues. Inspect the full diff and `git diff --check`; use risk-based full
+checks for semantic-core or broad changes. Report skipped checks and remaining
+conflicts.
 Use project-specific advisory size or repeated-checkpoint triggers for the
 live view and top-level index; exceeding one calls for review, not deletion.
 

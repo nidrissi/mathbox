@@ -14,7 +14,8 @@ its route index and only the records needed for decisive or conflicting
 outcomes. With a ledger, use a brief goal handoff and freshness check; inspect
 full contracts, active review reports, and artifacts for every status used in
 the synthesis. Record the assessment Git revision or ledger head and the
-relevant pre-existing issue IDs. Do not infer proof from a generated label.
+complete pre-existing issue list from `check --summary --full`; the plain
+summary samples only eight issues. Do not infer proof from a generated label.
 
 For a retrospective closeout, record two distinct provenance points: the
 historical cutoff (date and exact Git revision or ledger event when available)
@@ -97,8 +98,8 @@ index entries, never every historical program by default.
 Before replacing old live prose, map each substantive span to the current
 view, a linked closeout/route record, or an explicitly retained unresolved
 archive. Reconcile exact claim wording, evidence and review conditions,
-unresolved questions, and affected pins. Check links and compare relevant
-ledger issue IDs with the base; do not repair staleness by refreshing hashes.
+unresolved questions, and affected pins. Check links and compare the complete
+ledger issue list with the base; do not repair staleness by refreshing hashes.
 Run the project's risk-appropriate checks and inspect the full diff. Report
 what remains open and any history that is only archived pending classification.
 If a contradiction or protected file cannot be resolved under current
