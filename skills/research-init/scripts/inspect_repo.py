@@ -456,9 +456,7 @@ def claude_bridge(root: Path) -> dict:
         except (OSError, UnicodeError):
             imports = False
     issue = None
-    if agents.is_file() and not claude.is_file():
-        issue = "missing CLAUDE.md bridge"
-    elif agents.is_file() and not imports:
+    if agents.is_file() and claude.is_file() and not imports:
         issue = "CLAUDE.md does not import @AGENTS.md"
     return {
         "agents_exists": agents.is_file(), "claude_exists": claude.is_file(),
@@ -613,7 +611,15 @@ def markdown(obj: dict) -> str:
             lines.extend(f"- `{item['path']}` — {item['lines']} lines, {item['bytes']} bytes" for item in items)
         lines.append("")
     bridge = obj["claude_bridge"]
-    lines += ["## Claude bridge", "", bridge["issue"] or "No missing root bridge detected.", ""]
+    if bridge["issue"]:
+        claude_status = bridge["issue"]
+    elif bridge["agents_exists"] and not bridge["claude_exists"]:
+        claude_status = "Root AGENTS.md can load directly in supported Claude Code sessions."
+    elif bridge["imports_agents"]:
+        claude_status = "Root CLAUDE.md imports AGENTS.md."
+    else:
+        claude_status = "No conflicting root instruction files detected."
+    lines += ["## Claude instructions", "", claude_status, ""]
     live = obj["live_state_candidates"]
     lines += ["## Live dashboard/handoff candidates", ""]
     lines.append("Dashboards: " + (", ".join(f"`{path}`" for path in live["dashboard_candidates"]) or "none"))

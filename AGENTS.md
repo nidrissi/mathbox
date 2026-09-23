@@ -58,8 +58,9 @@ convert during submission. Keep the skills portable across both hosts.
 - Use a precise `description` with positive triggers and exclusions. Update
   trigger evals whenever that routing contract changes.
 - Preserve valid relative Markdown links from `SKILL.md` to bundled resources.
-- Keep `CLAUDE.md` as the small compatibility shim that imports this file. Put
-  shared repository guidance here rather than duplicating it.
+- Keep shared repository guidance in `AGENTS.md`. Add `CLAUDE.md` only for
+  genuine Claude-specific instructions or sessions that cannot load `AGENTS.md`
+  directly; if present, it should import `@AGENTS.md`.
 
 ## Validation
 
@@ -82,9 +83,8 @@ claude plugin validate --strict .claude-plugin/marketplace.json
 git diff --check
 ```
 
-Root plugin validation reports that the repository's `CLAUDE.md` is not loaded
-as plugin context. This warning is expected: keep the file as the repository
-compatibility shim, and keep all plugin behavior under `skills/`.
+Keep all plugin behavior under `skills/`; root instructions are repository
+context, not plugin context.
 
 For Python helper changes, also run:
 

@@ -15,11 +15,12 @@
 - No unexplained residue from another repository remains.
 - Root instructions are concise; detailed procedures are not copied into them.
 
-## Claude bridge
+## Claude instructions
 
-- `CLAUDE.md` imports `@AGENTS.md` rather than duplicating it.
-- Additions are genuinely Claude-specific.
-- The user verifies it in a fresh/current session.
+- `CLAUDE.md` is optional when Claude Code loads `AGENTS.md` directly.
+- If present alongside `AGENTS.md`, `CLAUDE.md` imports `@AGENTS.md` rather
+  than duplicating it; additions are genuinely Claude-specific.
+- The user verifies instruction loading in a fresh/current session.
 
 ## Research records
 

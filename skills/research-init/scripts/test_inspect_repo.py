@@ -27,7 +27,7 @@ class InspectorTests(unittest.TestCase):
         path.write_text(content, encoding="utf-8")
         return path
 
-    def test_semantic_aliases_manifests_duplicates_and_missing_bridge(self):
+    def test_semantic_aliases_manifests_duplicates_without_bridge(self):
         for name in (
             "PLAN.md", "STATUS.md", "notes/STATUS-team.md", "OUTLINE.md",
             "MANIFEST.md", "THEOREMS.md", "FACT_INVENTORY.md",
@@ -52,7 +52,8 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual({item["path"] for item in roles["fact_inventory"]}, {"FACT_INVENTORY.md"})
         self.assertTrue(result["live_state_candidates"]["duplicate_dashboard_candidates"])
         self.assertTrue(result["live_state_candidates"]["duplicate_handoff_candidates"])
-        self.assertEqual(result["claude_bridge"]["issue"], "missing CLAUDE.md bridge")
+        self.assertIsNone(result["claude_bridge"]["issue"])
+        self.assertFalse(result["claude_bridge"]["claude_exists"])
         self.assertEqual(len(result["computation_manifests"]), 2)
         self.assertTrue(all(item["classification"] == "mathbox-like" for item in result["computation_manifests"]))
 
@@ -111,6 +112,7 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(alternate["refs/papers"]["confidence"], "high")
         self.assertEqual(result["project_maps"][0]["path"], "docs/path-map.json")
         self.assertNotIn("refs/papers/STATUS.md", {item["path"] for item in result["research_role_files"]})
+        self.assertIsNone(result["claude_bridge"]["issue"])
 
     @unittest.skipUnless(shutil.which("git"), "git is unavailable")
     def test_git_clean_is_distinct_from_unavailable(self):

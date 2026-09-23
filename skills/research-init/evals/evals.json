@@ -61,11 +61,11 @@
     {
       "id": 6,
       "prompt": "Inspect and propose a retrofit for this synthetic-style repository. It uses PLAN.md, STATUS.md, two dated HANDOFF files, THEOREMS.md, FACT_INVENTORY.md, docs/path-migrations.json, and computation manifests under checks/. AGENTS.md exists but CLAUDE.md does not; RESEARCH_LOG.md mixes linked index lines with full route prose.",
-      "expected_output": "Recognizes semantic role aliases rather than requiring canonical names, inventories computation manifests and path maps separately, reports the missing Claude bridge and multiple handoff candidates, classifies the log as mixed without choosing authority from filenames alone, and leaves source-derived inventory assertions pending verification.",
+      "expected_output": "Recognizes semantic role aliases rather than requiring canonical names, inventories computation manifests and path maps separately, accepts AGENTS.md without a CLAUDE.md bridge and reports multiple handoff candidates, classifies the log as mixed without choosing authority from filenames alone, and leaves source-derived inventory assertions pending verification.",
       "assertions": [
         "Recognizes plan, status, theorem/fact inventory and handoff variants",
         "Inventories computation manifests separately from build manifests",
-        "Reports the missing CLAUDE.md bridge",
+        "Does not require a CLAUDE.md bridge when AGENTS.md is present",
         "Flags multiple handoff candidates for authority review",
         "Classifies the research log structurally as mixed",
         "Schedules exact source verification before source-derived inventory entries become foundations"
