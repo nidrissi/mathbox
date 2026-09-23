@@ -97,10 +97,24 @@ method, an implementation bug, and an inaccessible source.
   the actual goal. Do not silently replace that goal with the weaker result.
 - On failure, save a reusable obstruction and revise the portfolio. A failed
   proof route does not refute the target.
-- On no progress, identify a materially different input, construction,
-  invariant or source. Reopening an old route requires that explicit change.
+- On no progress, record the first unresolved implication and distinguish the
+  attempt's limits from evidence against the mechanism. Try an untested
+  continuation or identify a different input, construction, invariant or source.
+  Repeating a mechanism with an established obstruction requires a change that
+  addresses that obstruction; resuming unfinished work does not.
 - Another finite case is useful only if it distinguishes alternatives, checks
   an independent invariant, or reaches a new regime.
+
+An inconclusive attempt does not by itself close its route. Before closing an
+unresolved route, account for the proposed continuations: what was tried, what
+remains untried, what evidence rules one out, and what is deferred with a reason
+and resumption condition. An obstruction to one construction closes only that
+construction unless it applies to the whole mechanism. Keep a route open while a plausible
+continuation remains; execute it within the authorized resources or preserve it
+in the handoff. Time, capability or priority limits justify deferring work, not
+declaring the mechanism exhausted. Reserve terminal `inconclusive` for a scoped
+route whose known continuations have been accounted for and have no presently
+executable next step; state the scope and reason without claiming impossibility.
 
 Continue successive cycles while there is an executable, plausible route within
 the authorized resources. Do not stop just because the initial three failed.

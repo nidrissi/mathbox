@@ -100,6 +100,38 @@
         "Records separate run identities, owners, base checkpoints and write scopes",
         "Does not close or abandon the lift run merely to launch the obstruction search"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "Continue an authorized program. Route R has two proposed continuations: a coefficient construction and a recurrence argument. One agent could not solve the coefficient equations and returned an inconclusive attempt. The recurrence has not been tried, and no obstruction to it is known. Decide the route disposition and continue the mathematics.",
+      "expected_output": "Records the coefficient attempt as inconclusive with its unresolved implication, keeps R open, and executes the recurrence continuation within the authorized resources.",
+      "assertions": [
+        "Does not infer impossibility or route exhaustion from the agent getting stuck",
+        "Accounts for both proposed continuations and preserves the untried one",
+        "Executes the remaining continuation rather than stopping at a suggestion",
+        "Does not require new mathematical input to resume unfinished work"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "The authorized time budget has ended. A route tried a direct construction without settling its comparison lemma; a second construction remains untried. Preserve the handoff and stop work at the budget boundary.",
+      "expected_output": "Stops at the resource limit, records the inconclusive attempt separately, and leaves the route open with the second construction deferred and its next step and resumption condition visible.",
+      "assertions": [
+        "Honors the resource boundary without executing more research",
+        "Does not classify untried work as exhausted or mathematically obstructed",
+        "Preserves an executable deferred continuation without requiring a new theorem"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "A program route requires a nonzero equivariant linear map from the one-dimensional sign representation of C2 over Q to the trivial representation. Two proposed constructions are averaging and choosing a basis. The first attempt proves that equivariance and linearity force 2f(v)=0 for every v. The basis construction remains untried. Decide this route’s disposition.",
+      "expected_output": "Checks the obstruction over Q, explains that it rules out every nonzero equivariant linear map and hence both proposed constructions, and closes this scoped route as failed without needing to execute the basis construction.",
+      "assertions": [
+        "Checks that the obstruction covers the whole mechanism under its stated hypotheses",
+        "Accounts for the untried construction as ruled out by evidence",
+        "Does not require trying a continuation already excluded by a valid obstruction",
+        "Does not infer that the broader program goal is false solely because this route fails"
+      ]
     }
   ]
 }

@@ -43,6 +43,11 @@
       "critical_failure": "Treats one unsuccessful phrase search as evidence of novelty"
     },
     {
+      "id": "inconclusive-continuation", "skill": "research-program", "fixture": "fixtures/inconclusive-continuation.md",
+      "obligations": ["Distinguish attempt A's unresolved calculation from route R's disposition", "Account for the untried continuation and execute a concrete continuation of R", "Prove the identity at every stated index, checking the initial sign and recurrence", "Persist the mathematical result and current handoff without treating the earlier attempt as a no-go result"],
+      "critical_failure": "Closes or abandons R solely because attempt A was inconclusive, or demands a new mathematical premise before continuing"
+    },
+    {
       "id": "parallel-reconciliation", "skill": "research-program", "fixture": "fixtures/parallel-reconciliation.md",
       "obligations": ["Use the common base checkpoint rather than display order", "Preserve both raw returns", "Expose the path and mathematical conflicts", "Serialize shared-state updates after reconciliation"],
       "critical_failure": "Silently overwrites one return or treats arrival order as ancestry"

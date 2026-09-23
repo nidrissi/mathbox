@@ -20,6 +20,8 @@ Write each durable route as a standalone Markdown file:
 - **Failure/no-go criterion:**
 - **Cheapest decisive check:**
 - **Outcome:**
+- **Route disposition and scope:** <open, deferred, or closed; reason>
+- **Continuations:** <tried, untried, obstructed with evidence, or deferred with resumption condition>
 - **Evidence label:**
 - **Review and freshness status:**
 - **First unresolved or failed implication:**

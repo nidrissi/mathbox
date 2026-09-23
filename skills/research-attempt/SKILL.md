@@ -45,8 +45,11 @@ is bookkeeping evidence, not mathematical verification.
 4. State a falsifiable success criterion, a failure/no-go criterion, and the
    cheapest decisive example, source check, or computation.
 5. Choose one route within the current program. Match it against prior failed
-   mechanisms, not merely prior titles. Reopening one requires a new input,
-   invariant, construction or hypothesis that addresses its first failed step.
+   mechanisms, not merely prior titles. Retrying a mechanism with an established
+   obstruction requires a new input, invariant, construction or hypothesis that
+   addresses its first failed step. An unresolved step is not an obstruction;
+   resuming an untried or deferred continuation needs a concrete next action,
+   not a new mathematical premise.
 
 Use the route card in [route-card.md](references/route-card.md) when a durable
 entry will be needed.
@@ -106,6 +109,15 @@ Use one of:
 
 State the strongest surviving result. Never upgrade evidence because the route
 was long or persuasive.
+
+Classify this attempt separately from the route's disposition. If a construction
+is unresolved, say what you could not establish; do not infer that it is
+impossible. Preserve other proposed continuations as untried, obstructed with
+evidence, or deferred with a reason and resumption condition. An inconclusive
+attempt or a resource limit alone does not close the route. Return unfinished
+work to the program, or retain an executable handoff when only this bounded
+attempt was authorized. Closing an unresolved route needs an account of why no
+known continuation remains executable within its stated scope.
 
 ## Persist at a natural checkpoint
 

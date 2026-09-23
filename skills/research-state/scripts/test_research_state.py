@@ -284,6 +284,67 @@ class ResearchStateTests(unittest.TestCase):
                                          next_question="Can it be made uniform?"))
         self.assertEqual(self.view()["claims"]["A"]["status"], "conjectural")
 
+    def test_premature_closure_can_be_corrected_without_new_math(self):
+        self.claim()
+        self.route()
+        result = self.record("route-result", {
+            "route": "R", "outcome": "inconclusive", "reason": "Executor ran out of time",
+            "next_question": "Try the untested recurrence construction",
+        })
+        before = {path.name: path.read_bytes() for path in self.ledger.events.glob("*.json")}
+        self.route("R2", reopens=result, changed_input=(
+            "Correct premature closure: the recurrence construction was never tried. "
+            "No mathematical premise changed; next derive its recurrence equation."))
+        state = self.ledger.read()
+        self.assertEqual([r["id"] for r in next_routes(state, self.view(), "A")], ["R2"])
+        self.assertEqual(state["routes"]["R2"]["payload"]["reopens"], result)
+        self.assertEqual(state["evidence"], {})
+        for name, contents in before.items():
+            self.assertEqual((self.ledger.events / name).read_bytes(), contents)
+
+    def test_inconclusive_run_keeps_route_available_for_later_continuation(self):
+        self.claim()
+        route_event = self.route()
+        program = self.record("program", {
+            "id": "P", "goal": "A", "objective": "Resolve the synthetic goal",
+            "base_event": route_event, "base_revision": "revision-1",
+        })
+        self.record("route-run", {
+            "id": "ANSATZ", "program": "P", "route": "R", "base_event": program,
+            "base_revision": "revision-1", "executor": "worker",
+            "work_scope": ["coefficient construction"],
+        })
+        next_question = "Derive the untried recurrence when the next session's budget is available"
+        result = self.record("run-result", {
+            "run": "ANSATZ", "outcome": "inconclusive",
+            "reason": "Coefficient equations remain unresolved at the work package limit",
+            "next_question": next_question, "result_revision": "revision-2",
+        })
+        continuation = self.record("route-reconcile", {
+            "route": "R", "results": [result], "decision": "continue",
+            "reason": "Recurrence remains untried; defer it until the next session",
+            "next_question": next_question, "base_event": program,
+            "base_revision": "revision-1", "current_revision": "revision-2", "conflicts": [],
+        })
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "--json", "handoff", "--goal", "A"]), 0)
+        handoff = json.loads(output.getvalue())
+        self.assertEqual([r["id"] for r in handoff["routes"]], ["R"])
+        self.assertEqual(handoff["closed_routes"], [])
+        self.assertEqual(handoff["state"]["runs"]["ANSATZ"]["status"], "inconclusive")
+        state = self.ledger.read()
+        self.assertEqual(state["reconciliations"][continuation]["payload"]["next_question"], next_question)
+        self.record("route-run", {
+            "id": "RECURRENCE", "program": "P", "route": "R", "base_event": continuation,
+            "base_revision": "revision-2", "executor": "worker",
+            "work_scope": ["recurrence construction"],
+        })
+        self.assertEqual(self.view()["runs"]["RECURRENCE"]["status"], "active")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "conjectural")
+        self.assertEqual(len(self.ledger.read()["routes"]), 1)
+        self.assertEqual(self.ledger.read()["evidence"], {})
+
     def test_handoff_retains_goal_relevant_closed_routes(self):
         self.claim()
         self.claim("B", ["A"])

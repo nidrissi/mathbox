@@ -113,6 +113,28 @@
         "Does not duplicate the active run's work scope or close it to permit distinct parallel work",
         "Does not treat a run result as mathematical evidence without checking the artifact"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "In an authorized temporary ledger, register a goal, route R and a program with one run. The run ended inconclusively on a coefficient ansatz; the route record also contains an untried recurrence. Record the result, reconcile it, generate a goal handoff, then resume the recurrence in a later run of R without changing mathematical premises.",
+      "expected_output": "Records an inconclusive run-result and continue reconciliation, keeps R in next and handoff, and starts a later run on R without reopening or changing claim evidence.",
+      "assertions": [
+        "Uses actual helper commands and inspects the resulting candidates and handoff",
+        "Does not use terminal route-result or terminal reconciliation to record an attempt limit",
+        "Preserves the untried recurrence and the first unresolved implication",
+        "Uses the same route ID and creates no proof or counterexample evidence"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "In an authorized temporary ledger, an earlier route R was closed inconclusive solely because its executor ran out of time. Its record still names an untried recurrence. Correct this premature closure and make that continuation available again; no mathematical premise has changed.",
+      "expected_output": "Preserves the closure event, creates a linked replacement route with reopens, and uses changed_input to explain the closure error and existing untried next action without pretending new mathematics was discovered.",
+      "assertions": [
+        "Uses actual helper commands and retains the old closure bytes",
+        "Preserves the owner, obligations and mechanism in the replacement route",
+        "Reports explicitly that no mathematical premise changed",
+        "Does not evade duplicate detection by renaming the mechanism or add mathematical evidence"
+      ]
     }
   ]
 }
