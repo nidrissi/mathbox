@@ -100,8 +100,10 @@
 - Inspector output distinguishes clean Git from unavailable metadata, inventories
   computation manifests separately, reports semantic role aliases and potential
   duplicate dashboards/handoffs, and conservatively identifies broken relative
-  links/path-shaped code spans. Its brief report counts omitted candidates and
-  separates historical-path examples from current-path examples. Dated
+  links/path-shaped code spans. Its brief report counts omitted candidates,
+  keeps log and manifest classifications and skill-location findings, and
+  separates historical-path examples from current-path examples; route
+  records count as current. Dated
   checkpoint-marker counts remain tentative and never decide claim status.
 - Project-specific size or repeated-checkpoint triggers prompt compaction review
   but never license automatic truncation of current mathematical conditions.

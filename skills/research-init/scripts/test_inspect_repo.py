@@ -84,6 +84,27 @@ class InspectorTests(unittest.TestCase):
         self.assertIn("research/imports/old.md:1", markdown(result))
         self.assertLess(len(brief), 4000)
 
+    def test_brief_report_keeps_route_record_links_current(self):
+        self.write("research/records/2026-01-01-route.md", "[proof](../../proofs/moved.tex)\n")
+        self.write("research/legacy/old-log.md", "[old](missing.md)\n")
+        brief = brief_markdown(inspect(self.root, 5))
+        self.assertIn("Current-path candidates: 1; historical-path candidates: 1", brief)
+        self.assertIn("research/records/2026-01-01-route.md:1", brief)
+
+    def test_brief_report_keeps_classifications_and_skill_findings(self):
+        self.write("RESEARCH_LOG.md", "# Research log\n\n## 2030-01-01\n\n- **Route**: lift\n")
+        self.write("skills/foo/SKILL.md", "---\nname: foo\n---\n")
+        self.write(".claude/skills/bar/SKILL.md", "---\nname: bar\n---\n")
+        self.write("Makefile", "check:\n\ttrue\n")
+        self.write("research/manifests/run.json", "{}")
+        brief = brief_markdown(inspect(self.root, 5))
+        self.assertIn("`RESEARCH_LOG.md` — long-form-legacy;", brief)
+        self.assertIn("`research/manifests/run.json` — location/name-candidate;", brief)
+        self.assertIn("## Misplaced root skills (1)", brief)
+        self.assertIn("`skills/foo/SKILL.md`", brief)
+        self.assertIn("## Project skill files (1)", brief)
+        self.assertIn("## Build/verification manifests (1)", brief)
+
     def test_live_summary_reports_checkpoint_markers_without_promoting_snapshots(self):
         self.write("RESEARCH_STATUS.md", "# Current status\n\n## Previous checkpoint 2030-01-01\n\n## 2030-01-02 update\n")
         self.write("research/migrations/status-before.md", "# Historical snapshot\n")

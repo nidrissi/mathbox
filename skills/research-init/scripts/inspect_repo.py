@@ -27,6 +27,16 @@ KNOWN_PATH_SUFFIXES = {
     ".bib", ".csv", ".json", ".md", ".pdf", ".py", ".rst", ".tex",
     ".toml", ".tsv", ".txt", ".yaml", ".yml",
 }
+# Directory parts and filename tokens that mark archived or imported history.
+# Current route records are durable, not historical: their broken links stay current.
+HISTORICAL_PARTS = {"archive", "archives", "imports", "legacy", "migrations", "quarantine"}
+HISTORICAL_TOKENS = {"archive", "archived", "historical", "legacy", "old", "superseded"}
+# History plus records, templates, tooling and run output: never the live dashboard.
+NON_LIVE_PARTS = HISTORICAL_PARTS | {
+    "assets", "computations", "experiments", "fixtures", "records", "references",
+    "runs", "skills", "templates", "vendor", "vendored",
+}
+NON_LIVE_TOKENS = HISTORICAL_TOKENS | {"proposed", "template"}
 DECLARED_PATH_LABELS = {
     "charter": ("charter", "project charter"),
     "status": ("live status", "status", "dashboard"),
@@ -244,6 +254,12 @@ def info(root: Path, path: Path) -> dict:
 
 def normalized_stem(path: Path) -> str:
     return re.sub(r"[^a-z0-9]+", "_", path.stem.casefold()).strip("_")
+
+
+def located_in(path: Path, parts: set[str], tokens: set[str]) -> bool:
+    """Whether a relative path's directories or filename tokens meet the given sets."""
+    return bool({part.casefold() for part in path.parts[:-1]} & parts
+                or set(normalized_stem(path).split("_")) & tokens)
 
 
 def semantic_roles(path: Path) -> list[str]:
@@ -541,16 +557,11 @@ def inspect(root: Path, depth: int) -> dict:
         except (ValueError, IndexError):
             pass
     duplicates = sorted(CANONICAL.intersection(local_names))
-    non_live_parts = {"archive", "archives", "assets", "computations", "experiments",
-                      "fixtures", "imports", "migrations", "quarantine", "records",
-                      "references", "runs", "skills", "templates", "vendor", "vendored"}
-    non_live_tokens = {"archive", "archived", "historical", "legacy", "old", "proposed", "superseded", "template"}
 
     def live_candidates(role: str) -> list[str]:
         return sorted({
             item["path"] for item in role_map.get(role, [])
-            if not ({part.casefold() for part in Path(item["path"]).parts[:-1]} & non_live_parts)
-            and not (set(normalized_stem(Path(item["path"])).split("_")) & non_live_tokens)
+            if not located_in(Path(item["path"]), NON_LIVE_PARTS, NON_LIVE_TOKENS)
         })
 
     dashboard = live_candidates("status")
@@ -698,10 +709,16 @@ def brief_markdown(obj: dict) -> str:
     elif git_info["reason"]:
         lines.append(f"Git detail: {git_info['reason']}.")
 
-    def items(title: str, entries: list[dict], limit: int = 8) -> None:
+    absent = []
+
+    def items(title: str, entries: list[dict], limit: int = 8, detail: str | None = None) -> None:
+        if not entries:
+            absent.append(title.lower())
+            return
         lines.extend(["", f"## {title} ({len(entries)})", ""])
-        lines.extend(f"- `{entry['path']}` — {entry.get('lines', '?')} lines, {entry.get('bytes', '?')} bytes"
-                     for entry in entries[:limit])
+        for entry in entries[:limit]:
+            size = f"{entry.get('lines', '?')} lines, {entry.get('bytes', '?')} bytes"
+            lines.append(f"- `{entry['path']}` — " + (f"{entry[detail]}; {size}" if detail else size))
         if len(entries) > limit:
             lines.append(f"- … {len(entries) - limit} more; use --full or --format json.")
 
@@ -722,19 +739,25 @@ def brief_markdown(obj: dict) -> str:
     if len(live["summary_sizes"]) > 8:
         lines.append(f"… {len(live['summary_sizes']) - 8} more live-file sizes; use --full or --format json.")
     items("Research role files", obj["research_role_files"])
-    items("Computation manifests", obj["computation_manifests"])
-    items("Research logs", obj["research_logs"])
+    items("Computation manifests", obj["computation_manifests"], detail="classification")
+    items("Research logs", obj["research_logs"], detail="classification")
     items("Project maps", obj["project_maps"])
+    items("Project skill files", obj["skill_files"])
+    items("Misplaced root skills", obj["misplaced_root_skills"])
+    if obj["misplaced_root_skills"]:
+        lines.append("Root `skills/` is not a project skill location; review these before setup.")
+    items("Build/verification manifests", obj["build_manifests"])
+    if absent:
+        lines.extend(["", "None found within scan depth: " + ", ".join(absent) + "."])
     bridge = obj["claude_bridge"]
     if bridge["issue"]:
         lines.extend(["", f"Claude bridge: {bridge['issue']}."])
     if obj["canonical_name_overrides"]:
         lines.append("Canonical skill overrides: " + ", ".join(obj["canonical_name_overrides"][:8]))
 
-    historical_parts = {"archive", "archives", "imports", "migrations", "quarantine", "records", "legacy"}
     broken = obj["broken_path_references"]
     live_broken = [entry for entry in broken
-                   if not ({part.casefold() for part in Path(entry["source"]).parts} & historical_parts)]
+                   if not located_in(Path(entry["source"]), HISTORICAL_PARTS, HISTORICAL_TOKENS)]
     historical = len(broken) - len(live_broken)
     lines.extend(["", f"## Broken path candidates ({len(broken)})", "",
                   f"Current-path candidates: {len(live_broken)}; historical-path candidates: {historical}."])

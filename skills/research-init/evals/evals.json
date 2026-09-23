@@ -68,7 +68,8 @@
         "Does not require a CLAUDE.md bridge when AGENTS.md is present",
         "Flags multiple handoff candidates for authority review",
         "Classifies the research log structurally as mixed",
-        "Schedules exact source verification before source-derived inventory entries become foundations"
+        "Schedules exact source verification before source-derived inventory entries become foundations",
+        "Reports misplaced root skills and the log classification from the default brief inspection"
       ]
     },
     {
@@ -129,7 +130,8 @@
         "Keeps old index text reachable, preferably as a frozen legacy index",
         "Does not duplicate all route lines in the new top-level entry point",
         "Does not turn uncertain historical material into a current program result",
-        "Checks links and source-to-destination coverage before replacing the live entry point"
+        "Checks links and source-to-destination coverage before replacing the live entry point",
+        "Treats broken links inside current route records as current findings, not archived history"
       ]
     },
     {

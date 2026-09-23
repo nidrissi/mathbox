@@ -69,10 +69,13 @@ python3 <mathbox-research-init-directory>/scripts/inspect_repo.py --root <repo>
 
 Locate the installed `mathbox:research-init` plugin skill directory (or its
 standalone installation); do not substitute a guessed relative path. The
-default report is a brief inventory with counts and current-path examples.
-Use `--full` for the complete Markdown report or `--format json` for complete
-structured data. Historical import and migration paths remain visible in those
-full views; do not treat their location alone as a live broken link. A dated
+default report is a brief inventory with counts and current-path examples,
+including research-log and computation-manifest classifications, project and
+misplaced root skills, and build manifests. Use `--full` for the complete
+Markdown report or `--format json` for complete structured data. Broken links
+under archive, import, legacy, migration, or quarantine paths are counted as
+historical and listed only in those full views; do not treat their location
+alone as a live broken link. Links in current route records stay current. A dated
 checkpoint-marker count is a prompt to inspect a long live file, not a verdict
 about mathematical status or whether its history can be removed.
 If current-path findings are omitted, inspect those findings in the full view
