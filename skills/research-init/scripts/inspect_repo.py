@@ -309,6 +309,18 @@ def classify_research_log(path: Path) -> dict:
     }
 
 
+def checkpoint_markers(path: Path) -> int:
+    """Count dated or previous-checkpoint headings as a review prompt, not a verdict."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return 0
+    return sum(bool(re.match(r"^\s*(?:#{1,6}\s+|>\s*\*\*)"
+                             r"(?:previous\s+checkpoint\b|[^\n]*\b20\d{2}-\d{2}-\d{2}\b)",
+                             line, re.IGNORECASE))
+               for line in text.splitlines())
+
+
 def computation_manifest(root: Path, path: Path) -> dict | None:
     if path.suffix.casefold() != ".json":
         return None
@@ -529,7 +541,9 @@ def inspect(root: Path, depth: int) -> dict:
         except (ValueError, IndexError):
             pass
     duplicates = sorted(CANONICAL.intersection(local_names))
-    non_live_parts = {"archive", "archives", "assets", "fixtures", "imports", "references", "skills", "templates", "vendor", "vendored"}
+    non_live_parts = {"archive", "archives", "assets", "computations", "experiments",
+                      "fixtures", "imports", "migrations", "quarantine", "records",
+                      "references", "runs", "skills", "templates", "vendor", "vendored"}
     non_live_tokens = {"archive", "archived", "historical", "legacy", "old", "proposed", "superseded", "template"}
 
     def live_candidates(role: str) -> list[str]:
@@ -547,6 +561,9 @@ def inspect(root: Path, depth: int) -> dict:
         "duplicate_dashboard_candidates": len(dashboard) > 1,
         "duplicate_handoff_candidates": len(handoff) > 1,
         "multiple_live_state_candidates": len(dashboard) > 1 or len(handoff) > 1,
+        "summary_sizes": [dict(info(root, root / path),
+                               checkpoint_markers=checkpoint_markers(root / path))
+                          for path in sorted(set(dashboard + handoff))],
     }
     git_info = git_state(root)
     standard_cache = next(item for item in caches if item["path"] == ".research-cache/literature")
@@ -626,6 +643,9 @@ def markdown(obj: dict) -> str:
     lines.append("Handoffs: " + (", ".join(f"`{path}`" for path in live["handoff_candidates"]) or "none"))
     if live["duplicate_dashboard_candidates"] or live["duplicate_handoff_candidates"]:
         lines.append("Potential duplicate candidates require authority review; filenames alone do not establish duplication.")
+    for item in live["summary_sizes"]:
+        lines.append(f"`{item['path']}` — {item['lines']} lines, {item['bytes']} bytes; "
+                     f"{item['checkpoint_markers']} dated/previous checkpoint marker(s), tentative.")
     lines.append("")
     lines += ["## Research-log classification", ""]
     if obj["research_logs"]:
@@ -665,14 +685,90 @@ def markdown(obj: dict) -> str:
     return "\n".join(lines)
 
 
+def brief_markdown(obj: dict) -> str:
+    """Bound the inspection shown to an agent while retaining full JSON/Markdown."""
+    lines = [f"# Repository inspection: `{obj['root']}`", ""]
+    git_info = obj["git"]
+    lines.append(f"Git: {git_info['state']}.")
+    if git_info["state"] == "dirty":
+        changed = git_info["porcelain"].splitlines()
+        lines.extend(f"- {entry}" for entry in changed[:8])
+        if len(changed) > 8:
+            lines.append(f"- … {len(changed) - 8} more worktree entries.")
+    elif git_info["reason"]:
+        lines.append(f"Git detail: {git_info['reason']}.")
+
+    def items(title: str, entries: list[dict], limit: int = 8) -> None:
+        lines.extend(["", f"## {title} ({len(entries)})", ""])
+        lines.extend(f"- `{entry['path']}` — {entry.get('lines', '?')} lines, {entry.get('bytes', '?')} bytes"
+                     for entry in entries[:limit])
+        if len(entries) > limit:
+            lines.append(f"- … {len(entries) - limit} more; use --full or --format json.")
+
+    items("Instructions", obj["instructions"])
+    live = obj["live_state_candidates"]
+    lines.extend(["", "## Live state candidates", "",
+                  "Dashboards: " + (", ".join(live["dashboard_candidates"][:8]) or "none"),
+                  "Handoffs: " + (", ".join(live["handoff_candidates"][:8]) or "none")])
+    for label, values in (("dashboards", live["dashboard_candidates"]),
+                          ("handoffs", live["handoff_candidates"])):
+        if len(values) > 8:
+            lines.append(f"… {len(values) - 8} more {label}; use --full or --format json.")
+    if live["multiple_live_state_candidates"]:
+        lines.append("Multiple candidates require authority review.")
+    for item in live["summary_sizes"][:8]:
+        lines.append(f"`{item['path']}` — {item['lines']} lines, {item['bytes']} bytes; "
+                     f"{item['checkpoint_markers']} dated/previous checkpoint marker(s), tentative.")
+    if len(live["summary_sizes"]) > 8:
+        lines.append(f"… {len(live['summary_sizes']) - 8} more live-file sizes; use --full or --format json.")
+    items("Research role files", obj["research_role_files"])
+    items("Computation manifests", obj["computation_manifests"])
+    items("Research logs", obj["research_logs"])
+    items("Project maps", obj["project_maps"])
+    bridge = obj["claude_bridge"]
+    if bridge["issue"]:
+        lines.extend(["", f"Claude bridge: {bridge['issue']}."])
+    if obj["canonical_name_overrides"]:
+        lines.append("Canonical skill overrides: " + ", ".join(obj["canonical_name_overrides"][:8]))
+
+    historical_parts = {"archive", "archives", "imports", "migrations", "quarantine", "records", "legacy"}
+    broken = obj["broken_path_references"]
+    live_broken = [entry for entry in broken
+                   if not ({part.casefold() for part in Path(entry["source"]).parts} & historical_parts)]
+    historical = len(broken) - len(live_broken)
+    lines.extend(["", f"## Broken path candidates ({len(broken)})", "",
+                  f"Current-path candidates: {len(live_broken)}; historical-path candidates: {historical}."])
+    for entry in live_broken[:8]:
+        lines.append(f"- `{entry['source']}:{entry['line']}` — {entry['kind']} `{entry['reference']}` ({entry['confidence']})")
+    if len(live_broken) > 8:
+        lines.append(f"- … {len(live_broken) - 8} more current-path candidates; use --full or --format json.")
+    if historical:
+        lines.append("Historical candidates are preserved in the full report; their location does not prove a live link is broken.")
+    cache = obj["literature_cache"]
+    if cache["git_ignored"] and not cache["repository_ignore_rule"]:
+        cache_status = "ignored only by a cache-local rule; add a project ignore rule"
+    elif cache["git_ignored"]:
+        cache_status = "ignored by a project rule"
+    else:
+        cache_status = "not Git-ignored"
+    lines.extend(["", f"Literature cache: `{cache['path']}`; "
+                  f"{'present' if cache['exists'] else 'absent'}; "
+                  f"{cache_status}.",
+                  f"Research ledger: {'present' if obj['research_ledger']['exists'] else 'absent'}.",
+                  "Use --full or --format json for the complete read-only inventory."])
+    return "\n".join(lines)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default=".")
     parser.add_argument("--max-depth", type=int, default=5)
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
+    parser.add_argument("--full", action="store_true", help="complete Markdown inventory")
     arguments = parser.parse_args()
     obj = inspect(root_of(Path(arguments.root)), arguments.max_depth)
-    print(json.dumps(obj, indent=2) if arguments.format == "json" else markdown(obj))
+    print(json.dumps(obj, indent=2) if arguments.format == "json" else
+          markdown(obj) if arguments.full else brief_markdown(obj))
     return 0
 
 

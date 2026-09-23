@@ -65,7 +65,16 @@ python3 <mathbox-research-init-directory>/scripts/inspect_repo.py --root <repo>
 ```
 
 Locate the installed `mathbox:research-init` plugin skill directory (or its
-standalone installation); do not substitute a guessed relative path.
+standalone installation); do not substitute a guessed relative path. The
+default report is a brief inventory with counts and current-path examples.
+Use `--full` for the complete Markdown report or `--format json` for complete
+structured data. Historical import and migration paths remain visible in those
+full views; do not treat their location alone as a live broken link. A dated
+checkpoint-marker count is a prompt to inspect a long live file, not a verdict
+about mathematical status or whether its history can be removed.
+If current-path findings are omitted, inspect those findings in the full view
+before making authority or edit decisions; a historical-only overflow need not
+be loaded into the working context.
 
 Produce a fact sheet with observed facts, tentative inferences, conflicts, and
 missing information. Preserve confidence distinctions: a filename, directory
@@ -178,6 +187,17 @@ placeholder. A normal setup has:
 - documented verification commands and benchmark cases.
 
 Do not duplicate mutable state in persistent instructions.
+Put the current deliverable, success criterion and fallback in the charter,
+and current evidence, blocker and next action in the live dashboard. Root
+instructions should point to those files and contain only stable local rules,
+authorization boundaries and checks. Avoid a standing instruction to load an
+entire growing dashboard, claims file or research log before every task: read
+their current summary and search for relevant contracts/records as needed.
+Keep dated checkpoint narratives in standalone records and link them from the
+history index. When refreshing an existing dashboard, preserve old material in
+its authoritative records before replacing stacked narratives with current
+state and links. The inspector reports size and candidate links; mathematical
+status conflicts still require source review, not automatic resolution.
 
 For a project whose claim dependencies and evidence frequently change, consider
 the available `research-state` skill and its optional `.mathbox/` ledger. Use its

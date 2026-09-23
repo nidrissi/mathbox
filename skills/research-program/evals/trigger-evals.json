@@ -12,6 +12,10 @@
     "should_trigger": true
   },
   {
+    "query": "Continue this research program across the remaining routes and maintain a concise current handoff.",
+    "should_trigger": true
+  },
+  {
     "query": "Audit the proof of Lemma 2.",
     "should_trigger": false
   },

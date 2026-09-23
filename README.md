@@ -35,6 +35,12 @@ labels such as `proof-recorded` and `source-recorded` describe mechanically
 current evidence; they do not certify a proof or replace a project's promotion
 policy.
 
+In v3.1, human-facing ledger and repository-inspector reports open with a brief
+view; complete Markdown and JSON remain available on demand. The ledger also
+supports prevalidated batches of distinct events and a read-only query for
+claims affected by a pinned file. Repository setup now keeps mutable progress
+out of root instructions and old checkpoint prose out of the live dashboard.
+
 Start a sustained investigation with:
 
 ```text

@@ -67,6 +67,29 @@
         "Uses resolved obligations for route discovery and run scope",
         "Keeps route prerequisites separate from theorem dependencies"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "In a synthetic initialized ledger with hundreds of claims and many stale artifact issues, check integrity and prepare a goal handoff without flooding the conversation. Then inspect the exact report for one conditional review.",
+      "expected_output": "Uses brief reports for orientation, reports total and omitted issue counts, retrieves the relevant full review before interpreting it, and keeps the check exit status and mathematical evidence boundary intact.",
+      "assertions": [
+        "Does not paste a full project projection merely to find the current blocker",
+        "Reports the complete count of omitted issues rather than implying none exist",
+        "Uses full or JSON detail for the exact active review and its report",
+        "Does not interpret clean ledger bookkeeping as proof certification"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "In an authorized temporary ledger, a checkpoint requires a new claim, proof evidence and a fresh review. Record them efficiently, then report what editing their shared statement file would affect. One proposed dependency in a separate trial batch is invalid.",
+      "expected_output": "Prevalidates and records separate hash-chained events with a batch reference to the new evidence, leaves no events from the invalid trial batch, and reports direct pins and dependent claims without refreshing hashes.",
+      "assertions": [
+        "Uses a dry-run before the actual batch append",
+        "Keeps claim, evidence and review as distinct events",
+        "Leaves the journal unchanged after invalid batch validation",
+        "Uses pin-impact as a read-only diagnostic",
+        "Does not treat a formatting-only description as mathematical revalidation"
+      ]
     }
   ]
 }

@@ -11,7 +11,8 @@
    an old “proved” label without an accessible argument stays conjectural.
 4. Import source checks and finite runs with their original scope and provenance.
    Do not manufacture independent review metadata or upgrade historical evidence.
-5. Run `check` and compare `status` with the old claims file. Explain disagreements
+5. Run brief `check` and `status` first, then compare the relevant exact claim
+   contracts through full or JSON detail with the old claims file. Explain disagreements
    using evidence strength, never timestamps alone. If replacing the old view,
    preserve its substantive material and designate the new authority explicitly.
 6. Keep the compact research log and existing immutable route records. The ledger

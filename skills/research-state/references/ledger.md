@@ -25,20 +25,60 @@ Here `TOOL` means the resolved path to this skill's `scripts/research_state.py`.
 python3 "$TOOL" --root /path/to/project init
 python3 "$TOOL" --root /path/to/project record claim.json
 python3 "$TOOL" --root /path/to/project record evidence.json
-python3 "$TOOL" --root /path/to/project --json status
+python3 "$TOOL" --root /path/to/project check --summary
+python3 "$TOOL" --root /path/to/project status
 python3 "$TOOL" --root /path/to/project impact C_MAIN
 python3 "$TOOL" --root /path/to/project next --goal C_MAIN
 python3 "$TOOL" --root /path/to/project handoff --goal C_MAIN
-python3 "$TOOL" --root /path/to/project check --summary
+python3 "$TOOL" --root /path/to/project pin-impact statements/parity.md
 ```
 
-`record` prints the event including its assigned `E000001` identifier. Proposals
+`record` prints a short receipt including its assigned `E000001` identifier;
+`--json record` prints the complete event. Proposals
 contain exactly `type`, `actor`, and `payload`. Generated timestamps, hashes and
 revision snapshots belong to the helper. Exit codes: 0 success; 1 stale evidence
 from `check`; 2 invalid input, unsupported version, integrity or I/O error.
 Open conjectures are valid state and do not make `check` fail.
 `check --summary` prints event and claim counts, counts by evidence/review status,
-and all integrity issues without emitting the full project projection.
+the total issue count and at most eight example issues. The omitted count is
+explicit. `check --summary --full` prints every issue; `--json check` prints
+the complete projection. Human `status` and `handoff` likewise default to brief
+views; add `--full` after either subcommand for the complete Markdown report,
+or put `--json` before the subcommand for the complete machine view. Neither
+display mode changes freshness checks or exit codes.
+
+## Record several distinct events efficiently
+
+`record-batch` accepts a JSON array of ordinary proposals in dependency order.
+An optional `alias` on a proposal names its generated event ID for later
+proposals in that same array. Use `{"$event":"alias"}` as a complete field value
+to reference it, for example in a review's `evidence` field:
+
+```json
+[
+  {"type":"evidence","actor":"author","alias":"proof_a","payload":{"claim":"A","kind":"proof","summary":"Checked argument","artifacts":[{"path":"proofs/a.md"}]}},
+  {"type":"review","actor":"reviewer","payload":{"evidence":{"$event":"proof_a"},"outcome":"pass","independent":true,"summary":"Fresh check","artifact":{"path":"reviews/a.md"}}}
+]
+```
+
+First run `record-batch proposals.json --dry-run`; then run the same command
+without `--dry-run` after checking the event count, order and critical pinned
+artifacts. Use `--json` with the dry-run when every proposed event must be inspected.
+Dry-run IDs are provisional: another writer can append between the preview and
+commit, so use batch aliases rather than copying preview IDs into later fields.
+The helper takes one writer lock and replays the existing journal once. It
+validates every proposal before appending any event, while still writing a
+separate hash-chained file for each event. A filesystem interruption during
+the append can leave a valid prefix of the batch. Inspect the current ledger
+head before retrying; do not blindly replay the whole input. The default output
+gives the event range, counts by type, and at most eight receipt examples with
+an omitted count. `--json` prints every complete event; capture or inspect
+that output selectively for a large batch.
+
+`pin-impact PATH` reports current statement, evidence, and review pins of a
+project-relative file, plus dependents of directly affected claims. Its brief
+view shows counts and samples; `--json pin-impact PATH` gives every ID. It is a
+diagnostic, not permission to treat byte changes as mathematically harmless.
 
 ## Claim and evidence proposals
 

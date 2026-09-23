@@ -75,6 +75,17 @@
         "Separates the implemented sample from the full claim",
         "Names full enumeration or a coverage lemma as the decisive next step"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "Run one bounded route in a project with a 1,000-line status dashboard, a compact linked history index and an initialized ledger. The route finds no new mathematical evidence and only reconfirms the current blocker.",
+      "expected_output": "Searches the current summary and relevant history records without loading the entire dashboard, reports the unchanged blocker, and does not create redundant claim, evidence, review or checkpoint entries merely because a session occurred.",
+      "assertions": [
+        "Uses the relevant current status and ledger closure",
+        "Does not read unrelated historical checkpoint narratives",
+        "Does not append a route record or ledger event without a material state change",
+        "Does not promote the unchanged blocker"
+      ]
     }
   ]
 }

@@ -2,6 +2,9 @@
 
 Last reconciled: {{DATE}}
 
+This file describes current state. Find earlier checkpoints through the
+research-history index and its linked records.
+
 ## Current result
 
 - **Claim/deliverable:**

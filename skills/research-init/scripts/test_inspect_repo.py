@@ -10,7 +10,7 @@ import subprocess
 import tempfile
 import unittest
 
-from inspect_repo import classify_research_log, git_state, inspect
+from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown
 
 
 class InspectorTests(unittest.TestCase):
@@ -72,6 +72,25 @@ class InspectorTests(unittest.TestCase):
             ("markdown-link", "missing.md"),
             ("backtick-path", "proof/missing.tex"),
         })
+
+    def test_brief_report_counts_historical_candidates_without_dumping_them(self):
+        self.write("docs/live.md", "\n".join(f"[missing](missing-{i}.md)" for i in range(12)))
+        self.write("research/imports/old.md", "\n".join(f"[old](missing-{i}.md)" for i in range(310)))
+        result = inspect(self.root, 5)
+        brief = brief_markdown(result)
+        self.assertIn("Current-path candidates: 12; historical-path candidates: 310", brief)
+        self.assertIn("4 more current-path candidates", brief)
+        self.assertNotIn("research/imports/old.md:1", brief)
+        self.assertIn("research/imports/old.md:1", markdown(result))
+        self.assertLess(len(brief), 4000)
+
+    def test_live_summary_reports_checkpoint_markers_without_promoting_snapshots(self):
+        self.write("RESEARCH_STATUS.md", "# Current status\n\n## Previous checkpoint 2030-01-01\n\n## 2030-01-02 update\n")
+        self.write("research/migrations/status-before.md", "# Historical snapshot\n")
+        result = inspect(self.root, 5)
+        self.assertEqual(result["live_state_candidates"]["dashboard_candidates"], ["RESEARCH_STATUS.md"])
+        self.assertEqual(result["live_state_candidates"]["summary_sizes"][0]["checkpoint_markers"], 2)
+        self.assertIn("2 dated/previous checkpoint marker(s), tentative", brief_markdown(result))
 
     def test_log_classification_uses_structure_not_length(self):
         compact = self.write(

@@ -44,6 +44,17 @@
         "Names the sub-obligation resolved by the parent-owned route",
         "Does not alter theorem dependencies to make the handoff include route context"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Continue a multi-route research program whose live dashboard has grown through twenty dated checkpoint sections. The ledger has a goal-scoped handoff, and the next mathematical move depends on one conditional review.",
+      "expected_output": "Uses a brief goal handoff to locate the live blocker, opens the exact conditional review and source artifacts, continues a distinct route, and keeps the live dashboard current by linking prior checkpoints rather than appending another full narrative.",
+      "assertions": [
+        "Does not load or reproduce all twenty historical dashboard sections",
+        "Inspects the conditional review before treating evidence as settled",
+        "Preserves the original theorem target across route changes",
+        "Keeps historical checkpoint records discoverable"
+      ]
     }
   ]
 }

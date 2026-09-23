@@ -5,8 +5,9 @@ from io import StringIO
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from research_state import Ledger, LedgerError, file_hash, impact, main, next_routes, project, restrict
+from research_state import Ledger, LedgerError, brief_markdown, file_hash, impact, main, next_routes, project, restrict
 
 
 class ResearchStateTests(unittest.TestCase):
@@ -157,7 +158,7 @@ class ResearchStateTests(unittest.TestCase):
 
         output = StringIO()
         with redirect_stdout(output):
-            self.assertEqual(main(["--root", str(self.root), "handoff", "--goal", "A"]), 0)
+            self.assertEqual(main(["--root", str(self.root), "handoff", "--goal", "A", "--full"]), 0)
         report = output.getvalue()
         for value in (passed, failed, "pass", "fail", "Report", "review.md"):
             self.assertIn(value, report)
@@ -309,7 +310,7 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual(handoff["closed_routes"], [dict(self.ledger.read()["routes"]["R"]["payload"],
                          resolves=["A"], event_id=route_event,
                          result=dict(result, event_id=result_event))])
-        md = run("handoff", "--goal", "B")
+        md = run("handoff", "--goal", "B", "--full")
         for value in ("integral-lift", "failed", result["reason"], result["next_question"], result_event):
             self.assertIn(value, md)
         self.assertNotIn("Unrelated obstruction", md)
@@ -341,7 +342,7 @@ class ResearchStateTests(unittest.TestCase):
         output = StringIO()
         with redirect_stdout(output):
             self.assertEqual(main(["--root", str(self.root), "handoff",
-                                   "--goal", "GOAL"]), 0)
+                                   "--goal", "GOAL", "--full"]), 0)
         markdown = output.getvalue()
         self.assertIn("## Route context", markdown)
         self.assertIn("### AUX", markdown)
@@ -466,6 +467,7 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual(summary["claims"], 1)
         self.assertEqual(summary["statuses"], {"proof-recorded": 1})
         self.assertEqual(summary["review_statuses"], {"no-independent-pass-recorded": 1})
+        self.assertEqual(summary["issue_count"], 0)
         self.assertEqual(summary["issues"], [])
         (self.root / "proof.md").write_text("Changed proof")
         output = StringIO()
@@ -473,6 +475,7 @@ class ResearchStateTests(unittest.TestCase):
             self.assertEqual(main(["--root", str(self.root), "check", "--summary"]), 1)
         summary = json.loads(output.getvalue())
         self.assertEqual(summary["statuses"], {"stale": 1})
+        self.assertEqual(summary["issue_count"], 1)
         self.assertEqual(summary["issues"][0]["event"], "E000002")
 
     def test_statement_artifact_binds_claim_and_transitive_evidence(self):
@@ -720,6 +723,148 @@ class ResearchStateTests(unittest.TestCase):
                 "current_revision": "snapshot-two", "reason": "Compare the branches",
                 "next_question": "Normalize their bases", "conflicts": ["Different ledger bases"],
             })
+
+    def test_batch_prevalidates_and_resolves_prior_event_aliases(self):
+        proposals = [
+            {"type": "claim", "actor": "author", "payload": {
+                "id": "A", "statement": "Exact quantified assertion A", "hypotheses": ["finite type"],
+                "regime": "Z", "level": "chain", "dependencies": []}},
+            {"alias": "proof_a", "type": "evidence", "actor": "author", "payload": {
+                "claim": "A", "kind": "proof", "summary": "Durable result",
+                "artifacts": [{"path": "proof.md"}]}},
+            {"type": "review", "actor": "reviewer", "payload": {
+                "evidence": {"$event": "proof_a"}, "outcome": "pass", "independent": True,
+                "summary": "Fresh review", "artifact": {"path": "review.md"}}},
+        ]
+        preview = self.ledger.record_many(proposals, dry_run=True)
+        self.assertEqual([e["event_id"] for e in preview], ["E000001", "E000002", "E000003"])
+        self.assertEqual(list(self.ledger.events.iterdir()), [])
+        events = self.ledger.record_many(proposals)
+        self.assertEqual(events[2]["payload"]["evidence"], events[1]["event_id"])
+        self.assertEqual(self.view()["claims"]["A"]["review"], "independent-pass-recorded")
+        self.assertEqual(len(self.ledger.read()["events"]), 3)
+
+    def test_invalid_batch_appends_nothing(self):
+        good = {"type": "claim", "actor": "author", "payload": {
+            "id": "A", "statement": "Exact quantified assertion A", "hypotheses": [],
+            "regime": "Z", "level": "chain", "dependencies": []}}
+        bad = {"type": "claim", "actor": "author", "payload": {
+            "id": "B", "statement": "Exact quantified assertion B", "hypotheses": [],
+            "regime": "Z", "level": "chain", "dependencies": ["MISSING"]}}
+        with self.assertRaises(LedgerError):
+            self.ledger.record_many([good, bad])
+        self.assertEqual(list(self.ledger.events.iterdir()), [])
+
+    def test_batch_cli_receipts_and_dry_run(self):
+        proposals = [{"type": "claim", "actor": "author", "payload": {
+            "id": "A", "statement": "Exact quantified assertion A", "hypotheses": [],
+            "regime": "Z", "level": "chain", "dependencies": []}}]
+        batch = self.root / "batch.json"
+        batch.write_text(json.dumps(proposals), encoding="utf-8")
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "record-batch",
+                                   str(batch), "--dry-run"]), 0)
+        self.assertTrue(json.loads(output.getvalue())["dry_run"])
+        self.assertEqual(list(self.ledger.events.iterdir()), [])
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "record-batch", str(batch)]), 0)
+        recorded = json.loads(output.getvalue())
+        self.assertEqual(recorded["sample"][0]["event_id"], "E000001")
+        self.assertEqual(recorded["count"], 1)
+        self.assertNotIn("payload", recorded["sample"][0])
+        self.assertEqual(len(self.ledger.read()["events"]), 1)
+
+    def test_interrupted_batch_leaves_valid_prefix(self):
+        proposals = [{"type": "claim", "actor": "author", "payload": {
+            "id": key, "statement": "Exact assertion " + key, "hypotheses": [],
+            "regime": "Z", "level": "chain", "dependencies": []}}
+            for key in ("A", "B")]
+        write_event = self.ledger.write_event
+
+        def interrupt_second(event):
+            if event["event_id"] == "E000002":
+                raise OSError("synthetic disk interruption")
+            write_event(event)
+
+        with patch.object(self.ledger, "write_event", side_effect=interrupt_second):
+            with self.assertRaisesRegex(LedgerError, "valid event prefix may remain"):
+                self.ledger.record_many(proposals)
+        self.assertEqual(list(self.ledger.read()["claims"]), ["A"])
+
+    def test_large_batch_default_receipt_is_bounded(self):
+        proposals = [{"type": "claim", "actor": "author", "payload": {
+            "id": f"C{number:02d}", "statement": f"Exact assertion {number}",
+            "hypotheses": [], "regime": "Z", "level": "chain", "dependencies": []}}
+            for number in range(25)]
+        batch = self.root / "batch.json"
+        batch.write_text(json.dumps(proposals), encoding="utf-8")
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "record-batch", str(batch)]), 0)
+        result = json.loads(output.getvalue())
+        self.assertEqual(result["count"], 25)
+        self.assertEqual(result["receipts_omitted"], 17)
+        self.assertLess(len(output.getvalue()), 2500)
+
+    def test_brief_reports_bound_output_and_preserve_full_access(self):
+        for number in range(30):
+            self.claim(f"C{number:02d}")
+            self.evidence(f"C{number:02d}")
+        (self.root / "proof.md").write_text("Changed proof")
+
+        def run(*args):
+            output = StringIO()
+            with redirect_stdout(output):
+                code = main(["--root", str(self.root), *args])
+            return code, output.getvalue()
+
+        code, status = run("status")
+        self.assertEqual(code, 0)
+        self.assertLess(len(status), 4000)
+        self.assertIn("20 more claims", status)
+        self.assertIn("22 more issues", status)
+        code, summary_text = run("check", "--summary")
+        self.assertEqual(code, 1)
+        summary = json.loads(summary_text)
+        self.assertEqual(summary["issue_count"], 30)
+        self.assertEqual(summary["issues_omitted"], 22)
+        self.assertEqual(len(summary["issues"]), 8)
+        code, full = run("--json", "check")
+        self.assertEqual(code, 1)
+        self.assertEqual(len(json.loads(full)["issues"]), 30)
+
+    def test_brief_view_stays_small_at_large_project_scale(self):
+        projection = {
+            "events": 1500,
+            "claims": {f"C{number:03d}": {"status": "stale", "review": "no-independent-pass-recorded",
+                                         "blocked_by": [], "reviews": {}}
+                       for number in range(350)},
+            "issues": [{"event": f"E{number:06d}", "issue": "changed proof artifact"}
+                       for number in range(1700)],
+            "route_context": {},
+        }
+        report = brief_markdown(projection)
+        self.assertLess(len(report.encode("utf-8")), 10_000)
+        self.assertIn("integrity/freshness issues: 1700", report)
+        self.assertIn("1692 more issues", report)
+
+    def test_pin_impact_reports_direct_and_transitive_claims(self):
+        self.claim("A", statement_artifact={"path": "proof.md", "locator": "Theorem A"})
+        self.evidence("A")
+        self.claim("B", ["A"])
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "--json", "pin-impact", "proof.md"]), 0)
+        result = json.loads(output.getvalue())
+        self.assertEqual(result["direct_claims"], ["A"])
+        self.assertEqual(result["dependent_claims"], ["B"])
+        self.assertEqual(result["evidence_events"], ["E000002"])
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "pin-impact", "proof.md", "--full"]), 0)
+        self.assertEqual(json.loads(output.getvalue()), result)
 
 
 if __name__ == "__main__":

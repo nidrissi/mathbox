@@ -67,6 +67,17 @@
         "Does not infer a live process from an old launch record",
         "Does not edit during the read-only review"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Review a project with a 2,000-line live status file. Its first page states the current blocker, later pages retain thirty superseded checkpoints, and a compact ledger check reports hundreds of stale artifacts. Do not edit.",
+      "expected_output": "Reads the current summary and relevant records, reports the stale-artifact count without dumping every issue, checks exact affected evidence before a verdict, and recommends a bounded next route while leaving the project unchanged.",
+      "assertions": [
+        "Does not treat old checkpoint narratives as current authority",
+        "Does not consume the full status and issue dump by default",
+        "Does not hide the presence or count of omitted stale issues",
+        "Maintains the read-only boundary"
+      ]
     }
   ]
 }

@@ -3,7 +3,8 @@
 ## Root instructions
 
 - Exact live filename is `AGENTS.md`.
-- Mission, current deliverable, success/fallback, and exclusions are explicit.
+- Root instructions point to the charter for the mission, current deliverable,
+  success/fallback, and exclusions; mutable values are not copied into AGENTS.md.
 - Source-of-truth order is unambiguous.
 - Mutable status is referenced, not duplicated.
 - Evidence labels and claim-promotion standards are defined.
@@ -14,6 +15,8 @@
   verified `/.research-cache/` Git ignore rule.
 - No unexplained residue from another repository remains.
 - Root instructions are concise; detailed procedures are not copied into them.
+- A long status or history file is searchable by relevant section; instructions
+  do not require loading it wholesale for every research task.
 
 ## Claude instructions
 
@@ -25,6 +28,9 @@
 ## Research records
 
 - Exactly one live dashboard is designated.
+- The dashboard states current evidence, blocker, and next action. Older
+  checkpoint narratives are linked from the compact history index and durable
+  records rather than stacked in the live file.
 - Claims have exact hypotheses and durable evidence links.
 - Evidence, independent review and freshness are separate fields. If an optional
   `.mathbox/` ledger is adopted, its authoritative role and single live view are
@@ -71,7 +77,9 @@
 - Inspector output distinguishes clean Git from unavailable metadata, inventories
   computation manifests separately, reports semantic role aliases and potential
   duplicate dashboards/handoffs, and conservatively identifies broken relative
-  links/path-shaped code spans.
+  links/path-shaped code spans. Its brief report counts omitted candidates and
+  separates historical-path examples from current-path examples. Dated
+  checkpoint-marker counts remain tentative and never decide claim status.
 
 ## Skills
 

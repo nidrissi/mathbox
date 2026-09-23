@@ -27,9 +27,11 @@ For work that may cross sessions, branches or delegated agents, record a
 checkpoint identifier and the exact Git revision or ledger event from which the
 work starts. A timestamp or display order is not a reliable ancestry relation.
 
-Use existing project records. When an executable `.mathbox/` ledger is present,
-use the available `research-state` skill for a goal-scoped handoff and stale
-evidence check. Initialize it only when useful and authorized; its absence never
+Use existing project records, starting with the current summary and nearest
+relevant records rather than the complete status/history archive. When an
+executable `.mathbox/` ledger is present, use the available `research-state`
+skill's brief goal handoff and freshness check; open full claim/review details
+only for the active decision. Initialize it only when useful and authorized; its absence never
 blocks research. Read [program protocol](references/program-protocol.md) for
 route selection and checkpoints.
 
@@ -112,7 +114,8 @@ when delegating or resuming.
 
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
-Update only state that actually changed; do not rewrite indexed history.
+Update only state that actually changed; replace old dashboard checkpoint prose
+with links when the project permits, and do not rewrite indexed history.
 User-authorized repository deliverables remain part of completion.
 
 For a long or externally executed route, distinguish queued, running,

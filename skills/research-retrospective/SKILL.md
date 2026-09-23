@@ -17,17 +17,20 @@ Default to no edits unless the user asks to reconcile files.
    record directory.
    Verify that referenced live-role paths exist and expose competing aliases or
    broken authority links.
-3. Read current summaries and the compact history index first, then open only
-   the proof or research records needed to verify conflicts or load-bearing
-   claims.
+3. Read the current summary and search the compact history index for relevant
+   routes. Do not load a long dashboard, claims inventory or index in full just
+   to find the latest state. Open only the proof or research records needed to
+   verify conflicts or load-bearing claims.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
    authority conflicts.
 5. Compare the live dashboard's review/checkpoint revision with later changes to
    authoritative manuscripts, proofs and declared deliverables. A stale date is
    a prompt to inspect, not by itself proof that the mathematics changed.
 
-If `.mathbox/` is present, use the available `research-state` skill's read-only
-check, impact and handoff commands. Reconstruct affected proofs from artifacts;
+If `.mathbox/` is present, use the available `research-state` skill's brief
+read-only check and goal handoff, then inspect full details for affected claims,
+review conditions and routes. Use impact when a named claim or artifact is
+relevant. Reconstruct affected proofs from artifacts;
 do not merely repeat generated labels. Do not initialize or migrate state as a
 side effect of a read-only retrospective.
 

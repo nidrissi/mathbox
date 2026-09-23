@@ -93,6 +93,18 @@
         "Asks what the page-count convention includes",
         "Requires explicit budget for front matter, main text, bibliography, figures/tables, appendices/supplement and contingency"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "Refresh this research repository's agent architecture. The current status is a long sequence of dated checkpoints, AGENTS.md repeats the current deliverable, and a preserved import directory contains hundreds of links that are broken only in that historical location.",
+      "expected_output": "Produces a reviewed plan for one compact current dashboard, leaves durable history linked and discoverable, moves mutable deliverable facts to the charter/status, and separates current-path inspection findings from historical candidates before proposing edits.",
+      "assertions": [
+        "Uses the brief inspector first and drills into omitted current-path findings",
+        "Does not treat historical import links as automatically live broken references",
+        "Keeps project-specific authorization and mathematical safeguards in root instructions",
+        "Preserves old checkpoint evidence before replacing live-status narratives",
+        "Does not require reading the whole growing status file in every future task"
+      ]
     }
   ]
 }
