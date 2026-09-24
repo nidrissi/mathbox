@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import sys
 import tempfile
 
@@ -477,28 +478,34 @@ class Ledger:
         finally:
             path.rmdir()
 
-    def pin(self, artifact):
+    def pin(self, artifact, overlays=None):
         require(isinstance(artifact, dict), "artifact must be an object with path")
         path = inside(self.root, text_field(artifact, "path"))
-        require(path.is_file(), f"missing artifact: {artifact['path']}")
         require(not path.is_relative_to(self.base), "evidence must be outside the ledger itself")
-        actual = file_hash(path)
+        name = path.relative_to(self.root).as_posix()
+        if overlays is not None and name in overlays:
+            actual = hashlib.sha256(overlays[name]).hexdigest()
+        else:
+            require(path.is_file(), f"missing artifact: {artifact['path']}")
+            actual = file_hash(path)
         if "sha256" in artifact:
             require(artifact["sha256"] == actual, "supplied artifact hash differs from disk")
         # One stored spelling per file, so later path lookups compare like with like.
-        return dict(artifact, path=path.relative_to(self.root).as_posix(), sha256=actual)
+        return dict(artifact, path=name, sha256=actual)
 
-    def pin_computation_manifest(self, artifact, claim):
+    def pin_computation_manifest(self, artifact, claim, overlays=None):
         """Pin a manifest plus the exact input/output closure it declares.
 
         This intentionally checks only ledger linkage and file hashes. The
         computation-audit validator remains responsible for the manifest's
         scientific and execution contract.
         """
-        pinned = self.pin(artifact)
+        pinned = self.pin(artifact, overlays)
         path = inside(self.root, pinned["path"])
         try:
-            manifest = json.loads(path.read_text(encoding="utf-8"))
+            raw = overlays.get(pinned["path"]) if overlays is not None else None
+            manifest = json.loads(raw.decode("utf-8") if raw is not None else
+                                  path.read_text(encoding="utf-8"))
         except (OSError, ValueError, TypeError) as exc:
             raise LedgerError(f"cannot read computation manifest: {exc}") from None
         require(isinstance(manifest, dict), "computation manifest must be an object")
@@ -527,7 +534,7 @@ class Ledger:
                         "manifest input needs a pre-run SHA-256")
                 require(entry["sha256"] == entry["sha256_after"],
                         "completed computation evidence cannot have changed inputs")
-            return self.pin({"path": text_field(entry, "path"), "sha256": checksum})
+            return self.pin({"path": text_field(entry, "path"), "sha256": checksum}, overlays)
 
         pinned_inputs = [declared(entry, "input") for entry in inputs]
         pinned_outputs = [declared(entry, "output") for entry in outputs]
@@ -545,7 +552,7 @@ class Ledger:
         require(len(paths) == len(set(paths)), "manifest artifact paths must be unique")
         return pinned, pinned_inputs, pinned_outputs
 
-    def prepare_event(self, proposal, state):
+    def prepare_event(self, proposal, state, overlays=None):
         require(isinstance(proposal, dict) and set(proposal) == {"type", "actor", "payload"},
                 "proposal fields must be type, actor, payload")
         event = json.loads(json.dumps(proposal))
@@ -555,24 +562,25 @@ class Ledger:
             require(isinstance(p["statement_artifact"], dict),
                     "statement artifact must be an object")
             text_field(p["statement_artifact"], "locator")
-            p["statement_artifact"] = self.pin(p["statement_artifact"])
+            p["statement_artifact"] = self.pin(p["statement_artifact"], overlays)
         elif event["type"] == "evidence":
             require(p.get("claim") in state["claims"], "unknown evidence claim")
             require(isinstance(p.get("artifacts", []), list), "artifacts must be a list")
-            p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
+            p["artifacts"] = [self.pin(a, overlays) for a in p.get("artifacts", [])]
             if p.get("kind") == "computation" and "manifest" in p:
                 p["manifest"], p["manifest_inputs"], p["manifest_outputs"] = \
-                    self.pin_computation_manifest(p["manifest"], p["claim"])
+                    self.pin_computation_manifest(p["manifest"], p["claim"], overlays)
             p["snapshot"] = snapshot(state["claims"], p["claim"])
         elif event["type"] == "review":
-            p["artifact"] = self.pin(p.get("artifact"))
+            p["artifact"] = self.pin(p.get("artifact"), overlays)
             target = state["evidence"].get(p.get("evidence"))
             require(target is not None, "unknown evidence to review")
-            require(not evidence_issues(self.root, state, target), "cannot review stale evidence; record fresh evidence first")
+            require(not evidence_issues(self.root, state, target, overlays),
+                    "cannot review stale evidence; record fresh evidence first")
         elif event["type"] == "run-result":
             require(isinstance(p.get("artifacts", []), list),
                     "run result artifacts must be a list")
-            p["artifacts"] = [self.pin(a) for a in p.get("artifacts", [])]
+            p["artifacts"] = [self.pin(a, overlays) for a in p.get("artifacts", [])]
         number = len(state["events"]) + 1
         event.update(event_id=f"E{number:06d}",
                      created_at=datetime.now(timezone.utc).isoformat(),
@@ -595,43 +603,168 @@ class Ledger:
         finally:
             Path(temp).unlink(missing_ok=True)
 
+    def prepare_many(self, proposals, state, overlays=None):
+        require(isinstance(proposals, list) and proposals, "batch must be a nonempty list")
+        aliases, events = {}, []
+
+        def resolve(value):
+            if isinstance(value, dict) and set(value) == {"$event"}:
+                alias = value["$event"]
+                require(isinstance(alias, str) and alias in aliases,
+                        f"unknown or forward batch event alias: {alias}")
+                return aliases[alias]
+            if isinstance(value, dict):
+                return {key: resolve(item) for key, item in value.items()}
+            if isinstance(value, list):
+                return [resolve(item) for item in value]
+            return value
+
+        for proposal in proposals:
+            require(isinstance(proposal, dict), "each batch proposal must be an object")
+            alias = proposal.get("alias")
+            require(alias is None or isinstance(alias, str) and
+                    bool(re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,79}", alias)) and alias not in aliases,
+                    "batch aliases must be unique identifiers")
+            clean = {key: value for key, value in proposal.items() if key != "alias"}
+            event = self.prepare_event(resolve(clean), state, overlays)
+            events.append(event)
+            if alias is not None:
+                aliases[alias] = event["event_id"]
+        return events
+
+    def append_many(self, events):
+        for event in events:
+            try:
+                self.write_event(event)
+            except (OSError, LedgerError) as exc:
+                raise LedgerError("batch append interrupted; a valid event prefix may remain; "
+                                  f"inspect the journal head before retrying: {exc}") from exc
+
     def record_many(self, proposals, dry_run=False):
         require(self.base.is_dir(), "ledger not initialized")
-        require(isinstance(proposals, list) and proposals, "batch must be a nonempty list")
+        with self.lock():
+            events = self.prepare_many(proposals, self.read())
+            if not dry_run:
+                self.append_many(events)
+            return events
+
+    def ingest(self, packet, dry_run=False):
+        """Prevalidate a deferred packet, then commit its ordered filesystem prefix."""
+        require(self.base.is_dir(), "ledger not initialized")
+        require(isinstance(packet, dict) and set(packet) ==
+                {"format", "base", "artifacts", "index_append", "proposals"},
+                "deferred packet needs format, base, artifacts, index_append, proposals")
+        require(packet["format"] == "mathbox-deferred-v1", "unsupported deferred format")
+        base = packet["base"]
+        require(isinstance(base, dict) and set(base) == {"event_id", "event_sha256"},
+                "base needs event_id and event_sha256")
+        require(isinstance(packet["artifacts"], list), "artifacts must be a list")
+        index = packet["index_append"]
+        require(index is None or isinstance(index, dict) and
+                set(index) == {"path", "expected_tail", "content"},
+                "index_append must be null or have path, expected_tail, content")
+
+        def destination(name):
+            path = inside(self.root, name)
+            require(path != self.root and not path.is_relative_to(self.base),
+                    "deferred paths must be outside .mathbox")
+            return path, path.relative_to(self.root).as_posix()
+
         with self.lock():
             state = self.read()
-            aliases, events = {}, []
+            head = next(reversed(state["events"].values())) if state["events"] else None
+            require(base["event_id"] == (head["event_id"] if head else None) and
+                    base["event_sha256"] == (head["sha256"] if head else None),
+                    "stale deferred base: ledger head differs")
+            staged_artifacts, destinations = {}, []
+            for item in packet["artifacts"]:
+                require(isinstance(item, dict) and set(item) == {"path", "content"},
+                        "each deferred artifact needs path and content")
+                path, name = destination(text_field(item, "path"))
+                require(isinstance(item["content"], str) and "\x00" not in item["content"],
+                        "artifact content must be text without NUL")
+                require(name not in staged_artifacts, f"duplicate artifact: {name}")
+                require(not path.exists() and not path.is_symlink(),
+                        f"artifact already exists: {name}")
+                require(all(not parent.exists() or parent.is_dir()
+                            for parent in path.parents if parent.is_relative_to(self.root)),
+                        f"artifact parent is not a directory: {name}")
+                staged_artifacts[name] = item["content"].encode("utf-8")
+                destinations.append(path)
 
-            def resolve(value):
-                if isinstance(value, dict) and set(value) == {"$event"}:
-                    alias = value["$event"]
-                    require(isinstance(alias, str) and alias in aliases,
-                            f"unknown or forward batch event alias: {alias}")
-                    return aliases[alias]
+            overlays = staged_artifacts.copy()
+            index_path, old_index = None, None
+            if index is not None:
+                index_path, index_name = destination(text_field(index, "path"))
+                require(index_name not in overlays, "index cannot also be a new artifact")
+                require(index_path.is_file(), f"missing index: {index_name}")
+                old_index = index_path.read_bytes()
+                try:
+                    current = old_index.decode("utf-8")
+                except UnicodeDecodeError as exc:
+                    raise LedgerError(f"index is not UTF-8: {index_name}") from exc
+                tail = index.get("expected_tail")
+                entry = index.get("content")
+                require(not current or current.endswith("\n"),
+                        "index must end with a newline before appending")
+                actual_tail = current.rsplit("\n", 2)[-2] + "\n" if current else ""
+                require(isinstance(tail, str) and tail == actual_tail,
+                        "index tail mismatch")
+                require(isinstance(entry, str) and entry.strip() and entry.endswith("\n")
+                        and entry.count("\n") == 1 and "\x00" not in entry,
+                        "index content must be one nonempty newline-terminated entry")
+                overlays[index_name] = old_index + entry.encode("utf-8")
+
+            forbidden = {"sha256", "snapshot", "event_id", "created_at", "previous",
+                         "manifest_inputs", "manifest_outputs"}
+            def check_generated(value):
                 if isinstance(value, dict):
-                    return {key: resolve(item) for key, item in value.items()}
-                if isinstance(value, list):
-                    return [resolve(item) for item in value]
-                return value
-
-            for proposal in proposals:
-                require(isinstance(proposal, dict), "each batch proposal must be an object")
-                alias = proposal.get("alias")
-                require(alias is None or isinstance(alias, str) and
-                        bool(re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,79}", alias)) and alias not in aliases,
-                        "batch aliases must be unique identifiers")
-                clean = {key: value for key, value in proposal.items() if key != "alias"}
-                event = self.prepare_event(resolve(clean), state)
-                events.append(event)
-                if alias is not None:
-                    aliases[alias] = event["event_id"]
-            if not dry_run:
-                for event in events:
+                    require(not (set(value) & forbidden),
+                            "deferred proposals must omit generated fields")
+                    for child in value.values():
+                        check_generated(child)
+                elif isinstance(value, list):
+                    for child in value:
+                        check_generated(child)
+            check_generated(packet["proposals"])
+            events = self.prepare_many(packet["proposals"], state, overlays)
+            if dry_run:
+                return events
+            try:
+                for path, content in zip(destinations, staged_artifacts.values()):
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    require(inside(self.root, path.relative_to(self.root).as_posix()) == path,
+                            "artifact path changed during ingest")
+                    # Link a complete temporary file so an existing destination is never replaced.
+                    fd, temp = tempfile.mkstemp(prefix="pending-", dir=path.parent)
                     try:
-                        self.write_event(event)
-                    except (OSError, LedgerError) as exc:
-                        raise LedgerError("batch append interrupted; a valid event prefix may remain; "
-                                          f"inspect the journal head before retrying: {exc}") from exc
+                        with os.fdopen(fd, "wb") as stream:
+                            stream.write(content)
+                            stream.flush()
+                            os.fsync(stream.fileno())
+                        require(inside(self.root, path.relative_to(self.root).as_posix()) == path,
+                                "artifact path changed during ingest")
+                        os.link(temp, path)
+                    finally:
+                        Path(temp).unlink(missing_ok=True)
+                if index_path is not None:
+                    require(inside(self.root, index_name) == index_path and
+                            index_path.read_bytes() == old_index,
+                            "index changed during ingest")
+                    fd, temp = tempfile.mkstemp(prefix="pending-", dir=index_path.parent)
+                    try:
+                        os.chmod(temp, stat.S_IMODE(index_path.stat().st_mode))
+                        with os.fdopen(fd, "wb") as stream:
+                            stream.write(old_index + entry.encode("utf-8"))
+                            stream.flush()
+                            os.fsync(stream.fileno())
+                        os.replace(temp, index_path)
+                    finally:
+                        Path(temp).unlink(missing_ok=True)
+                self.append_many(events)
+            except (OSError, LedgerError) as exc:
+                raise LedgerError("deferred ingest interrupted; created artifacts, index entry, "
+                                  f"or a valid event prefix may remain; inspect before retrying: {exc}") from exc
             return events
 
     def record(self, proposal):
@@ -640,25 +773,29 @@ class Ledger:
         return self.record_many([proposal])[0]
 
 
-def artifact_issues(root, artifacts):
+def artifact_issues(root, artifacts, overlays=None):
     issues = []
     for artifact in artifacts:
         try:
             path = inside(root, artifact["path"])
-            if not path.is_file() or file_hash(path) != artifact["sha256"]:
+            name = path.relative_to(root).as_posix()
+            actual = (hashlib.sha256(overlays[name]).hexdigest()
+                      if overlays is not None and name in overlays else
+                      file_hash(path) if path.is_file() else None)
+            if actual != artifact["sha256"]:
                 issues.append(f"missing or changed artifact: {artifact['path']}")
         except (OSError, LedgerError) as exc:
             issues.append(str(exc))
     return issues
 
 
-def claim_contract_issues(root, claims, claim):
+def claim_contract_issues(root, claims, claim, overlays=None):
     issues = []
     for key in sorted(closure(claims, claim)):
         artifact = claims[key].get("statement_artifact")
         if artifact:
             issues.extend(f"claim {key} statement contract: {issue}"
-                          for issue in artifact_issues(root, [artifact]))
+                          for issue in artifact_issues(root, [artifact], overlays))
     return issues
 
 
@@ -671,10 +808,10 @@ def evidence_artifacts(payload):
     return artifacts
 
 
-def evidence_issues(root, state, event):
+def evidence_issues(root, state, event, overlays=None):
     p = event["payload"]
-    issues = artifact_issues(root, evidence_artifacts(p))
-    issues.extend(claim_contract_issues(root, state["claims"], p["claim"]))
+    issues = artifact_issues(root, evidence_artifacts(p), overlays)
+    issues.extend(claim_contract_issues(root, state["claims"], p["claim"], overlays))
     if p["snapshot"] != snapshot(state["claims"], p["claim"]):
         issues.append("claim or transitive dependency revision changed")
     return issues
@@ -1161,6 +1298,9 @@ def main(argv=None):
     batch = commands.add_parser("record-batch", help="prevalidate and append distinct proposals in one pass")
     batch.add_argument("proposals", type=Path)
     batch.add_argument("--dry-run", action="store_true")
+    ingest = commands.add_parser("ingest", help="validate and apply a deferred handoff packet")
+    ingest.add_argument("packet", help="JSON packet path, or - for stdin")
+    ingest.add_argument("--dry-run", action="store_true")
     for name in ("next", "handoff"):
         sub = commands.add_parser(name, help="show goal routes or a brief goal handoff")
         sub.add_argument("--goal")
@@ -1193,6 +1333,15 @@ def main(argv=None):
                           "types": dict(sorted(Counter(e["type"] for e in events).items())),
                           "sample": [receipt(e) for e in events[:8]],
                           "receipts_omitted": max(0, len(events) - 8)}
+            print(json.dumps(output, ensure_ascii=False))
+            return 0
+        if args.command == "ingest":
+            raw = sys.stdin.read() if args.packet == "-" else Path(args.packet).read_text(encoding="utf-8")
+            packet = json.loads(raw)
+            events = ledger.ingest(packet, dry_run=args.dry_run)
+            output = {"dry_run": args.dry_run, "artifacts": [a["path"] for a in packet["artifacts"]],
+                      "index_append": packet["index_append"]["path"] if packet["index_append"] else None,
+                      "events": events if args.json else [receipt(e) for e in events]}
             print(json.dumps(output, ensure_ascii=False))
             return 0
         state = ledger.read()

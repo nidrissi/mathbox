@@ -1,4 +1,5 @@
 """Executable evidence-boundary regressions; no model-output keyword grading."""
+import hashlib
 import json
 from contextlib import redirect_stdout
 from io import StringIO
@@ -38,6 +39,154 @@ class ResearchStateTests(unittest.TestCase):
 
     def view(self):
         return project(self.root, self.ledger.read())
+
+    def deferred_packet(self):
+        head = next(reversed(self.ledger.read()["events"].values()))
+        return {
+            "format": "mathbox-deferred-v1",
+            "base": {"event_id": head["event_id"], "event_sha256": head["sha256"]},
+            "artifacts": [
+                {"path": "research/records/route.md", "content": "# Route\n\nA complete record.\n"},
+                {"path": "proofs/new.md", "content": "# Proof\n\nA complete argument.\n"},
+                {"path": "reviews/new.md", "content": "# Review\n\nChecked independently.\n"},
+            ],
+            "index_append": {"path": "research/index.md", "expected_tail": "- Earlier route\n",
+                             "content": "- [New route](records/route.md) — conditional\n"},
+            "proposals": [
+                {"type": "evidence", "actor": "author", "alias": "new_proof",
+                 "payload": {"claim": "A", "kind": "proof", "summary": "New argument",
+                             "artifacts": [{"path": "proofs/new.md"}]}},
+                {"type": "review", "actor": "reviewer",
+                 "payload": {"evidence": {"$event": "new_proof"}, "outcome": "pass",
+                             "independent": True, "summary": "Independent check",
+                             "artifact": {"path": "reviews/new.md"}}},
+            ],
+        }
+
+    def deferred_setup(self):
+        self.claim()
+        (self.root / "research").mkdir()
+        (self.root / "research/index.md").write_text("# Routes\n- Earlier route\n")
+        return self.deferred_packet()
+
+    def test_deferred_dry_run_and_ingest_pin_staged_content(self):
+        packet = self.deferred_setup()
+        before = (self.root / "research/index.md").read_bytes()
+        preview = self.ledger.ingest(packet, dry_run=True)
+        self.assertEqual(len(self.ledger.read()["events"]), 1)
+        self.assertEqual((self.root / "research/index.md").read_bytes(), before)
+        self.assertFalse((self.root / "proofs").exists())
+        self.assertEqual(preview[1]["payload"]["evidence"], preview[0]["event_id"])
+        self.assertEqual(preview[0]["payload"]["artifacts"][0]["sha256"],
+                         hashlib.sha256(packet["artifacts"][1]["content"].encode()).hexdigest())
+        events = self.ledger.ingest(packet)
+        self.assertEqual(len(self.ledger.read()["events"]), 3)
+        self.assertEqual(events[1]["payload"]["evidence"], events[0]["event_id"])
+        self.assertEqual(file_hash(self.root / "proofs/new.md"),
+                         preview[0]["payload"]["artifacts"][0]["sha256"])
+        self.assertEqual(events[0]["payload"]["artifacts"][0]["sha256"],
+                         preview[0]["payload"]["artifacts"][0]["sha256"])
+        self.assertEqual((self.root / "research/index.md").read_text(),
+                         before.decode() + packet["index_append"]["content"])
+        self.assertEqual(self.view()["issues"], [])
+
+    def test_deferred_stdin(self):
+        packet = self.deferred_setup()
+        output = StringIO()
+        with patch("sys.stdin", StringIO(json.dumps(packet))), redirect_stdout(output):
+            self.assertEqual(main(["--root", str(self.root), "ingest", "-"]), 0)
+        self.assertEqual(len(json.loads(output.getvalue())["events"]), 2)
+        self.assertTrue((self.root / "proofs/new.md").exists())
+
+    def test_deferred_empty_ledger_uses_null_base(self):
+        packet = {"format": "mathbox-deferred-v1",
+                  "base": {"event_id": None, "event_sha256": None},
+                  "artifacts": [], "index_append": None,
+                  "proposals": [{"type": "claim", "actor": "author",
+                                 "payload": {"id": "A", "statement": "Exact claim",
+                                             "hypotheses": [], "regime": "Z", "level": "chain",
+                                             "dependencies": []}}]}
+        self.assertEqual(self.ledger.ingest(packet)[0]["event_id"], "E000001")
+
+    def test_deferred_index_append_is_visible_to_proposal_pins(self):
+        packet = self.deferred_setup()
+        packet["proposals"] = [{"type": "claim", "actor": "author",
+                                "payload": {"id": "B", "statement": "Indexed claim",
+                                            "hypotheses": [], "regime": "Z", "level": "chain",
+                                            "dependencies": [],
+                                            "statement_artifact": {"path": "research/index.md",
+                                                                   "locator": "New route"}}}]
+        preview = self.ledger.ingest(packet, dry_run=True)[0]
+        event = self.ledger.ingest(packet)[0]
+        expected = file_hash(self.root / "research/index.md")
+        self.assertEqual(preview["payload"]["statement_artifact"]["sha256"], expected)
+        self.assertEqual(event["payload"]["statement_artifact"]["sha256"], expected)
+        self.assertEqual(self.view()["issues"], [])
+
+    def test_deferred_stale_head_rejects_without_mutation(self):
+        packet = self.deferred_setup()
+        self.claim("B")
+        with self.assertRaisesRegex(LedgerError, "stale deferred base"):
+            self.ledger.ingest(packet)
+        self.assertEqual(len(self.ledger.read()["events"]), 2)
+        self.assertFalse((self.root / "proofs").exists())
+        self.assertEqual((self.root / "research/index.md").read_text(), "# Routes\n- Earlier route\n")
+
+    def test_deferred_collision_escape_symlink_and_index_guard(self):
+        packet = self.deferred_setup()
+        original = json.dumps(packet)
+        (self.root / "proofs").mkdir()
+        (self.root / "proofs/new.md").write_text("Existing proof")
+        with self.assertRaisesRegex(LedgerError, "already exists"):
+            self.ledger.ingest(packet)
+        (self.root / "proofs/new.md").unlink()
+        for bad in ("../escape.md", ".mathbox/escape.md"):
+            packet["artifacts"][1]["path"] = bad
+            with self.assertRaises(LedgerError):
+                self.ledger.ingest(packet)
+        packet = json.loads(original)
+        (self.root / "proofs/new.md").symlink_to(self.root / "proof.md")
+        with self.assertRaisesRegex(LedgerError, "symlink"):
+            self.ledger.ingest(packet)
+        (self.root / "proofs/new.md").unlink()
+        (self.root / "proofs").rmdir()
+        (self.root / "proofs").symlink_to(self.root / "research", target_is_directory=True)
+        with self.assertRaisesRegex(LedgerError, "symlink"):
+            self.ledger.ingest(packet)
+        (self.root / "proofs").unlink()
+        packet["index_append"]["expected_tail"] = "- Different route\n"
+        with self.assertRaisesRegex(LedgerError, "index tail mismatch"):
+            self.ledger.ingest(packet)
+        self.assertEqual(len(self.ledger.read()["events"]), 1)
+        self.assertFalse((self.root / "research/records").exists())
+
+    def test_deferred_invalid_later_proposal_has_no_filesystem_effect(self):
+        packet = self.deferred_setup()
+        packet["proposals"][1]["payload"]["evidence"] = "E999999"
+        with self.assertRaises(LedgerError):
+            self.ledger.ingest(packet)
+        self.assertEqual(len(self.ledger.read()["events"]), 1)
+        self.assertFalse((self.root / "proofs").exists())
+        self.assertEqual((self.root / "research/index.md").read_text(), "# Routes\n- Earlier route\n")
+
+    def test_deferred_interrupted_append_keeps_valid_prefix(self):
+        packet = self.deferred_setup()
+        original = self.ledger.write_event
+        calls = 0
+        def interrupt(event):
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                raise OSError("simulated interruption")
+            original(event)
+        with patch.object(self.ledger, "write_event", side_effect=interrupt):
+            with self.assertRaisesRegex(LedgerError, "valid event prefix"):
+                self.ledger.ingest(packet)
+        self.assertEqual(len(self.ledger.read()["events"]), 2)
+        self.assertTrue((self.root / "proofs/new.md").exists())
+        self.assertIn("New route", (self.root / "research/index.md").read_text())
+        with self.assertRaisesRegex(LedgerError, "stale deferred base"):
+            self.ledger.ingest(packet)
 
     def test_read_does_not_initialize(self):
         other = self.root / "other"
