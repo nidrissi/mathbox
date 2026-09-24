@@ -170,9 +170,10 @@ class ResearchStateTests(unittest.TestCase):
 
     def test_deferred_busy_index_lock_rejects_without_mutation(self):
         packet = self.deferred_setup()
-        lock = self.root / "research/.index.md.lock"
+        lock = self.root / ".mathbox/index-locks" / (hashlib.sha256(b"research/index.md").hexdigest() + ".lock")
+        lock.parent.mkdir(parents=True, exist_ok=True)
         lock.mkdir()
-        with self.assertRaisesRegex(LedgerError, "index writer active or stale .index.md.lock"):
+        with self.assertRaisesRegex(LedgerError, "index writer active or stale lock for research/index.md"):
             self.ledger.ingest(packet)
         self.assertEqual(len(self.ledger.read()["events"]), 1)
         self.assertFalse((self.root / "proofs").exists())

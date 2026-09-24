@@ -50,6 +50,7 @@ def require(condition, message):
 
 @contextmanager
 def mkdir_lock(path, message):
+    path.parent.mkdir(parents=True, exist_ok=True)
     try:
         path.mkdir()
     except FileExistsError:
@@ -706,12 +707,16 @@ class Ledger:
             if index is not None:
                 index_path, index_name = destination(text_field(index, "path"))
                 require(index_name not in overlays, "index cannot also be a new artifact")
-                index_lock = index_path.parent / f".{index_path.name}.lock"
+                index_lock = inside(
+                    self.root,
+                    ".mathbox/index-locks/"
+                    + hashlib.sha256(index_name.encode("utf-8")).hexdigest() + ".lock",
+                )
             else:
                 index_lock = None
 
             with (mkdir_lock(index_lock,
-                             f"index writer active or stale {index_lock.name}; inspect before removing")
+                             f"index writer active or stale lock for {index_name}; inspect before removing")
                   if index_lock is not None else nullcontext()):
                 if index is not None:
                     require(index_path.is_file(), f"missing index: {index_name}")
