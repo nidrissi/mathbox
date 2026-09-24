@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -46,6 +46,18 @@ class LedgerError(ValueError):
 def require(condition, message):
     if not condition:
         raise LedgerError(message)
+
+
+@contextmanager
+def mkdir_lock(path, message):
+    try:
+        path.mkdir()
+    except FileExistsError:
+        raise LedgerError(message) from None
+    try:
+        yield
+    finally:
+        path.rmdir()
 
 
 def canonical(value):
@@ -468,15 +480,9 @@ class Ledger:
 
     @contextmanager
     def lock(self):
-        path = inside(self.root, ".mathbox/write.lock")
-        try:
-            path.mkdir()
-        except FileExistsError:
-            raise LedgerError("ledger writer active or stale write.lock; inspect before removing") from None
-        try:
+        with mkdir_lock(inside(self.root, ".mathbox/write.lock"),
+                        "ledger writer active or stale write.lock; inspect before removing"):
             yield
-        finally:
-            path.rmdir()
 
     def pin(self, artifact, overlays=None):
         require(isinstance(artifact, dict), "artifact must be an object with path")
@@ -700,75 +706,83 @@ class Ledger:
             if index is not None:
                 index_path, index_name = destination(text_field(index, "path"))
                 require(index_name not in overlays, "index cannot also be a new artifact")
-                require(index_path.is_file(), f"missing index: {index_name}")
-                old_index = index_path.read_bytes()
-                try:
-                    current = old_index.decode("utf-8")
-                except UnicodeDecodeError as exc:
-                    raise LedgerError(f"index is not UTF-8: {index_name}") from exc
-                tail = index.get("expected_tail")
-                entry = index.get("content")
-                require(not current or current.endswith("\n"),
-                        "index must end with a newline before appending")
-                actual_tail = current.rsplit("\n", 2)[-2] + "\n" if current else ""
-                require(isinstance(tail, str) and tail == actual_tail,
-                        "index tail mismatch")
-                require(isinstance(entry, str) and entry.strip() and entry.endswith("\n")
-                        and entry.count("\n") == 1 and "\x00" not in entry,
-                        "index content must be one nonempty newline-terminated entry")
-                overlays[index_name] = old_index + entry.encode("utf-8")
+                index_lock = index_path.parent / f".{index_path.name}.lock"
+            else:
+                index_lock = None
 
-            forbidden = {"sha256", "snapshot", "event_id", "created_at", "previous",
-                         "manifest_inputs", "manifest_outputs"}
-            def check_generated(value):
-                if isinstance(value, dict):
-                    require(not (set(value) & forbidden),
-                            "deferred proposals must omit generated fields")
-                    for child in value.values():
-                        check_generated(child)
-                elif isinstance(value, list):
-                    for child in value:
-                        check_generated(child)
-            check_generated(packet["proposals"])
-            events = self.prepare_many(packet["proposals"], state, overlays)
-            if dry_run:
-                return events
-            try:
-                for path, content in zip(destinations, staged_artifacts.values()):
-                    path.parent.mkdir(parents=True, exist_ok=True)
-                    require(inside(self.root, path.relative_to(self.root).as_posix()) == path,
-                            "artifact path changed during ingest")
-                    # Link a complete temporary file so an existing destination is never replaced.
-                    fd, temp = tempfile.mkstemp(prefix="pending-", dir=path.parent)
+            with (mkdir_lock(index_lock,
+                             f"index writer active or stale {index_lock.name}; inspect before removing")
+                  if index_lock is not None else nullcontext()):
+                if index is not None:
+                    require(index_path.is_file(), f"missing index: {index_name}")
+                    old_index = index_path.read_bytes()
                     try:
-                        with os.fdopen(fd, "wb") as stream:
-                            stream.write(content)
-                            stream.flush()
-                            os.fsync(stream.fileno())
+                        current = old_index.decode("utf-8")
+                    except UnicodeDecodeError as exc:
+                        raise LedgerError(f"index is not UTF-8: {index_name}") from exc
+                    tail = index.get("expected_tail")
+                    entry = index.get("content")
+                    require(not current or current.endswith("\n"),
+                            "index must end with a newline before appending")
+                    actual_tail = current.rsplit("\n", 2)[-2] + "\n" if current else ""
+                    require(isinstance(tail, str) and tail == actual_tail,
+                            "index tail mismatch")
+                    require(isinstance(entry, str) and entry.strip() and entry.endswith("\n")
+                            and entry.count("\n") == 1 and "\x00" not in entry,
+                            "index content must be one nonempty newline-terminated entry")
+                    overlays[index_name] = old_index + entry.encode("utf-8")
+
+                forbidden = {"sha256", "snapshot", "event_id", "created_at", "previous",
+                             "manifest_inputs", "manifest_outputs"}
+                def check_generated(value):
+                    if isinstance(value, dict):
+                        require(not (set(value) & forbidden),
+                                "deferred proposals must omit generated fields")
+                        for child in value.values():
+                            check_generated(child)
+                    elif isinstance(value, list):
+                        for child in value:
+                            check_generated(child)
+                check_generated(packet["proposals"])
+                events = self.prepare_many(packet["proposals"], state, overlays)
+                if dry_run:
+                    return events
+                try:
+                    for path, content in zip(destinations, staged_artifacts.values()):
+                        path.parent.mkdir(parents=True, exist_ok=True)
                         require(inside(self.root, path.relative_to(self.root).as_posix()) == path,
                                 "artifact path changed during ingest")
-                        os.link(temp, path)
-                    finally:
-                        Path(temp).unlink(missing_ok=True)
-                if index_path is not None:
-                    require(inside(self.root, index_name) == index_path and
-                            index_path.read_bytes() == old_index,
-                            "index changed during ingest")
-                    fd, temp = tempfile.mkstemp(prefix="pending-", dir=index_path.parent)
-                    try:
-                        os.chmod(temp, stat.S_IMODE(index_path.stat().st_mode))
-                        with os.fdopen(fd, "wb") as stream:
-                            stream.write(old_index + entry.encode("utf-8"))
-                            stream.flush()
-                            os.fsync(stream.fileno())
-                        os.replace(temp, index_path)
-                    finally:
-                        Path(temp).unlink(missing_ok=True)
-                self.append_many(events)
-            except (OSError, LedgerError) as exc:
-                raise LedgerError("deferred ingest interrupted; created artifacts, index entry, "
-                                  f"or a valid event prefix may remain; inspect before retrying: {exc}") from exc
-            return events
+                        # Link a complete temporary file so an existing destination is never replaced.
+                        fd, temp = tempfile.mkstemp(prefix="pending-", dir=path.parent)
+                        try:
+                            with os.fdopen(fd, "wb") as stream:
+                                stream.write(content)
+                                stream.flush()
+                                os.fsync(stream.fileno())
+                            require(inside(self.root, path.relative_to(self.root).as_posix()) == path,
+                                    "artifact path changed during ingest")
+                            os.link(temp, path)
+                        finally:
+                            Path(temp).unlink(missing_ok=True)
+                    if index_path is not None:
+                        require(inside(self.root, index_name) == index_path and
+                                index_path.read_bytes() == old_index,
+                                "index changed during ingest")
+                        fd, temp = tempfile.mkstemp(prefix="pending-", dir=index_path.parent)
+                        try:
+                            os.chmod(temp, stat.S_IMODE(index_path.stat().st_mode))
+                            with os.fdopen(fd, "wb") as stream:
+                                stream.write(old_index + entry.encode("utf-8"))
+                                stream.flush()
+                                os.fsync(stream.fileno())
+                            os.replace(temp, index_path)
+                        finally:
+                            Path(temp).unlink(missing_ok=True)
+                    self.append_many(events)
+                except (OSError, LedgerError) as exc:
+                    raise LedgerError("deferred ingest interrupted; created artifacts, index entry, "
+                                      f"or a valid event prefix may remain; inspect before retrying: {exc}") from exc
+                return events
 
     def record(self, proposal):
         require(isinstance(proposal, dict) and set(proposal) == {"type", "actor", "payload"},

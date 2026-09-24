@@ -160,6 +160,16 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual(len(self.ledger.read()["events"]), 1)
         self.assertFalse((self.root / "research/records").exists())
 
+    def test_deferred_busy_index_lock_rejects_without_mutation(self):
+        packet = self.deferred_setup()
+        lock = self.root / "research/.index.md.lock"
+        lock.mkdir()
+        with self.assertRaisesRegex(LedgerError, "index writer active or stale .index.md.lock"):
+            self.ledger.ingest(packet)
+        self.assertEqual(len(self.ledger.read()["events"]), 1)
+        self.assertFalse((self.root / "proofs").exists())
+        self.assertEqual((self.root / "research/index.md").read_text(), "# Routes\n- Earlier route\n")
+
     def test_deferred_invalid_later_proposal_has_no_filesystem_effect(self):
         packet = self.deferred_setup()
         packet["proposals"][1]["payload"]["evidence"] = "E999999"
