@@ -684,6 +684,9 @@ class Ledger:
                 require(isinstance(item["content"], str) and "\x00" not in item["content"],
                         "artifact content must be text without NUL")
                 require(name not in staged_artifacts, f"duplicate artifact: {name}")
+                require(all(path not in other.parents and other not in path.parents
+                            for other in destinations),
+                        f"artifact path conflicts with another artifact: {name}")
                 require(not path.exists() and not path.is_symlink(),
                         f"artifact already exists: {name}")
                 require(all(not parent.exists() or parent.is_dir()
