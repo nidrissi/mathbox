@@ -1,79 +1,25 @@
 # Mathbox
 
-`mathbox` is a plugin for Codex and Claude Code containing ten reusable Agent
-Skills and optional local tools for sustained, auditable mathematical research.
+`mathbox` is a plugin for Claude Code and Codex with ten Agent Skills for
+sustained, auditable mathematical research, plus optional standard-library
+Python tools.
 
-The toolbox separates research, verification, computation, literature work,
-manuscript integration, and proofreading so that each workflow has a clear
-evidence standard and stopping condition. The canonical distribution is the
-`mathbox` plugin; each bundled skill remains independently installable for
-hosts or environments that need a standalone Agent Skill.
+Each skill handles one job: research, verification, computation, literature
+work, manuscript integration, or proofreading. Each job has its own evidence
+standard and stopping condition. The canonical distribution is the plugin, but
+every skill can also be installed on its own as a standalone Agent Skill.
 
 These are research workflows and safeguards, not a computer algebra system or
 a replacement for mathematical review.
 
-## What changes in v3
+[Changelog](docs/CHANGELOG.md) · [v3 design](docs/design-v3.md) ·
+[v3 validation](docs/validation-v3.md) · [Evaluation protocol](evals/README.md)
 
-Mathbox can now carry a research goal through successive attempts, retain the
-mathematical reason each route failed, reconcile parallel or delayed returns,
-and detect when a claim statement, proof input, computation result, or other
-supporting artifact has changed.
+## Installation
 
-| Capability | Result |
-|---|---|
-| `research-program` | Executes distinct proof, counterexample, source and computation routes from explicit checkpoints; preserves partial results and reconciles sibling returns |
-| `research-state` | Records exact claim revisions, optional statement bindings, transitive dependencies, hashed evidence, separate review provenance, and program/run lifecycle |
-| Dependency impact and handoff | Shows active review conditions, stale evidence, downstream blockers, route-only context, unresolved parallel state, and the next executable research routes |
-| Bounded experiment runner | Records actual argv, input and scientific-result hashes, bounded logs, finite scope, and optional POSIX memory/CPU/affinity limits |
-| Repository retrofit | Detects aliased research roles, ambiguous live files, computation records, cache conventions, and migration material that needs review or quarantine |
-| Executable regression gate | Checks package contracts, synthetic fixture inventory, and state/experiment/inspector/cache behavior; mathematical task evaluation remains separate |
+### Claude Code
 
-The optional ledger lives in the research project's `.mathbox/` directory. It
-is an append-only, versioned record with generated views. Existing Markdown
-projects and the eight specialist skills continue to work without it. Ledger
-labels such as `proof-recorded` and `source-recorded` describe mechanically
-current evidence; they do not certify a proof or replace a project's promotion
-policy.
-
-In v3.1, human-facing ledger and repository-inspector reports open with a brief
-view; complete Markdown and JSON remain available on demand. The ledger also
-supports prevalidated batches of distinct events and a read-only query for
-claims affected by a pinned file. Repository setup now keeps mutable progress
-out of root instructions and old checkpoint prose out of the live dashboard.
-For an existing repository, `research-init` now provides a reviewed,
-[pin-aware migration workflow](skills/research-init/references/existing-repo-migration.md)
-for its instructions and live research state; it does not rewrite ledger events
-or turn historical prose into proof automatically.
-Program closeout now links one checked synthesis to route records, while a
-program-level history entry point keeps growing route indexes out of routine
-context; small projects may retain a flat index.
-
-```text
-$mathbox:research-init Plan a migration of this repository's AGENTS.md and live status; preserve history and inspect ledger pins before editing.
-```
-
-Start a sustained investigation with:
-
-```text
-$mathbox:research-program Pursue this conjecture through distinct proof and counterexample routes. Preserve the original goal, execute the promising approaches, and continue after failed attempts.
-```
-
-For an existing ledger:
-
-```text
-$mathbox:research-state Check which claims depend on Lemma K, which evidence is stale, and what to attack next.
-```
-
-See the [v3 design and migration rationale](docs/design-v3.md),
-[ledger command contract](skills/research-state/references/ledger.md), and
-[experiment runner](skills/computation-audit/references/runner.md).
-
-## Quick start
-
-### Claude Code: install the plugin
-
-From a Claude Code session, add this repository as a marketplace and install
-the bundle:
+Add this repository as a marketplace and install the plugin:
 
 ```text
 /plugin marketplace add nidrissi/mathbox
@@ -86,71 +32,52 @@ Start a new session, run `/skills`, and try:
 /mathbox:proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
 ```
 
-Claude namespaces plugin skills with the plugin name. The repository root is
-also the plugin root, so a source checkout can be tested without installation:
+The repository root is also the plugin root, so you can test a checkout
+without installing it:
 
 ```bash
 git clone https://github.com/nidrissi/mathbox.git
 claude --plugin-dir ./mathbox
 ```
 
-### Codex: install the plugin
+### Codex
 
-Install `mathbox` from Codex's plugin directory. The repository is a native
-Codex plugin through `.codex-plugin/plugin.json`; the Claude manifest also
-provides the explicit skill inventory used by OpenAI's skills-only conversion
-path. Both hosts therefore load the same canonical directories under `skills/`
-without duplicated packages.
-
-Start a new session, run `/skills`, and try the namespaced plugin skill:
+Install `mathbox` from Codex's plugin directory, start a new session, and try:
 
 ```text
 $mathbox:proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
 ```
 
-If the plugin directory listing is not yet available, Codex's built-in skill
-installer can install the component skills directly from the repository:
+If the plugin directory listing is not available yet, the built-in skill
+installer can install the skills directly:
 
 ```text
 $skill-installer Install every skill under skills/ from https://github.com/nidrissi/mathbox.
 ```
 
-That fallback is a standalone skill installation, not a `mathbox` plugin
-installation, so its explicit invocations use bare names such as
-`$proof-audit`.
+This installs standalone skills rather than the plugin, so you invoke them by
+bare names such as `$proof-audit`.
 
-### Standalone or single-skill installation
+### Standalone skills
 
-Requirements are Git, a host with Agent Skills support, and Python 3.10+ only for
-the optional bundled helper scripts. This compatibility path installs bare
-skills rather than the `mathbox` plugin. The helpers use the standard library.
-
-Clone the repository somewhere stable:
+You need Git and a host that supports Agent Skills. Python 3.10+ is needed
+only for the optional helper scripts. Clone the repository somewhere stable:
 
 ```bash
-git clone https://github.com/nidrissi/mathbox.git \
-  "$HOME/.local/share/mathbox"
-toolbox_dir="$HOME/.local/share/mathbox"
-skills_dir="$toolbox_dir/skills"
+git clone https://github.com/nidrissi/mathbox.git "$HOME/.local/share/mathbox"
+skills_dir="$HOME/.local/share/mathbox/skills"
 ```
 
-To install only `proof-audit`, link it into the host you use:
-
-```bash
-# Codex
-mkdir -p "$HOME/.agents/skills"
-ln -s "$skills_dir/proof-audit" "$HOME/.agents/skills/proof-audit"
-
-# Claude Code
-mkdir -p "$HOME/.claude/skills"
-ln -s "$skills_dir/proof-audit" "$HOME/.claude/skills/proof-audit"
-```
-
-To link all ten skills for both hosts:
+Then link one skill, or all of them, into each host you use:
 
 ```bash
 mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
 
+# One skill
+ln -s "$skills_dir/proof-audit" "$HOME/.agents/skills/proof-audit"   # Codex
+ln -s "$skills_dir/proof-audit" "$HOME/.claude/skills/proof-audit"   # Claude Code
+
+# All skills, both hosts
 for skill_file in "$skills_dir"/*/SKILL.md; do
   skill_dir=${skill_file%/SKILL.md}
   skill_name=${skill_dir##*/}
@@ -159,177 +86,155 @@ for skill_file in "$skills_dir"/*/SKILL.md; do
 done
 ```
 
-These commands do not overwrite an existing skill with the same name. On
-native Windows, use WSL or copy the selected directories instead of creating
-symlinks. Standalone invocations use `$proof-audit` in Codex and `/proof-audit`
-in Claude Code; plugin-installed invocations use `$mathbox:proof-audit` in
-Codex and `/mathbox:proof-audit` in Claude Code.
+These commands never overwrite an existing skill with the same name. On
+native Windows, use WSL or copy the directories instead of linking them.
 
-The `mathbox` plugin skills use the mathematical software already available in
-your project. Installing the plugin or its standalone component skills does not
-install SageMath, LaTeX, or other project dependencies.
+### Updating and pinning
 
-## Included plugin skills
+Update the plugin through the host's plugin manager. To update a standalone
+checkout, run `git -C "$HOME/.local/share/mathbox" pull --ff-only`. For a
+reproducible setup, check out a [release tag](docs/CHANGELOG.md) before
+linking.
 
-| Plugin skill | Purpose | Selection |
+The skills use the mathematical software your project already has. Installing
+Mathbox does not install SageMath, LaTeX, or other project dependencies.
+
+## Skills
+
+| Skill | Use it to… | Invocation |
 |---|---|---|
-| [`mathbox:research-program`](skills/research-program/) | Pursue or close out a substantial program across distinct routes, preserving compact current state | matching sustained research or closeout request |
-| [`mathbox:research-state`](skills/research-state/) | Track claim revisions, evidence freshness and dependency impact | existing ledger or tracking request |
-| [`mathbox:research-init`](skills/research-init/) | Initialize or migrate a mathematical research repository's agent architecture | explicit request |
-| [`mathbox:research-attempt`](skills/research-attempt/) | Pursue one bounded proof, counterexample, reduction, source, or computation route | explicit request |
-| [`mathbox:proof-audit`](skills/proof-audit/) | Adversarially audit an existing claim or proof and isolate the exact gap | automatic |
-| [`mathbox:literature-check`](skills/literature-check/) | Verify or locally cache an external result, citation, notation translation, or bounded novelty claim | automatic |
-| [`mathbox:computation-audit`](skills/computation-audit/) | Design, run, or audit a claim-supporting mathematical computation | automatic |
-| [`mathbox:manuscript-integrate`](skills/manuscript-integrate/) | Integrate an already validated result into an authoritative LaTeX manuscript | explicit request |
-| [`mathbox:proofread-math`](skills/proofread-math/) | Conservatively proofread mathematical prose and LaTeX | automatic |
-| [`mathbox:research-retrospective`](skills/research-retrospective/) | Reconcile project state and select the next bounded research routes | explicit request |
+| [`research-program`](skills/research-program/) | pursue a substantial goal across distinct routes, continue after failed attempts, or close out a program or phase | automatic |
+| [`research-attempt`](skills/research-attempt/) | pursue one bounded proof, counterexample, reduction, source, or computation route | explicit |
+| [`research-state`](skills/research-state/) | track claim revisions, evidence freshness, dependency impact and ledger handoffs | automatic |
+| [`research-init`](skills/research-init/) | set up or migrate a research repository's agent architecture | explicit |
+| [`research-retrospective`](skills/research-retrospective/) | review a project read-only and choose the next bounded routes | explicit |
+| [`proof-audit`](skills/proof-audit/) | decide whether an existing claim or proof is correct and isolate the exact gap | automatic |
+| [`literature-check`](skills/literature-check/) | verify what an external source proves, check a bounded novelty claim, or cache a source locally | automatic |
+| [`computation-audit`](skills/computation-audit/) | design, run, or audit a computation that supports a claim | automatic |
+| [`manuscript-integrate`](skills/manuscript-integrate/) | transfer an already validated result into the authoritative LaTeX manuscript | explicit |
+| [`proofread-math`](skills/proofread-math/) | fix grammar, typography, LaTeX, references, or local typos whose correction is forced | automatic |
 
-“Explicit request” is a portable routing boundary expressed in the skill's
-description and body, not a host-specific frontmatter switch. “Automatic” means
-that a matching task may select the skill without naming it. The program and
-state skills use normal automatic discovery within their specific trigger
-boundaries. Existing explicit-only invocation policies are preserved.
-Every plugin skill can still be invoked by name: use `$mathbox:skill-name` in Codex or
-`/mathbox:skill-name` in Claude Code. Bare `$skill-name` and `/skill-name`
-forms refer only to standalone installations.
+A host may pick an **automatic** skill for any task that matches its
+description. An **explicit** skill runs only when you ask for it. This boundary
+is set in the skill's description and body, not in host-specific frontmatter.
+Any skill can be invoked by name. With the plugin, use `/mathbox:<skill>` in
+Claude Code or `$mathbox:<skill>` in Codex. With standalone installs, use
+`/<skill>` or `$<skill>`.
 
-## Choosing a skill
+### Safeguards
 
-| The task is primarily… | Use |
-|---|---|
-| setting up the research repository, revising its agent architecture, or migrating its history across programs | `mathbox:research-init` |
-| pursuing a substantial goal across successive approaches, or closing out one program or phase | `mathbox:research-program` |
-| checking evidence freshness, dependency impact or a ledger handoff | `mathbox:research-state` |
-| developing new mathematics along one controlled route | `mathbox:research-attempt` |
-| deciding whether an existing argument is correct as written | `mathbox:proof-audit` |
-| checking exactly what an external source proves | `mathbox:literature-check` |
-| obtaining or assessing finite computational evidence | `mathbox:computation-audit` |
-| transferring a validated result into the live paper | `mathbox:manuscript-integrate` |
-| correcting grammar, typography, LaTeX, references, or forced local typos | `mathbox:proofread-math` |
-| reviewing the project portfolio and deciding what to try next, read-only | `mathbox:research-retrospective` |
+- A bounded computation is evidence only for its stated range, never a
+  universal proof.
+- A proof audit reconstructs the claimed object independently. A computation
+  on a convenient substitute proves nothing about the original object. A
+  coverage claim must match the iterator that actually ran and the absolute
+  grading, not only samples or parity checks.
+- Proofreading never changes an argument. Use `proof-audit` to diagnose a
+  proof and `research-attempt` to develop a new one.
+- `manuscript-integrate` transfers mathematics that has already been
+  validated. It does not make conjectural work ready for publication.
+- A failed literature search supports only a bounded search report, never a
+  claim of global novelty. A novelty check searches equivalent and historical
+  terminology and follows citation chains to primary sources where it can.
+- Any new question about what an external source proves goes through
+  `literature-check`, so every skill applies the same rules for exact versions,
+  cache use and evidence.
 
-Important boundaries:
+### Example prompts
 
-- A bounded computation is evidence only for its stated range, not a universal
-  proof.
-- A proof audit reconstructs the claimed object independently before accepting
-  a computation or derivation performed on a convenient substitute. Coverage
-  claims must match the actual iterator and absolute grading, not only samples
-  or parity checks.
-- Proofreading does not authorize changing an argument. Use the
-  `mathbox:proof-audit` plugin skill to diagnose an existing proof or
-  `mathbox:research-attempt` to develop a new one.
-- The `mathbox:manuscript-integrate` plugin skill transfers mathematics that
-  has already been validated; it does not make conjectural work
-  publication-ready.
-- A failed literature search supports only a bounded search report, not a claim
-  of global novelty. Novelty checks use equivalent and historical terminology
-  and follow citation chains to primary sources where available.
+Each line below is a separate Codex prompt. In Claude Code, write
+`/mathbox:` instead of `$mathbox:`.
 
-## Local literature cache
-
-When a research repository authorizes retaining source material,
-`literature-check` can reuse PDFs and extracted text from the project's ignored
-`.research-cache/literature/` directory. Records are content-addressed by the
-PDF's SHA-256 and searchable without a database; tracked literature ledgers keep
-only bibliographic metadata, hashes, and extraction status. The bundled helper
-uses `pdftotext` opportunistically when it is installed, and never fetches
-sources or handles credentials itself.
-
-Keep a tracked `/.research-cache/` rule in the project's own `.gitignore`. The
-helper also writes an internal ignore rule as a fallback, refuses to write any
-artifact Git would track — including one already in the index — and reports
-whether coverage comes from a project rule or only from its own, so a missing
-project rule stays visible rather than silently satisfied. Lookups
-(`find`, `show`, `verify`) never create or modify the cache.
-
-Other research-facing skills route any new question about what an external
-mathematical source proves through `literature-check`; this ensures they share
-the same exact-version, cache-first, and evidence rules. Proofreading checks
-citation syntax only, and repository initialization inventories literature
-policy without performing substantive source verification.
-
-## Updating and pinning
-
-The `mathbox` plugin can be updated through the host's plugin manager. For a
-manual standalone installation, pull the checkout:
-
-```bash
-git -C "$HOME/.local/share/mathbox" pull --ff-only
+```text
+$mathbox:research-program Pursue this conjecture through distinct proof and counterexample routes. Preserve the original goal and continue after failed attempts.
+$mathbox:research-state Check which claims depend on Lemma K, which evidence is stale, and what to attack next.
+$mathbox:research-init Plan a migration of this repository's AGENTS.md and live status; preserve history and inspect ledger pins before editing.
 ```
 
-For a reproducible setup, check out a release tag or commit before linking the
-skills.
+## Optional local tools
 
-## Repository structure
+These tools are Python helpers bundled with the skills and use only the
+standard library. Projects that keep plain Markdown status files work without
+them.
+
+- **Research ledger** (`research-state`). This is an append-only, versioned
+  record in the project's `.mathbox/` directory. It records claim revisions,
+  dependencies, hashed evidence, review provenance, and the runs of programs
+  and routes. From these it generates brief handoff, impact and stale-evidence
+  reports. A label such as `proof-recorded` describes recorded evidence. It
+  does not certify a proof or replace the project's own promotion policy. A
+  host that cannot execute commands can return a deferred packet that is
+  ingested locally later. See the
+  [ledger contract](skills/research-state/references/ledger.md) and the
+  [deferred handoff](skills/research-state/references/deferred-handoff.md).
+- **Experiment runner** (`computation-audit`). It runs a bounded computation and
+  records the actual argv, the hashes of its inputs and results, bounded logs,
+  its finite scope, and optional POSIX resource limits. The result is a
+  version 2 computation manifest. See the
+  [runner contract](skills/computation-audit/references/runner.md).
+- **Literature cache** (`literature-check`). When a project authorizes keeping
+  source material, the helper stores PDFs and extracted text in
+  `.research-cache/literature/`, addressed by content. Keep a
+  `/.research-cache/` rule in the project's `.gitignore`. The helper refuses
+  to write anything Git would track, never fetches sources or handles
+  credentials, and never modifies the cache during lookups. See the
+  [cache contract](skills/literature-check/references/source-cache.md).
+- **Repository inspector** (`research-init`). It builds a read-only inventory
+  of research roles, live files, computation manifests and cache conventions
+  before setup or migration. See the
+  [existing-repository migration guide](skills/research-init/references/existing-repo-migration.md).
+
+## Repository layout
 
 ```text
 mathbox/
-├── .codex-plugin/
-│   └── plugin.json                       # Codex package and presentation metadata
-├── .claude-plugin/
-│   ├── marketplace.json                  # Claude marketplace catalog
-│   └── plugin.json                       # root plugin metadata and skill list
-├── assets/
-│   └── mathbox.svg                       # Codex square icon and logo
-├── AGENTS.md                             # shared contributor instructions
-├── README.md
-└── skills/
-    └── <skill-name>/
-        ├── SKILL.md                       # canonical workflow contract
-        ├── agents/openai.yaml             # OpenAI presentation metadata
-        ├── evals/                         # behavior and routing probes
-        ├── references/                    # supporting material
-        ├── assets/                        # optional templates or data
-        └── scripts/                       # optional deterministic helpers
+├── .claude-plugin/       # Claude plugin manifest (explicit skill list) and marketplace
+├── .codex-plugin/        # Codex package and presentation metadata
+├── .github/workflows/    # CI: scripts/check.py on Python 3.10 and 3.13
+├── assets/mathbox.svg    # plugin icon
+├── docs/                 # changelog, design notes and validation reports
+├── evals/                # evaluation protocol, synthetic fixtures and recorded trials
+├── scripts/check.py      # package and regression gate
+├── skills/<skill-name>/
+│   ├── SKILL.md          # canonical workflow contract
+│   ├── agents/openai.yaml  # OpenAI presentation and invocation policy
+│   ├── evals/            # behavioral and routing probes
+│   ├── references/       # supporting material
+│   ├── assets/           # optional templates or data
+│   └── scripts/          # optional deterministic helpers
+├── AGENTS.md             # contributor instructions
+└── LICENSE
 ```
 
-There is only one copy of each skill. The Codex manifest points to `skills/`,
-the Claude manifest lists each directory beneath it explicitly, and every skill
-remains independently installable. Relative resource links therefore continue
-to work when a skill is copied, linked, loaded by Claude, or converted by
-OpenAI.
+The repository keeps exactly one copy of each skill. The Codex manifest points
+to `skills/`, and the Claude manifest lists each skill directory. Relative
+links therefore keep working whether a skill is copied, linked, loaded as a
+plugin, or converted by OpenAI. Skill directory names are bare (for example,
+`proof-audit`); the plugin adds the `mathbox:` namespace. `SKILL.md`
+frontmatter uses only the portable `name` and `description` fields.
 
-Canonical skill folders and `SKILL.md` names are intentionally bare (for
-example, `proof-audit`) so they remain portable Agent Skills. Installing the
-bundle as a plugin exposes them under the `mathbox:` namespace.
-
-The `SKILL.md` frontmatter uses only the portable required Agent Skills fields
-`name` and `description`. OpenAI uses `agents/openai.yaml` for host-specific
-presentation and invocation policy; other hosts ignore it.
-
-## Verification
+## Development
 
 ```bash
-python3 scripts/check.py
+python3 scripts/check.py            # static package checks and regression suites
+python3 scripts/check.py --static   # static checks only
 ```
 
-This runs static package checks and the executable regression suites, using
-only the Python standard library. `--static` skips execution. CI runs the same
-gate on Python 3.10 and 3.13. The [evaluation protocol](evals/README.md) separates
-routing, mathematical behavior and software correctness; the
-[v3 validation report](docs/validation-v3.md) records what was actually tested.
+The check verifies software contracts, not mathematical behavior. For
+behavioral and routing evaluation, follow the
+[evaluation protocol](evals/README.md).
 
-The computation validator now rejects an unfilled template as evidence. Use
-`validate_manifest.py TEMPLATE --template` only for scaffolds. Complete version 1
-records remain supported; the optional runner emits version 2 records.
+When a skill's contract changes, update its instructions, supporting files,
+behavioral evals and routing evals together. When a skill is added, renamed or
+removed, update this README in the same change. Record user-visible changes
+under **Unreleased** in the [changelog](docs/CHANGELOG.md). The full
+contributor and validation rules are in [`AGENTS.md`](AGENTS.md).
 
-## Contributing
-
-Keep each skill focused on one job. Update its instructions, supporting files,
-behavioral evals, and routing evals together when its contract changes. If a
-skill is added, renamed, or removed, update the tables in this README in the
-same change.
-
-Repository-wide contribution and validation instructions are in
-[`AGENTS.md`](AGENTS.md).
-
-Useful upstream references:
-
-- [Build plugins for ChatGPT and Codex](https://learn.chatgpt.com/docs/build-plugins)
-- [Submit a Claude Code plugin to OpenAI](https://developers.openai.com/plugins/guides/submit-claude-plugin)
-- [Create plugins for Claude Code](https://code.claude.com/docs/en/plugins)
-- [Agent Skills specification](https://agentskills.io/specification)
+Upstream references:
+[Agent Skills specification](https://agentskills.io/specification) ·
+[Claude Code plugins](https://code.claude.com/docs/en/plugins) ·
+[ChatGPT and Codex plugins](https://learn.chatgpt.com/docs/build-plugins) ·
+[Submitting a Claude plugin to OpenAI](https://developers.openai.com/plugins/guides/submit-claude-plugin)
 
 ## License
 
