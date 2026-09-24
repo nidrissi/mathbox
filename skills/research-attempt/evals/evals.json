@@ -119,6 +119,17 @@
         "Separates attempt outcome and route disposition in the durable record",
         "Preserves the next executable action without inventing an obstruction"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "In a web host that can read the repository and its .mathbox ledger but cannot execute or write, run one bounded attempt on route R for lemma L. The config opens research/records/ to deferred files and research/index.md to deferred index entries. Persistence is authorized. The attempt reduces L to one unresolved estimate and stops at its resource boundary.",
+      "expected_output": "Reports the attempt as inconclusive with the exact unresolved estimate and returns one deferred packet with the complete route record, a guarded entry for the configured index, and only ledger proposals whose state changed, leaving R open. States that local ingest has not recorded them.",
+      "assertions": [
+        "Does not close route R or settle L from one inconclusive attempt",
+        "Places the complete record under research/records/ and appends only to research/index.md with its exact current tail",
+        "Uses batch aliases for new event references and invents no generated fields",
+        "States that the packet has not been applied"
+      ]
     }
   ]
 }

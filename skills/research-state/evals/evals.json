@@ -150,15 +150,27 @@
     },
     {
       "id": 14,
-      "prompt": "You are in a web host with GitHub read access and Mathbox skills, but no filesystem or script execution. The project has an initialized .mathbox ledger. Continue route R, obtain a substantive lemma, and persist what can be persisted. The exact current head event and index tail are visible in the repository.",
+      "prompt": "You are in a web host with GitHub read access and Mathbox skills, but no filesystem or script execution. The project has an initialized .mathbox ledger. Continue route R, obtain a substantive lemma, and persist what can be persisted. The exact current head event and index tail are visible in the repository, and its .mathbox/config.json opens proofs/ and research/records/ to deferred files and research/index.md to deferred index entries.",
       "expected_output": "Gives the full mathematical result and a complete mathbox-deferred-v1 JSON packet as the last fenced block, pinned to the inspected head. The packet contains complete new proof and route artifacts, one guarded index entry, and valid ledger proposals without generated fields. It explicitly says the packet has not been applied and does not claim that the ledger or repository was modified.",
       "assertions": [
         "Audits the lemma's actual derivation and limits, rather than using the packet as proof of correctness",
         "Includes complete durable content, not ellipses, pseudo-content, or the conversation transcript",
         "Uses the exact inspected event ID, event SHA-256, and index tail",
+        "Creates files only under the configured deferred roots and appends only to the configured index",
         "Uses ordinary batch aliases for proposed intra-packet event references when needed",
         "Does not invent event IDs, hashes, timestamps, snapshots, or claim that state was recorded",
         "Places one parseable JSON packet in the final fenced block"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "You are in a web host with GitHub read access and Mathbox skills, but no filesystem or script execution. The project has an initialized .mathbox ledger whose config has no deferred section. Save your new proof of lemma L as notes/lemma.md and record it as evidence for L.",
+      "expected_output": "Recognizes that the local write policy opens no location, so no packet can create notes/lemma.md. Gives the complete note for local handling, explains that opening a deferred location is a local configuration decision, and does not emit evidence for a file that does not exist or claim that anything was recorded.",
+      "assertions": [
+        "Does not emit a packet that creates files where the local policy opens none",
+        "Does not propose evidence that cites a nonexistent artifact",
+        "Treats opening a deferred location as a local decision rather than packet content",
+        "Does not claim that the ledger or repository was modified"
       ]
     }
   ]

@@ -143,6 +143,17 @@
         "Does not classify the repeated stall as an obstruction or close the route",
         "Executes mathematics rather than only proposing the change"
       ]
+    },
+    {
+      "id": 14,
+      "prompt": "Continue program P for goal G in a read-only web host with no execution. The .mathbox config opens proofs/ and research/records/ to deferred files. Route R1 yields a lemma under an extra hypothesis; route R2 remains untried. Persistence is authorized.",
+      "expected_output": "Pursues the routes, returns a single complete deferred packet pinned to the inspected head rather than one per route, keeps R2 open with its next step, and does not treat the conditional lemma as reaching G. States that ingest remains pending.",
+      "assertions": [
+        "Returns one packet, since every packet must pin the same inspected ledger head",
+        "States the lemma's extra hypothesis and does not declare G reached",
+        "Keeps the untried R2 in the handoff rather than closing it",
+        "States that ingest remains pending"
+      ]
     }
   ]
 }

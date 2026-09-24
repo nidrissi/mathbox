@@ -55,9 +55,11 @@ the helper or write project files, and persistence is authorized, follow the
 [deferred handoff contract](references/deferred-handoff.md). Return one complete
 `mathbox-deferred-v1` packet with every new durable artifact needed by the
 proposed events, at most one guarded index entry, and a batch of proposals.
-Pin the packet to the exact inspected ledger event ID and hash. Use batch aliases
-for new event references. Never invent event IDs, artifact hashes, timestamps,
-or snapshots; the local ingest command generates them. Put the packet in the
+Create files and append entries only where the project's `.mathbox/config.json`
+opens them to deferred packets. Pin the packet to the exact inspected ledger
+event ID and hash. Use batch aliases for new event references. Never invent
+event IDs, artifact hashes, timestamps, or snapshots; the local ingest command
+generates them. Put the packet in the
 last fenced `json` block, with no omissions or text after it. Distinguish the
 mathematical finding reached from the state actually recorded: until local
 ingest succeeds, say explicitly that the packet has not been applied.

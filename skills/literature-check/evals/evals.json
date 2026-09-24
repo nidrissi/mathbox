@@ -63,6 +63,17 @@
         "Checks exact hypotheses, naturality and conclusion level",
         "Records the changed classification without erasing the earlier scoped search"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "In a read-only web host, verify that Theorem 3.2 of arXiv:2401.00002v2 supplies claim C's external dependency and record the check. The repository does not permit retaining the paper. The .mathbox config opens research/sources/ to deferred files.",
+      "expected_output": "Checks the exact v2 statement and hypotheses against C, writes a complete extraction/translation report under research/sources/ without retaining the paper, proposes source evidence with identifier, version, locator and translation, and states that the packet has not been applied.",
+      "assertions": [
+        "Records the exact identifier, version and locator actually inspected",
+        "Keeps the paper's text out of the packet beyond brief necessary quotation",
+        "Proposes source evidence only for the implication actually verified",
+        "States that the packet has not been applied"
+      ]
     }
   ]
 }
