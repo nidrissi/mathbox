@@ -27,7 +27,8 @@ convert during submission. Keep the skills portable across both hosts.
 - `README.md` is the public inventory and installation guide. Keep it aligned
   with the canonical skill directories and their invocation policies.
 - `docs/CHANGELOG.md` is the release history in Keep a Changelog format. Keep
-  its release headings aligned with the manifest versions and Git tags.
+  its release headings aligned with the manifest versions, Git tags, and GitHub
+  release titles.
 
 ## Working rules
 
@@ -56,8 +57,10 @@ convert during submission. Keep the skills portable across both hosts.
   when one exists.
 - When releasing, bump the version in `.claude-plugin/plugin.json`,
   `.codex-plugin/plugin.json`, and `.claude-plugin/marketplace.json` together.
-  Move the Unreleased entries under a dated heading for the new version, and
-  update the comparison links at the bottom of the changelog.
+  Move the Unreleased entries under a heading of the form
+  `## [X.Y.Z] — YYYY-MM-DD — Short theme`, and update the comparison links at
+  the bottom of the changelog. Title the GitHub release `vX.Y.Z — Short theme`
+  with the same theme, and use that changelog section as its notes.
 
 ## Cross-agent compatibility
 

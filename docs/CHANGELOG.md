@@ -28,7 +28,7 @@ manifests have their own schema versions, independent of the plugin version.
 - Regression tests for ingestion and a behavioral evaluation for a web host.
   ([#12])
 
-## [3.1.0] — 2026-09-23
+## [3.1.0] — 2026-09-23 — Compact workflows and route continuation
 
 ### Added
 
@@ -87,7 +87,7 @@ manifests have their own schema versions, independent of the plugin version.
 - The repository-root `CLAUDE.md` shim. Claude Code now reads `AGENTS.md`
   directly. ([#10])
 
-## [3.0.1] — 2026-09-16
+## [3.0.1] — 2026-09-16 — Review- and obligation-aware handoffs
 
 ### Added
 
@@ -106,7 +106,7 @@ manifests have their own schema versions, independent of the plugin version.
   evidence. Previously, a conditional review could leave bounded computation
   evidence labeled `computation-recorded`. ([#8])
 
-## [3.0.0] — 2026-09-08
+## [3.0.0] — 2026-09-08 — Research programs and versioned evidence
 
 A redesign around sustained research programs and versioned evidence. See the
 [design rationale](design-v3.md) and the [validation report](validation-v3.md).
@@ -164,7 +164,7 @@ A redesign around sustained research programs and versioned evidence. See the
   version 2.
 - The Python helpers require Python 3.10 or later.
 
-## [2.2.0] — 2026-09-04
+## [2.2.0] — 2026-09-04 — Literature cache and research records
 
 ### Added
 
@@ -190,7 +190,7 @@ A redesign around sustained research programs and versioned evidence. See the
 
 - The Codex short description is under 30 characters. ([#4])
 
-## [2.1.0] — 2026-09-02
+## [2.1.0] — 2026-09-02 — Generalization gates and plugin namespacing
 
 ### Added
 
@@ -210,7 +210,7 @@ A redesign around sustained research programs and versioned evidence. See the
   fallbacks throughout the manifests, OpenAI metadata, cross-skill references
   and evals. ([#2])
 
-## [2.0.0] — 2026-08-28
+## [2.0.0] — 2026-08-28 — Initial public release
 
 First public release. It is packaged as the `mathbox` plugin for Claude Code
 and Codex, with eight skills that can each be installed on their own:
