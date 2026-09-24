@@ -81,6 +81,13 @@ omitted count. Each receipt lists up to eight pinned paths and hashes, with a
 `pins_omitted` count beyond that. `--json` prints every complete event; capture or inspect
 that output selectively for a large batch.
 
+For a host that can reason from the ledger but cannot execute or write, use the
+[deferred handoff protocol](deferred-handoff.md). `ingest PACKET.json --dry-run`
+validates staged text artifacts, one guarded index append, and the ordinary
+batch proposals against an exact ledger head. `ingest PACKET.json` applies them;
+`ingest -` reads the packet from standard input. This packet format is separate
+from ledger schema version 1 and does not change event semantics.
+
 `pin-impact PATH` reports current statement, evidence, and review pins of a
 project-relative file, plus dependents of directly affected claims. It also
 reports run-result pins: those runs become `stale-result` when the file
