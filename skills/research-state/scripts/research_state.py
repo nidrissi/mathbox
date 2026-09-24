@@ -55,10 +55,26 @@ def mkdir_lock(path, message):
         path.mkdir()
     except FileExistsError:
         raise LedgerError(message) from None
+    locked = path.lstat()
+    require(stat.S_ISDIR(locked.st_mode), message)
+    token = (locked.st_dev, locked.st_ino)
+
+    def ensure():
+        current = path.lstat()
+        require(stat.S_ISDIR(current.st_mode) and
+                (current.st_dev, current.st_ino) == token,
+                message)
+
     try:
-        yield
+        ensure()
+        yield ensure
     finally:
-        path.rmdir()
+        try:
+            current = path.lstat()
+        except FileNotFoundError:
+            return
+        if stat.S_ISDIR(current.st_mode) and (current.st_dev, current.st_ino) == token:
+            path.rmdir()
 
 
 def canonical(value):
@@ -717,8 +733,9 @@ class Ledger:
 
             with (mkdir_lock(index_lock,
                              f"index writer active or stale lock for {index_name}; inspect before removing")
-                  if index_lock is not None else nullcontext()):
+                  if index_lock is not None else nullcontext()) as ensure_index_lock:
                 if index is not None:
+                    ensure_index_lock()
                     require(index_path.is_file(), f"missing index: {index_name}")
                     old_index = index_path.read_bytes()
                     try:
@@ -770,6 +787,7 @@ class Ledger:
                         finally:
                             Path(temp).unlink(missing_ok=True)
                     if index_path is not None:
+                        ensure_index_lock()
                         require(inside(self.root, index_name) == index_path and
                                 index_path.read_bytes() == old_index,
                                 "index changed during ingest")
@@ -780,6 +798,7 @@ class Ledger:
                                 stream.write(old_index + entry.encode("utf-8"))
                                 stream.flush()
                                 os.fsync(stream.fileno())
+                            ensure_index_lock()
                             os.replace(temp, index_path)
                         finally:
                             Path(temp).unlink(missing_ok=True)
