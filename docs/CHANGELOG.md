@@ -9,6 +9,8 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+## [3.2.0] — 2026-09-24 — Deferred handoff ingestion
+
 ### Added
 
 - `research-state`: deferred handoff ingestion for hosts that can inspect a
@@ -27,6 +29,12 @@ manifests have their own schema versions, independent of the plugin version.
   execute or write. They say that the packet has not yet been applied. ([#12])
 - Regression tests for ingestion and a behavioral evaluation for a web host.
   ([#12])
+
+### Changed
+
+- The README is reorganized around installation, the skill inventory, optional
+  local tools, repository layout and development. Release history now lives in
+  this changelog. ([#13])
 
 ## [3.1.0] — 2026-09-23 — Compact workflows and route continuation
 
@@ -244,7 +252,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/nidrissi/mathbox/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/nidrissi/mathbox/compare/v3.0.1...v3.1.0
 [3.0.1]: https://github.com/nidrissi/mathbox/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/nidrissi/mathbox/compare/v2.2.0...v3.0.0
@@ -262,3 +271,4 @@ This history predates versioned releases; the project was first called
 [#10]: https://github.com/nidrissi/mathbox/pull/10
 [#11]: https://github.com/nidrissi/mathbox/pull/11
 [#12]: https://github.com/nidrissi/mathbox/pull/12
+[#13]: https://github.com/nidrissi/mathbox/pull/13

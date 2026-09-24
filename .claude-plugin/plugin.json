@@ -1,7 +1,7 @@
 {
   "name": "mathbox",
   "description": "Sustained mathematical research with auditable claims, dependencies and reproducible experiments",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "author": {
     "name": "Najib Idrissi-Kaïtouni",
     "url": "https://github.com/nidrissi"
