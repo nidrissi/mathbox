@@ -123,6 +123,14 @@ class ResearchStateTests(unittest.TestCase):
         self.assertEqual(event["payload"]["statement_artifact"]["sha256"], expected)
         self.assertEqual(self.view()["issues"], [])
 
+    def test_deferred_single_line_index_tail_is_accepted(self):
+        packet = self.deferred_setup()
+        (self.root / "research/index.md").write_text("Only line\n")
+        packet["index_append"]["expected_tail"] = "Only line\n"
+        preview = self.ledger.ingest(packet, dry_run=True)
+        self.assertEqual(len(preview), 2)
+        self.assertEqual((self.root / "research/index.md").read_text(), "Only line\n")
+
     def test_deferred_stale_head_rejects_without_mutation(self):
         packet = self.deferred_setup()
         self.claim("B")

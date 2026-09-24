@@ -724,7 +724,7 @@ class Ledger:
                     entry = index.get("content")
                     require(not current or current.endswith("\n"),
                             "index must end with a newline before appending")
-                    actual_tail = current.rsplit("\n", 2)[-2] + "\n" if current else ""
+                    actual_tail = current.splitlines(keepends=True)[-1] if current else ""
                     require(isinstance(tail, str) and tail == actual_tail,
                             "index tail mismatch")
                     require(isinstance(entry, str) and entry.strip() and entry.endswith("\n")
