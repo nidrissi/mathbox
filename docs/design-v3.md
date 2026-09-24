@@ -1,5 +1,10 @@
 # Mathbox v3: research programs with versioned evidence
 
+> **Scope:** This document explains the design of 3.0 and was last revised for
+> 3.0.1. It covers neither the compact reports, ledger batches and program
+> closeout added in 3.1.0 nor the deferred handoff ingestion added since then;
+> see the [changelog](CHANGELOG.md) for those.
+
 ## Diagnosis
 
 Version 2.2 had useful, focused mathematical workflows and an unusually careful

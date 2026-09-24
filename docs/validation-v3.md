@@ -1,5 +1,12 @@
 # Validation of the v3 redesign
 
+> **Scope:** This report records validation of releases 3.0.0 and 3.0.1. Its
+> suite counts and validator output are those of 3.0.1 (2026-09-16), and it is
+> not updated for later releases. Since then the regression suites have grown,
+> and the root `CLAUDE.md` mentioned below was removed in 3.1.0. See the
+> [changelog](CHANGELOG.md) for later changes, and run `python3 scripts/check.py`
+> for current results.
+
 This report distinguishes software regression results from actual model task
 trials. It makes no comparative claim about solving frontier research problems.
 
