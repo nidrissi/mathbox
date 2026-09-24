@@ -42,5 +42,9 @@
   {
     "query": "Correct a premature route closure in the .mathbox ledger without changing the mathematical premises.",
     "should_trigger": true
+  },
+  {
+    "query": "I can inspect the .mathbox ledger but cannot execute scripts or write here. Produce a deferred packet for the new evidence so I can ingest it locally.",
+    "should_trigger": true
   }
 ]

@@ -150,6 +150,9 @@ material blocker, a convention decision, or a claim-supporting computation.
 - In an executable ledger, record only changed contracts, evidence, reviews,
   and route outcomes. A session alone needs no event. Use a prevalidated batch
   for several necessary events while preserving their distinct types.
+- When persistence is authorized but this host cannot execute or write, use the
+  `research-state` deferred-handoff contract for the durable files, index entry,
+  and ledger proposals; report that local ingest has not yet recorded them.
 - Once indexed, keep the record and index entry immutable. Record a correction
   in a new file with a `Corrects:` link and append it to the same designated
   route index. Do not create a program closeout for each attempt.

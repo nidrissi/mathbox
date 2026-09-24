@@ -18,5 +18,9 @@
   {
     "query": "Copyedit this theorem statement.",
     "should_trigger": false
+  },
+  {
+    "query": "Audit this proof in a read-only host and prepare an authorized deferred review record if the audit changes the ledger state.",
+    "should_trigger": true
   }
 ]

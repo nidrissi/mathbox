@@ -42,5 +42,9 @@
   {
     "query": "Keep pursuing the program across its untried continuations after an inconclusive attempt.",
     "should_trigger": false
+  },
+  {
+    "query": "In this read-only web host, pursue one bounded lemma route and provide a deferred handoff for any ledger-worthy result.",
+    "should_trigger": true
   }
 ]

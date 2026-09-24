@@ -40,11 +40,29 @@ python3 "$TOOL" --root PROJECT pin-impact PATH
 python3 "$TOOL" --root PROJECT record PROPOSAL.json
 python3 "$TOOL" --root PROJECT record-batch PROPOSALS.json --dry-run
 python3 "$TOOL" --root PROJECT record-batch PROPOSALS.json
+python3 "$TOOL" --root PROJECT ingest PACKET.json --dry-run
+python3 "$TOOL" --root PROJECT ingest PACKET.json
 ```
 
 `pin-impact` is read-only; use it before editing a file pinned by many claims.
 The two batch calls preview and then append distinct events. Read the compact
 batch contract in [ledger.md](references/ledger.md) before using them.
+
+## When state is writable only later
+
+If the host can inspect the repository and exact ledger head but cannot execute
+the helper or write project files, and persistence is authorized, follow the
+[deferred handoff contract](references/deferred-handoff.md). Return one complete
+`mathbox-deferred-v1` packet with every new durable artifact needed by the
+proposed events, at most one guarded index entry, and a batch of proposals.
+Create files and append entries only where the project's `.mathbox/config.json`
+opens them to deferred packets. Pin the packet to the exact inspected ledger
+event ID and hash. Use batch aliases for new event references. Never invent
+event IDs, artifact hashes, timestamps, or snapshots; the local ingest command
+generates them. Put the packet in the
+last fenced `json` block, with no omissions or text after it. Distinguish the
+mathematical finding reached from the state actually recorded: until local
+ingest succeeds, say explicitly that the packet has not been applied.
 
 Inspect the actual evidence behind important statuses. A changed proof or
 dependency invalidates the affected evidence snapshot. A retracted dependency

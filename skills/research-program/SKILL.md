@@ -147,6 +147,9 @@ when delegating or resuming.
 
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
+When persistence is authorized but this host cannot execute or write, use the
+`research-state` deferred-handoff contract for new durable artifacts, one
+guarded index entry, and ledger proposals; state that ingest remains pending.
 Update only state that actually changed; replace old dashboard checkpoint prose
 with links only once it has a durable home and the project permits, and do not
 rewrite indexed history.

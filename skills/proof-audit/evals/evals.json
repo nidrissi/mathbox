@@ -63,6 +63,17 @@
         "Includes the degree-zero case",
         "Does not let higher-arity parity tests certify a graded map"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "You are in a web host with read-only GitHub access and no script execution. The project's .mathbox ledger records evidence E000004 for claim C, pinning proofs/c.md, and its config opens reviews/ to deferred files. The user authorizes recording the audit. In its final step, proofs/c.md applies Lemma 2, which assumes injectivity, to a map not known to be injective.",
+      "expected_output": "Audits the actual argument, isolates the misapplied Lemma 2 hypothesis as the failing leaf, and returns one deferred packet with a complete audit report under reviews/ and a separate failed review of E000004. States that the review has not been recorded.",
+      "assertions": [
+        "Finds the missing injectivity hypothesis from the proof text rather than ledger labels",
+        "Writes the complete audit report as a new file under the configured reviews/ root",
+        "Proposes a review of exactly E000004 with outcome fail and an honest independence declaration",
+        "Invents no hashes or event IDs and states that the packet has not been applied"
+      ]
     }
   ]
 }
