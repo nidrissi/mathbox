@@ -109,6 +109,9 @@ available `research-state` skill, pinning the durable extraction/translation
 report. If a source version or interpretation changes, examine dependent claims
 and record a correction; do not overwrite the old check or silently refresh a
 hash. The cache's content hash alone is not a verified-source event.
+If persistence is authorized but this host cannot execute or write, use the
+`research-state` deferred-handoff contract for a new extraction report and
+source evidence proposal; state that local ingest has not recorded them.
 
 Report:
 

@@ -147,6 +147,19 @@
         "Does not rename the mechanism or add evidence to evade the reopening contract",
         "Names the kind of input that would justify reopening"
       ]
+    },
+    {
+      "id": 14,
+      "prompt": "You are in a web host with GitHub read access and Mathbox skills, but no filesystem or script execution. The project has an initialized .mathbox ledger. Continue route R, obtain a substantive lemma, and persist what can be persisted. The exact current head event and index tail are visible in the repository.",
+      "expected_output": "Gives the full mathematical result and a complete mathbox-deferred-v1 JSON packet as the last fenced block, pinned to the inspected head. The packet contains complete new proof and route artifacts, one guarded index entry, and valid ledger proposals without generated fields. It explicitly says the packet has not been applied and does not claim that the ledger or repository was modified.",
+      "assertions": [
+        "Audits the lemma's actual derivation and limits, rather than using the packet as proof of correctness",
+        "Includes complete durable content, not ellipses, pseudo-content, or the conversation transcript",
+        "Uses the exact inspected event ID, event SHA-256, and index tail",
+        "Uses ordinary batch aliases for proposed intra-packet event references when needed",
+        "Does not invent event IDs, hashes, timestamps, snapshots, or claim that state was recorded",
+        "Places one parseable JSON packet in the final fenced block"
+      ]
     }
   ]
 }

@@ -18,5 +18,9 @@
   {
     "query": "Format this BibTeX entry.",
     "should_trigger": false
+  },
+  {
+    "query": "Verify the exact source theorem in a read-only web host and return an authorized deferred source evidence record.",
+    "should_trigger": true
   }
 ]

@@ -50,5 +50,9 @@
   {
     "query": "Only record this inconclusive run and its remaining continuation in the existing .mathbox ledger.",
     "should_trigger": false
+  },
+  {
+    "query": "Continue the full research program in this read-only host and return a deferred packet for material findings.",
+    "should_trigger": true
   }
 ]

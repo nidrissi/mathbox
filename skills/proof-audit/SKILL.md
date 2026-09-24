@@ -32,6 +32,9 @@ When the project has a `.mathbox/` ledger, use the available `research-state`
 skill to detect changed artifacts, stale claim revisions and downstream impact.
 Inspect the raw current proof even when the ledger reports `proved`. Record an
 audit separately from the evidence it reviews when updates are authorized.
+If those updates are authorized but this host cannot execute or write, use the
+`research-state` deferred-handoff contract for the audit report and review
+proposal; state that it has not been recorded.
 
 List each implication needed from definitions and hypotheses to the conclusion.
 Mark every leaf as internal proof, external theorem, computation, convention,
