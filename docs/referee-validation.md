@@ -2,6 +2,9 @@
 
 Validation on 2026-09-30 covers the native `referee` skill, its deterministic
 preparation helper, package integration, and synthetic manuscript trials.
+Software and package checks were rerun on 2026-10-01 after later helper fixes
+and native model assignments; the behavioral trials were not
+(see [Revisions and retained records](#revisions-and-retained-records)).
 The [migration map](referee-migration.md) records the architectural decisions
 made before implementation. Math Scout's methodology is adapted; its runtime,
 provider adapters and dependencies are excluded.
@@ -62,15 +65,39 @@ trial. The executed reuse checks concern preparation changes on unchanged
 mathematics; they do not demonstrate dependency-aware reuse after a definition
 or theorem changes.
 
+Native model assignments (referee cases 11–14: native selection, partial
+fallbacks, inherited settings and historical reuse) have behavioral contract
+cases but no executed trial. No host's model-selection controls were exercised,
+so requested-versus-confirmed provenance recording is specified, not observed.
+The multi-file preparation case 10 (symlinked entry, nested `alltt`, ignored
+draft text) is covered by helper regressions, not by a live review.
+
 ## Revisions and retained records
 
 The latest executed preparation snapshots record contract SHA-256
 `b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7`.
-The subsequent prior-lead clarification changes the current contract to
-`5e41983f5185a3447e01e102947cc7d88421a090a44ea7c52105f1a5732bdc56`.
-It changes neither the helper nor lane instructions. The grader checks current
-contract compatibility separately; historical hashes are unchanged. Older
+The subsequent prior-lead clarification changed the contract to
+`5e41983f5185a3447e01e102947cc7d88421a090a44ea7c52105f1a5732bdc56`
+without changing the helper or lane instructions; the grader checked
+compatibility with that revision. Historical hashes are unchanged. Older
 specialist returns carry their own actual revision and reuse records.
+
+Later revisions change the current contract to
+`2e974da362b55119657f98cf6ae72dd47b00c32a7e3d4217b580d0645ea1e380`:
+
+- Helper fixes stop scanning at `\endinput` and `\end{document}`, carry
+  `alltt` state through nested inputs, and resolve inputs from a symlinked
+  entry point's directory. Twenty further preparation regressions cover them,
+  and `preparation.md` and `output-contract.md` describe them.
+- Native model assignments add
+  [`model-assignments.md`](../skills/referee/references/model-assignments.md),
+  delegation rules in `SKILL.md`, additive `model_assignment` provenance
+  fields in `output-contract.md`, and referee cases 11–14.
+
+No behavioral trial or grading was rerun for these revisions. The retained
+trials and grading are evidence for the earlier contracts only; the current
+contract's helper is covered by the regression suite and the rerun preparation
+comparison below.
 
 The [artifact inventory](../evals/results/referee-v1/artifact-inventory.json)
 maps original temporary-project locators to retained byte-for-byte copies,
@@ -95,6 +122,12 @@ input EOF boundaries, retained front matter, stable former-last-section identity
 and custom theorem context. Missing, cyclic and out-of-tree inputs fail
 explicitly instead of silently yielding incomplete preparation.
 
+On 2026-10-01 the comparison was rerun against the current helper, using a
+reference `reviewer.py` whose SHA-256 matches the retained record. All
+seventeen cases passed with results identical to the retained record; only
+the native contract hash differs. The archive itself was not available for
+that rerun, so its hash was not rechecked. The retained record is unchanged.
+
 The [repository-only comparison helper](../evals/compare_referee_preparation.py)
 extracts selected API-free archived functions from an explicitly supplied
 trusted source copy. It does not import Math Scout, install its dependencies or
@@ -116,8 +149,8 @@ not a model-to-model benchmark.
 
 The following checks passed:
 
-- `python3 scripts/check.py`: eleven canonical skills and 157 executable
-  regressions, including 26 manuscript-preparation tests. Package metadata,
+- `python3 scripts/check.py`: eleven canonical skills and 178 executable
+  regressions, including 46 manuscript-preparation tests. Package metadata,
   JSON, Python syntax and nested portable resource links also pass.
 - The required `python3 -m json.tool` loop over plugin manifests, per-skill
   evals and asset JSON; the repository gate additionally parses retained JSON.
@@ -125,10 +158,12 @@ The following checks passed:
   `claude plugin validate --strict .claude-plugin/marketplace.json`.
 - `PYTHONPYCACHEPREFIX=/tmp/mathbox-pycache python3 -m py_compile
   skills/*/scripts/*.py evals/compare_referee_preparation.py`.
-- Skill-creator frontmatter validation and OpenAI metadata generation parity
-  for `referee`, including its explicit implicit-invocation policy.
+- Skill-creator frontmatter validation (Claude and Codex validators) and
+  OpenAI metadata generation parity for `referee`, with the `Mathbox:`
+  display name and `$mathbox:referee` prompt used by the other skills; only
+  the explicit implicit-invocation policy is added by hand.
 - A standalone copy of only `skills/referee/`, run from another working
-  directory, prepared a multi-file manuscript and passed all 26 regressions.
+  directory, prepared a multi-file manuscript and passed all 46 regressions.
   Its contract hash agrees with the original installation.
 - All seventeen archived-algorithm comparison assertions; retained artifact
   hash checks, five raw-fixture source hash checks, unchanged archive hash,
@@ -158,6 +193,7 @@ follow-up recorded in the migration map.
   `scripts/prepare_manuscript.py`, `scripts/test_prepare_manuscript.py`,
   `references/review-protocol.md`, `references/final-referee.md`,
   `references/output-contract.md`, `references/preparation.md`,
+  `references/model-assignments.md`,
   `references/math-scout-license.txt`, and the five lane references
   `references/reviewers/{correctness,adversarial,exposition,notation,claims}.md`.
   All these paths are relative to `skills/referee/`.

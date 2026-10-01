@@ -75,9 +75,10 @@ preferences against the host's available native controls. Prefer the prescribed
 settings; continue with a disclosed fallback when they cannot be applied.
 
 Use isolated native subagents where supported and authorized. Apply resolved
-settings through the native delegation controls, not merely in the child prompt.
-Give each a specific unit/question, lane contract, shared protocol, exact source revision,
-raw source, necessary dependency context, and disjoint output scope. Let agents
+settings through the native delegation controls, not merely in the child
+prompt. Give each a specific unit/question, lane contract, shared protocol,
+exact source revision, raw source, necessary dependency context, and disjoint
+output scope. Let agents
 request more context; do not give a fresh correctness auditor the suspected
 answer. Bound concurrency by the host's capacity and mathematical usefulness.
 Several lanes may share a pass, and coupled sections may share an agent; do

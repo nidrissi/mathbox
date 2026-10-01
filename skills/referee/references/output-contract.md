@@ -67,8 +67,9 @@ Each issue requires these fields:
 
 The sample is illustrative, not evidence of a check. Copy `unit_id` exactly
 from the preparation manifest's `units[].id`, never from a unit's content
-`sha256`, or use `null` with a manual locator when no prepared units exist. IDs must be
-unique within the run. `lane` is correctness/adversarial/exposition/notation/
+`sha256`, or use `null` with a manual locator when no prepared units exist.
+IDs must be unique within the run. `lane` is
+correctness/adversarial/exposition/notation/
 claims; severity and confidence follow the shared protocol. `type` uses the
 lane taxonomy or `other`. Record secondary quotations and locators in analysis
 for comparisons, and an actual derivation for numerical disagreements.

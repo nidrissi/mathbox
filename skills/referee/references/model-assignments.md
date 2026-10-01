@@ -79,10 +79,11 @@ them self-review, including their model-selection limitations.
 For `final-referee`, apply the preference to the actual reconciliation
 executor. If a prescribed setting requires a different executor, delegate
 reconciliation to a compatible isolated agent when supported, supplying the
-full source, protocol, coverage, raw findings and specialist artifacts. Check the returned
-reconciliation and report before delivery. Otherwise reconcile directly and
-disclose the inherited settings as the fallback. Do not claim that the
-coordinator changed models because its prompt requested a different one.
+full source, protocol, coverage, raw findings and specialist artifacts. Check
+the returned reconciliation and report before delivery. Otherwise reconcile
+directly and disclose the inherited settings as the fallback. Do not claim
+that the coordinator changed models because its prompt requested a different
+one.
 With no final-referee preference, the coordinator can reconcile directly.
 
 ## Record execution honestly
