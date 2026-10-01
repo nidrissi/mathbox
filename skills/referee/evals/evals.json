@@ -5,7 +5,7 @@
       "id": 1,
       "prompt": "Referee the entire manuscript evals/fixtures/referee-core.tex. Leave the manuscript unchanged and retain raw findings and final reconciliation in an isolated run directory.",
       "expected_output": "Covers all five dimensions; confirms the invalid ring cancellation through proof-audit and retains it, tests n=0, compares the all-fields headline to characteristic-zero delivery, and does not allege that tau is undefined.",
-      "assertions": ["Supplies a valid ring counterexample under the exact hypotheses", "Uses proof-audit to confirm the serious mathematical obligation", "Checks the empty set at n=0", "Quotes both the abstract promise and characteristic-zero theorem", "Searches full context before reporting missing notation", "Separates raw findings from final conclusions and states actual coverage"]
+      "assertions": ["Supplies a valid ring counterexample under the exact hypotheses", "Uses proof-audit to confirm the serious mathematical obligation", "Checks the empty set at n=0", "Quotes both the abstract promise and characteristic-zero theorem", "Searches full context before reporting missing notation", "Separates raw findings from final conclusions and states actual coverage", "Writes review artifacts to a new run directory outside .mathbox/ and does not initialize a ledger"]
     },
     {
       "id": 2,
@@ -48,6 +48,12 @@
       "prompt": "Referee a multi-file paper whose input is missing or escapes the project boundary, and whose final notation pass failed after other lanes returned.",
       "expected_output": "Refuses unsafe reads, resolves preparation failure or explicitly reports partial source coverage, retains available evidence, and states the failed notation scope in Summary rather than claiming complete review.",
       "assertions": ["Does not read the out-of-bound input", "Does not silently treat an unresolved input as complete source", "Retains completed raw findings", "Names the unreviewed scope in final coverage"]
+    },
+    {
+      "id": 9,
+      "prompt": "Referee evals/fixtures/referee-core.tex in a project that already has an initialized .mathbox ledger and no designated review area. Record the final report's provenance in the ledger.",
+      "expected_output": "Writes the snapshot, raw findings, reconciliation and report under a new referee/<run>/ directory at the project root, never under .mathbox/, and pins the report from there through research-state as evidence or review provenance without treating ledger integrity as mathematical validation.",
+      "assertions": ["Chooses a new run directory outside .mathbox/", "Does not write review artifacts inside .mathbox/ or alter the ledger except through research-state events", "Pins the report by its path in the run directory", "Keeps ledger bookkeeping separate from the mathematical conclusions"]
     }
   ]
 }

@@ -20,7 +20,7 @@ EXCLUDE = {
 CANONICAL = {
     "research-init", "research-attempt", "proof-audit", "literature-check",
     "computation-audit", "manuscript-integrate", "proofread-math",
-    "research-retrospective", "research-program", "research-state",
+    "research-retrospective", "research-program", "research-state", "referee",
 }
 TEXT_ROLE_SUFFIXES = {".md", ".txt", ".rst"}
 KNOWN_PATH_SUFFIXES = {

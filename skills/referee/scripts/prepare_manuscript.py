@@ -2,7 +2,7 @@
 """Prepare an immutable, lexical LaTeX snapshot for a native manuscript review.
 
 Standard library only. No TeX execution, network, model calls or review verdicts.
-Offset-preserving masking and root-first input lookup adapt Math Scout's
+Offset-preserving masking and confined input lookup adapt Math Scout's
 preparation methodology (MIT; see ../references/math-scout-license.txt).
 """
 from __future__ import annotations
@@ -19,18 +19,23 @@ import sys
 SCHEMA_VERSION = 1
 PREPARATION_VERSION = 1
 MAX_INPUT_DEPTH = 32
+MAX_INPUT_EXPANSIONS = 4096
 MAX_EXPANDED_CHARS = 16 * 1024 * 1024
 MAX_SOURCE_FILES = 512
-LITERAL_ENVS = {"verbatim", "Verbatim", "lstlisting", "minted", "comment", "alltt"}
+LITERAL_ENVS = {"verbatim", "Verbatim", "lstlisting", "minted", "comment"}
 SKIP_TITLES = {"references", "bibliography", "acknowledgments", "acknowledgements"}
 STATEMENT_ENVS = {"theorem", "lemma", "proposition", "corollary", "definition",
                   "assumption", "conjecture", "remark"}
 COMMAND_RE = re.compile(r"\\([A-Za-z@]+|[^\n])")
+# TeX ends a line at CR, LF or CRLF; a bare CR must not extend a comment.
+LINE_END_RE = re.compile(r"[\r\n]")
+LABEL_SCAN_RE = re.compile(r"\\(begin|end)\s*\{[^{}]*\}|\\label\s*\{([^{}]+)\}")
 HASH_RE = re.compile(r"[0-9a-f]{64}")
 UNIT_ID_RE = re.compile(r"sha256:[0-9a-f]{64}:[1-9][0-9]*")
 LIMITATIONS = [
     "Lexical preparation only: no TeX execution or arbitrary macro expansion.",
-    "Conditionals, catcode changes, includeonly and custom input/section macros need manual inspection.",
+    "Conditionals, catcode changes, includeonly, TEXINPUTS or import-package paths and "
+    "custom input/section macros need manual inspection.",
     "Literal masking covers verb/lstinline and common verbatim/listing/comment environments, not every package.",
     "Bibliography files, graphics and package inputs are not loaded or authenticated.",
     "Context is an extraction index; its order is not manuscript theorem numbering.",
@@ -67,6 +72,24 @@ def skip_space(text: str, pos: int) -> int:
     return pos
 
 
+def line_end(text: str, pos: int) -> int:
+    """Offset of the line terminator at or after pos, or the end of text."""
+    match = LINE_END_RE.search(text, pos)
+    return match.start() if match else len(text)
+
+
+def after_line(text: str, pos: int) -> int:
+    """Offset just past the line terminator at or after pos."""
+    end = line_end(text, pos)
+    return end + 2 if text.startswith("\r\n", end) else min(end + 1, len(text))
+
+
+def line_breaks(text: str, start: int, end: int) -> int:
+    """Number of CR, LF or CRLF line ends in text[start:end]."""
+    return (text.count("\n", start, end) + text.count("\r", start, end)
+            - text.count("\r\n", start, end))
+
+
 def argument(text: str, pos: int, optional: bool = False):
     pos = skip_space(text, pos)
     if pos < len(text) and text[pos] == "*":
@@ -82,6 +105,7 @@ def mask_non_content(tex: str) -> str:
 
     Scan in lexical order: a commented-out begin must not mask real content,
     and a percent in a literal body must not consume its real closing marker.
+    Inside alltt, commands keep their meaning but a percent is literal text.
     """
     chars = list(tex)
 
@@ -90,11 +114,11 @@ def mask_non_content(tex: str) -> str:
             if chars[pos] not in "\r\n":
                 chars[pos] = " "
 
+    alltt = 0
     pos = 0
     while pos < len(tex):
-        if tex[pos] == "%":
-            end = tex.find("\n", pos)
-            end = len(tex) if end < 0 else end
+        if tex[pos] == "%" and not alltt:
+            end = line_end(tex, pos)
             blank(pos, end)
             pos = end
             continue
@@ -107,27 +131,37 @@ def mask_non_content(tex: str) -> str:
         if not command[0].isalpha() and command[0] != "@":
             # In particular, \\section is an escaped slash followed by text.
             blank(pos, end)
-        elif command == "begin":
+        elif command in {"begin", "end"}:
             group = argument(tex, end)
             if group is not None:
                 env = tex[group[0]:group[1]].strip()
-                if env.rstrip("*") in LITERAL_ENVS:
+                if command == "begin" and env.rstrip("*") in LITERAL_ENVS:
                     closing = re.search(r"\\end\s*\{" + re.escape(env) + r"\}",
                                         tex[group[2]:])
                     if closing is None:
                         raise PreparationError(f"Unclosed literal environment {env!r}")
                     end = group[2] + closing.end()
                     blank(pos, end)
+                elif env == "alltt":
+                    alltt = alltt + 1 if command == "begin" else max(alltt - 1, 0)
         elif command in {"verb", "lstinline"}:
             if end < len(tex) and tex[end] == "*":
                 end += 1
             if command == "lstinline" and end < len(tex) and tex[end] == "[":
                 end = balanced(tex, end, "[", "]")[2]
             if end < len(tex) and not tex[end].isspace():
-                delimiter = tex[end]
-                close = tex.find(delimiter, end + 1)
-                newline = tex.find("\n", end + 1)
-                if close < 0 or (newline >= 0 and newline < close):
+                limit = line_end(tex, end + 1)
+                if command == "lstinline" and tex[end] == "{":
+                    # listings also accepts a brace-delimited argument.
+                    depth, close = 0, -1
+                    for at in range(end, limit):
+                        depth += {"{": 1, "}": -1}.get(tex[at], 0)
+                        if depth == 0:
+                            close = at
+                            break
+                else:
+                    close = tex.find(tex[end], end + 1, limit)
+                if close < 0:
                     raise PreparationError(f"Unclosed inline literal near character {pos}")
                 end = close + 1
                 blank(pos, end)
@@ -140,9 +174,13 @@ class SourceLoader:
         self.root = root.resolve()
         if not self.root.is_dir():
             raise PreparationError(f"Project boundary is not a directory: {root}")
+        # TeX's working directory; prepare() sets it to the main file's directory.
+        self.base = self.root
         self.sources = {}
-        self.texts = {}
+        self.plans = {}
         self.expanded_chars = 0
+        self.expansions = 0
+        self.document_ended = False
 
     def confined(self, path: Path) -> Path:
         resolved = path.resolve()
@@ -151,27 +189,32 @@ class SourceLoader:
         return resolved
 
     def read(self, path: Path) -> str:
-        path = self.confined(path)
-        if path not in self.texts:
-            if len(self.sources) >= MAX_SOURCE_FILES:
-                raise PreparationError(f"More than {MAX_SOURCE_FILES} source files")
-            raw = path.read_bytes()
-            if len(raw) > MAX_EXPANDED_CHARS:
-                raise PreparationError(f"Source exceeds preparation size limit: {path}")
-            try:
-                self.texts[path] = raw.decode("utf-8")
-            except UnicodeDecodeError as exc:
-                raise PreparationError(f"Source is not valid UTF-8: {path}") from exc
-            self.sources[path] = {"path": path.relative_to(self.root).as_posix(),
-                                  "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
-        return self.texts[path]
+        if len(self.sources) >= MAX_SOURCE_FILES:
+            raise PreparationError(f"More than {MAX_SOURCE_FILES} source files")
+        raw = path.read_bytes()
+        if len(raw) > MAX_EXPANDED_CHARS:
+            raise PreparationError(f"Source exceeds preparation size limit: {path}")
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise PreparationError(f"Source is not valid UTF-8: {path}") from exc
+        self.sources[path] = {"path": path.relative_to(self.root).as_posix(),
+                              "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+        return text
 
-    def reference(self, name: str, parent: Path) -> Path:
+    def reference(self, name: str, parent: Path, command: str) -> Path:
         if not name or any(c in name for c in "\\{}%\x00\r\n"):
             raise PreparationError(f"Input is not a supported literal filename: {name!r}")
-        candidates = [name] if name.endswith(".tex") else [name, name + ".tex"]
+        # TeX tries name.tex before name; \include always appends .tex.
+        if name.endswith(".tex"):
+            candidates = [name]
+        elif command == "include":
+            candidates = [name + ".tex"]
+        else:
+            candidates = [name + ".tex", name]
         escaped = False
-        for directory in dict.fromkeys((self.root, parent)):
+        # The including file's directory is a fallback TeX itself does not search.
+        for directory in dict.fromkeys((self.base, parent)):
             for candidate in candidates:
                 try:
                     path = self.confined(directory / candidate)
@@ -184,6 +227,52 @@ class SourceLoader:
             raise PreparationError(f"Refusing input outside project boundary: {name!r}")
         raise PreparationError(f"Cannot find input {name!r} from {parent.relative_to(self.root)}")
 
+    def plan(self, path: Path):
+        """Read and mask a file once: its input commands and where TeX stops reading it."""
+        if path in self.plans:
+            return self.plans[path]
+        text = self.read(path)
+        masked = mask_non_content(text)
+        stop, ends_document, inputs, cursor = len(text), False, [], 0
+        depth, scanned = 0, 0
+        for match in COMMAND_RE.finditer(masked):
+            if match.start() >= stop:
+                break
+            if match.start() < cursor:
+                continue
+            # Brace depth separates a real stop from one inside a macro definition.
+            depth += masked.count("{", scanned, match.start()) - masked.count("}", scanned, match.start())
+            scanned = match.start()
+            if match[1] == "endinput" and depth == 0:
+                # TeX finishes the current line, then stops reading this file.
+                stop = min(stop, after_line(text, match.end()))
+                continue
+            if match[1] == "end" and depth == 0:
+                group = argument(masked, match.end())
+                if group and masked[group[0]:group[1]].strip() == "document":
+                    # Nothing after \end{document} is read; keep only its line ending.
+                    stop, ends_document = after_line(text, group[2]), True
+                    break
+                continue
+            if match[1] not in {"input", "include"}:
+                continue
+            pos = skip_space(masked, match.end())
+            group = balanced(masked, pos)
+            if group is None:
+                # TeX permits a whitespace-delimited, brace-less \input only.
+                bare = re.match(r"[^\s{}\\]+", masked[pos:]) if match[1] == "input" else None
+                if bare is None:
+                    raise PreparationError("Input/include requires a literal filename")
+                end = pos + bare.end()
+                name = text[pos:end]
+            else:
+                end = group[2]
+                name = text[group[0]:group[1]].strip()
+            inputs.append((match.start(), end, name, match[1]))
+            cursor = end
+        self.plans[path] = text, stop, ends_document, inputs
+        return self.plans[path]
+
     def expand(self, path: Path, stack: tuple = ()):
         path = self.confined(path)
         if path in stack:
@@ -191,8 +280,7 @@ class SourceLoader:
             raise PreparationError(f"Circular input: {chain}")
         if len(stack) >= MAX_INPUT_DEPTH:
             raise PreparationError(f"Input nesting exceeds {MAX_INPUT_DEPTH}")
-        text = self.read(path)
-        masked = mask_non_content(text)
+        text, stop, ends_document, inputs = self.plan(path)
         parts, spans = [], []
         length = 0
         cursor = 0
@@ -208,26 +296,17 @@ class SourceLoader:
             parts.append(piece)
             spans.append({"expanded_start": length, "expanded_end": length + len(piece),
                           "path": self.sources[path]["path"], "source_start": start,
-                          "source_end": end, "source_line": text.count("\n", 0, start) + 1})
+                          "source_end": end, "source_line": line_breaks(text, 0, start) + 1})
             length += len(piece)
 
-        for match in COMMAND_RE.finditer(masked):
-            if match.start() < cursor or match[1] not in {"input", "include"}:
-                continue
-            pos = skip_space(masked, match.end())
-            group = balanced(masked, pos)
-            if group is None:
-                # TeX permits a whitespace-delimited, brace-less \input only.
-                bare = re.match(r"[^\s{}\\]+", masked[pos:]) if match[1] == "input" else None
-                if bare is None:
-                    raise PreparationError("Input/include requires a literal filename")
-                end = pos + bare.end()
-                name = text[pos:end]
-            else:
-                end = group[2]
-                name = text[group[0]:group[1]].strip()
-            target = self.reference(name, path.parent)
-            append_original(cursor, match.start())
+        for start, end, name, command in inputs:
+            # Tiny repeated inputs can multiply without approaching the size limit.
+            self.expansions += 1
+            if self.expansions > MAX_INPUT_EXPANSIONS:
+                raise PreparationError(f"More than {MAX_INPUT_EXPANSIONS} input expansions")
+            # Resolved only when reached: an earlier input may end the document.
+            target = self.reference(name, path.parent, command)
+            append_original(cursor, start)
             child, child_spans = self.expand(target, (*stack, path))
             parts.append(child)
             for span in child_spans:
@@ -236,7 +315,7 @@ class SourceLoader:
             length += len(child)
             # A file's final comment/control word must not consume the caller's
             # next command when the included file has no terminal newline.
-            if child and not child.endswith("\n"):
+            if child and not child.endswith(("\n", "\r")):
                 self.expanded_chars += 1
                 if self.expanded_chars > MAX_EXPANDED_CHARS:
                     raise PreparationError("Expanded source exceeds preparation size limit")
@@ -246,7 +325,10 @@ class SourceLoader:
                               "source_line": None, "synthetic": "input-boundary-newline"})
                 length += 1
             cursor = end
-        append_original(cursor, len(text))
+            if self.document_ended:
+                return "".join(parts), spans
+        append_original(cursor, stop)
+        self.document_ended = ends_document
         return "".join(parts), spans
 
 
@@ -261,8 +343,42 @@ def locate(spans: list, tex: str, offset: int) -> dict:
             if span["path"] is None:
                 return {"path": None, "line": None}
             return {"path": span["path"],
-                    "line": span["source_line"] + tex.count("\n", span["expanded_start"], offset)}
+                    "line": span["source_line"] + line_breaks(tex, span["expanded_start"], offset)}
     return {"path": None, "line": None}
+
+
+def own_label(body: str):
+    """First label of a statement itself, not of an equation or list nested in it."""
+    depth = 0
+    for match in LABEL_SCAN_RE.finditer(body):
+        if match[1] == "begin":
+            depth += 1
+        elif match[1] == "end":
+            depth = max(depth - 1, 0)
+        elif depth == 0:
+            return match[2]
+    return None
+
+
+def context_identity(context: dict) -> str:
+    """Context without locators, so moving unchanged text keeps the global context hash."""
+    return json.dumps({"preamble": context["preamble"], "title": context["title"],
+                       "abstracts": [entry["text"] for entry in context["abstracts"]],
+                       "statements": [[entry["environment"], entry["label"], entry["text"]]
+                                      for entry in context["statements"]]},
+                      ensure_ascii=False, sort_keys=True)
+
+
+def top_level(masked: str, pattern: str):
+    """First match outside braces, so a macro definition's body does not count.
+
+    Lexically unbalanced braces fall back to the first match anywhere.
+    """
+    matches = list(re.finditer(pattern, masked))
+    for match in matches:
+        if masked.count("{", 0, match.start()) == masked.count("}", 0, match.start()):
+            return match
+    return matches[0] if matches else None
 
 
 def environment_bounds(masked: str, name: str):
@@ -281,8 +397,8 @@ def environment_bounds(masked: str, name: str):
 
 def extract(tex: str, spans: list):
     masked = mask_non_content(tex)
-    begin = re.search(r"\\begin\s*\{document\}", masked)
-    end = re.search(r"\\end\s*\{document\}", masked)
+    begin = top_level(masked, r"\\begin\s*\{document\}")
+    end = top_level(masked, r"\\end\s*\{document\}")
     body_start = begin.end() if begin else 0
     body_end = end.start() if end else len(tex)
     if body_end < body_start:
@@ -309,9 +425,8 @@ def extract(tex: str, spans: list):
         for start, inner, finish, end_offset in environment_bounds(masked, name):
             if not body_start <= start < body_end:
                 continue
-            label = re.search(r"\\label\s*\{([^{}]+)\}", masked[inner:finish])
             context["statements"].append({"environment": name,
-                "label": label[1] if label else None, "text": tex[start:end_offset],
+                "label": own_label(masked[inner:finish]), "text": tex[start:end_offset],
                 "expanded_start": start, "location": locate(spans, tex, start)})
     context["statements"].sort(key=lambda entry: entry["expanded_start"])
 
@@ -386,8 +501,10 @@ def compare_previous(current: dict, path: Path) -> dict:
                 or not unit["id"].startswith("sha256:" + unit["identity_sha256"] + ":")):
             raise PreparationError("Invalid previous manifest unit identity")
         ids.add(unit["id"])
-    if previous.get("main") != current["main"]:
-        raise PreparationError("Previous manifest describes a different main manuscript")
+    if not isinstance(previous.get("main"), str):
+        raise PreparationError("Invalid previous manifest main")
+    # A renamed main file (common in resubmissions) still has comparable units.
+    main_changed = previous["main"] != current["main"]
     old_counts = Counter(unit["identity_sha256"] for unit in units)
     new_counts = Counter(unit["identity_sha256"] for unit in current["units"])
     old = {unit["id"] for unit in units}
@@ -397,11 +514,13 @@ def compare_previous(current: dict, path: Path) -> dict:
     contract_changed = (previous["contract_sha256"] != current["contract_sha256"]
                         or previous.get("preparation_version") != PREPARATION_VERSION)
     return {"previous_source_sha256": previous["source_sha256"],
+            "previous_main": previous["main"], "main_changed": main_changed,
             "candidate_unchanged": sorted((new & old) - set(ambiguous)),
             "added": sorted(new - old), "removed": sorted(old - new),
             "ambiguous": sorted(ambiguous), "contract_changed": contract_changed,
             "global_context_changed": previous["global_context_sha256"] != current["global_context_sha256"],
-            "whole_paper_invalidated": (previous["source_sha256"] != current["source_sha256"]
+            "whole_paper_invalidated": (main_changed
+                                       or previous["source_sha256"] != current["source_sha256"]
                                        or previous["source_files_sha256"] != current["source_files_sha256"]
                                        or previous["global_context_sha256"] != current["global_context_sha256"]
                                        or contract_changed),
@@ -415,13 +534,16 @@ def prepare(main: Path, root: Path | None = None, previous: Path | None = None):
     main = main.absolute()
     loader = SourceLoader(Path(root) if root is not None else main.parent)
     main = loader.confined(main)
+    # TeX resolves inputs from its working directory, the main file's, not --root.
+    loader.base = main.parent
     tex, spans = loader.expand(main)
     units, context = extract(tex, spans)
     context_text = json.dumps(context, ensure_ascii=False, indent=2) + "\n"
     sources = sorted(loader.sources.values(), key=lambda item: item["path"])
     manifest = {"schema_version": SCHEMA_VERSION, "preparation_version": PREPARATION_VERSION,
                 "main": main.relative_to(loader.root).as_posix(), "source_sha256": digest(tex),
-                "global_context_sha256": digest(context_text), "contract_sha256": contract_digest(),
+                "global_context_sha256": digest(context_identity(context)),
+                "contract_sha256": contract_digest(),
                 "source_files_sha256": digest(json.dumps(sources, sort_keys=True)), "sources": sources,
                 "source_map": spans, "units": units, "limitations": LIMITATIONS,
                 "comparison": None}
@@ -432,9 +554,15 @@ def prepare(main: Path, root: Path | None = None, previous: Path | None = None):
 
 def write_snapshot(output: Path, manifest: dict, tex: str, context_text: str):
     output = Path(output).absolute()
-    for path in (output, *output.parents):
-        if path.is_symlink():
-            raise PreparationError(f"Refusing output symbolic link: {path}")
+    # Case or trailing-dot aliases count too, also when reached through a link.
+    if any(part.casefold().rstrip(". ") == ".mathbox"
+           for path in (output, output.resolve()) for part in path.parts):
+        raise PreparationError("Refusing output inside .mathbox, which research-state reserves "
+                               "for its ledger; choose a review directory outside it")
+    # Existing parents are the caller's environment and may be links (macOS /var);
+    # only the snapshot directory itself must be new.
+    if output.is_symlink():
+        raise PreparationError(f"Refusing output symbolic link: {output}")
     if output.exists():
         raise PreparationError("Output must be a new snapshot directory; choose a new --output")
     output.mkdir(parents=True, exist_ok=False)

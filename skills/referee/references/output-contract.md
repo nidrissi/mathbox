@@ -29,13 +29,14 @@ Each issue requires these fields:
   "quote": "Cancelling $a$ yields $b=c$.",
   "analysis": "The statement allows zero divisors; the cancellation inference needs an additional hypothesis.",
   "suggested_fix": "Require that multiplication by a is injective, or prove the missing restriction.",
-  "unit_id": "sha256:<prepared-unit-hash>",
+  "unit_id": "sha256:<identity-hash>:<occurrence>",
   "reviewer": "correctness-pass"
 }
 ```
 
-The sample is illustrative, not evidence of a check. Use an actual unit ID
-or `null` with a manual locator when no prepared units exist. IDs must be
+The sample is illustrative, not evidence of a check. Copy `unit_id` exactly
+from the preparation manifest's `units[].id`, never from a unit's content
+`sha256`, or use `null` with a manual locator when no prepared units exist. IDs must be
 unique within the run. `lane` is correctness/adversarial/exposition/notation/
 claims; severity and confidence follow the shared protocol. `type` uses the
 lane taxonomy or `other`. Record secondary quotations and locators in analysis

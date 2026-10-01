@@ -41,7 +41,7 @@ tests; CLI/provider tests exercise the runtime that will not migrate.
 | `ReviewerSpec`, `ReviewerScope`, `REVIEWER_SPECS`, `run_pipeline` | ADAPT | Five dimensions with native, bounded delegation; mathematical dependencies choose units, rather than one call per lane per section |
 | `Issue`, `IssueWithReviewer`, `Review` | ADAPT | Portable JSON contract in a reference: preserve original fields, add lane, finding ID and review provenance; no Pydantic dependency |
 | `strip_comment`, `mask_non_content` | PORT | Offset-preserving lexical mask, extended to inline literals and escaped commands; comments must not open fake literal environments |
-| `_resolve_reference`, `_is_within`, `resolve_inputs`, `load_tex` | PORT | Standard-library helper, project boundary including symlinks, root-first then including-file lookup, nested inputs; mask literal inputs too |
+| `_resolve_reference`, `_is_within`, `resolve_inputs`, `load_tex` | PORT | Standard-library helper, project boundary including symlinks, lookup from the main file's directory then the including file's, nested inputs; mask literal inputs too |
 | `SECTION_RE`, `chunk_by_section`, `_front_matter`, `_safe_filename`, `chunk_stem` | ADAPT | Balanced titles, retained front matter and unsectioned bodies, explicit skipped-unit metadata, safe filenames; keep source intact for whole-paper review |
 | `extract_global_context` and its regexes | ADAPT | Preamble/title/abstract plus labeled theorem-like environments and source map; mechanical context is an index, not a substitute for reading dependencies |
 | `chunk_key`, `prompts_digest`, `run_settings` | ADAPT | Full SHA-256 prepared-unit, whole-source and skill-contract hashes; position-independent identity and conservative comparison metadata |

@@ -88,13 +88,111 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(len(manifest["sources"]), 4)
         self.assertEqual(manifest["units"][0]["location"], {"path": "parts/a.tex", "line": 1})
 
-    def test_root_first_lookup(self):
+    def test_main_directory_first_lookup(self):
         self.put("choice.tex", "ROOT\n")
         self.put("parts/choice.tex", "SIBLING\n")
         self.put("parts/a.tex", "\\input{choice}\n")
         _, tex, _ = self.prepare(paper("\\input{parts/a}\n"))
         self.assertIn("ROOT", tex)
         self.assertNotIn("SIBLING", tex)
+
+    def test_wider_root_resolves_inputs_from_main_directory(self):
+        self.put("intro.tex", "DECOY\n")
+        self.put("paper/intro.tex", "REAL INTRO\n")
+        self.put("paper/sections/a.tex", "A\n\\input{sections/b}\n")
+        self.put("paper/sections/b.tex", "B FROM MAIN DIRECTORY\n")
+        main = self.put("paper/main.tex", paper("\\input{intro}\n\\input{sections/a}\n"))
+        manifest, tex, _ = prep.prepare(main, self.root)
+        self.assertIn("REAL INTRO", tex)
+        self.assertNotIn("DECOY", tex)
+        self.assertIn("B FROM MAIN DIRECTORY", tex)
+        self.assertEqual(manifest["main"], "paper/main.tex")
+
+    def test_tex_suffix_is_tried_first_and_include_always_appends_it(self):
+        self.put("foo", "EXTENSIONLESS\n")
+        self.put("foo.tex", "TEXFILE\n")
+        _, tex, _ = self.prepare(paper("\\input{foo}\n"))
+        self.assertIn("TEXFILE", tex)
+        self.assertNotIn("EXTENSIONLESS", tex)
+        (self.root / "foo.tex").unlink()
+        _, tex, _ = self.prepare(paper("\\input{foo}\n"))
+        self.assertIn("EXTENSIONLESS", tex)
+        with self.assertRaisesRegex(prep.PreparationError, "Cannot find"):
+            self.prepare(paper("\\include{foo}\n"))
+
+    def test_text_after_end_document_or_endinput_is_not_expanded(self):
+        self.put("chapter.tex", "kept\n\\endinput\nscrap \\input{gone}\n\\section{Scrap}\n")
+        text = paper("\\section{Main}\n\\input{chapter}\nafter\n") + "\\input{olddraft}\n\\section{Old}\n"
+        manifest, tex, _ = self.prepare(text)
+        self.assertEqual([s["path"] for s in manifest["sources"]], ["chapter.tex", "paper.tex"])
+        self.assertIn("kept\n\\endinput\n", tex)
+        self.assertIn("after", tex)
+        for absent in ("scrap", "olddraft", "Old"):
+            self.assertNotIn(absent, tex)
+        self.assertEqual([u["title"] for u in manifest["units"]], ["Main"])
+        # \end{document} inside an input also ends the document for its callers.
+        self.put("last.tex", "last\n\\end{document}\n\\input{gone}\n")
+        _, tex, _ = self.prepare("\\begin{document}\n\\input{last}\n\\input{gone}\ntrailing\n")
+        self.assertTrue(tex.endswith("last\n\\end{document}\n"))
+
+    def test_stops_inside_definitions_and_endinput_line_are_honored(self):
+        self.put("sub.tex", "SUB\n")
+        self.put("rest.tex", "REST\n")
+        text = paper("\\section{Main}\n\\input{rest}\n",
+                     "\\newcommand{\\finish}{\\end{document}}\n\\def\\stop{\\endinput}\n")
+        _, tex, _ = self.prepare(text)
+        self.assertIn("REST", tex)
+        self.put("chapter.tex", "\\endinput \\input{sub}\nlater\n")
+        _, tex, _ = self.prepare(paper("\\input{chapter}\n"))
+        self.assertIn("SUB", tex)
+        self.assertNotIn("later", tex)
+
+    def test_carriage_return_line_ends_terminate_comments(self):
+        self.put("sub.tex", "SUB\r")
+        text = "\\begin{document}\r% note\r\\section{A}\ra\r\\input{sub}\r\\section{B}\rb\r\\end{document}\r"
+        manifest, tex, _ = self.prepare(text)
+        self.assertEqual([u["title"] for u in manifest["units"]], ["A", "B"])
+        self.assertIn("SUB", tex)
+        self.assertEqual([u["location"] for u in manifest["units"]],
+                         [{"path": "paper.tex", "line": 3}, {"path": "paper.tex", "line": 6}])
+
+    def test_brace_delimited_lstinline(self):
+        manifest, _, _ = self.prepare(paper("\\section{Main}\nUse \\lstinline{x = {1}} here.\n"))
+        self.assertEqual([u["title"] for u in manifest["units"]], ["Main"])
+        masked = prep.mask_non_content(r"\lstinline{x} and $\frac{1}{2}$ \lstinline[a]{\section{F}}")
+        self.assertIn(r"$\frac{1}{2}$", masked)
+        self.assertNotIn("section", masked)
+        with self.assertRaisesRegex(prep.PreparationError, "Unclosed inline"):
+            prep.mask_non_content("\\lstinline{x\n}")
+
+    def test_alltt_keeps_commands_and_literal_percent(self):
+        self.put("sub.tex", "SUB\n")
+        self.put("pct.tex", "PCT\n")
+        manifest, tex, _ = self.prepare(paper("\\section{Main}\n\\begin{alltt}\n\\input{sub}\n"
+                                              "50% \\input{pct}\n\\end{alltt}\n% \\input{gone}\n"))
+        self.assertIn("SUB", tex)
+        self.assertIn("PCT", tex)
+        self.assertEqual(len(manifest["sources"]), 3)
+
+    def test_repeated_inputs_are_planned_once_and_expansions_are_capped(self):
+        for index in range(20):
+            self.put(f"f{index}.tex", f"\\input{{f{index + 1}}}\\input{{f{index + 1}}}\n")
+        self.put("f20.tex", "")
+        calls = []
+        original = prep.mask_non_content
+
+        def counted(text):
+            calls.append(text)
+            return original(text)
+
+        with patch.object(prep, "mask_non_content", counted):
+            with self.assertRaisesRegex(prep.PreparationError, "input expansions"):
+                self.prepare(paper("\\input{f0}\n"))
+        self.assertLessEqual(len(calls), 22)
+        with patch.object(prep, "MAX_INPUT_EXPANSIONS", 2):
+            self.put("leaf.tex", "leaf\n")
+            with self.assertRaisesRegex(prep.PreparationError, "More than 2"):
+                self.prepare(paper("\\input{leaf}\\input{leaf}\\input{leaf}\n"))
 
     def test_main_path_is_project_relative_when_root_is_supplied(self):
         self.put("paper.tex", paper("\\section{Main}\nproject body\n"))
@@ -215,6 +313,23 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(context["abstracts"][0]["text"], "Real abstract")
         self.assertEqual([s["label"] for s in context["statements"]], ["p:real"])
 
+    def test_statement_label_ignores_nested_environment_labels(self):
+        inner = "\\begin{equation}\\label{eq:inner}x\\end{equation}"
+        text = paper(f"\\begin{{theorem}}A {inner}\\end{{theorem}}\n"
+                     f"\\begin{{lemma}}{inner}\\label{{lem:own}}B\\end{{lemma}}\n")
+        _, _, ctx = self.prepare(text)
+        self.assertEqual([s["label"] for s in json.loads(ctx)["statements"]], [None, "lem:own"])
+
+    def test_global_context_hash_ignores_moved_but_unchanged_context(self):
+        statement = "\\section{B}\n\\begin{theorem}\\label{t}Claim.\\end{theorem}\n"
+        _, previous = self.snapshot("old", paper("\\section{A}\ntypo\n" + statement))
+        moved, _, _ = self.prepare(paper("\\section{A}\ntypo fixed\n" + statement), previous)
+        self.assertFalse(moved["comparison"]["global_context_changed"])
+        self.assertTrue(moved["comparison"]["whole_paper_invalidated"])
+        edited, _, _ = self.prepare(paper("\\section{A}\ntypo\n" + statement.replace("Claim", "Stronger")),
+                                    previous)
+        self.assertTrue(edited["comparison"]["global_context_changed"])
+
     def test_deterministic_snapshots_and_hashes(self):
         text = paper("\\section{Main}\nα\n")
         first, _ = self.snapshot("run1", text)
@@ -273,6 +388,20 @@ class PreparationTests(unittest.TestCase):
         with self.assertRaises(prep.PreparationError):
             self.prepare(text, previous)
 
+    def test_renamed_main_still_compares_units(self):
+        text = paper("\\section{Main}\nbody\n")
+        old, previous = self.snapshot("old", text)
+        renamed = self.put("paper-v2.tex", text)
+        new, _, _ = prep.prepare(renamed, self.root, previous)
+        comparison = new["comparison"]
+        self.assertEqual((comparison["previous_main"], comparison["main_changed"]), ("paper.tex", True))
+        self.assertTrue(comparison["whole_paper_invalidated"])
+        self.assertEqual(comparison["candidate_unchanged"], [old["units"][0]["id"]])
+        old["main"] = None
+        previous.write_text(json.dumps(old), encoding="utf-8")
+        with self.assertRaisesRegex(prep.PreparationError, "main"):
+            prep.prepare(renamed, self.root, previous)
+
     def test_output_symlink_and_occupied_directory_are_never_overwritten(self):
         result = self.prepare(paper("body\n"))
         victim = self.put("victim", "sentinel")
@@ -285,9 +414,28 @@ class PreparationTests(unittest.TestCase):
         out.mkdir()
         with self.assertRaisesRegex(prep.PreparationError, "new snapshot"):
             prep.write_snapshot(out, *result)
-        (self.root / "parent-link").symlink_to(self.root, target_is_directory=True)
+        (self.root / "dangling").symlink_to(self.root / "missing")
         with self.assertRaisesRegex(prep.PreparationError, "symbolic"):
-            prep.write_snapshot(self.root / "parent-link" / "new", *result)
+            prep.write_snapshot(self.root / "dangling", *result)
+        self.assertFalse((self.root / "missing").exists())
+
+    def test_existing_linked_parents_are_used_as_is(self):
+        # Like macOS /var -> /private/var or a symlinked home directory.
+        result = self.prepare(paper("body\n"))
+        real = self.root / "real"
+        real.mkdir()
+        (self.root / "link").symlink_to(real, target_is_directory=True)
+        prep.write_snapshot(self.root / "link" / "reviews" / "run", *result)
+        self.assertTrue((real / "reviews" / "run" / "manifest.json").is_file())
+
+    def test_output_inside_mathbox_is_refused(self):
+        result = self.prepare(paper("body\n"))
+        (self.root / ".mathbox").mkdir()
+        (self.root / "alias").symlink_to(self.root / ".mathbox", target_is_directory=True)
+        for out in (".mathbox/referee/run", ".MathBox./run", "alias/run"):
+            with self.subTest(out=out), self.assertRaisesRegex(prep.PreparationError, ".mathbox"):
+                prep.write_snapshot(self.root / out, *result)
+        self.assertEqual(list((self.root / ".mathbox").iterdir()), [])
 
     def test_cli_failure_has_no_snapshot_and_success_is_readable(self):
         self.put("paper.tex", paper("\\input{missing}\n"))

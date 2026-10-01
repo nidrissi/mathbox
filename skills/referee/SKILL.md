@@ -35,8 +35,10 @@ artifacts, not rewriting proofs, contacting authors or submitting a report.
    ```
 
    Use a new review directory in the project's designated review area, or
-   `.mathbox/referee/<run>/` if none is designated. That directory is a review
-   artifact location; it does not initialize a research-state ledger.
+   `referee/<run>/` at the project root if none is designated. Never write
+   review artifacts under `.mathbox/`: that directory belongs to a
+   research-state ledger, which pins evidence only from outside it. Creating a
+   review directory never initializes a ledger.
 5. Read the manifest, preparation limits and full source. Resolve preparation
    errors before claiming complete coverage. If only a PDF, pasted text or a
    host without execution is available, build the same scope/coverage inventory
@@ -110,8 +112,9 @@ leave anything not settled conditional.
   review-only default unless manuscript edits were requested.
 - **`research-state`:** optional when an initialized ledger already exists
   and provenance recording is useful and authorized. Pin actual statements,
-  evidence and reports; ledger integrity does not validate mathematics. Do
-  not initialize it or create a parallel state database merely for refereeing.
+  evidence and reports from the review directory; ledger integrity does not
+  validate mathematics. Do not initialize it or create a parallel state
+  database merely for refereeing.
 
 ## Reconcile and report
 

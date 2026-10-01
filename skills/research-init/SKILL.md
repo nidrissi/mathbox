@@ -247,8 +247,8 @@ for its canonical research workflows.
 
 Never synthesize local copies of the `mathbox` plugin components
 `research-attempt`, `proof-audit`, `literature-check`, `computation-audit`,
-`manuscript-integrate`, `proofread-math`, `research-retrospective`, or
-`research-init`, `research-program`, or `research-state`.
+`manuscript-integrate`, `proofread-math`, `research-retrospective`,
+`research-init`, `research-program`, `research-state`, or `referee`.
 Never write a skill to a root `skills/` directory.
 
 A repository skill is allowed only after explicit approval and only if its

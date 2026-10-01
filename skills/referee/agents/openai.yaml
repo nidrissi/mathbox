@@ -1,6 +1,6 @@
 interface:
-  display_name: "Mathematical manuscript referee"
+  display_name: "Mathbox: Referee"
   short_description: "Review a whole manuscript and reconcile findings"
-  default_prompt: "Use $referee to assess this entire manuscript and produce a calibrated referee report."
+  default_prompt: "Use $mathbox:referee to assess this entire manuscript and produce a calibrated referee report."
 policy:
   allow_implicit_invocation: true

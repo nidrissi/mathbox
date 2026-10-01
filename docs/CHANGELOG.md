@@ -20,13 +20,18 @@ manifests have their own schema versions, independent of the plugin version.
   provenance as prior leads until checked. Focused proof, source and computation
   obligations use available Mathbox specialists. Standalone installations
   support direct checks and honest sequential self-review without Math Scout
-  or provider SDKs. ([#15])
+  or provider SDKs. Review artifacts go to the project's designated review area
+  or a new `referee/<run>/` directory, never under `.mathbox/`, so refereeing
+  never creates a ledger and an existing ledger can pin the report. ([#15])
 - `referee`: standard-library LaTeX preparation with confined input resolution,
   comment/literal masking, section and context extraction, original source
-  locators and stable hashes. New immutable snapshots retain skipped material;
-  optional prior-manifest comparison identifies unchanged text candidates
-  without certifying review freshness or requiring a research-state ledger.
-  ([#15])
+  locators and stable hashes. Inputs resolve from the main file's directory as
+  in TeX, and reading stops at `\endinput` and `\end{document}`; CR line ends,
+  brace-delimited `\lstinline` and `alltt` are handled, and a total
+  input-expansion limit bounds repeated inputs. New immutable snapshots retain
+  skipped material; optional prior-manifest comparison identifies unchanged
+  text candidates, including across a renamed main file, without certifying
+  review freshness or requiring a research-state ledger. ([#15])
 - Synthetic manuscript behavioral fixtures and preparation regressions for
   actual errors, resolved false positives, external/computational leaves and
   incremental coverage. See the [migration map](referee-migration.md) and
@@ -37,6 +42,9 @@ manifests have their own schema versions, independent of the plugin version.
 - `proof-audit` handles focused claims and delegated mathematical obligations;
   whole-manuscript referee reports route to `referee`. Proofreading-only
   requests retain the `proofread-math` boundary. ([#15])
+- `research-init` treats `referee` as a canonical Mathbox skill: the repository
+  inspector reports a project-local `referee` as an override, and setup never
+  synthesizes a local copy. ([#15])
 - Package validation checks portable resource links in nested reference
   directories, including the new internal reviewer lanes. ([#15])
 
