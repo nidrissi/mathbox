@@ -48,6 +48,19 @@ manifests have their own schema versions, independent of the plugin version.
 - Package validation checks portable resource links in nested reference
   directories, including the new internal reviewer lanes. ([#15])
 
+### Fixed
+
+- `referee`: preparation stops lexical scanning when TeX stops reading, so
+  unfinished draft literals or arguments after `\endinput` or
+  `\end{document}` cannot reject a valid manuscript. A document-ending input
+  also prevents scanning ignored caller text. ([#15])
+- `referee`: `alltt` state flows through nested inputs and back to callers;
+  cached scans distinguish incoming states, so inputs after literal percent
+  signs are included and changes to those files invalidate the snapshot. ([#15])
+- `referee`: a symlinked main manuscript retains the supplied entry point's
+  directory for input lookup while canonical paths still enforce confinement
+  and identify source files. ([#15])
+
 ## [3.2.0] — 2026-09-24 — Deferred handoff ingestion
 
 ### Added

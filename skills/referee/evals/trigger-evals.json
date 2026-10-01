@@ -1,5 +1,6 @@
 [
   {"query": "Referee this paper.", "should_trigger": true},
+  {"query": "Referee this multi-file LaTeX paper through its symlinked entry point, including input files inside alltt.", "should_trigger": true},
   {"query": "Review this manuscript for mathematical correctness.", "should_trigger": true},
   {"query": "Give me a referee report on the attached mathematical manuscript.", "should_trigger": true},
   {"query": "Stress-test this whole paper.", "should_trigger": true},

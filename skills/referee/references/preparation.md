@@ -17,7 +17,9 @@ caller-relative artifact paths (absolute paths also work). Input references
 resolve as TeX resolves them from its working directory, the main file's
 directory, then relative to the including file as a lenient fallback that TeX
 itself does not perform. `--root` bounds what may be read; it never changes
-lookup. `\input{name}` tries `name.tex` before `name`; `\include{name}` reads
+lookup. A symlinked main file keeps the supplied entry point's directory for
+lookup; canonical paths identify and confine the source files.
+`\input{name}` tries `name.tex` before `name`; `\include{name}` reads
 only `name.tex`. Brace-less `\input` is supported. Paths and symlinks must
 remain inside the boundary before any content is read.
 
@@ -25,23 +27,28 @@ Lines end at CR, LF or CRLF, as in TeX. Comments and common literal
 environments, including inline `\verb`/`\lstinline` with any delimiter or
 braces, cannot cause fake inputs or sections. `alltt` is not literal: its
 commands, inputs included, are processed, and a percent sign there is text.
+Its lexical state flows into included files and back into the caller, including
+when an included file opens or closes `alltt`.
 Reading a file stops where TeX stops: after the line containing a top-level
 `\endinput`, or after a top-level `\end{document}`, which also ends every
 including file. Inputs past those points are never resolved or read, and the
-expanded source omits the rest of the file; `sources` hashes still cover whole
-files. Insert a boundary newline after an expanded file without a terminal
-newline, so its final comment or control word cannot consume the caller's next
-command. The source map marks that newline as synthetic, with null original
-locators.
+expanded source omits the rest of the file; unfinished literals or arguments
+in that ignored material cannot fail preparation. The line ending after
+`\end{document}` is retained, but ignored text on that same line is omitted.
+`sources` hashes still cover whole files. Insert a boundary newline after an
+expanded file without a terminal newline, so its final comment or control word
+cannot consume the caller's next command. The source map marks that newline
+as synthetic, with null original locators.
 
 Missing files, cycles, unsupported dynamic filenames, invalid UTF-8, unclosed
 literal environments/arguments and exceeded limits fail with exit code 2,
 before snapshot creation. Limits are 32 levels, 512 unique files, 4096 input
 expansions in total and 16 MiB of expanded characters (also a 16 MiB limit per
 input file in bytes). A cycle does not silently erase content. Repeated
-noncyclic inputs are allowed; each file is read and masked once. A failed write
-may leave an incomplete directory, but the manifest is written last; choose a
-fresh output directory for a retry.
+noncyclic inputs are allowed; each file is read once, and reached lexical
+segments are cached by their incoming state and file stopping point. A failed
+write may leave an incomplete directory, but the manifest is written last;
+choose a fresh output directory for a retry.
 
 Output must be a new directory. Refuse an existing output path, including a
 symlink there even when dangling, and any output under `.mathbox/`, including
@@ -63,8 +70,8 @@ sections/002-<title>.tex
 
 The version 1 manifest records:
 
-- `main`: path relative to the project boundary;
-- `sources`: relative paths, exact raw-byte SHA-256 hashes and sizes;
+- `main`: canonical source path relative to the project boundary;
+- `sources`: canonical relative paths, exact raw-byte SHA-256 hashes and sizes;
 - `source_files_sha256`: digest of the complete input inventory;
 - `source_sha256`: hash of UTF-8 expanded source, including comments;
 - `global_context_sha256`: hash of the extracted context without locators

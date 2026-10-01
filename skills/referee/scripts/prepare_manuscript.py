@@ -100,72 +100,133 @@ def argument(text: str, pos: int, optional: bool = False):
     return balanced(text, pos)
 
 
-def mask_non_content(tex: str) -> str:
-    """Mask comments/literals/escaped control symbols without changing offsets.
+class LexicalScanner:
+    """Scan only reached text, pausing at inputs so child state can flow back.
 
-    Scan in lexical order: a commented-out begin must not mask real content,
-    and a percent in a literal body must not consume its real closing marker.
-    Inside alltt, commands keep their meaning but a percent is literal text.
+    State shared across files is (alltt nesting, brace depth). An endinput
+    deadline belongs only to the current file. Optional masking preserves
+    offsets for extraction from the already expanded source.
+    """
+    def __init__(self, tex: str, start=0, state=(0, 0), stop=None, chars=None):
+        self.tex = tex
+        self.pos = start
+        self.alltt, self.depth = state
+        self.stop = len(tex) if stop is None else stop
+        self.chars = chars
+        self.document_ended = False
+
+    @property
+    def state(self):
+        return self.alltt, self.depth
+
+    def blank(self, start, end):
+        if self.chars is not None:
+            for pos in range(start, end):
+                if self.chars[pos] not in "\r\n":
+                    self.chars[pos] = " "
+
+    def skip_trivia(self, pos):
+        """Skip whitespace and ordinary comments before a command argument."""
+        while pos < self.stop:
+            if self.tex[pos].isspace():
+                pos += 1
+            elif self.tex[pos] == "%" and not self.alltt:
+                end = min(line_end(self.tex, pos), self.stop)
+                self.blank(pos, end)
+                pos = end
+            else:
+                break
+        return pos
+
+    def scan(self, pause_at_input=False):
+        tex = self.tex
+        while self.pos < self.stop:
+            pos = self.pos
+            if tex[pos] == "%" and not self.alltt:
+                end = min(line_end(tex, pos), self.stop)
+                self.blank(pos, end)
+                self.pos = end
+                continue
+            match = COMMAND_RE.match(tex, pos)
+            if match is None:
+                self.depth += {"{": 1, "}": -1}.get(tex[pos], 0)
+                self.pos += 1
+                continue
+            command = match[1]
+            end = match.end()
+            if not command[0].isalpha() and command[0] != "@":
+                # In particular, \\section is an escaped slash followed by text.
+                self.blank(pos, end)
+            elif command in {"begin", "end"}:
+                group = argument(tex[:self.stop], self.skip_trivia(end))
+                if group is not None:
+                    env = tex[group[0]:group[1]].strip()
+                    end = group[2]
+                    if command == "end" and env == "document" and self.depth == 0:
+                        self.pos = end
+                        self.document_ended = True
+                        self.blank(end, len(tex))
+                        return None
+                    if command == "begin" and env.rstrip("*") in LITERAL_ENVS:
+                        closing = re.search(r"\\end\s*\{" + re.escape(env) + r"\}",
+                                            tex[group[2]:self.stop])
+                        if closing is None:
+                            raise PreparationError(f"Unclosed literal environment {env!r}")
+                        end = group[2] + closing.end()
+                        self.blank(pos, end)
+                    elif env == "alltt":
+                        self.alltt = self.alltt + 1 if command == "begin" else max(self.alltt - 1, 0)
+            elif command == "endinput" and self.depth == 0 and pause_at_input:
+                # TeX finishes this line, including any inputs, before returning.
+                self.stop = min(self.stop, after_line(tex, end))
+            elif command in {"verb", "lstinline"}:
+                if end < self.stop and tex[end] == "*":
+                    end += 1
+                if command == "lstinline" and end < self.stop and tex[end] == "[":
+                    end = balanced(tex[:self.stop], end, "[", "]")[2]
+                if end < self.stop and not tex[end].isspace():
+                    limit = min(line_end(tex, end + 1), self.stop)
+                    if command == "lstinline" and tex[end] == "{":
+                        # listings also accepts a brace-delimited argument.
+                        depth, close = 0, -1
+                        for at in range(end, limit):
+                            depth += {"{": 1, "}": -1}.get(tex[at], 0)
+                            if depth == 0:
+                                close = at
+                                break
+                    else:
+                        close = tex.find(tex[end], end + 1, limit)
+                    if close < 0:
+                        raise PreparationError(f"Unclosed inline literal near character {pos}")
+                    end = close + 1
+                    self.blank(pos, end)
+            elif command in {"input", "include"} and pause_at_input:
+                at = self.skip_trivia(end)
+                group = balanced(tex[:self.stop], at)
+                if group is None:
+                    bare = re.match(r"[^\s{}\\%]+" if not self.alltt else r"[^\s{}\\]+",
+                                    tex[at:self.stop]) if command == "input" else None
+                    if bare is None:
+                        raise PreparationError("Input/include requires a literal filename")
+                    end = at + bare.end()
+                    name = tex[at:end]
+                else:
+                    end = group[2]
+                    name = tex[group[0]:group[1]].strip()
+                self.pos = end
+                return pos, end, name, command
+            self.pos = end
+        return None
+
+
+def mask_non_content(tex: str) -> str:
+    """Mask comments, literals and ignored document tails, preserving offsets.
+
+    The expanded source may retain endinput markers from children; they no
+    longer delimit files here. SourceLoader handles them before extraction.
     """
     chars = list(tex)
-
-    def blank(start, end):
-        for pos in range(start, end):
-            if chars[pos] not in "\r\n":
-                chars[pos] = " "
-
-    alltt = 0
-    pos = 0
-    while pos < len(tex):
-        if tex[pos] == "%" and not alltt:
-            end = line_end(tex, pos)
-            blank(pos, end)
-            pos = end
-            continue
-        match = COMMAND_RE.match(tex, pos)
-        if match is None:
-            pos += 1
-            continue
-        command = match[1]
-        end = match.end()
-        if not command[0].isalpha() and command[0] != "@":
-            # In particular, \\section is an escaped slash followed by text.
-            blank(pos, end)
-        elif command in {"begin", "end"}:
-            group = argument(tex, end)
-            if group is not None:
-                env = tex[group[0]:group[1]].strip()
-                if command == "begin" and env.rstrip("*") in LITERAL_ENVS:
-                    closing = re.search(r"\\end\s*\{" + re.escape(env) + r"\}",
-                                        tex[group[2]:])
-                    if closing is None:
-                        raise PreparationError(f"Unclosed literal environment {env!r}")
-                    end = group[2] + closing.end()
-                    blank(pos, end)
-                elif env == "alltt":
-                    alltt = alltt + 1 if command == "begin" else max(alltt - 1, 0)
-        elif command in {"verb", "lstinline"}:
-            if end < len(tex) and tex[end] == "*":
-                end += 1
-            if command == "lstinline" and end < len(tex) and tex[end] == "[":
-                end = balanced(tex, end, "[", "]")[2]
-            if end < len(tex) and not tex[end].isspace():
-                limit = line_end(tex, end + 1)
-                if command == "lstinline" and tex[end] == "{":
-                    # listings also accepts a brace-delimited argument.
-                    depth, close = 0, -1
-                    for at in range(end, limit):
-                        depth += {"{": 1, "}": -1}.get(tex[at], 0)
-                        if depth == 0:
-                            close = at
-                            break
-                else:
-                    close = tex.find(tex[end], end + 1, limit)
-                if close < 0:
-                    raise PreparationError(f"Unclosed inline literal near character {pos}")
-                end = close + 1
-                blank(pos, end)
-        pos = end
+    LexicalScanner(tex, chars=chars).scan()
     return "".join(chars)
 
 
@@ -177,6 +238,7 @@ class SourceLoader:
         # TeX's working directory; prepare() sets it to the main file's directory.
         self.base = self.root
         self.sources = {}
+        self.texts = {}
         self.plans = {}
         self.expanded_chars = 0
         self.expansions = 0
@@ -189,6 +251,8 @@ class SourceLoader:
         return resolved
 
     def read(self, path: Path) -> str:
+        if path in self.texts:
+            return self.texts[path]
         if len(self.sources) >= MAX_SOURCE_FILES:
             raise PreparationError(f"More than {MAX_SOURCE_FILES} source files")
         raw = path.read_bytes()
@@ -200,6 +264,7 @@ class SourceLoader:
             raise PreparationError(f"Source is not valid UTF-8: {path}") from exc
         self.sources[path] = {"path": path.relative_to(self.root).as_posix(),
                               "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+        self.texts[path] = text
         return text
 
     def reference(self, name: str, parent: Path, command: str) -> Path:
@@ -227,60 +292,25 @@ class SourceLoader:
             raise PreparationError(f"Refusing input outside project boundary: {name!r}")
         raise PreparationError(f"Cannot find input {name!r} from {parent.relative_to(self.root)}")
 
-    def plan(self, path: Path):
-        """Read and mask a file once: its input commands and where TeX stops reading it."""
-        if path in self.plans:
-            return self.plans[path]
-        text = self.read(path)
-        masked = mask_non_content(text)
-        stop, ends_document, inputs, cursor = len(text), False, [], 0
-        depth, scanned = 0, 0
-        for match in COMMAND_RE.finditer(masked):
-            if match.start() >= stop:
-                break
-            if match.start() < cursor:
-                continue
-            # Brace depth separates a real stop from one inside a macro definition.
-            depth += masked.count("{", scanned, match.start()) - masked.count("}", scanned, match.start())
-            scanned = match.start()
-            if match[1] == "endinput" and depth == 0:
-                # TeX finishes the current line, then stops reading this file.
-                stop = min(stop, after_line(text, match.end()))
-                continue
-            if match[1] == "end" and depth == 0:
-                group = argument(masked, match.end())
-                if group and masked[group[0]:group[1]].strip() == "document":
-                    # Nothing after \end{document} is read; keep only its line ending.
-                    stop, ends_document = after_line(text, group[2]), True
-                    break
-                continue
-            if match[1] not in {"input", "include"}:
-                continue
-            pos = skip_space(masked, match.end())
-            group = balanced(masked, pos)
-            if group is None:
-                # TeX permits a whitespace-delimited, brace-less \input only.
-                bare = re.match(r"[^\s{}\\]+", masked[pos:]) if match[1] == "input" else None
-                if bare is None:
-                    raise PreparationError("Input/include requires a literal filename")
-                end = pos + bare.end()
-                name = text[pos:end]
-            else:
-                end = group[2]
-                name = text[group[0]:group[1]].strip()
-            inputs.append((match.start(), end, name, match[1]))
-            cursor = end
-        self.plans[path] = text, stop, ends_document, inputs
-        return self.plans[path]
+    def plan(self, path: Path, start: int, state: tuple, stop: int):
+        """Cache a reached segment by offset, incoming state and file deadline."""
+        key = path, start, state, stop
+        if key not in self.plans:
+            scanner = LexicalScanner(self.read(path), start, state, stop)
+            reference = scanner.scan(pause_at_input=True)
+            self.plans[key] = (scanner.pos, scanner.state, scanner.stop,
+                               scanner.document_ended, reference)
+        return self.plans[key]
 
-    def expand(self, path: Path, stack: tuple = ()):
+    def expand(self, path: Path, stack: tuple = (), state: tuple = (0, 0)):
         path = self.confined(path)
         if path in stack:
             chain = " -> ".join(p.relative_to(self.root).as_posix() for p in (*stack, path))
             raise PreparationError(f"Circular input: {chain}")
         if len(stack) >= MAX_INPUT_DEPTH:
             raise PreparationError(f"Input nesting exceeds {MAX_INPUT_DEPTH}")
-        text, stop, ends_document, inputs = self.plan(path)
+        text = self.read(path)
+        stop = len(text)
         parts, spans = [], []
         length = 0
         cursor = 0
@@ -299,7 +329,16 @@ class SourceLoader:
                           "source_end": end, "source_line": line_breaks(text, 0, start) + 1})
             length += len(piece)
 
-        for start, end, name, command in inputs:
+        while True:
+            scanned, state, stop, ends_document, reference = self.plan(path, cursor, state, stop)
+            if reference is None:
+                append_original(cursor, scanned)
+                if ends_document:
+                    # Retain the original line ending, never ignored same-line text.
+                    append_original(line_end(text, scanned), after_line(text, scanned))
+                self.document_ended = ends_document
+                return "".join(parts), spans, state
+            start, end, name, command = reference
             # Tiny repeated inputs can multiply without approaching the size limit.
             self.expansions += 1
             if self.expansions > MAX_INPUT_EXPANSIONS:
@@ -307,7 +346,7 @@ class SourceLoader:
             # Resolved only when reached: an earlier input may end the document.
             target = self.reference(name, path.parent, command)
             append_original(cursor, start)
-            child, child_spans = self.expand(target, (*stack, path))
+            child, child_spans, state = self.expand(target, (*stack, path), state)
             parts.append(child)
             for span in child_spans:
                 spans.append(dict(span, expanded_start=length + span["expanded_start"],
@@ -326,10 +365,7 @@ class SourceLoader:
                 length += 1
             cursor = end
             if self.document_ended:
-                return "".join(parts), spans
-        append_original(cursor, stop)
-        self.document_ended = ends_document
-        return "".join(parts), spans
+                return "".join(parts), spans, state
 
 
 def plain_title(title: str) -> str:
@@ -533,10 +569,10 @@ def prepare(main: Path, root: Path | None = None, previous: Path | None = None):
         main = Path(root) / main
     main = main.absolute()
     loader = SourceLoader(Path(root) if root is not None else main.parent)
-    main = loader.confined(main)
     # TeX resolves inputs from its working directory, the main file's, not --root.
     loader.base = main.parent
-    tex, spans = loader.expand(main)
+    main = loader.confined(main)
+    tex, spans, _ = loader.expand(main)
     units, context = extract(tex, spans)
     context_text = json.dumps(context, ensure_ascii=False, indent=2) + "\n"
     sources = sorted(loader.sources.values(), key=lambda item: item["path"])

@@ -88,6 +88,12 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(len(manifest["sources"]), 4)
         self.assertEqual(manifest["units"][0]["location"], {"path": "parts/a.tex", "line": 1})
 
+    def test_comments_before_input_arguments_are_skipped(self):
+        self.put("child.tex", "CHILD\n")
+        _, tex, _ = self.prepare(paper("\\input % ignored { \\input{missing}\n{child}\n"
+                                      "\\input % ignored\nchild\n"))
+        self.assertEqual(tex.count("CHILD"), 2)
+
     def test_main_directory_first_lookup(self):
         self.put("choice.tex", "ROOT\n")
         self.put("parts/choice.tex", "SIBLING\n")
@@ -107,6 +113,21 @@ class PreparationTests(unittest.TestCase):
         self.assertNotIn("DECOY", tex)
         self.assertIn("B FROM MAIN DIRECTORY", tex)
         self.assertEqual(manifest["main"], "paper/main.tex")
+
+    def test_symlink_main_uses_entry_directory_and_canonical_source_identity(self):
+        target = self.put("src/paper.tex", paper("\\input{intro}\n"))
+        self.put("intro.tex", "ENTRY INTRO\n")
+        self.put("src/intro.tex", "TARGET DECOY\n")
+        self.main.symlink_to(target)
+        for main, root in ((self.main, None), (self.main, self.root),
+                           (Path("paper.tex"), self.root)):
+            with self.subTest(main=main, root=root):
+                manifest, tex, _ = prep.prepare(main, root)
+                self.assertIn("ENTRY INTRO", tex)
+                self.assertNotIn("TARGET DECOY", tex)
+                self.assertEqual(manifest["main"], "src/paper.tex")
+                self.assertEqual([s["path"] for s in manifest["sources"]],
+                                 ["intro.tex", "src/paper.tex"])
 
     def test_tex_suffix_is_tried_first_and_include_always_appends_it(self):
         self.put("foo", "EXTENSIONLESS\n")
@@ -147,6 +168,34 @@ class PreparationTests(unittest.TestCase):
         self.assertIn("SUB", tex)
         self.assertNotIn("later", tex)
 
+    def test_unfinished_drafts_after_stops_are_not_scanned(self):
+        for draft in (r"\verb|draft", r"\lstinline{draft", r"\begin{verbatim}",
+                      r"\begin{draft", r"\input{draft"):
+            for newline in ("\n", "\r", "\r\n"):
+                with self.subTest(draft=draft, newline=repr(newline)):
+                    text = "\\begin{document}" + newline + "kept" + newline
+                    for tail in (draft + newline, newline + draft):
+                        _, tex, _ = self.prepare(text + "\\end{document}" + tail)
+                        self.assertEqual(tex, text + "\\end{document}" + newline)
+                    self.put("child.tex", "child\\endinput" + newline + draft)
+                    _, tex, _ = self.prepare(paper("\\input{child}\ncaller\n"))
+                    self.assertIn("child\\endinput" + newline, tex)
+                    self.assertIn("caller", tex)
+                    self.assertNotIn(draft, tex)
+        # Material on the endinput line is still read by TeX.
+        self.put("child.tex", "\\endinput \\verb|draft\n")
+        with self.assertRaisesRegex(prep.PreparationError, "Unclosed inline"):
+            self.prepare(paper("\\input{child}\n"))
+
+    def test_child_document_stop_prevents_scanning_caller_draft(self):
+        self.put("last.tex", "last\\end{document}\\verb|draft\n")
+        manifest, tex, _ = self.prepare("\\begin{document}\n\\input{last}\\begin{unfinished")
+        self.assertEqual(tex, "\\begin{document}\nlast\\end{document}\n")
+        for span in manifest["source_map"]:
+            raw = (self.root / span["path"]).read_text(encoding="utf-8")
+            self.assertEqual(tex[span["expanded_start"]:span["expanded_end"]],
+                             raw[span["source_start"]:span["source_end"]])
+
     def test_carriage_return_line_ends_terminate_comments(self):
         self.put("sub.tex", "SUB\r")
         text = "\\begin{document}\r% note\r\\section{A}\ra\r\\input{sub}\r\\section{B}\rb\r\\end{document}\r"
@@ -174,21 +223,62 @@ class PreparationTests(unittest.TestCase):
         self.assertIn("PCT", tex)
         self.assertEqual(len(manifest["sources"]), 3)
 
+    def test_alltt_state_is_inherited_by_nested_inputs_and_snapshot_hashes(self):
+        self.put("child.tex", "50% \\input{nested}\n")
+        self.put("nested.tex", "75% \\input{extra}\n")
+        self.put("extra.tex", "EXTRA\n")
+        text = paper("\\begin{alltt}\n\\input{child}\n\\end{alltt}\n")
+        manifest, previous = self.snapshot("old", text)
+        self.assertEqual([s["path"] for s in manifest["sources"]],
+                         ["child.tex", "extra.tex", "nested.tex", "paper.tex"])
+        self.put("extra.tex", "CHANGED EXTRA\n")
+        current, tex, _ = self.prepare(text, previous)
+        self.assertIn("CHANGED EXTRA", tex)
+        self.assertNotEqual(current["source_files_sha256"], manifest["source_files_sha256"])
+        self.assertTrue(current["comparison"]["whole_paper_invalidated"])
+
+    def test_cached_plans_distinguish_incoming_alltt_state(self):
+        self.put("child.tex", "50% \\input{extra}\n")
+        self.put("extra.tex", "EXTRA\n")
+        _, tex, _ = self.prepare(paper("\\input{child}\n\\begin{alltt}\n"
+                                      "\\input{child}\n\\input{child}\n\\end{alltt}\n"
+                                      "\\input{child}\n"))
+        self.assertEqual(tex.count("EXTRA"), 2)
+        self.assertEqual(tex.count(r"\input{extra}"), 2)
+
+    def test_alltt_state_changes_in_children_apply_to_callers(self):
+        self.put("open.tex", "\\begin{alltt}\n")
+        self.put("close.tex", "\\end{alltt}\n")
+        self.put("extra.tex", "EXTRA\n")
+        _, tex, _ = self.prepare(paper("\\input{open}\n50% \\input{extra}\n"
+                                      "\\input{close}\n50% \\input{missing}\n"))
+        self.assertIn("EXTRA", tex)
+        self.assertIn(r"\input{missing}", tex)
+
     def test_repeated_inputs_are_planned_once_and_expansions_are_capped(self):
         for index in range(20):
             self.put(f"f{index}.tex", f"\\input{{f{index + 1}}}\\input{{f{index + 1}}}\n")
         self.put("f20.tex", "")
-        calls = []
-        original = prep.mask_non_content
+        reads, scans = [], []
+        original_read = Path.read_bytes
+        original_scan = prep.LexicalScanner.scan
 
-        def counted(text):
-            calls.append(text)
-            return original(text)
+        def counted_read(path):
+            reads.append(path)
+            return original_read(path)
 
-        with patch.object(prep, "mask_non_content", counted):
+        def counted_scan(scanner, *args, **kwargs):
+            scans.append(scanner)
+            return original_scan(scanner, *args, **kwargs)
+
+        with patch.object(Path, "read_bytes", counted_read), \
+                patch.object(prep.LexicalScanner, "scan", counted_scan):
             with self.assertRaisesRegex(prep.PreparationError, "input expansions"):
                 self.prepare(paper("\\input{f0}\n"))
-        self.assertLessEqual(len(calls), 22)
+        self.assertEqual(len(reads), 22)
+        self.assertEqual(len(set(reads)), 22)
+        # At most three segments per binary input file, two in the main file.
+        self.assertLessEqual(len(scans), 63)
         with patch.object(prep, "MAX_INPUT_EXPANSIONS", 2):
             self.put("leaf.tex", "leaf\n")
             with self.assertRaisesRegex(prep.PreparationError, "More than 2"):

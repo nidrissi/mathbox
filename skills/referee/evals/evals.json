@@ -54,6 +54,12 @@
       "prompt": "Referee evals/fixtures/referee-core.tex in a project that already has an initialized .mathbox ledger and no designated review area. Record the final report's provenance in the ledger.",
       "expected_output": "Writes the snapshot, raw findings, reconciliation and report under a new referee/<run>/ directory at the project root, never under .mathbox/, and pins the report from there through research-state as evidence or review provenance without treating ledger integrity as mathematical validation.",
       "assertions": ["Chooses a new run directory outside .mathbox/", "Does not write review artifacts inside .mathbox/ or alter the ledger except through research-state events", "Pins the report by its path in the run directory", "Keeps ledger bookkeeping separate from the mathematical conclusions"]
+    },
+    {
+      "id": 10,
+      "prompt": "Referee a multi-file LaTeX manuscript entered through paper.tex, a symlink to src/paper.tex. The entry directory and src each contain distinct intro.tex files. A child input inside alltt contains 50% \\input{extra}; ignored draft text after \\endinput and \\end{document} contains unfinished inline literals. Prepare a new snapshot, then compare another new snapshot after extra.tex changes.",
+      "expected_output": "Prepares successfully without scanning ignored drafts, resolves intro.tex from the supplied entry directory, carries alltt state into the child so extra.tex is included and hashed, and marks the changed extra.tex snapshot as invalidating the whole-paper review. Canonical source identities and project confinement remain intact.",
+      "assertions": ["Ignored unfinished draft text cannot abort preparation", "Same-line content after endinput is still processed", "Uses the supplied entry directory for lookup before resolving the main symlink", "Includes extra.tex from inside inherited alltt state", "Does not reuse an ordinary-comment cached scan inside alltt", "Changing extra.tex changes source inventory hashes and invalidates the whole-paper comparison", "Retains canonical source locators and refuses inputs outside the project boundary"]
     }
   ]
 }
