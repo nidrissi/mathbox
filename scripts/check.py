@@ -88,7 +88,7 @@ def main():
             ids = [case.get("id") for case in cases if isinstance(case, dict)]
             if len(ids) != len(set(ids)):
                 errors.append(f"duplicate eval IDs: {skill.parent.name}")
-            for path in [skill, *skill.parent.glob("references/*.md")]:
+            for path in [skill, *skill.parent.glob("references/**/*.md")]:
                 prose = re.sub(r"^```[^\n]*\n.*?^```[^\n]*$", "", path.read_text(encoding="utf-8"), flags=re.M | re.S)
                 for link in re.findall(r"\]\(([^)\s]+)\)", prose):
                     if ":" in link or link.startswith("#") or "<" in link:

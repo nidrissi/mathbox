@@ -1,0 +1,3 @@
+10: For $n\in\{0,1,2,\ldots\}$ define $\tau(n)=n(n+1)/2$.
+14: For each $n\geq0$ one has $\sum_{j=1}^n j=\tau(n)$.
+18: adding $n+1$ gives $(n+1)(n+2)/2=\tau(n+1)$.

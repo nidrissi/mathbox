@@ -1,0 +1,38 @@
+[
+  {
+    "id": "PA001",
+    "field": "quote",
+    "exact_substring": true,
+    "actual_string_repr": "'Subtracting gives $a(b-c)=0$. Cancelling $a$ yields $b=c$.'"
+  },
+  {
+    "id": "PA001",
+    "field": "statement_quote",
+    "exact_substring": true,
+    "actual_string_repr": "'For every commutative ring $R$ and $a,b,c\\\\in R$, if $ab=ac$ then $b=c$.'"
+  },
+  {
+    "id": "PA002",
+    "field": "quote",
+    "exact_substring": true,
+    "actual_string_repr": "'For every $n\\\\in\\\\mathbb N_0$, the set $E_n$ satisfies $|E_n|\\\\geq 1$.'"
+  },
+  {
+    "id": "PA002",
+    "field": "proof_quote",
+    "exact_substring": true,
+    "actual_string_repr": "'The element $1$ lies in $E_n$, proving the estimate.'"
+  },
+  {
+    "id": "PA003",
+    "field": "quote",
+    "exact_substring": true,
+    "actual_string_repr": "'We establish cancellation in commutative rings and show that polynomial\\ndifferentiation has only constant kernel over all fields. We also give a'"
+  },
+  {
+    "id": "PA003",
+    "field": "theorem_quote",
+    "exact_substring": true,
+    "actual_string_repr": "'If $K$ is a field of characteristic zero and $D:K[x]\\\\to K[x]$ is\\nformal differentiation, then $\\\\ker D=K$.'"
+  }
+]

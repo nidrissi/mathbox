@@ -1,0 +1,40 @@
+{
+  "claim_id": "C_BINARY",
+  "mathematics": {
+    "assertion_tested": "Even parity holds for each vector retained by the even-parity filter",
+    "coefficient_domain": "Z, exact Python integers",
+    "conventions": "P(v) iff sum(v) is even; vectors have exactly four binary coordinates",
+    "inputs": [
+      "paper.tex",
+      "checks/supplied.py"
+    ],
+    "bounds": {
+      "vector_length": 4,
+      "coordinate_alphabet": [
+        0,
+        1
+      ],
+      "generated_population": 16,
+      "filter": "sum(v) % 2 == 0"
+    },
+    "non_claims": [
+      "Does not establish that every binary vector has even parity",
+      "No claim about vector lengths other than four"
+    ]
+  },
+  "execution_artifacts": [
+    "paper.tex",
+    "checks/supplied.py"
+  ],
+  "software": [
+    {
+      "name": "Python",
+      "version": "3.14.7"
+    }
+  ],
+  "randomness": {
+    "used": false,
+    "generator": "",
+    "seed": null
+  }
+}

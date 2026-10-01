@@ -1,0 +1,13 @@
+# Focused computation audit — self-review
+
+Verdict: **counterexample found to the mathematical claim**.
+
+Contract: the manuscript claims P for all 16 vectors in $\{0,1\}^4$. The supplied implementation actually asserts P only on the subset already satisfying `sum(v) % 2 == 0`. Arithmetic is exact Python integer arithmetic; no random sampling, floating tolerance, external package, or cache is used. A successful supplied run therefore settles only the tautological filtered assertion. A failed whole-domain check would refute the universal theorem; this distinction is mathematical, not an environment failure.
+
+Authoritative code is the literal body of paper.tex:20-27, extracted byte-for-byte into project `checks/supplied.py`. The execution and source hashes are retained by `computations/supplied/manifest.json`. Execution succeeded and printed `16 8`.
+
+The independent local representation in `checks/domain_audit.py` constructs the four bits of each integer mask from 0 through 15. Uniqueness and membership are asserted. There are exactly 16 possible four-bit tuples, so this representation covers precisely the manuscript's finite population. Its result lists 8 even vectors, 8 odd vectors and witness $(1,0,0,0)$ with weight 1. Weight multiplicities $1,4,6,4,1$ independently match the binomial coefficients, giving the hand cross-check $1+6+1=8$ even and $4+4=8$ odd. The population, vector and parity interpretation were examined directly, not accepted from program exit status.
+
+Two bounded runs completed, and both actual version-2 provenance manifests passed `validate_manifest.py --root PROJECT`. The exact argv and validation logs are in `../specialist-command-log.json`. Python 3.14.7; no Git repository in this isolated project, recorded commit `unavailable`, dirty state conservatively true. Both runs enforce wall time 10s, log size 1 MiB, address space 256 MiB, CPU time 5s, and affinity 1 core. The conventional thread cap is cooperative. Runtimes were approximately 0.020s and 0.035s. Inputs were hashed before and after and remained unchanged. The independent JSON result is hashed in `computations/domain-audit/manifest.json`; stdout/stderr from both runs are retained.
+
+The code population is small and fully covered. This establishes the exact finite counts only for length four and, separately, provides a hand-checkable counterexample to the current universal statement. It establishes nothing about all vector lengths or any broader research claim. Residual risks are the common self-review executor and recorded runner process/thread-limit caveats; none affects the direct weight-one counterexample. No larger computation is warranted for this question.

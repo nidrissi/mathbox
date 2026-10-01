@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "preparation_version": 1,
+  "main": "paper.tex",
+  "source_sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+  "global_context_sha256": "c4d92842266c6ee88942a1d3f8a8dd632de50f27e6e5027ccf61e393f6fe02e9",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_files_sha256": "fa7273bd327199bc7bfe6b5e755ff731498eac829f8be82a2c51b75f6b4dd7ca",
+  "sources": [
+    {
+      "path": "paper.tex",
+      "sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+      "bytes": 735
+    }
+  ],
+  "source_map": [
+    {
+      "expanded_start": 0,
+      "expanded_end": 735,
+      "path": "paper.tex",
+      "source_start": 0,
+      "source_end": 735,
+      "source_line": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "sha256:7c11b84a08748cd5ccba587ee0c623cb0d024d8f56a933f7bced5ed3ad3b4b3d:1",
+      "sha256": "48a241645b3af1c3811434f11951fad7835b786c2473191f1a875b53d6d256f6",
+      "identity_sha256": "7c11b84a08748cd5ccba587ee0c623cb0d024d8f56a933f7bced5ed3ad3b4b3d",
+      "title": "Front matter",
+      "kind": "front-matter",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/001-front-matter.tex",
+      "expanded_start": 135,
+      "expanded_end": 242,
+      "location": {
+        "path": "paper.tex",
+        "line": 5
+      }
+    },
+    {
+      "id": "sha256:ff514cb0afb67ccb3e2fead15fc2b9a71119ba4d82f1f11883672090c8a44227:1",
+      "sha256": "c8ea4f63c8eeb1c98fe36165f190cf719234ab0130b60532d228c0e045ece990",
+      "identity_sha256": "ff514cb0afb67ccb3e2fead15fc2b9a71119ba4d82f1f11883672090c8a44227",
+      "title": "The identity",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/002-the-identity.tex",
+      "expanded_start": 242,
+      "expanded_end": 720,
+      "location": {
+        "path": "paper.tex",
+        "line": 9
+      }
+    }
+  ],
+  "limitations": [
+    "Lexical preparation only: no TeX execution or arbitrary macro expansion.",
+    "Conditionals, catcode changes, includeonly and custom input/section macros need manual inspection.",
+    "Literal masking covers verb/lstinline and common verbatim/listing/comment environments, not every package.",
+    "Bibliography files, graphics and package inputs are not loaded or authenticated.",
+    "Context is an extraction index; its order is not manuscript theorem numbering.",
+    "Hash comparison identifies text candidates, not dependency freshness or completed reviews."
+  ],
+  "comparison": {
+    "previous_source_sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+    "candidate_unchanged": [
+      "sha256:7c11b84a08748cd5ccba587ee0c623cb0d024d8f56a933f7bced5ed3ad3b4b3d:1",
+      "sha256:ff514cb0afb67ccb3e2fead15fc2b9a71119ba4d82f1f11883672090c8a44227:1"
+    ],
+    "added": [],
+    "removed": [],
+    "ambiguous": [],
+    "contract_changed": true,
+    "global_context_changed": false,
+    "whole_paper_invalidated": true,
+    "reuse_requires_context_check": true
+  }
+}

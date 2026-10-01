@@ -1,0 +1,2188 @@
+{
+  "scope": "Artifact checks only; mathematical grades are independently derived in grading.json and grading.md.",
+  "current_contract_sha256": "5e41983f5185a3447e01e102947cc7d88421a090a44ea7c52105f1a5732bdc56",
+  "current_contract_resources": [
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/SKILL.md",
+      "sha256": "23ed22ea4dc3fdb3bf52e8fd40ae42b02aba1b2765e625959a98f08551b9b209"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/scripts/prepare_manuscript.py",
+      "sha256": "5c8eb5e7232f3290ccc5291d6164d39807e07ac21f4618e6abf340bbf29ea963"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/final-referee.md",
+      "sha256": "b1208e0130f01fd5760035f34a96b031825d85429d6e538438be6c121eb793a2"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/output-contract.md",
+      "sha256": "d61307200c7f61e86025760f6d0a56e6202ba59ad4002913d58959f556ccbe8f"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/preparation.md",
+      "sha256": "bb1f5217cf824d2649d9fd0aba1a6d91998bc6442ff1e96711a5531cde8c0aab"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/review-protocol.md",
+      "sha256": "6099028d76939def76f7aa090cc0740217ce159e51f3c8ccb4cdae9c2f3a9eb3"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/adversarial.md",
+      "sha256": "28be5250c8116149b5eea32f0383fe9fecb809c1a0abc506204b1fbdbdb7c72f"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/claims.md",
+      "sha256": "7dfe3523908222585a4f5711c5776c351c50e7f116787507d4958b76611d8f74"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/correctness.md",
+      "sha256": "43d2de3eef2e8fab94ef6ac09245aac1e6049fbdbf766f8be8dc24758f5f6348"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/exposition.md",
+      "sha256": "559fe3b761cd3442910a24a5b0b20a5e1156932dace8e9293063ad0e8b5c0148"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/notation.md",
+      "sha256": "a4f9cadee64a12f77c408891407239699ca9b63404a946d7fec4283f43241550"
+    }
+  ],
+  "cases": {
+    "referee-core": {
+      "raw_run": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003",
+      "manifest": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/manifest.json",
+      "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "source_hash_matches": true,
+      "context_hash_matches": true,
+      "fixture_matches": true,
+      "source_files": [
+        {
+          "path": "paper.tex",
+          "expected": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+          "actual": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+          "matches": true
+        }
+      ],
+      "all_five_lanes_recorded": true,
+      "coverage": [
+        {
+          "lanes": [
+            "correctness"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "adversarial"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "exposition"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "notation"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "claims"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "correctness",
+            "adversarial"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 1,
+          "unknown_unit_ids": [],
+          "covers_all_units": false,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "correctness",
+            "adversarial",
+            "claims"
+          ],
+          "status": "reused",
+          "reviewed_unit_count": 4,
+          "unknown_unit_ids": [],
+          "covers_all_units": false,
+          "artifact": [
+            "raw/run-002/specialists/proof-audit.md",
+            "raw/run-002/specialists/proof-audit.provenance.json"
+          ]
+        },
+        {
+          "lanes": [
+            "notation"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": [
+            "passes/notation.md"
+          ]
+        },
+        {
+          "lanes": [
+            "claims"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": [
+            "passes/claims.md"
+          ]
+        },
+        {
+          "lanes": [
+            "correctness",
+            "adversarial",
+            "exposition",
+            "notation",
+            "claims"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 8,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": [
+            "rechecks/current-contract.md"
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "finding": "F001",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            23
+          ]
+        },
+        {
+          "finding": "F002",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            27
+          ]
+        },
+        {
+          "finding": "F003",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            20
+          ]
+        },
+        {
+          "finding": "F004",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            27
+          ]
+        },
+        {
+          "finding": "F005",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            9
+          ]
+        },
+        {
+          "finding": "PA001",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            23
+          ]
+        },
+        {
+          "finding": "PA001",
+          "field": "statement_quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            20
+          ]
+        },
+        {
+          "finding": "PA002",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            27
+          ]
+        },
+        {
+          "finding": "PA002",
+          "field": "proof_quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            30
+          ]
+        },
+        {
+          "finding": "PA003",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            9
+          ]
+        },
+        {
+          "finding": "PA003",
+          "field": "theorem_quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            42
+          ]
+        }
+      ],
+      "every_raw_finding_and_prior_lead_reconciled_once": true,
+      "raw_ids": [
+        "F001",
+        "F002",
+        "F003",
+        "F004",
+        "F005",
+        "PA001",
+        "PA002",
+        "PA003"
+      ],
+      "reconciliation_ids": [
+        "F001",
+        "F002",
+        "F003",
+        "F004",
+        "F005",
+        "PA001",
+        "PA002",
+        "PA003"
+      ],
+      "final_concern_ids": [
+        "C001",
+        "C002",
+        "C003"
+      ],
+      "specialist_links": [
+        {
+          "finding": "F001",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "F001",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "F002",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "F002",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "F003",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "F003",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "F004",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "F004",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "F005",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "F005",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "PA001",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "PA001",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "PA002",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "PA002",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        },
+        {
+          "finding": "PA003",
+          "artifact": "raw/run-002/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+        },
+        {
+          "finding": "PA003",
+          "artifact": "raw/run-002/specialists/proof-audit.provenance.json",
+          "exists": true,
+          "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f"
+        }
+      ],
+      "report_headings_match": true,
+      "report_fenced_quotes": [
+        {
+          "index": 0,
+          "exact_source_substring": true,
+          "source_lines": [
+            20
+          ]
+        },
+        {
+          "index": 1,
+          "exact_source_substring": true,
+          "source_lines": [
+            23
+          ]
+        },
+        {
+          "index": 2,
+          "exact_source_substring": true,
+          "source_lines": [
+            27
+          ]
+        },
+        {
+          "index": 3,
+          "exact_source_substring": true,
+          "source_lines": [
+            16
+          ]
+        },
+        {
+          "index": 4,
+          "exact_source_substring": true,
+          "source_lines": [
+            9
+          ]
+        },
+        {
+          "index": 5,
+          "exact_source_substring": true,
+          "source_lines": [
+            42
+          ]
+        }
+      ],
+      "prior_snapshot": {
+        "path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/manifest.json",
+        "source_same": true,
+        "context_same": true,
+        "units_same": true,
+        "source_map_same": true,
+        "prior_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "artifact_inventory": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-core-artifact-inventory.json"
+    },
+    "referee-exposition": {
+      "raw_run": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003",
+      "manifest": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/manifest.json",
+      "source_sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "source_hash_matches": true,
+      "context_hash_matches": true,
+      "fixture_matches": true,
+      "source_files": [
+        {
+          "path": "paper.tex",
+          "expected": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+          "actual": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+          "matches": true
+        }
+      ],
+      "all_five_lanes_recorded": true,
+      "coverage": [
+        {
+          "lanes": [
+            "correctness"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 2,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "adversarial"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 2,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "exposition"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 2,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "notation"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 2,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "claims"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 2,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        }
+      ],
+      "quotes": [
+        {
+          "finding": "F001",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            16
+          ]
+        }
+      ],
+      "every_raw_finding_and_prior_lead_reconciled_once": true,
+      "raw_ids": [
+        "F001"
+      ],
+      "reconciliation_ids": [
+        "F001"
+      ],
+      "final_concern_ids": [
+        "C001"
+      ],
+      "specialist_links": [
+        {
+          "finding": "F001",
+          "artifact": "evidence-recheck.json",
+          "exists": true,
+          "sha256": "baa9d256fdf38ddabeba6aaa5dcbb0cdcfe3d3f79ff63d452952e28df7eae86d"
+        }
+      ],
+      "report_headings_match": true,
+      "report_fenced_quotes": [
+        {
+          "index": 0,
+          "exact_source_substring": true,
+          "source_lines": [
+            16
+          ]
+        }
+      ],
+      "prior_snapshot": {
+        "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-002/manifest.json",
+        "source_same": true,
+        "context_same": true,
+        "units_same": true,
+        "source_map_same": true,
+        "prior_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "artifact_inventory": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-exposition-artifact-inventory.json"
+    },
+    "referee-enumeration": {
+      "raw_run": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002",
+      "manifest": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/manifest.json",
+      "source_sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "source_hash_matches": true,
+      "context_hash_matches": true,
+      "fixture_matches": true,
+      "source_files": [
+        {
+          "path": "paper.tex",
+          "expected": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+          "actual": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+          "matches": true
+        }
+      ],
+      "all_five_lanes_recorded": true,
+      "coverage": [
+        {
+          "lanes": [
+            "correctness"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "adversarial"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "exposition"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "notation"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "claims"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        }
+      ],
+      "quotes": [
+        {
+          "finding": "F001",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            23
+          ]
+        },
+        {
+          "finding": "F002",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            14
+          ]
+        }
+      ],
+      "every_raw_finding_and_prior_lead_reconciled_once": true,
+      "raw_ids": [
+        "F001",
+        "F002"
+      ],
+      "reconciliation_ids": [
+        "F001",
+        "F002"
+      ],
+      "final_concern_ids": [
+        "C001"
+      ],
+      "specialist_links": [
+        {
+          "finding": "F001",
+          "artifact": "project:.mathbox/referee/run-001/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "0434cf9603fa09d299589c12d49ea63fcafb9f992c2b1ef1837eab4a2799fbfd"
+        },
+        {
+          "finding": "F001",
+          "artifact": "project:.mathbox/referee/run-001/specialists/computation-audit.md",
+          "exists": true,
+          "sha256": "a4b0bf69d2ccb2da90e1dbdf5e69f2bb42b2474a8b131280daf7510113913189"
+        },
+        {
+          "finding": "F001",
+          "artifact": "project:.mathbox/referee/run-001/specialist-command-log.json",
+          "exists": true,
+          "sha256": "2d1e7ef7bd82183d947322a93d9bd2022c04b58806da7ed3403688787ea5809c"
+        },
+        {
+          "finding": "F001",
+          "artifact": "project:computations/supplied/manifest.json",
+          "exists": true,
+          "sha256": "d317245883b2dca38a798a68e22371cf093bd7df54cb3d7f7687c4f96592fc36"
+        },
+        {
+          "finding": "F001",
+          "artifact": "project:computations/domain-audit/manifest.json",
+          "exists": true,
+          "sha256": "35174aeaf15b2c8487024b74d05a844e0aed6dbda5519d29b63a4bbbdbcbaf24"
+        },
+        {
+          "finding": "F001",
+          "artifact": "evidence-recheck.json",
+          "exists": true,
+          "sha256": "c52a60cb791577925590c62b6a8d99b98f7af8362b348cc67853966047642a3a"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:.mathbox/referee/run-001/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "0434cf9603fa09d299589c12d49ea63fcafb9f992c2b1ef1837eab4a2799fbfd"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:.mathbox/referee/run-001/specialists/computation-audit.md",
+          "exists": true,
+          "sha256": "a4b0bf69d2ccb2da90e1dbdf5e69f2bb42b2474a8b131280daf7510113913189"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:.mathbox/referee/run-001/specialist-command-log.json",
+          "exists": true,
+          "sha256": "2d1e7ef7bd82183d947322a93d9bd2022c04b58806da7ed3403688787ea5809c"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:computations/supplied/manifest.json",
+          "exists": true,
+          "sha256": "d317245883b2dca38a798a68e22371cf093bd7df54cb3d7f7687c4f96592fc36"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:computations/domain-audit/manifest.json",
+          "exists": true,
+          "sha256": "35174aeaf15b2c8487024b74d05a844e0aed6dbda5519d29b63a4bbbdbcbaf24"
+        },
+        {
+          "finding": "F002",
+          "artifact": "evidence-recheck.json",
+          "exists": true,
+          "sha256": "c52a60cb791577925590c62b6a8d99b98f7af8362b348cc67853966047642a3a"
+        }
+      ],
+      "report_headings_match": true,
+      "report_fenced_quotes": [
+        {
+          "index": 0,
+          "exact_source_substring": true,
+          "source_lines": [
+            14
+          ]
+        },
+        {
+          "index": 1,
+          "exact_source_substring": true,
+          "source_lines": [
+            23
+          ]
+        }
+      ],
+      "prior_snapshot": {
+        "path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/manifest.json",
+        "source_same": true,
+        "context_same": true,
+        "units_same": true,
+        "source_map_same": true,
+        "prior_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "artifact_inventory": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-enumeration-artifact-inventory.json"
+    },
+    "referee-source": {
+      "raw_run": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002",
+      "manifest": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/manifest.json",
+      "source_sha256": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "source_hash_matches": true,
+      "context_hash_matches": true,
+      "fixture_matches": true,
+      "source_files": [
+        {
+          "path": "paper.tex",
+          "expected": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+          "actual": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+          "matches": true
+        }
+      ],
+      "all_five_lanes_recorded": true,
+      "coverage": [
+        {
+          "lanes": [
+            "correctness"
+          ],
+          "status": "partial",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": false,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "adversarial"
+          ],
+          "status": "partial",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": false,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "exposition"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": false,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "notation"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 4,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        },
+        {
+          "lanes": [
+            "claims"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 4,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": null
+        }
+      ],
+      "quotes": [
+        {
+          "finding": "F001",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            18
+          ]
+        },
+        {
+          "finding": "F002",
+          "field": "quote",
+          "exact_source_substring": true,
+          "source_lines": [
+            15
+          ]
+        }
+      ],
+      "every_raw_finding_and_prior_lead_reconciled_once": true,
+      "raw_ids": [
+        "F001",
+        "F002"
+      ],
+      "reconciliation_ids": [
+        "F001",
+        "F002"
+      ],
+      "final_concern_ids": [
+        "C001"
+      ],
+      "specialist_links": [
+        {
+          "finding": "F001",
+          "artifact": "project:.mathbox/referee/run-001/specialists/literature-check.md",
+          "exists": true,
+          "sha256": "1ac3062642979bb50690a1da2447d2d289e13489a31269e14f4d8ded2ecc5eff"
+        },
+        {
+          "finding": "F001",
+          "artifact": "project:.mathbox/referee/run-001/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "75e16a4cc684e291620834ad3d9504275928237a9a9e91c8e509b94a52457697"
+        },
+        {
+          "finding": "F001",
+          "artifact": "evidence-recheck.json",
+          "exists": true,
+          "sha256": "872651fbca515ad4073202473e676a3a069677c912c81eb55aef7e92c405efc8"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:.mathbox/referee/run-001/specialists/literature-check.md",
+          "exists": true,
+          "sha256": "1ac3062642979bb50690a1da2447d2d289e13489a31269e14f4d8ded2ecc5eff"
+        },
+        {
+          "finding": "F002",
+          "artifact": "project:.mathbox/referee/run-001/specialists/proof-audit.md",
+          "exists": true,
+          "sha256": "75e16a4cc684e291620834ad3d9504275928237a9a9e91c8e509b94a52457697"
+        },
+        {
+          "finding": "F002",
+          "artifact": "evidence-recheck.json",
+          "exists": true,
+          "sha256": "872651fbca515ad4073202473e676a3a069677c912c81eb55aef7e92c405efc8"
+        }
+      ],
+      "report_headings_match": true,
+      "report_fenced_quotes": [
+        {
+          "index": 0,
+          "exact_source_substring": true,
+          "source_lines": [
+            18
+          ]
+        }
+      ],
+      "prior_snapshot": {
+        "path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/manifest.json",
+        "source_same": true,
+        "context_same": true,
+        "units_same": true,
+        "source_map_same": true,
+        "prior_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "artifact_inventory": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-source-artifact-inventory.json"
+    },
+    "referee-context": {
+      "raw_run": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run",
+      "manifest": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/manifest.json",
+      "source_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "source_hash_matches": true,
+      "context_hash_matches": true,
+      "fixture_matches": true,
+      "source_files": [
+        {
+          "path": "referee-context.tex",
+          "expected": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+          "actual": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+          "matches": true
+        }
+      ],
+      "all_five_lanes_recorded": true,
+      "coverage": [
+        {
+          "lanes": [
+            "correctness"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": "passes/01-current-correctness.json"
+        },
+        {
+          "lanes": [
+            "adversarial"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": "passes/02-current-adversarial.json"
+        },
+        {
+          "lanes": [
+            "exposition"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": "passes/03-current-exposition.json"
+        },
+        {
+          "lanes": [
+            "notation"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": "passes/04-current-notation.json"
+        },
+        {
+          "lanes": [
+            "claims"
+          ],
+          "status": "complete",
+          "reviewed_unit_count": 3,
+          "unknown_unit_ids": [],
+          "covers_all_units": true,
+          "artifact": "passes/05-current-claims.json"
+        }
+      ],
+      "quotes": [
+        {
+          "finding": "P001",
+          "field": "reconciliation exact_evidence",
+          "location": "referee-context.tex:10",
+          "exact_source_substring": true,
+          "source_lines": [
+            10
+          ]
+        },
+        {
+          "finding": "P001",
+          "field": "reconciliation exact_evidence",
+          "location": "referee-context.tex:14",
+          "exact_source_substring": true,
+          "source_lines": [
+            14
+          ]
+        },
+        {
+          "finding": "P001",
+          "field": "reconciliation exact_evidence",
+          "location": "referee-context.tex:18",
+          "exact_source_substring": true,
+          "source_lines": [
+            18
+          ]
+        },
+        {
+          "finding": "source-quotation correction",
+          "field": "quote",
+          "location": "referee-context.tex:7",
+          "exact_source_substring": true,
+          "source_lines": [
+            7
+          ]
+        },
+        {
+          "finding": "source-quotation correction",
+          "field": "quote",
+          "location": "referee-context.tex:14",
+          "exact_source_substring": true,
+          "source_lines": [
+            14
+          ]
+        },
+        {
+          "finding": "source-quotation correction",
+          "field": "quote",
+          "location": "referee-context.tex:17\u201318",
+          "exact_source_substring": true,
+          "source_lines": [
+            17
+          ]
+        }
+      ],
+      "every_raw_finding_and_prior_lead_reconciled_once": true,
+      "raw_ids": [
+        "P001"
+      ],
+      "reconciliation_ids": [
+        "P001"
+      ],
+      "final_concern_ids": [],
+      "specialist_links": [],
+      "report_headings_match": true,
+      "report_fenced_quotes": [
+        {
+          "index": 0,
+          "exact_source_substring": true,
+          "source_lines": [
+            10
+          ]
+        },
+        {
+          "index": 1,
+          "exact_source_substring": true,
+          "source_lines": [
+            14
+          ]
+        },
+        {
+          "index": 2,
+          "exact_source_substring": true,
+          "source_lines": [
+            7
+          ]
+        }
+      ],
+      "prior_snapshot": {
+        "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/manifest.json",
+        "source_same": true,
+        "context_same": true,
+        "units_same": true,
+        "source_map_same": true,
+        "prior_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "artifact_inventory": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-context-artifact-inventory.json"
+    }
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/home/najib/source/mathbox/skills/computation-audit/scripts/validate_manifest.py",
+        "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/manifest.json",
+        "--root",
+        "/tmp/mathbox-referee-enumeration-p8dfgm5i"
+      ],
+      "returncode": 0,
+      "stdout": "valid evidence record; mathematical interpretation requires review\n",
+      "stderr": "",
+      "scope": "Revalidate preserved manifest only; no historical computational rerun."
+    },
+    {
+      "argv": [
+        "python3",
+        "/home/najib/source/mathbox/skills/computation-audit/scripts/validate_manifest.py",
+        "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/manifest.json",
+        "--root",
+        "/tmp/mathbox-referee-enumeration-p8dfgm5i"
+      ],
+      "returncode": 0,
+      "stdout": "valid evidence record; mathematical interpretation requires review\n",
+      "stderr": "",
+      "scope": "Revalidate preserved manifest only; no historical computational rerun."
+    }
+  ],
+  "enumeration_independent_check": {
+    "supplied_code_exact_manuscript_literal": true,
+    "supplied_stdout": "16 8\n",
+    "supplied_stderr": "",
+    "domain_stdout": "{\"population\": 16, \"checked_by_supplied_filter\": 8, \"omitted_by_supplied_filter\": 8, \"witness\": [1, 0, 0, 0], \"witness_weight\": 1, \"weight_counts\": [1, 4, 6, 4, 1], \"independent_representation\": \"4-bit masks 0..15, bits indexed 0..3\"}\n",
+    "domain_stderr": "",
+    "population": 16,
+    "even": 8,
+    "odd": 8,
+    "weight_counts": [
+      1,
+      4,
+      6,
+      4,
+      1
+    ],
+    "witness": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "witness_is_admissible": true,
+    "witness_is_odd": true,
+    "retained_results_match_independent_population": true,
+    "new_execution_of_historical_scripts": false
+  },
+  "enumeration_supplied_provenance": {
+    "manifest": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/manifest.json",
+    "status": "completed",
+    "started_at": "2026-09-30T15:16:11.105211+00:00",
+    "input_hash_checks": [
+      {
+        "path": "paper.tex",
+        "matches_before_and_after": true
+      },
+      {
+        "path": "checks/supplied.py",
+        "matches_before_and_after": true
+      }
+    ],
+    "output_hash_checks": [
+      {
+        "path": "computations/supplied/stdout.txt",
+        "matches": true
+      },
+      {
+        "path": "computations/supplied/stderr.txt",
+        "matches": true
+      }
+    ],
+    "validator_passed": true
+  },
+  "enumeration_domain-audit_provenance": {
+    "manifest": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/manifest.json",
+    "status": "completed",
+    "started_at": "2026-09-30T15:16:11.283299+00:00",
+    "input_hash_checks": [
+      {
+        "path": "paper.tex",
+        "matches_before_and_after": true
+      },
+      {
+        "path": "checks/domain_audit.py",
+        "matches_before_and_after": true
+      }
+    ],
+    "output_hash_checks": [
+      {
+        "path": "computations/domain-audit/stdout.txt",
+        "matches": true
+      },
+      {
+        "path": "computations/domain-audit/stderr.txt",
+        "matches": true
+      },
+      {
+        "path": "computations/domain-audit/result.json",
+        "matches": true
+      }
+    ],
+    "validator_passed": true
+  },
+  "context_observed_correction": {
+    "raw_artifact": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims.json",
+    "raw_note_contains_nonexact_doubled_backslashes": true,
+    "correction_artifact": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims-quote-correction.json",
+    "correction_exact_quotes_checked": true,
+    "raw_return_preserved": true,
+    "interpretation": "The original current-claims return did depart from exact quotation discipline. Separate correction repairs final evidence; it does not make original return error-free."
+  },
+  "routing": {
+    "metadata_scope": "Only frontmatter descriptions in skills/*/SKILL.md and skills/*/agents/openai.yaml were used. No mathematical task was executed for these queries.",
+    "selections": [
+      {
+        "query": "Check the proof of Lemma 4.2",
+        "selected_skill": "proof-audit",
+        "reason": "A focused existing-proof correctness check matches proof-audit and is explicitly outside whole-manuscript referee scope."
+      },
+      {
+        "query": "Proofread this paper",
+        "selected_skill": "proofread-math",
+        "reason": "Explicit mathematical proofreading matches conservative prose, LaTeX, notation, and cross-reference checking."
+      },
+      {
+        "query": "Does citation [17] prove this?",
+        "selected_skill": "literature-check",
+        "reason": "The requested decision depends on an external citation and its exact implication."
+      },
+      {
+        "query": "Referee this entire manuscript",
+        "selected_skill": "referee",
+        "reason": "Whole-manuscript referee assessment is the positive trigger for referee."
+      },
+      {
+        "query": "Audit the enumeration supporting Proposition 2",
+        "selected_skill": "computation-audit",
+        "reason": "A claim-supporting enumeration is a mathematical computation whose correctness and scope need audit."
+      },
+      {
+        "query": "Pursue this research program until we have a proof or counterexample",
+        "selected_skill": "research-program",
+        "reason": "Sustained investigation until a goal is reached matches research-program rather than one bounded route."
+      },
+      {
+        "query": "Find a new proof of this lemma",
+        "selected_skill": "research-attempt",
+        "reason": "An explicit request to attack a single lemma with a new proof is one bounded research route; focused proof-audit excludes invention of a new proof route."
+      },
+      {
+        "query": "Audit this manuscript section by section and reconcile the results",
+        "selected_skill": "referee",
+        "reason": "Section-by-section manuscript audit with final full-source reconciliation is expressly covered by referee."
+      }
+    ]
+  },
+  "checks_not_run": [
+    {
+      "check": "Repository-wide package/Python/Claude validation",
+      "reason": "This grader changes only new temporary grading artifacts; parent owns repository validation."
+    },
+    {
+      "check": "TeX compilation",
+      "reason": "These are full-source referee fixtures with no compiled-paper claim."
+    },
+    {
+      "check": "Network/source authentication",
+      "reason": "Parent authorizes no network; only source fixture is explicitly synthetic and unavailable."
+    },
+    {
+      "check": "New specialist or model benchmark",
+      "reason": "Grading completed raw forward-tests; no subagents or invented baseline authorized."
+    },
+    {
+      "check": "New executions of supplied/domain audit scripts",
+      "reason": "Actual preserved executions, outputs, full result and all input/output hashes checked; independent local exact enumeration suffices."
+    }
+  ],
+  "core_preserved_raw_copy_checks": [
+    {
+      "relative_path": "full-source.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "context.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "manifest.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "findings.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "survey.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "specialist-quote-validation.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "reconciliation.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "report.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "trial-summary.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "checks.json",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/001-front-matter.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/002-conventions.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/003-cancellation.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/004-a-cardinality-estimate.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/005-triangular-sums.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/006-polynomial-differentiation.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/007-organization-of-the-triangular-calculation.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "sections/008-references.tex",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "passes/correctness.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "passes/adversarial.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "passes/exposition.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "passes/notation.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "passes/claims.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "specialists/proof-audit.md",
+      "copy_equals_original": true
+    },
+    {
+      "relative_path": "specialists/proof-audit.provenance.json",
+      "copy_equals_original": true
+    }
+  ],
+  "historical_specialist_hash_checks": [
+    {
+      "case": "referee-enumeration",
+      "path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/computation-audit.md",
+      "matches_recorded_sha256": true
+    },
+    {
+      "case": "referee-enumeration",
+      "path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/proof-audit.md",
+      "matches_recorded_sha256": true
+    },
+    {
+      "case": "referee-source",
+      "path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/literature-check.md",
+      "matches_recorded_sha256": true
+    },
+    {
+      "case": "referee-source",
+      "path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/proof-audit.md",
+      "matches_recorded_sha256": true
+    }
+  ],
+  "core_specialist_report_hash_check": {
+    "expected": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18",
+    "actual": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18",
+    "matches": true
+  },
+  "core_specialist_resource_pins_current": [
+    {
+      "path": "/home/najib/source/mathbox/skills/proof-audit/SKILL.md",
+      "recorded_sha256": "53d5ec20fb8eabb4c18bbe7673f59c9d934eda5f34be8b8af4e15244cfe1e0df",
+      "current_sha256": "53d5ec20fb8eabb4c18bbe7673f59c9d934eda5f34be8b8af4e15244cfe1e0df",
+      "matches": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/proof-audit/references/obligation-checklists.md",
+      "recorded_sha256": "3e08c8dc8d5b112c6f6c35f3ab6bb0ba8670bbf019bd55cbd7c31fe3f8dd7412",
+      "current_sha256": "3e08c8dc8d5b112c6f6c35f3ab6bb0ba8670bbf019bd55cbd7c31fe3f8dd7412",
+      "matches": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/review-protocol.md",
+      "recorded_sha256": "6099028d76939def76f7aa090cc0740217ce159e51f3c8ccb4cdae9c2f3a9eb3",
+      "current_sha256": "6099028d76939def76f7aa090cc0740217ce159e51f3c8ccb4cdae9c2f3a9eb3",
+      "matches": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/output-contract.md",
+      "recorded_sha256": "cd915222a8760b02880a379786e9c069c203859d28e9e82d519f86ab149cab39",
+      "current_sha256": "d61307200c7f61e86025760f6d0a56e6202ba59ad4002913d58959f556ccbe8f",
+      "matches": false
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/correctness.md",
+      "recorded_sha256": "43d2de3eef2e8fab94ef6ac09245aac1e6049fbdbf766f8be8dc24758f5f6348",
+      "current_sha256": "43d2de3eef2e8fab94ef6ac09245aac1e6049fbdbf766f8be8dc24758f5f6348",
+      "matches": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/claims.md",
+      "recorded_sha256": "7dfe3523908222585a4f5711c5776c351c50e7f116787507d4958b76611d8f74",
+      "current_sha256": "7dfe3523908222585a4f5711c5776c351c50e7f116787507d4958b76611d8f74",
+      "matches": true
+    }
+  ],
+  "retained_copy_checks": {
+    "inventory": "/home/najib/source/mathbox/evals/results/referee-v1/artifact-inventory.json",
+    "scope": "Selected raw synthetic forward-test artifacts, copied byte for byte; original records are not rewritten.",
+    "omissions": "Redundant prepared TeX sections and earlier complete snapshots are omitted; published raw fixtures supply the unchanged manuscript bytes. Original paths in records are historical locators; use this mapping for retained copies.",
+    "artifact_count": 91,
+    "all_passed": true,
+    "entries": [
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/report.md",
+        "retained_path": "evals/results/referee-v1/core/report.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/findings.json",
+        "retained_path": "evals/results/referee-v1/core/findings.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/reconciliation.json",
+        "retained_path": "evals/results/referee-v1/core/reconciliation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/manifest.json",
+        "retained_path": "evals/results/referee-v1/core/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/context.json",
+        "retained_path": "evals/results/referee-v1/core/context.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/reuse-recheck.json",
+        "retained_path": "evals/results/referee-v1/core/reuse-recheck.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/checks.json",
+        "retained_path": "evals/results/referee-v1/core/checks.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/rechecks/current-contract.md",
+        "retained_path": "evals/results/referee-v1/core/rechecks/current-contract.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/passes/notation.md",
+        "retained_path": "evals/results/referee-v1/core/passes/notation.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/passes/claims.md",
+        "retained_path": "evals/results/referee-v1/core/passes/claims.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/correctness.md",
+        "retained_path": "evals/results/referee-v1/core/historical/passes/correctness.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/adversarial.md",
+        "retained_path": "evals/results/referee-v1/core/historical/passes/adversarial.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/exposition.md",
+        "retained_path": "evals/results/referee-v1/core/historical/passes/exposition.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialists/proof-audit.md",
+        "retained_path": "evals/results/referee-v1/core/historical/specialists/proof-audit.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialists/proof-audit.provenance.json",
+        "retained_path": "evals/results/referee-v1/core/historical/specialists/proof-audit.provenance.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialist-quote-validation.json",
+        "retained_path": "evals/results/referee-v1/core/historical/specialist-quote-validation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "core",
+        "original_path": "/tmp/mathbox-referee-core-26dxm_qc/preparation-attempt-001.txt",
+        "retained_path": "evals/results/referee-v1/core/observed-preparation-failure.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/report.md",
+        "retained_path": "evals/results/referee-v1/exposition/report.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/findings.json",
+        "retained_path": "evals/results/referee-v1/exposition/findings.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/reconciliation.json",
+        "retained_path": "evals/results/referee-v1/exposition/reconciliation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/manifest.json",
+        "retained_path": "evals/results/referee-v1/exposition/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/context.json",
+        "retained_path": "evals/results/referee-v1/exposition/context.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/evidence-recheck.json",
+        "retained_path": "evals/results/referee-v1/exposition/evidence-recheck.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/artifact-validation.json",
+        "retained_path": "evals/results/referee-v1/exposition/artifact-validation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/survey.md",
+        "retained_path": "evals/results/referee-v1/exposition/survey.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/correctness.json",
+        "retained_path": "evals/results/referee-v1/exposition/passes/correctness.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/adversarial.json",
+        "retained_path": "evals/results/referee-v1/exposition/passes/adversarial.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/exposition.json",
+        "retained_path": "evals/results/referee-v1/exposition/passes/exposition.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/notation.json",
+        "retained_path": "evals/results/referee-v1/exposition/passes/notation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "exposition",
+        "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/claims.json",
+        "retained_path": "evals/results/referee-v1/exposition/passes/claims.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/report.md",
+        "retained_path": "evals/results/referee-v1/enumeration/report.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/findings.json",
+        "retained_path": "evals/results/referee-v1/enumeration/findings.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/reconciliation.json",
+        "retained_path": "evals/results/referee-v1/enumeration/reconciliation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/manifest.json",
+        "retained_path": "evals/results/referee-v1/enumeration/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/context.json",
+        "retained_path": "evals/results/referee-v1/enumeration/context.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/evidence-recheck.json",
+        "retained_path": "evals/results/referee-v1/enumeration/evidence-recheck.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/artifact-validation.json",
+        "retained_path": "evals/results/referee-v1/enumeration/artifact-validation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/survey.md",
+        "retained_path": "evals/results/referee-v1/enumeration/survey.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/correctness.json",
+        "retained_path": "evals/results/referee-v1/enumeration/passes/correctness.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/adversarial.json",
+        "retained_path": "evals/results/referee-v1/enumeration/passes/adversarial.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/exposition.json",
+        "retained_path": "evals/results/referee-v1/enumeration/passes/exposition.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/notation.json",
+        "retained_path": "evals/results/referee-v1/enumeration/passes/notation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/claims.json",
+        "retained_path": "evals/results/referee-v1/enumeration/passes/claims.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/computation-audit.md",
+        "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/computation-audit.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/proof-audit.md",
+        "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/proof-audit.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialist-command-log.json",
+        "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/command-log.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/domain-audit-contract.json",
+        "retained_path": "evals/results/referee-v1/enumeration/checks/domain-audit-contract.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/domain_audit.py",
+        "retained_path": "evals/results/referee-v1/enumeration/checks/domain_audit.py",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/supplied-contract.json",
+        "retained_path": "evals/results/referee-v1/enumeration/checks/supplied-contract.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/supplied.py",
+        "retained_path": "evals/results/referee-v1/enumeration/checks/supplied.py",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/manifest.json",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/result.json",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/result.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/stderr.txt",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/stderr.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/stdout.txt",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/stdout.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/manifest.json",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/supplied/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/stderr.txt",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/supplied/stderr.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "enumeration",
+        "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/stdout.txt",
+        "retained_path": "evals/results/referee-v1/enumeration/computations/supplied/stdout.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/report.md",
+        "retained_path": "evals/results/referee-v1/source/report.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/findings.json",
+        "retained_path": "evals/results/referee-v1/source/findings.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/reconciliation.json",
+        "retained_path": "evals/results/referee-v1/source/reconciliation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/manifest.json",
+        "retained_path": "evals/results/referee-v1/source/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/context.json",
+        "retained_path": "evals/results/referee-v1/source/context.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/evidence-recheck.json",
+        "retained_path": "evals/results/referee-v1/source/evidence-recheck.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/artifact-validation.json",
+        "retained_path": "evals/results/referee-v1/source/artifact-validation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/survey.md",
+        "retained_path": "evals/results/referee-v1/source/survey.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/correctness.json",
+        "retained_path": "evals/results/referee-v1/source/passes/correctness.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/adversarial.json",
+        "retained_path": "evals/results/referee-v1/source/passes/adversarial.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/exposition.json",
+        "retained_path": "evals/results/referee-v1/source/passes/exposition.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/notation.json",
+        "retained_path": "evals/results/referee-v1/source/passes/notation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/claims.json",
+        "retained_path": "evals/results/referee-v1/source/passes/claims.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/literature-check.md",
+        "retained_path": "evals/results/referee-v1/source/historical-specialists/literature-check.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "source",
+        "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/proof-audit.md",
+        "retained_path": "evals/results/referee-v1/source/historical-specialists/proof-audit.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/report.md",
+        "retained_path": "evals/results/referee-v1/context/report.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/findings.json",
+        "retained_path": "evals/results/referee-v1/context/findings.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/reconciliation.json",
+        "retained_path": "evals/results/referee-v1/context/reconciliation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/coverage.json",
+        "retained_path": "evals/results/referee-v1/context/coverage.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/verification.json",
+        "retained_path": "evals/results/referee-v1/context/verification.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/revision-comparison.json",
+        "retained_path": "evals/results/referee-v1/context/revision-comparison.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-lead.json",
+        "retained_path": "evals/results/referee-v1/context/prior-lead.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-local-review.txt",
+        "retained_path": "evals/results/referee-v1/context/prior-local-review.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/survey.md",
+        "retained_path": "evals/results/referee-v1/context/survey.md",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/01-current-correctness.json",
+        "retained_path": "evals/results/referee-v1/context/passes/01-current-correctness.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/02-current-adversarial.json",
+        "retained_path": "evals/results/referee-v1/context/passes/02-current-adversarial.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/03-current-exposition.json",
+        "retained_path": "evals/results/referee-v1/context/passes/03-current-exposition.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-notation.json",
+        "retained_path": "evals/results/referee-v1/context/passes/04-current-notation.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims.json",
+        "retained_path": "evals/results/referee-v1/context/passes/05-current-claims.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims-quote-correction.json",
+        "retained_path": "evals/results/referee-v1/context/passes/05-current-claims-quote-correction.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-tau-search.txt",
+        "retained_path": "evals/results/referee-v1/context/passes/04-current-tau-search.txt",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/manifest.json",
+        "retained_path": "evals/results/referee-v1/context/preparation/manifest.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "context",
+        "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/context.json",
+        "retained_path": "evals/results/referee-v1/context/preparation/context.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      },
+      {
+        "case": "routing",
+        "original_path": "/tmp/mathbox-referee-context-routing-lc2szztu/routing.json",
+        "retained_path": "evals/results/referee-v1/routing/routing.json",
+        "matches_original_bytes": true,
+        "matches_inventory_sha256": true,
+        "matches_inventory_size": true
+      }
+    ]
+  }
+}

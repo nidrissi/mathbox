@@ -1,0 +1,9 @@
+# Full-source survey (self-review)
+
+Scope: the sole authoritative source, referee-context.tex, 20 lines, copied unchanged into the isolated project. Review request: referee the entire supplied manuscript; preserve the prior Identity-section suspicion; leave manuscript unchanged. No competing manuscript, additional files, bibliography, appendices, code, external-result leaves, or initialized research-state ledger exist in this project.
+
+The substantive front matter promises the triangular sum identity including the empty case. The Notation section defines $n$ on the nonnegative integers, $\tau(n)=n(n+1)/2$, and the empty-sum convention. The Identity section states the lemma labelled lem:sum and proves it by induction. Dependency chain: domain and $\tau$ definition plus empty-sum convention -> base case and induction step -> lemma -> abstract promise. All three prepared units are substantive and will be reviewed in every dimension; no skips.
+
+Preparation is lexical, not compilation. I read the manifest, context index, and all 568 source characters including preamble and document boundaries. The helper reports no preparation errors. Its limits remain: no TeX execution/arbitrary macro expansion or authentication of package/bibliography inputs. This input uses only ordinary sections, one lemma environment, and a proof; no dynamic inputs, conditionals, catcode changes, custom literal environments, bibliography, or external mathematics were encountered.
+
+The supplied prior suspicion is retained verbatim in prior-local-review.txt. No historical artifact, source hash, confidence, precise quotation, or dependency context accompanied it. It is an unverified section-local lead rather than reusable evidence. Fresh sequential self-review passes and final whole-source reconciliation will determine its disposition.

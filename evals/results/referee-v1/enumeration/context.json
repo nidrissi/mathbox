@@ -1,0 +1,25 @@
+{
+  "preamble": "\\documentclass{article}\n\\usepackage{amsthm}\n\\newtheorem{theorem}{Theorem}\n\\title{A binary enumeration}\n",
+  "title": "A binary enumeration",
+  "abstracts": [
+    {
+      "text": "\nWe verify a property on all binary vectors of length four by enumeration.\n",
+      "location": {
+        "path": "paper.tex",
+        "line": 6
+      }
+    }
+  ],
+  "statements": [
+    {
+      "environment": "theorem",
+      "label": "thm:binary",
+      "text": "\\begin{theorem}\\label{thm:binary}\nEvery binary vector of length four has property P.\n\\end{theorem}",
+      "expanded_start": 382,
+      "location": {
+        "path": "paper.tex",
+        "line": 13
+      }
+    }
+  ]
+}

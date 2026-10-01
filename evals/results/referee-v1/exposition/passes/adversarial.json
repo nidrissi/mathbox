@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "coverage": [
+    {
+      "lanes": [
+        "adversarial"
+      ],
+      "scope": "Entire manuscript including front matter and preamble; paper.tex:1-29",
+      "reviewed_unit_ids": [
+        "sha256:7c11b84a08748cd5ccba587ee0c623cb0d024d8f56a933f7bced5ed3ad3b4b3d:1",
+        "sha256:ff514cb0afb67ccb3e2fead15fc2b9a71119ba4d82f1f11883672090c8a44227:1"
+      ],
+      "locators": [
+        "paper.tex:1-29"
+      ],
+      "context_units": [
+        {
+          "unit_id": "sha256:7c11b84a08748cd5ccba587ee0c623cb0d024d8f56a933f7bced5ed3ad3b4b3d:1",
+          "sha256": "48a241645b3af1c3811434f11951fad7835b786c2473191f1a875b53d6d256f6"
+        },
+        {
+          "unit_id": "sha256:ff514cb0afb67ccb3e2fead15fc2b9a71119ba4d82f1f11883672090c8a44227:1",
+          "sha256": "c8ea4f63c8eeb1c98fe36165f190cf719234ab0130b60532d228c0e045ece990"
+        }
+      ],
+      "context_sha256": "c4d92842266c6ee88942a1d3f8a8dd632de50f27e6e5027ccf61e393f6fe02e9",
+      "executor": "single executor, self-review; no delegation",
+      "method": "Current-contract full-source and context recheck; notation/claims and final reconciliation performed anew; prior bounded checks inspected with exact dependencies before reuse",
+      "status": "complete",
+      "prior_artifact": "project:.mathbox/referee/run-002/raw/adversarial.json",
+      "reuse_scope": "Previous substantive checked observations after source/context/dependency recheck; no hash-only automatic reuse"
+    }
+  ],
+  "issues": []
+}

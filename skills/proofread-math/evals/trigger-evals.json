@@ -1,4 +1,6 @@
 [
+  {"query": "Proofread this paper.", "should_trigger": true},
+  {"query": "Referee this entire manuscript.", "should_trigger": false},
   {
     "query": "Proofread the new proof in paper.tex conservatively.",
     "should_trigger": true

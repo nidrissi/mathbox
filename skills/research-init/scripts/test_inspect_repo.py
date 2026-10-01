@@ -105,6 +105,12 @@ class InspectorTests(unittest.TestCase):
         self.assertIn("## Project skill files (1)", brief)
         self.assertIn("## Build/verification manifests (1)", brief)
 
+    def test_local_copy_of_every_canonical_skill_is_an_override(self):
+        for name in ("referee", "research-state"):
+            self.write(f".claude/skills/{name}/SKILL.md", f"---\nname: {name}\n---\n")
+        self.write(".claude/skills/project-only/SKILL.md", "---\nname: project-only\n---\n")
+        self.assertEqual(inspect(self.root, 5)["canonical_name_overrides"], ["referee", "research-state"])
+
     def test_live_summary_reports_checkpoint_markers_without_promoting_snapshots(self):
         self.write("RESEARCH_STATUS.md", "# Current status\n\n## Previous checkpoint 2030-01-01\n\n## 2030-01-02 update\n")
         self.write("research/migrations/status-before.md", "# Historical snapshot\n")

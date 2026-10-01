@@ -1,0 +1,24 @@
+{
+  "result": "passed",
+  "checks": [
+    "Five lanes with explicit actual coverage",
+    "Source/contract hashes agree",
+    "Required raw fields and exact source quotes",
+    "Raw findings all reconciled",
+    "Referenced prior specialists exist",
+    "Report section order",
+    "Report source quote fences match source",
+    "Markdown math delimiters",
+    "Manuscript source unchanged"
+  ],
+  "source_sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "report_quotes_checked": 2,
+  "mode": "proofread-math self-review",
+  "routine_edits": [
+    "Moved preparation-provenance paragraph after the mathematical summary",
+    "Removed generated trailing whitespace where present"
+  ],
+  "mathematical_token_changes": [],
+  "unresolved_proofreading_issues": []
+}

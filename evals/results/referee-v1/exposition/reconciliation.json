@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "entries": [
+    {
+      "finding_id": "F001",
+      "disposition": "retained",
+      "reason": "Re-read the full proof and reconstructed every inference. The telescoping is valid; the concern is the absence of a strategy sentence and remains solely an exposition concern. Reconciliation was rerun after the helper contract changed; all dependencies, exact quotes and algebra were inspected on the current snapshot. Current contract: full manuscript, definitions, quotes and dependency impact rechecked; same source and semantic context. Historical raw/specialist artifacts remain unchanged.",
+      "checked_locations": [
+        "paper.tex:14-28"
+      ],
+      "specialist_artifacts": [
+        "evidence-recheck.json"
+      ],
+      "final_concern_id": "C001",
+      "prior_reconciliation": "project:.mathbox/referee/run-002/reconciliation.json"
+    }
+  ],
+  "final_concerns": [
+    {
+      "id": "C001",
+      "lane": "exposition",
+      "severity": "moderate",
+      "confidence": 0.9,
+      "evidence_status": "manuscript-grounded exposition concern; mathematics checked and no defect found"
+    }
+  ]
+}

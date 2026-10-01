@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "coverage": [
+    {
+      "lanes": [
+        "claims"
+      ],
+      "scope": "Whole current manuscript, exact title/abstract promise versus lemma/domain/proof delivery.",
+      "reviewed_unit_ids": [
+        "sha256:f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592:1",
+        "sha256:afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e:1",
+        "sha256:43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679:1"
+      ],
+      "reviewed_locators": [
+        "referee-context.tex:1\u201320",
+        "referee-context.tex:7",
+        "referee-context.tex:14",
+        "referee-context.tex:17\u201318"
+      ],
+      "context_units": [
+        {
+          "unit_id": "sha256:f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592:1",
+          "sha256": "2094fbcf8b63185fae6a02df464dffd1596f60fa03c0105c03dde10d6d31fce1"
+        },
+        {
+          "unit_id": "sha256:afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e:1",
+          "sha256": "fb0bbcd261015f1d3d3835713bdd725f219bb3f6046f4ea58fd0eaee42073091"
+        },
+        {
+          "unit_id": "sha256:43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679:1",
+          "sha256": "c0daef08537022a26a572136d4b990e6eaa0510cdaca708b060a5f038f651670"
+        }
+      ],
+      "context_sha256": "f5d9401eebc37f4ddcbc98222fb4dd82bdedc84a75a1900bffa650598d369b81",
+      "executor": "referee-context-reviewer (same assistant throughout)",
+      "method": "Sequential self-review, current-contract pass 5; full-source rereading and exact promise/delivery comparison; no external search because no external or prior-art claim is present.",
+      "status": "complete",
+      "artifact": "passes/05-current-claims.json"
+    }
+  ],
+  "issues": [],
+  "checks": [
+    {
+      "location": "referee-context.tex:7,14,17\u201318",
+      "analysis": "Compare the exact abstract promise, 'We record the triangular sum identity, including its empty case.', with the lemma, 'For each $n\\\\geq0$ one has $\\\\sum_{j=1}^n j=\\\\tau(n)$.', read under the line-10 integer convention. The base case explicitly handles n=0 and the proof supplies the inductive transition. No broader domain or stronger conclusion is promised than delivered."
+    },
+    {
+      "location": "referee-context.tex:1\u201320",
+      "analysis": "There is no novelty, priority, optimality, sharpness, application, or external prior-art assertion in the supplied manuscript, and no bibliography. No invented literature question or significance verdict is needed. Claim/scope assessment is complete for the supplied source; novelty is not certified."
+    }
+  ],
+  "provenance": "self-review; no independent reviewer or external-source verification claimed"
+}

@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "preparation_version": 1,
+  "main": "paper.tex",
+  "source_sha256": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+  "global_context_sha256": "3b726542076311a2d08f40335f87c7ef198263fa8c2d74acdedb14d464100a63",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_files_sha256": "7bf026da8a67bf0ff077d40b9e33e1131cdfde852f470d7b3a5809661845e50f",
+  "sources": [
+    {
+      "path": "paper.tex",
+      "sha256": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+      "bytes": 902
+    }
+  ],
+  "source_map": [
+    {
+      "expanded_start": 0,
+      "expanded_end": 902,
+      "path": "paper.tex",
+      "source_start": 0,
+      "source_end": 902,
+      "source_line": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "sha256:098c46e662353a4ee67f0c08df45036e257b79b37c1df78d281173c95d85a7c4:1",
+      "sha256": "bf78142633ae501d7271f6b3399c9caecc54628616813c95f03d288083b62ec2",
+      "identity_sha256": "098c46e662353a4ee67f0c08df45036e257b79b37c1df78d281173c95d85a7c4",
+      "title": "Front matter",
+      "kind": "front-matter",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/001-front-matter.tex",
+      "expanded_start": 122,
+      "expanded_end": 231,
+      "location": {
+        "path": "paper.tex",
+        "line": 5
+      }
+    },
+    {
+      "id": "sha256:785508c2ffe2bf82f0fbdc72b0f0f054d6082a16ef8e979d397a4acd2bb2ebca:1",
+      "sha256": "e2a6022129ef4f37cdd6d335066435391e9e6071d7a765b0f121ce6415d9b807",
+      "identity_sha256": "785508c2ffe2bf82f0fbdc72b0f0f054d6082a16ef8e979d397a4acd2bb2ebca",
+      "title": "Conventions",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/002-conventions.tex",
+      "expanded_start": 231,
+      "expanded_end": 441,
+      "location": {
+        "path": "paper.tex",
+        "line": 9
+      }
+    },
+    {
+      "id": "sha256:f410ace58b52d7cee4e76793f25c92436ec0bdc25c3c29eb9704ea93ed69e8b0:1",
+      "sha256": "4e7b6340c254b0ec63ff33a249f4c5d627ba90eb0b0e3280ae065d11cee35df3",
+      "identity_sha256": "f410ace58b52d7cee4e76793f25c92436ec0bdc25c3c29eb9704ea93ed69e8b0",
+      "title": "Extension",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/003-extension.tex",
+      "expanded_start": 441,
+      "expanded_end": 782,
+      "location": {
+        "path": "paper.tex",
+        "line": 13
+      }
+    },
+    {
+      "id": "sha256:028cfe516d78a76b9df4959bd52124886a0adddda7b1ae52bd463e6642932e65:1",
+      "sha256": "091dcdc7c802360bd55121a788f8f18b7b6b9954108be82075d39b47f7a1932c",
+      "identity_sha256": "028cfe516d78a76b9df4959bd52124886a0adddda7b1ae52bd463e6642932e65",
+      "title": "Bibliography",
+      "kind": "bibliography",
+      "reviewable": false,
+      "skip_reason": "Bibliography material",
+      "file": "sections/004-bibliography.tex",
+      "expanded_start": 782,
+      "expanded_end": 887,
+      "location": {
+        "path": "paper.tex",
+        "line": 22
+      }
+    }
+  ],
+  "limitations": [
+    "Lexical preparation only: no TeX execution or arbitrary macro expansion.",
+    "Conditionals, catcode changes, includeonly and custom input/section macros need manual inspection.",
+    "Literal masking covers verb/lstinline and common verbatim/listing/comment environments, not every package.",
+    "Bibliography files, graphics and package inputs are not loaded or authenticated.",
+    "Context is an extraction index; its order is not manuscript theorem numbering.",
+    "Hash comparison identifies text candidates, not dependency freshness or completed reviews."
+  ],
+  "comparison": {
+    "previous_source_sha256": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+    "candidate_unchanged": [
+      "sha256:028cfe516d78a76b9df4959bd52124886a0adddda7b1ae52bd463e6642932e65:1",
+      "sha256:098c46e662353a4ee67f0c08df45036e257b79b37c1df78d281173c95d85a7c4:1",
+      "sha256:785508c2ffe2bf82f0fbdc72b0f0f054d6082a16ef8e979d397a4acd2bb2ebca:1",
+      "sha256:f410ace58b52d7cee4e76793f25c92436ec0bdc25c3c29eb9704ea93ed69e8b0:1"
+    ],
+    "added": [],
+    "removed": [],
+    "ambiguous": [],
+    "contract_changed": true,
+    "global_context_changed": false,
+    "whole_paper_invalidated": true,
+    "reuse_requires_context_check": true
+  }
+}

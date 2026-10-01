@@ -1,0 +1,25 @@
+{
+  "preamble": "\\documentclass{article}\n\\usepackage{amsthm}\n\\newtheorem{theorem}{Theorem}\n\\title{A coefficient extension}\n",
+  "title": "A coefficient extension",
+  "abstracts": [
+    {
+      "text": "\nAn invariant of finite complexes vanishes with arbitrary coefficient rings.\n",
+      "location": {
+        "path": "paper.tex",
+        "line": 6
+      }
+    }
+  ],
+  "statements": [
+    {
+      "environment": "theorem",
+      "label": "thm:extension",
+      "text": "\\begin{theorem}\\label{thm:extension}\nIf $X$ satisfies condition P, then $V(X;R)=0$ for every commutative ring $R$.\n\\end{theorem}",
+      "expanded_start": 461,
+      "location": {
+        "path": "paper.tex",
+        "line": 14
+      }
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "current_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "checks": [
+    {
+      "check": "Source, context, map and unit equality",
+      "status": "passed",
+      "detail": "Fresh preparation has eight identical units and no synthetic spans."
+    },
+    {
+      "check": "Current pins explicit",
+      "status": "passed",
+      "detail": "Current artifacts pin the new contract and link original evidence with old pins preserved."
+    },
+    {
+      "check": "Every raw finding rechecked and reconciled",
+      "status": "passed",
+      "detail": "All eight original findings are accounted for."
+    },
+    {
+      "check": "Exact quotes and current locators",
+      "status": "passed",
+      "detail": "Eight quotes match exact current source characters and original source lines."
+    },
+    {
+      "check": "Whole-paper passes rerun",
+      "status": "passed",
+      "detail": "New whole-paper notation and claims entries distinguish reused earlier passes."
+    },
+    {
+      "check": "Justified reuse recorded",
+      "status": "passed",
+      "detail": "Every prior artifact remains unchanged; retained copies are pinned."
+    },
+    {
+      "check": "Manuscript unchanged",
+      "status": "passed",
+      "detail": "Trial still matches authoritative fixture bytes."
+    },
+    {
+      "check": "Current contract resources stable",
+      "status": "passed",
+      "detail": "No contract component changed after fresh preparation and recheck."
+    },
+    {
+      "check": "Final report quotations exact",
+      "status": "passed",
+      "detail": "All six report evidence blocks match current raw source."
+    },
+    {
+      "check": "Final conclusions unchanged and rechecked",
+      "status": "passed",
+      "detail": "Current final reconciliation retains three supported concerns after explicit evidence recheck."
+    },
+    {
+      "check": "New JSON parses",
+      "status": "passed",
+      "detail": "Current artifacts and retained raw copies parse."
+    },
+    {
+      "check": "Report self-review",
+      "status": "passed",
+      "detail": "Current coverage and provenance are explicit; report reread with no objective proofreading correction."
+    },
+    {
+      "check": "New independent specialist",
+      "status": "not_run",
+      "detail": "Original source, context, scope and six pinned specialist resources are unchanged; prior raw specialist evidence was inspected and justifiably reused."
+    },
+    {
+      "check": "TeX compilation, literature and novelty",
+      "status": "not_run",
+      "detail": "Lexical source review with no external input or novelty verdict; unchanged coverage limits are disclosed."
+    },
+    {
+      "check": "Repository package gate",
+      "status": "not_run",
+      "detail": "Repository remains read-only for this trial; parent reports its package validation separately."
+    }
+  ],
+  "quote_loci": [
+    {
+      "id": "F001",
+      "quote_line": 23,
+      "expected_original_line": 23,
+      "unchanged": true
+    },
+    {
+      "id": "F002",
+      "quote_line": 27,
+      "expected_original_line": 27,
+      "unchanged": true
+    },
+    {
+      "id": "F003",
+      "quote_line": 20,
+      "expected_original_line": 20,
+      "unchanged": true
+    },
+    {
+      "id": "F004",
+      "quote_line": 27,
+      "expected_original_line": 27,
+      "unchanged": true
+    },
+    {
+      "id": "F005",
+      "quote_line": 9,
+      "expected_original_line": 9,
+      "unchanged": true
+    },
+    {
+      "id": "PA001",
+      "quote_line": 23,
+      "expected_original_line": 23,
+      "unchanged": true
+    },
+    {
+      "id": "PA002",
+      "quote_line": 27,
+      "expected_original_line": 27,
+      "unchanged": true
+    },
+    {
+      "id": "PA003",
+      "quote_line": 9,
+      "expected_original_line": 9,
+      "unchanged": true
+    }
+  ]
+}

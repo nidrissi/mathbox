@@ -1,0 +1,55 @@
+{
+  "preamble": "\\documentclass{article}\n\\usepackage{amsmath,amsthm,amssymb}\n\\newtheorem{theorem}{Theorem}\n\\newtheorem{lemma}{Lemma}\n\\title{Cancellation, counting, and polynomial operators}\n",
+  "title": "Cancellation, counting, and polynomial operators",
+  "abstracts": [
+    {
+      "text": "\nWe establish cancellation in commutative rings and show that polynomial\ndifferentiation has only constant kernel over all fields. We also give a\nuniform estimate for finite collections and a formula for triangular sums.\n",
+      "location": {
+        "path": "paper.tex",
+        "line": 8
+      }
+    }
+  ],
+  "statements": [
+    {
+      "environment": "theorem",
+      "label": "thm:cancel",
+      "text": "\\begin{theorem}\\label{thm:cancel}\nFor every commutative ring $R$ and $a,b,c\\in R$, if $ab=ac$ then $b=c$.\n\\end{theorem}",
+      "expanded_start": 746,
+      "location": {
+        "path": "paper.tex",
+        "line": 19
+      }
+    },
+    {
+      "environment": "theorem",
+      "label": "thm:cardinality",
+      "text": "\\begin{theorem}\\label{thm:cardinality}\nFor every $n\\in\\mathbb N_0$, the set $E_n$ satisfies $|E_n|\\geq 1$.\n\\end{theorem}",
+      "expanded_start": 984,
+      "location": {
+        "path": "paper.tex",
+        "line": 26
+      }
+    },
+    {
+      "environment": "lemma",
+      "label": "lem:triangular",
+      "text": "\\begin{lemma}\\label{lem:triangular}\nFor $n\\in\\mathbb N_0$, $\\sum_{j=1}^n j=\\tau(n)$.\n\\end{lemma}",
+      "expanded_start": 1210,
+      "location": {
+        "path": "paper.tex",
+        "line": 33
+      }
+    },
+    {
+      "environment": "theorem",
+      "label": "thm:derivative",
+      "text": "\\begin{theorem}\\label{thm:derivative}\nIf $K$ is a field of characteristic zero and $D:K[x]\\to K[x]$ is\nformal differentiation, then $\\ker D=K$.\n\\end{theorem}",
+      "expanded_start": 1492,
+      "location": {
+        "path": "paper.tex",
+        "line": 41
+      }
+    }
+  ]
+}

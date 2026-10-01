@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "entries": [
+    {
+      "finding_id": "F001",
+      "disposition": "retained",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact source statement admits F_2 and a=0,b=0,c=1. Both products vanish and distinct b,c refute the conclusion. The raw proof cancellation step assumes the missing injectivity. Nonzero zero-divisor examples are additional diagnostics of this same defect; no later restriction repairs it.",
+      "checked_locations": [
+        "paper.tex:14",
+        "paper.tex:20",
+        "paper.tex:23",
+        "paper.tex:9-11"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C001",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "F002",
+      "disposition": "retained",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact global conventions admit n=0 and explicitly set E_0 empty. Cardinality 0 refutes the bound and the proof witness. This is one domain defect, not independent proof and theorem failures. Final severity is major: the positive-parameter claim survives, and no subsequent result depends on the zero-case estimate.",
+      "checked_locations": [
+        "paper.tex:15-16",
+        "paper.tex:27",
+        "paper.tex:30",
+        "paper.tex:9-11"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C002",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "F003",
+      "disposition": "merged",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact source statement admits F_2 and a=0,b=0,c=1. Both products vanish and distinct b,c refute the conclusion. The raw proof cancellation step assumes the missing injectivity. Nonzero zero-divisor examples are additional diagnostics of this same defect; no later restriction repairs it. Merged with F001 because both describe this exact defect; extra locators and witnesses remain in raw artifacts.",
+      "checked_locations": [
+        "paper.tex:14",
+        "paper.tex:20",
+        "paper.tex:23",
+        "paper.tex:9-11"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C001",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "F004",
+      "disposition": "merged",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact global conventions admit n=0 and explicitly set E_0 empty. Cardinality 0 refutes the bound and the proof witness. This is one domain defect, not independent proof and theorem failures. Final severity is major: the positive-parameter claim survives, and no subsequent result depends on the zero-case estimate. Merged with F002 because both describe this exact defect; extra locators and witnesses remain in raw artifacts.",
+      "checked_locations": [
+        "paper.tex:15-16",
+        "paper.tex:27",
+        "paper.tex:30",
+        "paper.tex:9-11"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C002",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "F005",
+      "disposition": "retained",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact abstract says all fields while the theorem and proof assume characteristic zero. F_2[x] and the formal polynomial x^2 are admissible: D(x^2)=2x=0 and x^2 is nonconstant. The actual theorem is valid by coefficient comparison and invertibility of positive integer scalars. Final severity is major because the false scope extension is confined to headline framing and the written theorem survives.",
+      "checked_locations": [
+        "paper.tex:9-10",
+        "paper.tex:17",
+        "paper.tex:42-48",
+        "paper.tex:50-56"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C003",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "PA001",
+      "disposition": "merged",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact source statement admits F_2 and a=0,b=0,c=1. Both products vanish and distinct b,c refute the conclusion. The raw proof cancellation step assumes the missing injectivity. Nonzero zero-divisor examples are additional diagnostics of this same defect; no later restriction repairs it. Merged with F001 because both describe this exact defect; extra locators and witnesses remain in raw artifacts.",
+      "checked_locations": [
+        "paper.tex:14",
+        "paper.tex:20",
+        "paper.tex:23",
+        "paper.tex:9-11"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C001",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "PA002",
+      "disposition": "merged",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact global conventions admit n=0 and explicitly set E_0 empty. Cardinality 0 refutes the bound and the proof witness. This is one domain defect, not independent proof and theorem failures. Final severity is major: the positive-parameter claim survives, and no subsequent result depends on the zero-case estimate. Merged with F002 because both describe this exact defect; extra locators and witnesses remain in raw artifacts.",
+      "checked_locations": [
+        "paper.tex:15-16",
+        "paper.tex:27",
+        "paper.tex:30",
+        "paper.tex:9-11"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C002",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "finding_id": "PA003",
+      "disposition": "merged",
+      "reason": "Current-contract recheck: exact quote and unchanged current locator verified; global conventions, admitted witness, failed implication and dependency impact were reread/rederived from the current full source. Historical evidence is preserved under raw/run-002. Exact abstract says all fields while the theorem and proof assume characteristic zero. F_2[x] and the formal polynomial x^2 are admissible: D(x^2)=2x=0 and x^2 is nonconstant. The actual theorem is valid by coefficient comparison and invertibility of positive integer scalars. Final severity is major because the false scope extension is confined to headline framing and the written theorem survives. Merged with F005 because both describe this exact defect; extra locators and witnesses remain in raw artifacts.",
+      "checked_locations": [
+        "paper.tex:9-10",
+        "paper.tex:17",
+        "paper.tex:42-48",
+        "paper.tex:50-56"
+      ],
+      "specialist_artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "final_concern_id": "C003",
+      "current_recheck_artifact": "rechecks/current-contract.md"
+    }
+  ],
+  "final_concerns": [
+    {
+      "id": "C001",
+      "title": "Universal cancellation is false",
+      "severity": "critical",
+      "confidence": 1.0,
+      "evidence_status": "confirmed counterexample",
+      "evidence": [
+        "F_2, a=0,b=0,c=1: ab=ac=0 but b != c; hypothesis membership checked against global conventions.",
+        "Nonzero a alone fails: Z/6Z (2,0,3), and specialist Z/4Z (2,0,2)."
+      ],
+      "provenance": "Current source and focused raw specialist derivation reread under the current contract; admitted witnesses and proof implications reconstructed again. Prior severity/confidence retained only after these checks; this is self-review with known earlier conclusions."
+    },
+    {
+      "id": "C002",
+      "title": "The cardinality estimate fails at n=0",
+      "severity": "major",
+      "confidence": 1.0,
+      "evidence_status": "confirmed counterexample",
+      "evidence": [
+        "0 is in N_0; E_0 is explicitly empty; |E_0|=0<1."
+      ],
+      "severity_recalibration": "The raw self-review critical labels were reduced after checking isolation of this boundary and the valid positive-parameter claim. Confidence remains maximal because the witness is exact.",
+      "provenance": "Current source and focused raw specialist derivation reread under the current contract; admitted witnesses and proof implications reconstructed again. Prior severity/confidence retained only after these checks; this is self-review with known earlier conclusions."
+    },
+    {
+      "id": "C003",
+      "title": "The all-fields differentiation headline is false",
+      "severity": "major",
+      "confidence": 1.0,
+      "evidence_status": "confirmed scope mismatch and counterexample",
+      "evidence": [
+        "Abstract all fields versus theorem characteristic zero.",
+        "F_2[x] contains nonconstant x^2 with D(x^2)=0; written characteristic-zero coefficient argument passes."
+      ],
+      "severity_recalibration": "The raw self-review critical label was reduced because the theorem survives exactly as stated and the false extension is confined to the abstract.",
+      "provenance": "Current source and focused raw specialist derivation reread under the current contract; admitted witnesses and proof implications reconstructed again. Prior severity/confidence retained only after these checks; this is self-review with known earlier conclusions."
+    }
+  ],
+  "global_rechecks": [
+    "Current notation pass rechecked tau at paper.tex:17, E_0 and N_0 at paper.tex:15-16, field conventions, local coefficients and s, all author labels, and absence of reference/citation commands.",
+    "Current claims pass compared abstract paper.tex:9-11 with every delivered statement and subsequent source; the all-fields/characteristic-zero mismatch remains exact.",
+    "Fresh current-source mathematical recheck verified F_2 cancellation, both nonzero-zero-divisor diagnostics, the n=0 empty-set witness, and formal differentiation of x^2 over F_2.",
+    "The characteristic-zero proof and both triangular derivations were reconstructed against current source, including their zero/constant cases.",
+    "References reread before retaining non-mathematical skip; no external or code leaves introduced.",
+    "Preparation contract changed, but no source byte, context, map, unit identity, section byte, locator or mathematical dependency changed. Historical evidence was not treated as automatically reusable."
+  ],
+  "new_final_referee_observations": [],
+  "previous_reconciliation": "raw/run-002/reconciliation.json",
+  "current_recheck": "reuse-recheck.json"
+}

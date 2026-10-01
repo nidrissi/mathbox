@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "coverage": [
+    {
+      "lanes": [
+        "adversarial"
+      ],
+      "scope": "Entire current manuscript, with explicit empty-case, small-case and induction-domain probes.",
+      "reviewed_unit_ids": [
+        "sha256:f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592:1",
+        "sha256:afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e:1",
+        "sha256:43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679:1"
+      ],
+      "reviewed_locators": [
+        "referee-context.tex:1\u201320"
+      ],
+      "context_units": [
+        {
+          "unit_id": "sha256:f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592:1",
+          "sha256": "2094fbcf8b63185fae6a02df464dffd1596f60fa03c0105c03dde10d6d31fce1"
+        },
+        {
+          "unit_id": "sha256:afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e:1",
+          "sha256": "fb0bbcd261015f1d3d3835713bdd725f219bb3f6046f4ea58fd0eaee42073091"
+        },
+        {
+          "unit_id": "sha256:43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679:1",
+          "sha256": "c0daef08537022a26a572136d4b990e6eaa0510cdaca708b060a5f038f651670"
+        }
+      ],
+      "context_sha256": "f5d9401eebc37f4ddcbc98222fb4dd82bdedc84a75a1900bffa650598d369b81",
+      "executor": "referee-context-reviewer (same assistant throughout)",
+      "method": "Sequential self-review, current-contract pass 2; fresh source reading and admissible boundary-case derivations; historical return retained without reuse.",
+      "status": "complete",
+      "artifact": "passes/02-current-adversarial.json"
+    }
+  ],
+  "issues": [],
+  "checks": [
+    {
+      "location": "referee-context.tex:10\u201318",
+      "analysis": "Fresh boundary probes in the stated integer domain: n=0 is admissible and yields 0=0; n=1 yields 1=1; n=2 yields 3=3. These probes support edge-case coverage; the universal argument remains induction, not sampled testing."
+    },
+    {
+      "location": "referee-context.tex:17\u201318",
+      "analysis": "The inductive transition starts at the smallest admissible index, keeps n+1 in the domain, and uses only exact arithmetic and the finite sum's next term. It neither cancels a possibly zero n nor introduces an unbounded limit or uniformity claim. No admissible failing case or brittle reduction is identified after full-current-source rereading."
+    }
+  ],
+  "provenance": "self-review; not independent of other passes"
+}

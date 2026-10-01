@@ -1,4 +1,7 @@
 [
+  {"query": "Check the proof of Lemma 4.2.", "should_trigger": true},
+  {"query": "Referee this entire manuscript.", "should_trigger": false},
+  {"query": "Audit this manuscript section by section and reconcile the results.", "should_trigger": false},
   {
     "query": "Audit this proof and isolate the first gap.",
     "should_trigger": true

@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "previous_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+  "current_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+  "source_and_unit_inspection": "preparation-comparison.json",
+  "contract_inspection": "contract-resource-check.json",
+  "reuse_is_automatic": false,
+  "current_rechecks": [
+    "Full source reread with current limits",
+    "Current whole-paper notation pass",
+    "Current whole-paper claims pass",
+    "Each raw finding exact quote, locator, assumptions and dependency inspected",
+    "Focused raw proof-audit evidence reread and all three concerns rederived",
+    "Valid triangular and characteristic-zero proofs rechecked",
+    "Fresh final reconciliation and report self-review"
+  ],
+  "reused_scopes": [
+    "Historical correctness/adversarial/exposition passes after full context inspection",
+    "Original fresh focused proof-audit execution; no new specialist launch"
+  ],
+  "raw_artifacts": [
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/checks.json",
+      "retained_copy": "raw/run-002/checks.json",
+      "sha256": "43aafb9a9ac2ff00382faefeae58b8589689cc2d17fe01ae0d8a5d47f9942ab4",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/context.json",
+      "retained_copy": "raw/run-002/context.json",
+      "sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/findings.json",
+      "retained_copy": "raw/run-002/findings.json",
+      "sha256": "d88bf0cd26a80e923b0d3224d8f6cd204cb93eee19d96539ced5449f41ff47ca",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/full-source.tex",
+      "retained_copy": "raw/run-002/full-source.tex",
+      "sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/manifest.json",
+      "retained_copy": "raw/run-002/manifest.json",
+      "sha256": "03544d2d181dd7048efc26f6923117bbefbf97c0b371c974fcc104b1f5de7633",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/passes/adversarial.md",
+      "retained_copy": "raw/run-002/passes/adversarial.md",
+      "sha256": "a7d42970d142fdd965a4328641406354d1a7a5f5d536113c6c53ce8cd4b11f58",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/passes/claims.md",
+      "retained_copy": "raw/run-002/passes/claims.md",
+      "sha256": "477802c5dd0ee8bc372e9afacf77ad805c7f674e4568b613b1820dce4bf31a1c",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/passes/correctness.md",
+      "retained_copy": "raw/run-002/passes/correctness.md",
+      "sha256": "2d0b4466e639a3d4f7d972a348ab6fe1a7b4ed8843cebd4b4c4ba05aad9ba5d7",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/passes/exposition.md",
+      "retained_copy": "raw/run-002/passes/exposition.md",
+      "sha256": "06eee092f6203a7e5b18f6ea8b2eefc74c9112b90c2dde17e0efe515193e80e9",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/passes/notation.md",
+      "retained_copy": "raw/run-002/passes/notation.md",
+      "sha256": "c4cad90db5b07e884a915ae0915b02496014e57e34bf4b746652fa796d8a4904",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/reconciliation.json",
+      "retained_copy": "raw/run-002/reconciliation.json",
+      "sha256": "91f0745e8601ef52886869454de11e69f5cf435f35adabcbad29b3e6bb4c293c",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/report.md",
+      "retained_copy": "raw/run-002/report.md",
+      "sha256": "b1aac2e89a83f9e7045ea6785a5a930f45e7ef9246bd31be798f57a66ce17a14",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/001-front-matter.tex",
+      "retained_copy": "raw/run-002/sections/001-front-matter.tex",
+      "sha256": "c2b8417493c929ba3692cfdbbfd8120580934cf0c75f982287848152eb0a5d72",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/002-conventions.tex",
+      "retained_copy": "raw/run-002/sections/002-conventions.tex",
+      "sha256": "e20f234348808ac3824b8931021f4d0cf3a572dbe235443edc8425baefcc8044",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/003-cancellation.tex",
+      "retained_copy": "raw/run-002/sections/003-cancellation.tex",
+      "sha256": "33a2320fb29719764b8eaae3c7c3a8390495e1abe898a5047ef0fac92c97b50c",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/004-a-cardinality-estimate.tex",
+      "retained_copy": "raw/run-002/sections/004-a-cardinality-estimate.tex",
+      "sha256": "e696843a4235c93bac75a4a620bfbef127a1c01dffff8f2281e5d102fd84dcf3",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/005-triangular-sums.tex",
+      "retained_copy": "raw/run-002/sections/005-triangular-sums.tex",
+      "sha256": "7a6d994f9089f51d26f74ffca1c4d8541107e8f44f5f787d5811ddb0fea5e7e1",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/006-polynomial-differentiation.tex",
+      "retained_copy": "raw/run-002/sections/006-polynomial-differentiation.tex",
+      "sha256": "3a3244d5031ca77dd76862c90b5aeff45f7552b78175241adb858c4d108fe24d",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/007-organization-of-the-triangular-calculation.tex",
+      "retained_copy": "raw/run-002/sections/007-organization-of-the-triangular-calculation.tex",
+      "sha256": "0cdd42e61d08608c2df6c19f5f83f4dd431ca1fe398681e1c31f32e0893e659b",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/sections/008-references.tex",
+      "retained_copy": "raw/run-002/sections/008-references.tex",
+      "sha256": "ed0e67abc4a9b70b0deca76dff8c164ac3cb54f6761ab05f118fc3ba8a7eb87d",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/specialist-quote-validation.json",
+      "retained_copy": "raw/run-002/specialist-quote-validation.json",
+      "sha256": "2994dc5614482a5aea9b4047c95be77fb5205cd3b57b429ff5a2cb1633db7a58",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/specialists/proof-audit.md",
+      "retained_copy": "raw/run-002/specialists/proof-audit.md",
+      "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/specialists/proof-audit.provenance.json",
+      "retained_copy": "raw/run-002/specialists/proof-audit.provenance.json",
+      "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/survey.md",
+      "retained_copy": "raw/run-002/survey.md",
+      "sha256": "114b289ebe9ce98c18a8a55899cde17d0739b63fb27626ddd4f2f033dddf1a1a",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "original": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/trial-summary.json",
+      "retained_copy": "raw/run-002/trial-summary.json",
+      "sha256": "bf8f05154fb1828092a9d4dcdddf306eb71b07c46709ec6e87d13e437536a3ee",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    }
+  ],
+  "finding_rechecks": [
+    {
+      "id": "F001",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C001"
+    },
+    {
+      "id": "F002",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C002"
+    },
+    {
+      "id": "F003",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C001"
+    },
+    {
+      "id": "F004",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C002"
+    },
+    {
+      "id": "F005",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C003"
+    },
+    {
+      "id": "PA001",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C001"
+    },
+    {
+      "id": "PA002",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C002"
+    },
+    {
+      "id": "PA003",
+      "origin": "raw/run-002/findings.json",
+      "quote_verified_against_current_source": true,
+      "unit_id_present": true,
+      "locator_shifted": false,
+      "evidence_recheck": "rechecks/current-contract.md",
+      "final_concern_id": "C003"
+    }
+  ],
+  "limits": [
+    "No claim of new blind independence",
+    "No complete prior byte pin for every individual self-review lane resource; reread current text plus exact separately pinned specialist resource checks",
+    "Lexical source review; no TeX compilation",
+    "No external leaves or novelty assessment"
+  ],
+  "conclusions_changed": false,
+  "original_hashes_preserved": true,
+  "repository_or_manuscript_edits": false
+}

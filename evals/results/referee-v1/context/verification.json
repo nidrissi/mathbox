@@ -1,0 +1,48 @@
+{
+  "scope": "Artifact consistency checks only, separate from mathematical review.",
+  "input_unchanged": true,
+  "fixture_and_isolated_copy_identical": true,
+  "json_artifacts_parsed": 19,
+  "five_current_lanes_complete_for_all_three_units": true,
+  "all_coverage_artifacts_present": true,
+  "every_prior_lead_reconciled": true,
+  "reconciled_and_corrected_quotes_match_exact_source": true,
+  "report_section_order_and_markdown_math_checked": true,
+  "manuscript_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "executed_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "post_execution_contract_clarification": {
+    "file": "skills/referee/references/output-contract.md",
+    "sha256": "d61307200c7f61e86025760f6d0a56e6202ba59ad4002913d58959f556ccbe8f",
+    "effect": "The parent clarified unstructured prior-lead handling after the review. Its requirement matches the actual intake artifacts. Existing execution and preparation contract hashes were preserved; no mathematical pass reuse was asserted."
+  },
+  "checks_not_run": [
+    {
+      "check": "TeX compilation",
+      "reason": "Lexical/source referee task; no compilation claim made."
+    },
+    {
+      "check": "External literature search",
+      "reason": "No source-dependent or prior-art claim in the supplied manuscript."
+    },
+    {
+      "check": "Repository-wide package validators",
+      "reason": "No repository files changed by this test; parent performs package validation."
+    },
+    {
+      "check": "Specialist proof/computation audit",
+      "reason": "No serious unresolved proof obligation or computational leaf remained."
+    }
+  ],
+  "observed_ambiguities": [
+    {
+      "issue": "Required issue fields versus a minimal historical user-supplied suspicion with unavailable original severity, confidence, source revision and quotation.",
+      "resolution": "Preserve verbatim prior-lead text and unknown fields; link it from findings and reconcile its ID. Parent subsequently made this behavior explicit in output-contract.md."
+    }
+  ],
+  "observed_execution_corrections": [
+    {
+      "issue": "One claims-pass raw note doubled source backslashes.",
+      "resolution": "Raw return preserved; exact source-copy correction recorded in passes/05-current-claims-quote-correction.json and used by final synthesis."
+    }
+  ]
+}

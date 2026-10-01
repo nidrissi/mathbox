@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\title{Cancellation, counting, and polynomial operators}
+\begin{document}
+\maketitle
+\begin{abstract}
+We establish cancellation in commutative rings and show that polynomial
+differentiation has only constant kernel over all fields. We also give a
+uniform estimate for finite collections and a formula for triangular sums.
+\end{abstract}
+\section{Conventions}
+All rings are commutative with identity. We permit the zero ring.
+Write $\mathbb N_0=\{0,1,2,\ldots\}$. For $n\in\mathbb N_0$, let
+$E_n=\{1,\ldots,n\}$, so $E_0=\varnothing$. Throughout the paper set
+$\tau(n)=n(n+1)/2$. A field is assumed nonzero.
+\section{Cancellation}
+\begin{theorem}\label{thm:cancel}
+For every commutative ring $R$ and $a,b,c\in R$, if $ab=ac$ then $b=c$.
+\end{theorem}
+\begin{proof}
+Subtracting gives $a(b-c)=0$. Cancelling $a$ yields $b=c$.
+\end{proof}
+\section{A cardinality estimate}
+\begin{theorem}\label{thm:cardinality}
+For every $n\in\mathbb N_0$, the set $E_n$ satisfies $|E_n|\geq 1$.
+\end{theorem}
+\begin{proof}
+The element $1$ lies in $E_n$, proving the estimate.
+\end{proof}
+\section{Triangular sums}
+\begin{lemma}\label{lem:triangular}
+For $n\in\mathbb N_0$, $\sum_{j=1}^n j=\tau(n)$.
+\end{lemma}
+\begin{proof}
+At $n=0$ both sides vanish. If the identity holds for $n$, then
+$\sum_{j=1}^{n+1}j=\tau(n)+(n+1)=(n+1)(n+2)/2=\tau(n+1)$.
+\end{proof}
+\section{Polynomial differentiation}
+\begin{theorem}\label{thm:derivative}
+If $K$ is a field of characteristic zero and $D:K[x]\to K[x]$ is
+formal differentiation, then $\ker D=K$.
+\end{theorem}
+\begin{proof}
+Writing $f=\sum_{i=0}^d a_i x^i$, the condition $Df=0$ gives $ia_i=0$
+for $i\geq1$. Characteristic zero implies $a_i=0$ for these indices.
+Conversely constants differentiate to zero.
+\end{proof}
+\section{Organization of the triangular calculation}
+The same triangular formula can be derived as follows. Put
+$s=1+2+\cdots+n$. Put $s=n+(n-1)+\cdots+1$. Then
+$2s=(n+1)+(n+1)+\cdots+(n+1)=n(n+1)$. Therefore
+$s=n(n+1)/2$. Applying this arrangement at each index gives the result.
+\section*{References}
+No external results are used in this note.
+\end{document}

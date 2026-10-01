@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "entries": [
+    {
+      "finding_id": "F001",
+      "disposition": "retained",
+      "reason": "Full-source recheck confirms the filter and assertion. Actual output is 16 8; proof-audit verifies an admissible odd-weight counterexample. This canonical concern includes both failed computation coverage and false theorem. Current contract: full manuscript, definitions, quotes and dependency impact rechecked; same source and semantic context. Historical raw/specialist artifacts remain unchanged.",
+      "checked_locations": [
+        "paper.tex:10-18",
+        "paper.tex:21-26"
+      ],
+      "specialist_artifacts": [
+        "project:.mathbox/referee/run-001/specialists/proof-audit.md",
+        "project:.mathbox/referee/run-001/specialists/computation-audit.md",
+        "project:.mathbox/referee/run-001/specialist-command-log.json",
+        "project:computations/supplied/manifest.json",
+        "project:computations/domain-audit/manifest.json",
+        "evidence-recheck.json"
+      ],
+      "final_concern_id": "C001",
+      "prior_reconciliation": "project:.mathbox/referee/run-001/reconciliation.json"
+    },
+    {
+      "finding_id": "F002",
+      "disposition": "merged",
+      "reason": "The checked admissible witness disproves the same universal assertion whose attempted proof filters out all failures. Preserve the witness as decisive evidence under the canonical C001, not a second independently counted defect. Current contract: full manuscript, definitions, quotes and dependency impact rechecked; same source and semantic context. Historical raw/specialist artifacts remain unchanged.",
+      "checked_locations": [
+        "paper.tex:10-14",
+        "paper.tex:23-25"
+      ],
+      "specialist_artifacts": [
+        "project:.mathbox/referee/run-001/specialists/proof-audit.md",
+        "project:.mathbox/referee/run-001/specialists/computation-audit.md",
+        "project:.mathbox/referee/run-001/specialist-command-log.json",
+        "project:computations/supplied/manifest.json",
+        "project:computations/domain-audit/manifest.json",
+        "evidence-recheck.json"
+      ],
+      "final_concern_id": "C001",
+      "prior_reconciliation": "project:.mathbox/referee/run-001/reconciliation.json"
+    }
+  ],
+  "final_concerns": [
+    {
+      "id": "C001",
+      "lane": "correctness",
+      "severity": "critical",
+      "confidence": 1.0,
+      "evidence_status": "confirmed false theorem by exact admissible witness; actual supplied execution and finite full-domain cross-check retained"
+    }
+  ]
+}

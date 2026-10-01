@@ -1,0 +1,45 @@
+{
+  "metadata_scope": "Only frontmatter descriptions in skills/*/SKILL.md and skills/*/agents/openai.yaml were used. No mathematical task was executed for these queries.",
+  "selections": [
+    {
+      "query": "Check the proof of Lemma 4.2",
+      "selected_skill": "proof-audit",
+      "reason": "A focused existing-proof correctness check matches proof-audit and is explicitly outside whole-manuscript referee scope."
+    },
+    {
+      "query": "Proofread this paper",
+      "selected_skill": "proofread-math",
+      "reason": "Explicit mathematical proofreading matches conservative prose, LaTeX, notation, and cross-reference checking."
+    },
+    {
+      "query": "Does citation [17] prove this?",
+      "selected_skill": "literature-check",
+      "reason": "The requested decision depends on an external citation and its exact implication."
+    },
+    {
+      "query": "Referee this entire manuscript",
+      "selected_skill": "referee",
+      "reason": "Whole-manuscript referee assessment is the positive trigger for referee."
+    },
+    {
+      "query": "Audit the enumeration supporting Proposition 2",
+      "selected_skill": "computation-audit",
+      "reason": "A claim-supporting enumeration is a mathematical computation whose correctness and scope need audit."
+    },
+    {
+      "query": "Pursue this research program until we have a proof or counterexample",
+      "selected_skill": "research-program",
+      "reason": "Sustained investigation until a goal is reached matches research-program rather than one bounded route."
+    },
+    {
+      "query": "Find a new proof of this lemma",
+      "selected_skill": "research-attempt",
+      "reason": "An explicit request to attack a single lemma with a new proof is one bounded research route; focused proof-audit excludes invention of a new proof route."
+    },
+    {
+      "query": "Audit this manuscript section by section and reconcile the results",
+      "selected_skill": "referee",
+      "reason": "Section-by-section manuscript audit with final full-source reconciliation is expressly covered by referee."
+    }
+  ]
+}

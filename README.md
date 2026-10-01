@@ -1,19 +1,22 @@
 # Mathbox
 
-`mathbox` is a plugin for Claude Code and Codex with ten Agent Skills for
+`mathbox` is a plugin for Claude Code and Codex with eleven Agent Skills for
 sustained, auditable mathematical research, plus optional standard-library
 Python tools.
 
 Each skill handles one job: research, verification, computation, literature
-work, manuscript integration, or proofreading. Each job has its own evidence
-standard and stopping condition. The canonical distribution is the plugin, but
-every skill can also be installed on its own as a standalone Agent Skill.
+work, manuscript refereeing and integration, or proofreading. Each job has
+its own evidence standard and stopping condition. The canonical distribution
+is the plugin, but every skill can also be installed on its own as a standalone
+Agent Skill.
 
 These are research workflows and safeguards, not a computer algebra system or
 a replacement for mathematical review.
 
 [Changelog](docs/CHANGELOG.md) · [v3 design](docs/design-v3.md) ·
-[v3 validation](docs/validation-v3.md) · [Evaluation protocol](evals/README.md)
+[v3 validation](docs/validation-v3.md) ·
+[Referee validation](docs/referee-validation.md) ·
+[Evaluation protocol](evals/README.md)
 
 ## Installation
 
@@ -108,6 +111,7 @@ Mathbox does not install SageMath, LaTeX, or other project dependencies.
 | [`research-state`](skills/research-state/) | track claim revisions, evidence freshness, dependency impact and ledger handoffs | automatic |
 | [`research-init`](skills/research-init/) | set up or migrate a research repository's agent architecture | explicit |
 | [`research-retrospective`](skills/research-retrospective/) | review a project read-only and choose the next bounded routes | explicit |
+| [`referee`](skills/referee/) | assess an entire manuscript across five review dimensions and reconcile a calibrated referee report | automatic |
 | [`proof-audit`](skills/proof-audit/) | decide whether an existing claim or proof is correct and isolate the exact gap | automatic |
 | [`literature-check`](skills/literature-check/) | verify what an external source proves, check a bounded novelty claim, or cache a source locally | automatic |
 | [`computation-audit`](skills/computation-audit/) | design, run, or audit a computation that supports a claim | automatic |
@@ -131,6 +135,15 @@ Claude Code or `$mathbox:<skill>` in Codex. With standalone installs, use
   grading, not only samples or parity checks.
 - Proofreading never changes an argument. Use `proof-audit` to diagnose a
   proof and `research-attempt` to develop a new one.
+- `referee` owns whole-manuscript assessment. It checks raw findings against
+  the full source, suppresses cross-section false positives, and delegates
+  concrete proof, source and computation obligations to available specialists.
+  Exposition concerns remain distinct from mathematical invalidity; agreement
+  between reviewers is not proof. Focused lemma checks stay with `proof-audit`.
+- `referee` applies user/project model and reasoning preferences through native
+  subagent controls where available. Unavailable settings fall back with explicit
+  provenance; hosts without delegation use sequential self-review. See
+  [model assignments](skills/referee/references/model-assignments.md).
 - `manuscript-integrate` transfers mathematics that has already been
   validated. It does not make conjectural work ready for publication.
 - A failed literature search supports only a bounded search report, never a
@@ -149,6 +162,7 @@ Each line below is a separate Codex prompt. In Claude Code, write
 $mathbox:research-program Pursue this conjecture through distinct proof and counterexample routes. Preserve the original goal and continue after failed attempts.
 $mathbox:research-state Check which claims depend on Lemma K, which evidence is stale, and what to attack next.
 $mathbox:research-init Plan a migration of this repository's AGENTS.md and live status; preserve history and inspect ledger pins before editing.
+$mathbox:referee Referee this entire manuscript and reconcile mathematical, notation, claim and exposition findings against the full source.
 ```
 
 ## Optional local tools
@@ -183,6 +197,13 @@ them.
   of research roles, live files, computation manifests and cache conventions
   before setup or migration. See the
   [existing-repository migration guide](skills/research-init/references/existing-repo-migration.md).
+- **Manuscript preparation** (`referee`). It resolves confined LaTeX inputs,
+  masks comments and literal markup for section extraction, retains original
+  source locators, and writes a new snapshot with stable unit hashes. Optional
+  prior-manifest comparison identifies unchanged text candidates; dependency
+  checks still govern reuse. No Math Scout installation, API adapter or ledger
+  is required. See the
+  [preparation contract](skills/referee/references/preparation.md).
 
 ## Repository layout
 

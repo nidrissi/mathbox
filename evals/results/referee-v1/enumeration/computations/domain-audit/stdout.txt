@@ -1,0 +1,1 @@
+{"population": 16, "checked_by_supplied_filter": 8, "omitted_by_supplied_filter": 8, "witness": [1, 0, 0, 0], "witness_weight": 1, "weight_counts": [1, 4, 6, 4, 1], "independent_representation": "4-bit masks 0..15, bits indexed 0..3"}

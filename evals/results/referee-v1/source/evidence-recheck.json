@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "previous_run": "project:.mathbox/referee/run-001",
+  "previous_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+  "current_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_bytes_same": true,
+  "units_same": true,
+  "context_bytes_same": true,
+  "source_map_same": true,
+  "contract_change": "Preparation helper and documented boundary newline handling only; review lane/output semantics unchanged",
+  "historical_raw_artifacts": [
+    ".mathbox/referee/run-001/raw/correctness.json",
+    ".mathbox/referee/run-001/raw/adversarial.json",
+    ".mathbox/referee/run-001/raw/exposition.json",
+    ".mathbox/referee/run-001/raw/notation.json",
+    ".mathbox/referee/run-001/raw/claims.json"
+  ],
+  "historical_specialist_artifacts": [
+    {
+      "project_path": ".mathbox/referee/run-001/specialists/literature-check.md",
+      "sha256": "1ac3062642979bb50690a1da2447d2d289e13489a31269e14f4d8ded2ecc5eff",
+      "inspected": true,
+      "bytes": 2992
+    },
+    {
+      "project_path": ".mathbox/referee/run-001/specialists/proof-audit.md",
+      "sha256": "75e16a4cc684e291620834ad3d9504275928237a9a9e91c8e509b94a52457697",
+      "inspected": true,
+      "bytes": 2832
+    }
+  ],
+  "actual_recheck": "Fresh whole-source recheck finds P used only in the theorem, V defined by the unavailable source, the rational attribution followed by arbitrary-coefficient invocation, and no internal bridge. Citation key exists. The stipulated synthetic unavailable source remains conditional; no theorem content or counterexample is invented.",
+  "whole_paper_passes_reperformed": [
+    "notation",
+    "claims",
+    "final reconciliation"
+  ],
+  "all_five_dimensions_rechecked": true,
+  "provenance": "same executor, sequential self-review",
+  "computational_runs_reused_after_input_output_checks": false,
+  "new_computational_runs": 0,
+  "computation_manifest_revalidation": [],
+  "automatic_reuse": false
+}

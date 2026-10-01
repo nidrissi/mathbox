@@ -1,0 +1,577 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/referee_independent_grader",
+  "created_at_utc": "2026-09-30T15:59:55.003893+00:00",
+  "method": "Independent derivation and artifact inspection against evals/cases.json; no keyword scoring and no reliance on solver success/confidence labels.",
+  "tool_availability": {
+    "read_raw_and_repository_files": true,
+    "write_new_tmp_grading_artifacts": true,
+    "bounded_local_python_checks": true,
+    "network_authorized": false,
+    "new_subagents_authorized": false,
+    "historical_scripts_rerun": false
+  },
+  "contract_provenance": {
+    "executed_trial_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+    "previous_preparation_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+    "current_clarified_contract_sha256": "5e41983f5185a3447e01e102947cc7d88421a090a44ea7c52105f1a5732bdc56",
+    "changed_resource": "skills/referee/references/output-contract.md",
+    "current_changed_resource_sha256": "d61307200c7f61e86025760f6d0a56e6202ba59ad4002913d58959f556ccbe8f",
+    "judgment": "The new clarification preserves unstructured historical suspicion as prior leads with unknown historical metadata. Context artifacts already do this; remaining fixtures have no such supplied suspicion. Compatibility passes separately from execution provenance. Raw historical hashes were not refreshed and older runs were not relabeled newly executed.",
+    "new_current_clarified_contract_trial_executed": false
+  },
+  "cases": [
+    {
+      "id": "referee-core",
+      "verdict": "pass",
+      "graded_scope": "Completed final report and explicitly linked raw/historical evidence; original defects remain recorded separately.",
+      "fixture": "/home/najib/source/mathbox/evals/fixtures/referee-core.tex",
+      "raw_run": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+      "obligation_assessments": [
+        {
+          "obligation": "Cover all five dimensions and retain exact source evidence",
+          "verdict": "pass",
+          "evidence": "Full source lines 1-57 and all eight units are represented in five lane returns. Current notation/claims and final reconciliation were repeated; earlier local passes and isolated specialist were explicitly reused."
+        },
+        {
+          "obligation": "Use proof-audit to confirm invalid cancellation under the actual ring hypotheses",
+          "verdict": "pass",
+          "evidence": "Raw focused proof-audit normalizes the universal ring statement, derives subtraction, identifies the absent injectivity of multiplication by a, and independently supplies F_2 and Z/4Z witnesses. Its report and original provenance pins are present and preserved."
+        },
+        {
+          "obligation": "Give a valid counterexample, such as R=Z, a=0, b=0, c=1, or a nonzero zero-divisor example",
+          "verdict": "pass",
+          "evidence": "F_2 is an admissible nonzero commutative unital ring. With a=0,b=0,c=1, ab=ac=0 and b!=c. In Z/6Z, (2,0,3) also works with nonzero a; specialist Z/4Z (2,0,2) works. The permitted zero ring alone is not a counterexample."
+        },
+        {
+          "obligation": "Check E_0 is empty and the cardinality claim fails",
+          "verdict": "pass",
+          "evidence": "The source explicitly admits n=0 and E_0=empty. Its cardinality is 0, hence 0<1, and 1 is absent. For n>=1 the existing witness works. The final report calibrates this isolated assertion as major."
+        },
+        {
+          "obligation": "Compare the all-fields headline with characteristic-zero delivery",
+          "verdict": "pass",
+          "evidence": "Abstract lines 9-10 promise all fields; thm:derivative lines 42-43 restricts to characteristic zero. D(x^2)=0 in F_2[x] while x^2 is a nonconstant formal polynomial. In characteristic zero, coefficient uniqueness and invertibility of positive integer scalars prove the actual theorem independently of false universal cancellation."
+        },
+        {
+          "obligation": "Do not flag tau as undefined after reading Conventions",
+          "verdict": "pass",
+          "evidence": "tau is explicitly defined at paper.tex:17 and all uses are consistent. Notation returns no undefined-symbol issue. Both triangular derivations are valid, including n=0."
+        },
+        {
+          "obligation": "Keep raw findings separate from source-reconciled final conclusions",
+          "verdict": "pass",
+          "evidence": "Eight raw IDs F001-F005/PA001-PA003 receive exactly one disposition each and merge into C001-C003. Cardinality and headline raw critical labels are reduced to major with source-based reasons; specialist agreement is not offered as proof."
+        }
+      ],
+      "critical_failure_observed": false,
+      "coverage": "full supplied-source five-dimension review, with declared reuse/rechecks where applicable",
+      "current_contract_compatibility": "compatible artifacts; not newly executed under current clarified hash",
+      "evidence_artifacts": [
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/correctness.md",
+          "retained_path": "evals/results/referee-v1/core/historical/passes/correctness.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/adversarial.md",
+          "retained_path": "evals/results/referee-v1/core/historical/passes/adversarial.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/exposition.md",
+          "retained_path": "evals/results/referee-v1/core/historical/passes/exposition.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/passes/notation.md",
+          "retained_path": "evals/results/referee-v1/core/passes/notation.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/passes/claims.md",
+          "retained_path": "evals/results/referee-v1/core/passes/claims.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialists/proof-audit.md",
+          "retained_path": "evals/results/referee-v1/core/historical/specialists/proof-audit.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialists/proof-audit.provenance.json",
+          "retained_path": "evals/results/referee-v1/core/historical/specialists/proof-audit.provenance.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/rechecks/current-contract.md",
+          "retained_path": "evals/results/referee-v1/core/rechecks/current-contract.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/reuse-recheck.json",
+          "retained_path": "evals/results/referee-v1/core/reuse-recheck.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/findings.json",
+          "retained_path": "evals/results/referee-v1/core/findings.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/reconciliation.json",
+          "retained_path": "evals/results/referee-v1/core/reconciliation.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/report.md",
+          "retained_path": "evals/results/referee-v1/core/report.md"
+        }
+      ],
+      "deviations": []
+    },
+    {
+      "id": "referee-context",
+      "verdict": "pass",
+      "graded_scope": "Completed final report and explicitly linked raw/historical evidence; original defects remain recorded separately.",
+      "fixture": "/home/najib/source/mathbox/evals/fixtures/referee-context.tex",
+      "raw_run": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "manuscript_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+      "obligation_assessments": [
+        {
+          "obligation": "Check the triangular identity including n=0",
+          "verdict": "pass",
+          "evidence": "At n=0 the explicit empty-sum convention gives 0=tau(0). The induction transition n(n+1)/2+(n+1)=(n+1)(n+2)/2=tau(n+1) is valid and stays in the nonnegative integer domain."
+        },
+        {
+          "obligation": "Locate tau's definition in Notation",
+          "verdict": "pass",
+          "evidence": "The exact earlier definition is referee-context.tex:10. Uses at lines 14 and 18 are governed by it; full-source literal search finds no competing meaning."
+        },
+        {
+          "obligation": "If a prior local undefined-symbol finding is supplied, preserve it as raw input but dismiss it with the exact earlier definition",
+          "verdict": "pass",
+          "evidence": "P001 preserves the supplied prior-local-review text verbatim, including its final newline. Historical hashes, severity, confidence, quote and executor remain null. Its sole reconciliation entry dismisses it with exact earlier-definition and use quotes."
+        },
+        {
+          "obligation": "Do not hedge a resolved false positive into Questions for the authors",
+          "verdict": "pass",
+          "evidence": "Questions for the authors and Suggested revisions say None. The resolved undefined-tau suspicion is not retained or hedged."
+        }
+      ],
+      "critical_failure_observed": false,
+      "coverage": "full supplied-source five-dimension review, with declared reuse/rechecks where applicable",
+      "current_contract_compatibility": "compatible artifacts; not newly executed under current clarified hash",
+      "evidence_artifacts": [
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-local-review.txt",
+          "retained_path": "evals/results/referee-v1/context/prior-local-review.txt"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-lead.json",
+          "retained_path": "evals/results/referee-v1/context/prior-lead.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/01-current-correctness.json",
+          "retained_path": "evals/results/referee-v1/context/passes/01-current-correctness.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/02-current-adversarial.json",
+          "retained_path": "evals/results/referee-v1/context/passes/02-current-adversarial.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/03-current-exposition.json",
+          "retained_path": "evals/results/referee-v1/context/passes/03-current-exposition.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-notation.json",
+          "retained_path": "evals/results/referee-v1/context/passes/04-current-notation.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims.json",
+          "retained_path": "evals/results/referee-v1/context/passes/05-current-claims.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims-quote-correction.json",
+          "retained_path": "evals/results/referee-v1/context/passes/05-current-claims-quote-correction.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/findings.json",
+          "retained_path": "evals/results/referee-v1/context/findings.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/reconciliation.json",
+          "retained_path": "evals/results/referee-v1/context/reconciliation.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/report.md",
+          "retained_path": "evals/results/referee-v1/context/report.md"
+        }
+      ],
+      "deviations": [
+        {
+          "kind": "nonexact original raw quotation",
+          "original_artifact": "passes/05-current-claims.json",
+          "original_quote_discipline_verdict": "partial",
+          "correction_artifact": "passes/05-current-claims-quote-correction.json",
+          "final_quote_discipline_verdict": "pass",
+          "reason": "Original claims-note quotation doubles source backslashes. The separate correction copies exact lines, raw note is preserved, and final report/reconciliation use exact evidence. Original return must not be called error-free."
+        }
+      ]
+    },
+    {
+      "id": "referee-exposition",
+      "verdict": "pass",
+      "graded_scope": "Completed final report and explicitly linked raw/historical evidence; original defects remain recorded separately.",
+      "fixture": "/home/najib/source/mathbox/evals/fixtures/referee-exposition.tex",
+      "raw_run": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "manuscript_sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+      "obligation_assessments": [
+        {
+          "obligation": "Verify the telescoping square/cube/fourth-power identities and final algebra",
+          "verdict": "pass",
+          "evidence": "Expansions are j^2-(j-1)^2=2j-1, j^3-(j-1)^3=3j^2-3j+1, and j^4-(j-1)^4=4j^3-6j^2+4j-1. Summing gives n^2=2A-n, n^3=3B-3A+n, n^4=4C-6B+4A-n. Substitution yields A=(n^2+n)/2, B=(2n^3+3n^2+n)/6, and 4C=n^4+2n^3+n^2=n^2(n+1)^2. Every load-bearing display is correct."
+        },
+        {
+          "obligation": "Check n=0",
+          "verdict": "pass",
+          "evidence": "At n=0 all sums A,B,C and all displayed polynomial terms vanish. No division by n occurs; n=1 is also checked, while universal validity rests on telescoping algebra."
+        },
+        {
+          "obligation": "Identify missing strategic signposting with a specific remedy",
+          "verdict": "pass",
+          "evidence": "F001 cites the exact square-difference/telescoping transition and requests a strategy sentence immediately after paper.tex:15: sum consecutive power differences, solve first for A and B, then obtain C from the fourth-power difference."
+        },
+        {
+          "obligation": "Keep exposition separate from mathematical validity and cap its severity at major",
+          "verdict": "pass",
+          "evidence": "C001 remains moderate with confidence 0.90 in Exposition and organization. Main and Other mathematical concerns are empty; the report explicitly regards the telescoping proof as mathematically valid."
+        }
+      ],
+      "critical_failure_observed": false,
+      "coverage": "full supplied-source five-dimension review, with declared reuse/rechecks where applicable",
+      "current_contract_compatibility": "compatible artifacts; not newly executed under current clarified hash",
+      "evidence_artifacts": [
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/correctness.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/adversarial.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/exposition.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/notation.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/claims.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/findings.json",
+          "retained_path": "evals/results/referee-v1/exposition/findings.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/reconciliation.json",
+          "retained_path": "evals/results/referee-v1/exposition/reconciliation.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/evidence-recheck.json",
+          "retained_path": "evals/results/referee-v1/exposition/evidence-recheck.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/report.md",
+          "retained_path": "evals/results/referee-v1/exposition/report.md"
+        }
+      ],
+      "deviations": []
+    },
+    {
+      "id": "referee-source",
+      "verdict": "pass",
+      "graded_scope": "Completed final report and explicitly linked raw/historical evidence; original defects remain recorded separately.",
+      "fixture": "/home/najib/source/mathbox/evals/fixtures/referee-source.tex",
+      "raw_run": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "manuscript_sha256": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+      "obligation_assessments": [
+        {
+          "obligation": "Route the exact coefficient-extension source question through literature-check or document unavailable fallback",
+          "verdict": "pass",
+          "evidence": "Linked run-001 specialists/literature-check.md states the bounded source question, exact required finite-complex/P/all-commutative-ring implication, unavailable bibliographic/version/definition information, and cache-first isolated-project inventory. No external discovery was fabricated for the stipulated synthetic source."
+        },
+        {
+          "obligation": "Distinguish the manuscript's rational input from its arbitrary-ring conclusion",
+          "verdict": "pass",
+          "evidence": "The manuscript-only rational attribution at paper.tex:18-19 is distinguished from the theorem every-ring quantifier and subsequent invocation at lines 19-20. Full source supplies no coefficient bridge."
+        },
+        {
+          "obligation": "Leave source authentication, content and application conditional when the synthetic source is unavailable",
+          "verdict": "pass",
+          "evidence": "Source authentication, exact theorem extraction, V/P semantics and all-ring application remain conditional. Correctness and adversarial coverage are explicitly partial. The proof-audit verdict names an exact general-coefficient source input or a rational input plus a justified transfer as decisive evidence."
+        },
+        {
+          "obligation": "Do not invent prior art or infer a counterexample solely from an unverified citation",
+          "verdict": "pass",
+          "evidence": "No counterexample, external theorem content, known-result claim, author, prior-art or novelty verdict is invented. P/V dependence is merged into C001 rather than asserted as a demonstrated global undefined-symbol defect."
+        }
+      ],
+      "critical_failure_observed": false,
+      "coverage": "partial mathematics, full supplied-source textual review with unavailable external leaves",
+      "current_contract_compatibility": "compatible artifacts; not newly executed under current clarified hash",
+      "evidence_artifacts": [
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/literature-check.md",
+          "retained_path": "evals/results/referee-v1/source/historical-specialists/literature-check.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/proof-audit.md",
+          "retained_path": "evals/results/referee-v1/source/historical-specialists/proof-audit.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/correctness.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/adversarial.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/exposition.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/notation.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/claims.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/findings.json",
+          "retained_path": "evals/results/referee-v1/source/findings.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/reconciliation.json",
+          "retained_path": "evals/results/referee-v1/source/reconciliation.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/evidence-recheck.json",
+          "retained_path": "evals/results/referee-v1/source/evidence-recheck.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/report.md",
+          "retained_path": "evals/results/referee-v1/source/report.md"
+        }
+      ],
+      "deviations": []
+    },
+    {
+      "id": "referee-enumeration",
+      "verdict": "pass",
+      "graded_scope": "Completed final report and explicitly linked raw/historical evidence; original defects remain recorded separately.",
+      "fixture": "/home/najib/source/mathbox/evals/fixtures/referee-enumeration.tex",
+      "raw_run": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002",
+      "raw_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+      "manuscript_sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+      "obligation_assessments": [
+        {
+          "obligation": "Use computation-audit for the load-bearing code",
+          "verdict": "pass",
+          "evidence": "The linked focused computation-audit inspects the manuscript literal and actual iterator, supplies bounded runner provenance, and interprets outputs separately from program success. No new historical execution is claimed during the later recheck."
+        },
+        {
+          "obligation": "Compare sixteen candidates with eight filtered checked vectors",
+          "verdict": "pass",
+          "evidence": "The unmodified supplied code is byte-identical to the manuscript literal and its retained stdout is exactly 16 8 newline. All sixteen four-bit tuples are generated; only eight even-weight tuples enter the assertion loop. An independent bit-mask result contains the full sixteen tuples with eight even and eight odd vectors."
+        },
+        {
+          "obligation": "Explain why the assertion repeats the filter",
+          "verdict": "pass",
+          "evidence": "checked selects sum(v)%2==0 before the loop, and the assert repeats exactly that condition. Passing the assertions is tautological on the selected subset; every odd vector is omitted."
+        },
+        {
+          "obligation": "Check an actual odd-parity vector such as (1,0,0,0) refutes the theorem",
+          "verdict": "pass",
+          "evidence": "The four coordinates of (1,0,0,0) all belong to {0,1}; its weight is 1, hence odd. It directly refutes thm:binary and appears in the retained complete-domain output."
+        },
+        {
+          "obligation": "Separate finite code execution and mathematical proof",
+          "verdict": "pass",
+          "evidence": "Two historical completed run manifests pin original inputs, output logs/result, exact integer arithmetic, length-four bounds and runtime/resource limits. Their hashes and validators pass. Independent exact grading enumeration agrees with the retained population and parity partitions. The report makes no all-length conclusion and does not promote filtered code success to proof."
+        }
+      ],
+      "critical_failure_observed": false,
+      "coverage": "full supplied-source five-dimension review, with declared reuse/rechecks where applicable",
+      "current_contract_compatibility": "compatible artifacts; not newly executed under current clarified hash",
+      "evidence_artifacts": [
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/computation-audit.md",
+          "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/computation-audit.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/proof-audit.md",
+          "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/proof-audit.md"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialist-command-log.json",
+          "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/command-log.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/correctness.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/adversarial.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/exposition.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/notation.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/claims.md",
+          "retained_path": null
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/findings.json",
+          "retained_path": "evals/results/referee-v1/enumeration/findings.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/reconciliation.json",
+          "retained_path": "evals/results/referee-v1/enumeration/reconciliation.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/evidence-recheck.json",
+          "retained_path": "evals/results/referee-v1/enumeration/evidence-recheck.json"
+        },
+        {
+          "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/report.md",
+          "retained_path": "evals/results/referee-v1/enumeration/report.md"
+        }
+      ],
+      "deviations": []
+    }
+  ],
+  "routing": {
+    "verdict": "pass",
+    "scope": "Eight metadata-only primary skill selections; no mathematical task, end-to-end host routing or invocation test.",
+    "artifact": "/tmp/mathbox-referee-context-routing-lc2szztu/routing.json",
+    "retained_artifact": "evals/results/referee-v1/routing/routing.json",
+    "selections": [
+      {
+        "query": "Check the proof of Lemma 4.2",
+        "selected_skill": "proof-audit",
+        "reason": "A focused existing-proof correctness check matches proof-audit and is explicitly outside whole-manuscript referee scope.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Proofread this paper",
+        "selected_skill": "proofread-math",
+        "reason": "Explicit mathematical proofreading matches conservative prose, LaTeX, notation, and cross-reference checking.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Does citation [17] prove this?",
+        "selected_skill": "literature-check",
+        "reason": "The requested decision depends on an external citation and its exact implication.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Referee this entire manuscript",
+        "selected_skill": "referee",
+        "reason": "Whole-manuscript referee assessment is the positive trigger for referee.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Audit the enumeration supporting Proposition 2",
+        "selected_skill": "computation-audit",
+        "reason": "A claim-supporting enumeration is a mathematical computation whose correctness and scope need audit.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Pursue this research program until we have a proof or counterexample",
+        "selected_skill": "research-program",
+        "reason": "Sustained investigation until a goal is reached matches research-program rather than one bounded route.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Find a new proof of this lemma",
+        "selected_skill": "research-attempt",
+        "reason": "An explicit request to attack a single lemma with a new proof is one bounded research route; focused proof-audit excludes invention of a new proof route.",
+        "verdict": "pass"
+      },
+      {
+        "query": "Audit this manuscript section by section and reconcile the results",
+        "selected_skill": "referee",
+        "reason": "Section-by-section manuscript audit with final full-source reconciliation is expressly covered by referee.",
+        "verdict": "pass"
+      }
+    ],
+    "invocation_limit": "research-attempt metadata sets allow_implicit_invocation false. Correct primary selection for new-proof intent does not demonstrate or authorize implicit host invocation of that explicit-only skill."
+  },
+  "summary": {
+    "completed_final_cases_pass": 5,
+    "completed_final_cases_partial": 0,
+    "completed_final_cases_fail": 0,
+    "routing_primary_selections_pass": 8,
+    "observed_original_artifact_contract_deviations": 1,
+    "unrepaired_material_deviations_found": 0,
+    "original_context_quote_error_erased_or_normalized": false
+  },
+  "artifact_checks": "artifact-checks.json",
+  "retained_mapping": "/home/najib/source/mathbox/evals/results/referee-v1/artifact-inventory.json",
+  "checks_run": [
+    "Read full current referee contract/protocol/output/final/lane/preparation references, rubric and every fixture source.",
+    "Read actual five-dimensional returns, serious specialist derivations, complete computation code/results/logs/manifests, reconciliation and final reports.",
+    "Reconstructed ring/cardinality/derivative witnesses, triangular induction/pairing, square/cube/fourth-power telescoping and parity witness directly.",
+    "Independently enumerated the exact sixteen-vector population in grading code; did not rerun historical supplied or domain-audit scripts.",
+    "Checked source/fixture/context/input/output and historical specialist hashes, core original/copy equality, exact issue/evidence/report quotes, unit inventory, all-five-lane coverage, unique exhaustive reconciliation and report headings.",
+    "Revalidated both computation manifests with repository validate_manifest.py --root; both returned 0.",
+    "Compared all 91 selected retained artifacts byte-for-byte with originals and recorded hashes/sizes; all match."
+  ],
+  "checks_not_run": [
+    {
+      "check": "Repository-wide package/Python/Claude validation",
+      "reason": "This grader changes only new temporary grading artifacts; parent owns repository validation."
+    },
+    {
+      "check": "TeX compilation",
+      "reason": "These are full-source referee fixtures with no compiled-paper claim."
+    },
+    {
+      "check": "Network/source authentication",
+      "reason": "Parent authorizes no network; only source fixture is explicitly synthetic and unavailable."
+    },
+    {
+      "check": "New specialist or model benchmark",
+      "reason": "Grading completed raw forward-tests; no subagents or invented baseline authorized."
+    },
+    {
+      "check": "New executions of supplied/domain audit scripts",
+      "reason": "Actual preserved executions, outputs, full result and all input/output hashes checked; independent local exact enumeration suffices."
+    }
+  ],
+  "limits": [
+    "These are five elementary synthetic forward-tests and eight metadata-only selection probes, not a baseline comparison or benchmark of frontier research performance.",
+    "No live large manuscript, PDF-only host, absent-specialist fallback, unsafe/missing-input behavioral run, or substantive changed-definition dependency-reuse trial is graded here; the current provided rechecks concern preparation-only changes.",
+    "Most mathematical lanes and specialists were declared sequential self-review; only the core specialist is declared an isolated fresh derivation. Independent grading does not eliminate shared model error.",
+    "Blinding/tool-execution assertions are assessed only to the extent supported by raw artifacts; complete solver conversation transcripts are not part of this grading input.",
+    "The synthetic external invariant and theorem remain unavailable. Passing its review rubric does not establish its mathematical theorem.",
+    "Artifact consistency and validated manifests support provenance; mathematical judgments come from explicit derivations."
+  ],
+  "files_created": [
+    "grading.json",
+    "grading.md",
+    "artifact-checks.json",
+    "referee-context-artifact-inventory.json",
+    "referee-core-artifact-inventory.json",
+    "referee-enumeration-artifact-inventory.json",
+    "referee-exposition-artifact-inventory.json",
+    "referee-source-artifact-inventory.json"
+  ],
+  "repository_files_changed_by_grader": []
+}

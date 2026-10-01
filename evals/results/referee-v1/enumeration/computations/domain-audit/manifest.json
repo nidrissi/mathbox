@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "claim_id": "C_BINARY",
+  "repository": {
+    "commit": "unavailable",
+    "dirty": true
+  },
+  "command": [
+    "/usr/sbin/python3",
+    "checks/domain_audit.py"
+  ],
+  "environment": {
+    "software": [
+      {
+        "name": "runner-python",
+        "version": "3.14.7"
+      },
+      {
+        "name": "Python",
+        "version": "3.14.7"
+      }
+    ],
+    "hardware": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.44"
+  },
+  "mathematics": {
+    "assertion_tested": "All 16 binary vectors are represented exactly once; 8 have even weight and 8 have odd weight, with explicit witness (1,0,0,0)",
+    "coefficient_domain": "Z, exact Python integers",
+    "conventions": "P(v) iff sum(v) is even; vectors have exactly four binary coordinates",
+    "inputs": [
+      "paper.tex",
+      "checks/domain_audit.py"
+    ],
+    "bounds": {
+      "mask_min": 0,
+      "mask_max": 15,
+      "vector_length": 4,
+      "coordinate_alphabet": [
+        0,
+        1
+      ]
+    },
+    "non_claims": [
+      "Does not establish that every binary vector has even parity",
+      "No claim about vector lengths other than four"
+    ]
+  },
+  "randomness": {
+    "used": false,
+    "generator": "",
+    "seed": null
+  },
+  "run": {
+    "started_at": "2026-09-30T15:16:11.283299+00:00",
+    "runtime_seconds": 0.035419,
+    "exit_status": 0,
+    "status": "completed",
+    "timeout_seconds": 10.0,
+    "max_output_bytes": 1048576,
+    "resource_limits": {
+      "memory_bytes": 268435456,
+      "cpu_seconds": 5,
+      "max_cores": 1,
+      "max_threads": 1
+    },
+    "missing_results": [],
+    "invalid_results": []
+  },
+  "execution_artifacts": [
+    "paper.tex",
+    "checks/domain_audit.py"
+  ],
+  "input_artifacts": [
+    {
+      "path": "paper.tex",
+      "sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+      "sha256_after": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648"
+    },
+    {
+      "path": "checks/domain_audit.py",
+      "sha256": "8e6c8fe94eee8c97d4499bd45740fa229fb1b9527f4bd16a05c6871daa8f0e28",
+      "sha256_after": "8e6c8fe94eee8c97d4499bd45740fa229fb1b9527f4bd16a05c6871daa8f0e28"
+    }
+  ],
+  "output_directory": "computations/domain-audit",
+  "declared_results": [
+    "computations/domain-audit/result.json"
+  ],
+  "outputs": [
+    {
+      "path": "computations/domain-audit/stdout.txt",
+      "sha256": "d0f48ad0573b408d1514cc9dce4e22764e15f03bd5a7e4fb090fcf8b4b5b94b0",
+      "kind": "log"
+    },
+    {
+      "path": "computations/domain-audit/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "log"
+    },
+    {
+      "path": "computations/domain-audit/result.json",
+      "sha256": "ee4d42235e4f513f2dfadb9c6b2cf863deb08646ec2ce627045eefd438c51e17",
+      "kind": "result"
+    }
+  ],
+  "checks": [
+    {
+      "check": "input hashes unchanged",
+      "passed": true
+    },
+    {
+      "check": "process exited successfully within enforced limits",
+      "passed": true
+    },
+    {
+      "check": "declared result files are present and regular",
+      "passed": true
+    }
+  ],
+  "result": "Run completed; mathematical assertion requires interpretation and review.",
+  "residual_risks": [
+    "Command success does not establish the mathematical interpretation.",
+    "Only listed input artifacts are pinned; external dependencies need recorded versions.",
+    "The thread cap uses conventional environment variables; a child program may ignore them.",
+    "The POSIX CPU-time limit is per process, not an aggregate descendant budget."
+  ]
+}

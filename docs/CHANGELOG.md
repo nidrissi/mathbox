@@ -9,6 +9,67 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+### Added
+
+- `referee`: whole-manuscript assessment across correctness, adversarial
+  cases, exposition, notation and claim calibration, adapting Math Scout's
+  shared severity, confidence and exact-evidence discipline. Native agents
+  can divide work by mathematical dependencies; final synthesis rechecks raw
+  findings against the full source, dismisses false positives and merges
+  duplicates. Historical or informal reviewer suspicions retain their original
+  provenance as prior leads until checked. Focused proof, source and computation
+  obligations use available Mathbox specialists. Standalone installations
+  support direct checks and honest sequential self-review without Math Scout
+  or provider SDKs. Review artifacts go to the project's designated review area
+  or a new `referee/<run>/` directory, never under `.mathbox/`, so refereeing
+  never creates a ledger and an existing ledger can pin the report. ([#15])
+- `referee`: standard-library LaTeX preparation with confined input resolution,
+  comment/literal masking, section and context extraction, original source
+  locators and stable hashes. Inputs resolve from the main file's directory as
+  in TeX, and reading stops at `\endinput` and `\end{document}`; CR line ends,
+  brace-delimited `\lstinline` and `alltt` are handled, and a total
+  input-expansion limit bounds repeated inputs. New immutable snapshots retain
+  skipped material; optional prior-manifest comparison identifies unchanged
+  text candidates, including across a renamed main file, without certifying
+  review freshness or requiring a research-state ledger. ([#15])
+- Synthetic manuscript behavioral fixtures and preparation regressions for
+  actual errors, resolved false positives, external/computational leaves and
+  incremental coverage. See the [migration map](referee-migration.md) and
+  [validation evidence](referee-validation.md). ([#15])
+
+### Changed
+
+- `referee` applies role-specific user/project model and reasoning preferences
+  through each host's native delegation controls, including final reconciliation.
+  Reviews continue with disclosed alternatives or sequential self-review when
+  settings or delegation are unavailable. New coverage and reconciliation records
+  distinguish requested settings from confirmed execution settings; unknown and
+  historical model identities remain unknown. ([#15])
+- `proof-audit` handles focused claims and delegated mathematical obligations;
+  whole-manuscript referee reports route to `referee`. Proofreading-only
+  requests retain the `proofread-math` boundary. ([#15])
+- `research-init` treats `referee` as a canonical Mathbox skill: the repository
+  inspector reports a project-local `referee` as an override, and setup never
+  synthesizes a local copy. ([#15])
+- Package validation checks portable resource links in nested reference
+  directories, including the new internal reviewer lanes. ([#15])
+
+### Fixed
+
+- `referee`: preparation stops lexical scanning when TeX stops reading, so
+  unfinished draft literals or arguments after `\endinput` or
+  `\end{document}` cannot reject a valid manuscript. A document-ending input
+  also prevents scanning ignored caller text. ([#15])
+- `referee`: `alltt` state flows through nested inputs and back to callers;
+  cached scans distinguish incoming states, so inputs after literal percent
+  signs are included and changes to those files invalidate the snapshot. ([#15])
+- `referee`: a symlinked main manuscript retains the supplied entry point's
+  directory for input lookup while canonical paths still enforce confinement
+  and identify source files. ([#15])
+- `referee`: input lookup fails when an existing file TeX would read first,
+  such as a `name.tex` symlink, lies outside the project boundary, instead of
+  silently preparing a later in-tree candidate like extensionless `name`. ([#15])
+
 ## [3.2.0] — 2026-09-24 — Deferred handoff ingestion
 
 ### Added
@@ -272,3 +333,4 @@ This history predates versioned releases; the project was first called
 [#11]: https://github.com/nidrissi/mathbox/pull/11
 [#12]: https://github.com/nidrissi/mathbox/pull/12
 [#13]: https://github.com/nidrissi/mathbox/pull/13
+[#15]: https://github.com/nidrissi/mathbox/pull/15
