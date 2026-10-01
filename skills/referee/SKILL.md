@@ -69,19 +69,27 @@ Read each lane contract when assigning or performing that lane:
 | Notation | Whole manuscript, including definitions, conventions and cross-references; [notation.md](references/reviewers/notation.md) |
 | Claims | Whole manuscript, comparing headline promises with delivery and evidenced framing; [claims.md](references/reviewers/claims.md) |
 
-Use isolated native subagents where supported and authorized. Give each a
-specific unit/question, lane contract, shared protocol, exact source revision,
+Read [model-assignments.md](references/model-assignments.md) before assigning
+passes, including final reconciliation. Resolve user/project model and reasoning
+preferences against the host's available native controls. Prefer the prescribed
+settings; continue with a disclosed fallback when they cannot be applied.
+
+Use isolated native subagents where supported and authorized. Apply resolved
+settings through the native delegation controls, not merely in the child prompt.
+Give each a specific unit/question, lane contract, shared protocol, exact source revision,
 raw source, necessary dependency context, and disjoint output scope. Let agents
 request more context; do not give a fresh correctness auditor the suspected
 answer. Bound concurrency by the host's capacity and mathematical usefulness.
 Several lanes may share a pass, and coupled sections may share an agent; do
 not spawn one agent per section per lane mechanically. Coverage of all five
-dimensions is the invariant, not the number of agents.
+dimensions is the invariant, not the number of agents. Split passes when their
+model assignments differ, unless a disclosed fallback makes them compatible.
 
 Without delegation, perform separate sequential passes and label their
 provenance as self-review. Preserve raw returns and disclose failed, partial,
 unreviewed or reused scopes. Do not count a launch as completed coverage.
-Record coverage and structured findings using
+Record requested settings, observed execution settings and fallback reasons
+alongside coverage and structured findings using
 [output-contract.md](references/output-contract.md). An empty issue list is
 valid. Keep low-confidence leads distinct from demonstrated defects.
 

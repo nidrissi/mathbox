@@ -140,6 +140,10 @@ Claude Code or `$mathbox:<skill>` in Codex. With standalone installs, use
   concrete proof, source and computation obligations to available specialists.
   Exposition concerns remain distinct from mathematical invalidity; agreement
   between reviewers is not proof. Focused lemma checks stay with `proof-audit`.
+- `referee` applies user/project model and reasoning preferences through native
+  subagent controls where available. Unavailable settings fall back with explicit
+  provenance; hosts without delegation use sequential self-review. See
+  [model assignments](skills/referee/references/model-assignments.md).
 - `manuscript-integrate` transfers mathematics that has already been
   validated. It does not make conjectural work ready for publication.
 - A failed literature search supports only a bounded search report, never a

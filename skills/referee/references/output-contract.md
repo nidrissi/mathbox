@@ -15,6 +15,37 @@ status (`complete`, `partial`, `not_reviewed`, `reused`). Include all five
 dimensions, skipped scopes with reasons, and failed executions. A complete
 pass with no findings is different from one that never ran.
 
+Each new coverage entry also carries a `model_assignment` object. Use the
+same shape for the final reconciliation executor:
+
+```json
+{
+  "assignment_source": "User request, correctness lane",
+  "requested_model": "<prescribed native model ID>",
+  "requested_reasoning": "<prescribed native reasoning setting>",
+  "actual_model": null,
+  "actual_reasoning": null,
+  "fallback_reason": null
+}
+```
+
+The placeholder strings are illustrative. Requested fields record the
+resolved preference, or `null` when none was prescribed. Actual fields record
+only what the host confirms, or `null` when unavailable. `assignment_source`
+names the user/project instruction and role, or is `null` for host defaults.
+`fallback_reason` is `null` when no deviation is known; otherwise name the
+unsupported setting, unavailable model or delegation limitation and what was
+used instead. Preserve the native launch request/return or session evidence
+alongside raw passes to distinguish the preference from the controls actually
+requested. Explain unknown actual settings in the coverage notes; do not
+invent them from a request, reviewer name or self-identification. See
+[model-assignments.md](model-assignments.md).
+
+These provenance fields are additive within schema version 1. Historical
+artifacts need not be rewritten. Reused coverage keeps the original pass's
+settings, treats absent historical fields as unknown, and notes deviations
+from the current assignment without claiming a new execution.
+
 Each issue requires these fields:
 
 ```json
@@ -67,6 +98,10 @@ Final concerns carry the reconciled severity, confidence and evidence status;
 do not silently inherit an earlier review's confidence. New final-referee
 observations identify their provenance and supporting source too.
 
+For new reviews, top-level `executor`, `method` and `model_assignment` describe
+the pass that actually performed final reconciliation, including self-review
+or a delegated final referee. Preserve its native execution evidence too.
+
 A dismissal reason identifies the actual earlier definition, excluded case,
 valid inference or unsupported objection. A merge reason identifies the shared
 defect. Specialist artifacts need exact checked obligations and versions,
@@ -91,6 +126,8 @@ requires a different report format:
 
 Summary: central objects/results, principal technique, reviewed revision and
 exact coverage, including preparation limits and unfinished checks.
+Summarize model/delegation fallbacks and unexposed execution settings without
+turning them into manuscript concerns or claiming the requested models ran.
 Mathematical concerns: exact locators and searchable evidence, the defect or
 gap, its dependency impact and calibrated status; prioritize critical/major
 confirmed concerns, then local mathematical concerns. Group minor notation

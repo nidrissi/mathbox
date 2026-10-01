@@ -39,6 +39,12 @@ manifests have their own schema versions, independent of the plugin version.
 
 ### Changed
 
+- `referee` applies role-specific user/project model and reasoning preferences
+  through each host's native delegation controls, including final reconciliation.
+  Reviews continue with disclosed alternatives or sequential self-review when
+  settings or delegation are unavailable. New coverage and reconciliation records
+  distinguish requested settings from confirmed execution settings; unknown and
+  historical model identities remain unknown. ([#15])
 - `proof-audit` handles focused claims and delegated mathematical obligations;
   whole-manuscript referee reports route to `referee`. Proofreading-only
   requests retain the `proofread-math` boundary. ([#15])

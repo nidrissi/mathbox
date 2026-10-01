@@ -6,6 +6,9 @@
   {"query": "Stress-test this whole paper.", "should_trigger": true},
   {"query": "Audit this manuscript section by section and reconcile the results.", "should_trigger": true},
   {"query": "Referee this entire manuscript, including a mechanical proofreading component.", "should_trigger": true},
+  {"query": "Referee this paper using the project-prescribed models for correctness, adversarial review and final reconciliation.", "should_trigger": true},
+  {"query": "Give me a whole-manuscript referee report in this host without model selection; disclose any fallback from my preferred review models.", "should_trigger": true},
+  {"query": "Referee this manuscript in a harness without subagents using separate sequential review passes.", "should_trigger": true},
   {"query": "Check the proof of Lemma 4.2.", "should_trigger": false},
   {"query": "Audit the main theorem and isolate its first unproved implication.", "should_trigger": false},
   {"query": "Proofread this paper.", "should_trigger": false},
@@ -13,5 +16,7 @@
   {"query": "Audit the enumeration supporting Proposition 2.", "should_trigger": false},
   {"query": "Try a new proof of this conjecture.", "should_trigger": false},
   {"query": "Pursue this research program until we have a proof or counterexample.", "should_trigger": false},
-  {"query": "Review our research status and recommend what to attack next.", "should_trigger": false}
+  {"query": "Review our research status and recommend what to attack next.", "should_trigger": false},
+  {"query": "Configure my coding harness's default subagent model.", "should_trigger": false},
+  {"query": "Explain how model selection works in this harness.", "should_trigger": false}
 ]

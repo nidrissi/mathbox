@@ -64,6 +64,10 @@ tests; CLI/provider tests exercise the runtime that will not migrate.
   Native isolated agents review disjoint work; the coordinator performs final
   reconciliation. When unavailable, use separate sequential passes and disclose
   self-review.
+- Model assignments now follow user/project preferences through native host
+  controls, with disclosed fallbacks and requested-versus-observed provenance.
+  See [model-assignments.md](../skills/referee/references/model-assignments.md).
+  This does not port Math Scout's CLI presets, provider catalog or runtime.
 - Preparation fails before producing a snapshot on missing, cyclic, excessive
   or out-of-bound inputs. Math Scout warns and may leave input commands or drop
   cycles; a native reviewer must not silently call such a source complete.

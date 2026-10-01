@@ -52,6 +52,15 @@ manuscript. Keep the grader's disposition and diagnosis out of solver context.
 Record a raw suspicion separately from the final conclusion. Routing trials
 must likewise record the selected entry point, not infer it from report wording.
 
+Model-assignment trials reuse `referee-context.tex` with user/project preferences
+and the host's actual available controls. Inspect native launch arguments and
+returns as well as coverage, reconciliation and the report; a requested model
+is not a confirmed execution identity. Cases 11–14 in the referee skill cover
+native selection, partial fallbacks, inherited settings and historical reuse.
+Keep expected outcomes out of the fresh solver context. If a trial simulates
+a host limitation, label it explicitly; it is not evidence that a different
+harness was actually exercised.
+
 These cases test specific failure mechanisms using synthetic, publishable
 artifacts. They contain no project-derived names, paths, statements, outputs or
 provenance. They are not a validated measure of frontier research success. Keep

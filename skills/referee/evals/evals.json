@@ -39,9 +39,9 @@
     },
     {
       "id": 7,
-      "prompt": "Referee an entire manuscript in a host without subagents, helper execution or installed Mathbox specialists. Only the PDF text with reliable page locators is available.",
+      "prompt": "Referee an entire manuscript in a host without subagents, helper execution or installed Mathbox specialists. Only the PDF text with reliable page locators is available. The user prescribes model review-model-A with reasoning setting deep for correctness and final-referee, but this host cannot select or expose its model.",
       "expected_output": "Runs separate sequential dimensions, records honest manual scope and self-review, performs direct focused checks where possible, leaves unverified leaves conditional, and produces a useful report without requiring a ledger or Math Scout.",
-      "assertions": ["Covers or explicitly marks gaps in all five dimensions", "States manual extraction and self-review provenance", "Does not invent hashes, specialist runs or source checks", "Works as a standalone skill"]
+      "assertions": ["Covers or explicitly marks gaps in all five dimensions", "States manual extraction and self-review provenance", "Does not invent hashes, specialist runs or source checks", "Works as a standalone skill", "Records prescribed settings separately from null actual settings and explains the unavailable controls for both correctness and final reconciliation", "Continues sequential review without claiming the prescribed model ran"]
     },
     {
       "id": 8,
@@ -60,6 +60,30 @@
       "prompt": "Referee a multi-file LaTeX manuscript entered through paper.tex, a symlink to src/paper.tex. The entry directory and src each contain distinct intro.tex files. A child input inside alltt contains 50% \\input{extra}; ignored draft text after \\endinput and \\end{document} contains unfinished inline literals. Prepare a new snapshot, then compare another new snapshot after extra.tex changes.",
       "expected_output": "Prepares successfully without scanning ignored drafts, resolves intro.tex from the supplied entry directory, carries alltt state into the child so extra.tex is included and hashed, and marks the changed extra.tex snapshot as invalidating the whole-paper review. Canonical source identities and project confinement remain intact.",
       "assertions": ["Ignored unfinished draft text cannot abort preparation", "Same-line content after endinput is still processed", "Uses the supplied entry directory for lookup before resolving the main symlink", "Includes extra.tex from inside inherited alltt state", "Does not reuse an ordinary-comment cached scan inside alltt", "Changing extra.tex changes source inventory hashes and invalidates the whole-paper comparison", "Retains canonical source locators and refuses inputs outside the project boundary"]
+    },
+    {
+      "id": 11,
+      "prompt": "Referee evals/fixtures/referee-context.tex with native subagents. The project prefers its host's model-A for all roles. The user instead assigns correctness and adversarial to the host's available model-B with reasoning setting high, and final-referee to available model-C. The delegation interface supports all these selections and confirms the actual model and reasoning setting in its returns. Preserve native execution evidence.",
+      "expected_output": "Resolves user preferences over project defaults, sends settings through native launch controls, uses compatible groups for all five lanes, and applies model-C to the actual full-source reconciliation executor. Records prescribed and host-confirmed settings without claiming that model diversity proves correctness.",
+      "assertions": ["Uses native model selection rather than a prompt impersonating model-B", "Applies the supported high reasoning control to correctness and adversarial", "Uses model-A for otherwise unspecified lanes", "Does not combine passes with different resolved models", "Final reconciliation actually reads the full source, coverage, raw findings and relevant specialist artifacts", "Records final-referee execution settings in reconciliation and checks the delegated report before delivery", "Retains native request and return evidence alongside raw passes", "Checks the triangular identity and n=0 without reporting tau as undefined"]
+    },
+    {
+      "id": 12,
+      "prompt": "Referee evals/fixtures/referee-context.tex with native subagents. The user prefers unavailable model-missing with supported reasoning setting high for correctness; for notation, available model-A with unsupported reasoning setting extreme. Other lanes use host defaults. The coordinator cannot change its own model and the prescribed final-referee model is unavailable. The host exposes its available selections and returns actual model identities.",
+      "expected_output": "Continues with available alternatives, preserves each supported part of an assignment, records each specific deviation and actual settings, and produces a source-reconciled report. Failed launches or model-selection limitations are not mathematical defects or completed coverage.",
+      "assertions": ["Does not request a known unavailable ID repeatedly or install a provider to obtain it", "Keeps high reasoning when substituting the correctness model", "Uses available model-A for notation despite its unsupported reasoning preference", "Records requested models and reasoning independently of the controls actually sent and observed settings", "Records the fallback for the actual final reconciliation executor", "Does not place model limitations among mathematical concerns", "If a launch fails, reruns that scope or marks it unreviewed rather than complete"]
+    },
+    {
+      "id": 13,
+      "prompt": "Referee evals/fixtures/referee-context.tex in a host that allows isolated native subagents but exposes no model or reasoning selection and does not disclose actual model identities. Project instructions prescribe model-A for correctness only on a different host. The current user prefers model-B with reasoning setting high for correctness on this host.",
+      "expected_output": "Uses isolated subagents with inherited settings, disregards the other-host project preference, records the current user's preference and unavailable controls, and leaves actual identities unknown. Does not replace useful delegation with self-review solely because model selection is unavailable.",
+      "assertions": ["Uses supported native isolation despite absent model-selection controls", "Does not translate model-A into another provider's presumed equivalent", "Records requested correctness model-B and high reasoning with null actual fields", "Does not infer actual model identity from the coordinator, agent names, child self-identification or echoed requests", "Leaves requested fields null for lanes with no prescribed preference", "Discloses unknown execution settings and fallbacks in Summary"]
+    },
+    {
+      "id": 14,
+      "prompt": "Referee a revised copy of evals/fixtures/referee-context.tex. A prior unchanged local pass has schema-version-1 coverage with no model provenance. The current user prefers model-new for correctness. You also have one historical notation pass whose native return confirms model-old. Review dependencies and decide what can be reused; rerun whole-paper passes and synthesis as required.",
+      "expected_output": "Inspects prior evidence without rewriting it. Unknown historical execution settings stay unknown; known model-old provenance stays attached to its original pass. Reuse is checked against current preferences and dependencies, and any deviation or new execution is explicit.",
+      "assertions": ["Does not relabel historical correctness review as executed with model-new", "Treats absent historical fields as unknown rather than corrupting schema-version-1 artifacts", "Preserves model-old for its historical notation pass", "Reports any reuse deviation from current settings", "Keeps original findings and execution evidence distinct from fresh passes", "Reruns whole-paper passes and final synthesis on source changes"]
     }
   ]
 }
