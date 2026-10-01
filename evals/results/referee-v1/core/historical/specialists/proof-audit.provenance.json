@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "focused-proof-audit-provenance",
+  "executor": "/root/referee_core_trial/focused_proof_audit",
+  "created_at_utc": "2026-09-30T15:21:00.952608+00:00",
+  "manuscript_path": "/tmp/mathbox-referee-core-26dxm_qc/paper.tex",
+  "manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+  "expected_manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+  "source_hash_matches": true,
+  "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+  "contract_hash_limit": "The specialist did not recompute the run-wide preparation contract or inspect its manifest. The parent supplied this contract hash. The raw manuscript hash was independently rechecked; exact specialist instruction resources are pinned separately.",
+  "resources": [
+    {
+      "path": "/home/najib/source/mathbox/skills/proof-audit/SKILL.md",
+      "sha256": "53d5ec20fb8eabb4c18bbe7673f59c9d934eda5f34be8b8af4e15244cfe1e0df",
+      "complete_read": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/proof-audit/references/obligation-checklists.md",
+      "sha256": "3e08c8dc8d5b112c6f6c35f3ab6bb0ba8670bbf019bd55cbd7c31fe3f8dd7412",
+      "complete_read": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/review-protocol.md",
+      "sha256": "6099028d76939def76f7aa090cc0740217ce159e51f3c8ccb4cdae9c2f3a9eb3",
+      "complete_read": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/output-contract.md",
+      "sha256": "cd915222a8760b02880a379786e9c069c203859d28e9e82d519f86ab149cab39",
+      "complete_read": true
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/correctness.md",
+      "sha256": "43d2de3eef2e8fab94ef6ac09245aac1e6049fbdbf766f8be8dc24758f5f6348",
+      "complete_read": true,
+      "purpose": "Finding taxonomy alignment after mathematical audit"
+    },
+    {
+      "path": "/home/najib/source/mathbox/skills/referee/references/reviewers/claims.md",
+      "sha256": "7dfe3523908222585a4f5711c5776c351c50e7f116787507d4958b76611d8f74",
+      "complete_read": true,
+      "purpose": "Finding taxonomy alignment after mathematical audit"
+    }
+  ],
+  "read_source_context": {
+    "lines": [
+      1,
+      57
+    ],
+    "entire_raw_source_read": true,
+    "sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+  },
+  "coverage": [
+    {
+      "scope": "thm:cancel statement and raw proof",
+      "lines": [
+        19,
+        24
+      ],
+      "global_context_lines": [
+        1,
+        57
+      ],
+      "status": "complete",
+      "verdict": "refuted, with the smallest valid counterexample",
+      "method": "Direct ring-domain reconstruction and exact counterexample derivation"
+    },
+    {
+      "scope": "thm:cardinality statement and raw proof",
+      "lines": [
+        26,
+        31
+      ],
+      "global_context_lines": [
+        1,
+        57
+      ],
+      "status": "complete",
+      "verdict": "refuted, with the smallest valid counterexample",
+      "method": "Direct minimum-parameter membership and cardinality check"
+    },
+    {
+      "scope": "abstract polynomial-differentiation assertion versus thm:derivative actual hypotheses and proof",
+      "lines": [
+        [
+          8,
+          12
+        ],
+        [
+          41,
+          49
+        ]
+      ],
+      "global_context_lines": [
+        1,
+        57
+      ],
+      "status": "complete",
+      "verdict": "refuted, with the smallest valid counterexample",
+      "actual_theorem_verdict": "proved as written",
+      "method": "Coefficient reconstruction of characteristic-zero proof and exact positive-characteristic counterexample"
+    }
+  ],
+  "primary_verdict": "refuted, with the smallest valid counterexample",
+  "issues": [
+    {
+      "id": "PA001",
+      "lane": "correctness",
+      "title": "Universal cancellation fails",
+      "severity": "critical",
+      "type": "hidden-hypothesis",
+      "confidence": 0.99,
+      "location": "Theorem labelled thm:cancel, paper.tex:20; proof paper.tex:23",
+      "quote": "Subtracting gives $a(b-c)=0$. Cancelling $a$ yields $b=c$.",
+      "analysis": "The domain includes F_2 and a=0, b=0, c=1. Then ab=ac=0 but b is not c. The proof requires injectivity of multiplication by a. Nonzero alone is insufficient, as a=2 in Z/4Z with b=0, c=2 shows.",
+      "suggested_fix": "Require multiplication by a to be injective, or state a sufficient exact hypothesis such as a being a unit; align the cancellation promise with that restriction.",
+      "unit_id": null,
+      "reviewer": "focused_proof_audit",
+      "statement_quote": "For every commutative ring $R$ and $a,b,c\\in R$, if $ab=ac$ then $b=c$.",
+      "counterexample": {
+        "ring": "F_2",
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "ab": 0,
+        "ac": 0,
+        "domain_verified": true,
+        "conclusion_fails": true
+      }
+    },
+    {
+      "id": "PA002",
+      "lane": "correctness",
+      "title": "Cardinality estimate includes the empty set",
+      "severity": "major",
+      "type": "hidden-hypothesis",
+      "confidence": 0.99,
+      "location": "Theorem labelled thm:cardinality, paper.tex:27; proof paper.tex:30; convention paper.tex:15-16",
+      "quote": "For every $n\\in\\mathbb N_0$, the set $E_n$ satisfies $|E_n|\\geq 1$.",
+      "analysis": "The explicit conventions admit n=0 and set E_0 to the empty set, whose cardinality is zero. The proof witness 1 is not a member in this case.",
+      "suggested_fix": "Restrict the estimate to n>=1, or state the exact cardinality |E_n|=n with the zero case included.",
+      "unit_id": null,
+      "reviewer": "focused_proof_audit",
+      "proof_quote": "The element $1$ lies in $E_n$, proving the estimate.",
+      "counterexample": {
+        "n": 0,
+        "E_n": "empty set",
+        "cardinality": 0,
+        "domain_verified": true,
+        "conclusion_fails": true
+      }
+    },
+    {
+      "id": "PA003",
+      "lane": "claims",
+      "title": "Abstract extends differentiation beyond the established field hypothesis",
+      "severity": "major",
+      "type": "overclaim",
+      "confidence": 0.99,
+      "location": "Abstract paper.tex:9-10 versus thm:derivative, paper.tex:42-48",
+      "quote": "We establish cancellation in commutative rings and show that polynomial\ndifferentiation has only constant kernel over all fields. We also give a",
+      "analysis": "The written theorem and its proof require characteristic zero. Over the admitted field F_2, x^2 is a nonconstant formal polynomial with derivative 2x=0. The characteristic-zero coefficient proof is valid independently of the false ring-cancellation theorem.\nThe delivered theorem is exactly:\nIf $K$ is a field of characteristic zero and $D:K[x]\\to K[x]$ is\nformal differentiation, then $\\ker D=K$.",
+      "suggested_fix": "Restrict the abstract assertion to fields of characteristic zero, or add the correct positive-characteristic kernel statement and proof.",
+      "unit_id": null,
+      "reviewer": "focused_proof_audit",
+      "theorem_quote": "If $K$ is a field of characteristic zero and $D:K[x]\\to K[x]$ is\nformal differentiation, then $\\ker D=K$.",
+      "counterexample": {
+        "field": "F_2",
+        "polynomial": "x^2",
+        "formal_derivative": "2x = 0",
+        "nonconstant": true,
+        "domain_verified": true,
+        "conclusion_fails": true
+      }
+    }
+  ],
+  "raw_quotes_preserved_from_source": true,
+  "prepared_unit_ids_unavailable": true,
+  "fresh_review_inputs": {
+    "author_verdict_received": false,
+    "parent_suspected_answer_received": false,
+    "prior_findings_read": false,
+    "evals_read": false,
+    "migration_docs_read": false,
+    "subagents_spawned": false
+  },
+  "actual_checks": [
+    "Full 57-line raw manuscript read",
+    "Source SHA256 compared with delegated hash",
+    "Global ring, field, N_0 and E_0 conventions checked",
+    "Cancellation proof subtraction and injectivity implication checked",
+    "F_2 zero-multiplier counterexample membership and equality/conclusion checked",
+    "Z/4Z nonzero-multiplier diagnostic membership and equality/conclusion checked",
+    "Cardinality witness checked at n=0 and n>=1",
+    "Characteristic-zero coefficient proof checked in both directions",
+    "F_2[x] x^2 counterexample membership, derivative and nonconstancy checked",
+    "Full source checked for qualifying hypotheses or alternate proof that changes these obligations"
+  ],
+  "mathematical_programs_run": [],
+  "external_sources_used": [],
+  "limits": [
+    "No certification of other manuscript claims or other referee lanes",
+    "No repository or manuscript modifications",
+    "No external theorem leaf required",
+    "Shared model errors remain possible despite fresh specialist derivation",
+    "Repository package/Claude/helper checks were not applicable because only specialist artifacts were created"
+  ],
+  "report": {
+    "path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-002/specialists/proof-audit.md",
+    "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18"
+  },
+  "contract_sha256_source": "Direct parent message after a preparation-only main-path correction; no mathematical obligation changed.",
+  "placement_update": {
+    "reason": "Preparation-only main-path correction communicated by parent",
+    "from": "run-001",
+    "to": "run-002",
+    "old_artifacts_preserved": {
+      "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-001/specialists/proof-audit.md": "85b690edef01ca3f040bf6ab648ec6ce9f98e95899aa8f93c500f6a81b50f06a",
+      "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-001/specialists/proof-audit.provenance.json": "3819ff7c8b1c42c092649ef9c6afd5b84af3cd551154ff910b571f06a920ec9d"
+    },
+    "mathematical_targets_unchanged": true,
+    "mathematical_derivations_unchanged": true,
+    "taxonomy_only_adjustments": {
+      "PA002": "hidden-hypothesis",
+      "PA003": "overclaim"
+    }
+  },
+  "artifact_validation": {
+    "status": "passed",
+    "checks": [
+      "Source SHA256 unchanged",
+      "All five exact source quote blocks retained",
+      "No report template placeholders remain",
+      "Report SHA256 recorded",
+      "Original run-001 artifacts unchanged",
+      "Provenance JSON serialization round-trip valid"
+    ],
+    "mathematical_correctness_limit": "Artifact consistency checks are provenance checks, not proof verification."
+  }
+}

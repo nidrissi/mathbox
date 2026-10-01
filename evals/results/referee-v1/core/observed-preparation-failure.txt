@@ -1,0 +1,5 @@
+Command from cwd /home/najib/source/mathbox:
+python3 /home/najib/source/mathbox/skills/referee/scripts/prepare_manuscript.py paper.tex --root /tmp/mathbox-referee-core-26dxm_qc --output /tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-001
+Observed exit code 2:
+Preparation failed: Refusing input outside project boundary: /home/najib/source/mathbox/paper.tex
+No snapshot manifest created.

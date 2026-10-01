@@ -1,0 +1,15 @@
+{
+  "id": "P001",
+  "raw_text": "A prior local review of the Identity section says that tau is undefined.\n",
+  "reported_scope": "Identity section",
+  "reported_allegation": "tau is undefined",
+  "provenance": "User-supplied description of a prior local review; the historical review itself was not supplied.",
+  "historical_source_sha256": null,
+  "historical_contract_sha256": null,
+  "historical_severity": null,
+  "historical_confidence": null,
+  "historical_quote": null,
+  "historical_executor": null,
+  "reuse_status": "Not reused or counted toward current coverage.",
+  "raw_artifact": "prior-local-review.txt"
+}

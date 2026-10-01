@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "f9fb02302c62077b4f14380621fb94b26faabb5971194b1a7df67784e8339425",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "coverage": [
+    {
+      "lanes": [
+        "exposition"
+      ],
+      "scope": "Entire supplied source read including bibliography; semantic mathematics conditional on unavailable external source",
+      "reviewed_unit_ids": [
+        "sha256:098c46e662353a4ee67f0c08df45036e257b79b37c1df78d281173c95d85a7c4:1",
+        "sha256:785508c2ffe2bf82f0fbdc72b0f0f054d6082a16ef8e979d397a4acd2bb2ebca:1",
+        "sha256:f410ace58b52d7cee4e76793f25c92436ec0bdc25c3c29eb9704ea93ed69e8b0:1"
+      ],
+      "locators": [
+        "paper.tex:1-25"
+      ],
+      "context_units": [
+        {
+          "unit_id": "sha256:098c46e662353a4ee67f0c08df45036e257b79b37c1df78d281173c95d85a7c4:1",
+          "sha256": "bf78142633ae501d7271f6b3399c9caecc54628616813c95f03d288083b62ec2"
+        },
+        {
+          "unit_id": "sha256:785508c2ffe2bf82f0fbdc72b0f0f054d6082a16ef8e979d397a4acd2bb2ebca:1",
+          "sha256": "e2a6022129ef4f37cdd6d335066435391e9e6071d7a765b0f121ce6415d9b807"
+        },
+        {
+          "unit_id": "sha256:f410ace58b52d7cee4e76793f25c92436ec0bdc25c3c29eb9704ea93ed69e8b0:1",
+          "sha256": "4e7b6340c254b0ec63ff33a249f4c5d627ba90eb0b0e3280ae065d11cee35df3"
+        },
+        {
+          "unit_id": "sha256:028cfe516d78a76b9df4959bd52124886a0adddda7b1ae52bd463e6642932e65:1",
+          "sha256": "091dcdc7c802360bd55121a788f8f18b7b6b9954108be82075d39b47f7a1932c"
+        }
+      ],
+      "context_sha256": "3b726542076311a2d08f40335f87c7ef198263fa8c2d74acdedb14d464100a63",
+      "executor": "single executor, self-review; no delegation",
+      "method": "Current-contract full-source and context recheck; notation/claims and final reconciliation performed anew; prior bounded checks inspected with exact dependencies before reuse",
+      "status": "complete",
+      "unresolved_scopes": [],
+      "skipped_scopes": [
+        {
+          "unit_id": "sha256:028cfe516d78a76b9df4959bd52124886a0adddda7b1ae52bd463e6642932e65:1",
+          "reason": "Bibliography inspected at paper.tex:22-24; bibliographic metadata only, no internal proof to audit"
+        }
+      ],
+      "prior_artifact": "project:.mathbox/referee/run-001/raw/exposition.json",
+      "reuse_scope": "Previous substantive checked observations after source/context/dependency recheck; no hash-only automatic reuse"
+    }
+  ],
+  "issues": []
+}

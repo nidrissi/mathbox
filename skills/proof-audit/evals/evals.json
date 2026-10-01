@@ -2,6 +2,12 @@
   "skill_name": "proof-audit",
   "evals": [
     {
+      "id": 8,
+      "prompt": "Check the proof of Lemma 4.2. It is one step in a longer manuscript, but only this lemma's correctness is requested.",
+      "expected_output": "Performs a focused proof audit under the actual hypotheses, without launching a whole-paper referee workflow. Whole-manuscript referee reports route to referee; serious obligations delegated from that skill still use proof-audit.",
+      "assertions": ["Keeps the requested lemma as the audit target", "Reads only necessary dependency context", "Does not substitute a whole-manuscript report"]
+    },
+    {
       "id": 1,
       "prompt": "Audit this claim in a commutative ring: if ab=ac then b=c. The proof cancels a from both sides without another hypothesis.",
       "expected_output": "Rejects the claim as written, identifies the missing cancellability/non-zero-divisor condition, and supplies a small counterexample.",

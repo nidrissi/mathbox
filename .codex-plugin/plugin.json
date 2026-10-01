@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Mathbox",
     "shortDescription": "Rigorous AI-assisted research",
-    "longDescription": "Pursue research goals across distinct routes, track exact claim revisions and evidence dependencies, audit proofs and sources, and record reproducible bounded experiments. Portable skills with optional local Python tooling.",
+    "longDescription": "Pursue research goals across distinct routes, track claim revisions and evidence dependencies, referee manuscripts, audit proofs and sources, and record reproducible bounded experiments. Portable skills with optional local Python tooling.",
     "developerName": "Najib Idrissi-Kaïtouni",
     "category": "Education & Research",
     "capabilities": [

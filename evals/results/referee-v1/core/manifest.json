@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "preparation_version": 1,
+  "main": "paper.tex",
+  "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+  "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_files_sha256": "31b6c600beadfbd3daac9fad32148b11736ae2ede7eaf562265e9bc17738b0cc",
+  "sources": [
+    {
+      "path": "paper.tex",
+      "sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+      "bytes": 2220
+    }
+  ],
+  "source_map": [
+    {
+      "expanded_start": 0,
+      "expanded_end": 2220,
+      "path": "paper.tex",
+      "source_start": 0,
+      "source_end": 2220,
+      "source_line": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+      "sha256": "c2b8417493c929ba3692cfdbbfd8120580934cf0c75f982287848152eb0a5d72",
+      "identity_sha256": "e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf",
+      "title": "Front matter",
+      "kind": "front-matter",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/001-front-matter.tex",
+      "expanded_start": 189,
+      "expanded_end": 453,
+      "location": {
+        "path": "paper.tex",
+        "line": 6
+      }
+    },
+    {
+      "id": "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+      "sha256": "e20f234348808ac3824b8931021f4d0cf3a572dbe235443edc8425baefcc8044",
+      "identity_sha256": "7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d",
+      "title": "Conventions",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/002-conventions.tex",
+      "expanded_start": 453,
+      "expanded_end": 723,
+      "location": {
+        "path": "paper.tex",
+        "line": 13
+      }
+    },
+    {
+      "id": "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+      "sha256": "33a2320fb29719764b8eaae3c7c3a8390495e1abe898a5047ef0fac92c97b50c",
+      "identity_sha256": "697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c",
+      "title": "Cancellation",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/003-cancellation.tex",
+      "expanded_start": 723,
+      "expanded_end": 951,
+      "location": {
+        "path": "paper.tex",
+        "line": 18
+      }
+    },
+    {
+      "id": "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+      "sha256": "e696843a4235c93bac75a4a620bfbef127a1c01dffff8f2281e5d102fd84dcf3",
+      "identity_sha256": "e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd",
+      "title": "A cardinality estimate",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/004-a-cardinality-estimate.tex",
+      "expanded_start": 951,
+      "expanded_end": 1184,
+      "location": {
+        "path": "paper.tex",
+        "line": 25
+      }
+    },
+    {
+      "id": "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+      "sha256": "7a6d994f9089f51d26f74ffca1c4d8541107e8f44f5f787d5811ddb0fea5e7e1",
+      "identity_sha256": "4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0",
+      "title": "Triangular sums",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/005-triangular-sums.tex",
+      "expanded_start": 1184,
+      "expanded_end": 1455,
+      "location": {
+        "path": "paper.tex",
+        "line": 32
+      }
+    },
+    {
+      "id": "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+      "sha256": "3a3244d5031ca77dd76862c90b5aeff45f7552b78175241adb858c4d108fe24d",
+      "identity_sha256": "d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32",
+      "title": "Polynomial differentiation",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/006-polynomial-differentiation.tex",
+      "expanded_start": 1455,
+      "expanded_end": 1859,
+      "location": {
+        "path": "paper.tex",
+        "line": 40
+      }
+    },
+    {
+      "id": "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+      "sha256": "0cdd42e61d08608c2df6c19f5f83f4dd431ca1fe398681e1c31f32e0893e659b",
+      "identity_sha256": "1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7",
+      "title": "Organization of the triangular calculation",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/007-organization-of-the-triangular-calculation.tex",
+      "expanded_start": 1859,
+      "expanded_end": 2140,
+      "location": {
+        "path": "paper.tex",
+        "line": 50
+      }
+    },
+    {
+      "id": "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1",
+      "sha256": "ed0e67abc4a9b70b0deca76dff8c164ac3cb54f6761ab05f118fc3ba8a7eb87d",
+      "identity_sha256": "9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b",
+      "title": "References",
+      "kind": "section",
+      "reviewable": false,
+      "skip_reason": "Obvious non-mathematical section title",
+      "file": "sections/008-references.tex",
+      "expanded_start": 2140,
+      "expanded_end": 2205,
+      "location": {
+        "path": "paper.tex",
+        "line": 55
+      }
+    }
+  ],
+  "limitations": [
+    "Lexical preparation only: no TeX execution or arbitrary macro expansion.",
+    "Conditionals, catcode changes, includeonly and custom input/section macros need manual inspection.",
+    "Literal masking covers verb/lstinline and common verbatim/listing/comment environments, not every package.",
+    "Bibliography files, graphics and package inputs are not loaded or authenticated.",
+    "Context is an extraction index; its order is not manuscript theorem numbering.",
+    "Hash comparison identifies text candidates, not dependency freshness or completed reviews."
+  ],
+  "comparison": {
+    "previous_source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+    "candidate_unchanged": [
+      "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+      "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+      "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+      "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+      "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1",
+      "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+      "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+      "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1"
+    ],
+    "added": [],
+    "removed": [],
+    "ambiguous": [],
+    "contract_changed": true,
+    "global_context_changed": false,
+    "whole_paper_invalidated": true,
+    "reuse_requires_context_check": true
+  }
+}

@@ -9,6 +9,37 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+### Added
+
+- `referee`: whole-manuscript assessment across correctness, adversarial
+  cases, exposition, notation and claim calibration, adapting Math Scout's
+  shared severity, confidence and exact-evidence discipline. Native agents
+  can divide work by mathematical dependencies; final synthesis rechecks raw
+  findings against the full source, dismisses false positives and merges
+  duplicates. Historical or informal reviewer suspicions retain their original
+  provenance as prior leads until checked. Focused proof, source and computation
+  obligations use available Mathbox specialists. Standalone installations
+  support direct checks and honest sequential self-review without Math Scout
+  or provider SDKs. ([#15])
+- `referee`: standard-library LaTeX preparation with confined input resolution,
+  comment/literal masking, section and context extraction, original source
+  locators and stable hashes. New immutable snapshots retain skipped material;
+  optional prior-manifest comparison identifies unchanged text candidates
+  without certifying review freshness or requiring a research-state ledger.
+  ([#15])
+- Synthetic manuscript behavioral fixtures and preparation regressions for
+  actual errors, resolved false positives, external/computational leaves and
+  incremental coverage. See the [migration map](referee-migration.md) and
+  [validation evidence](referee-validation.md). ([#15])
+
+### Changed
+
+- `proof-audit` handles focused claims and delegated mathematical obligations;
+  whole-manuscript referee reports route to `referee`. Proofreading-only
+  requests retain the `proofread-math` boundary. ([#15])
+- Package validation checks portable resource links in nested reference
+  directories, including the new internal reviewer lanes. ([#15])
+
 ## [3.2.0] — 2026-09-24 — Deferred handoff ingestion
 
 ### Added
@@ -272,3 +303,4 @@ This history predates versioned releases; the project was first called
 [#11]: https://github.com/nidrissi/mathbox/pull/11
 [#12]: https://github.com/nidrissi/mathbox/pull/12
 [#13]: https://github.com/nidrissi/mathbox/pull/13
+[#15]: https://github.com/nidrissi/mathbox/pull/15

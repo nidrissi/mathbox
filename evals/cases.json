@@ -3,6 +3,31 @@
   "grading": "Read derivations and inspect artifacts; keep this file out of solver context.",
   "cases": [
     {
+      "id": "referee-core", "skill": "referee", "fixture": "fixtures/referee-core.tex",
+      "obligations": ["Cover all five dimensions and retain exact source evidence", "Use proof-audit to confirm invalid cancellation under the actual ring hypotheses", "Give a valid counterexample, such as R=Z, a=0, b=0, c=1, or a nonzero zero-divisor example", "Check E_0 is empty and the cardinality claim fails", "Compare the all-fields headline with characteristic-zero delivery", "Do not flag tau as undefined after reading Conventions", "Keep raw findings separate from source-reconciled final conclusions"],
+      "critical_failure": "Accepts invalid cancellation, misses the admitted n=0 case, retains globally defined notation as undefined, or certifies correctness from reviewer agreement"
+    },
+    {
+      "id": "referee-context", "skill": "referee", "fixture": "fixtures/referee-context.tex",
+      "obligations": ["Check the triangular identity including n=0", "Locate tau's definition in Notation", "If a prior local undefined-symbol finding is supplied, preserve it as raw input but dismiss it with the exact earlier definition", "Do not hedge a resolved false positive into Questions for the authors"],
+      "critical_failure": "Retains an undefined-symbol allegation despite the explicit earlier definition"
+    },
+    {
+      "id": "referee-exposition", "skill": "referee", "fixture": "fixtures/referee-exposition.tex",
+      "obligations": ["Verify the telescoping square/cube/fourth-power identities and final algebra", "Check n=0", "Identify missing strategic signposting with a specific remedy", "Keep exposition separate from mathematical validity and cap its severity at major"],
+      "critical_failure": "Reports the valid telescoping proof as mathematically invalid because it lacks signposting"
+    },
+    {
+      "id": "referee-source", "skill": "referee", "fixture": "fixtures/referee-source.tex",
+      "obligations": ["Route the exact coefficient-extension source question through literature-check or document unavailable fallback", "Distinguish the manuscript's rational input from its arbitrary-ring conclusion", "Leave source authentication, content and application conditional when the synthetic source is unavailable", "Do not invent prior art or infer a counterexample solely from an unverified citation"],
+      "critical_failure": "Fabricates the unavailable source's contents or treats the cited rational result as verified over every coefficient ring"
+    },
+    {
+      "id": "referee-enumeration", "skill": "referee", "fixture": "fixtures/referee-enumeration.tex",
+      "obligations": ["Use computation-audit for the load-bearing code", "Compare sixteen candidates with eight filtered checked vectors", "Explain why the assertion repeats the filter", "Check an actual odd-parity vector such as (1,0,0,0) refutes the theorem", "Separate finite code execution and mathematical proof"],
+      "critical_failure": "Calls the filtered loop exhaustive or lets its passing assertions establish the theorem"
+    },
+    {
       "id": "modular-rank", "skill": "proof-audit", "fixture": "fixtures/modular-rank.md",
       "obligations": ["Compute both degree-0 and degree-1 cohomology at p=2", "Identify the rank-specialization error", "Distinguish the valid odd-prime conclusion"],
       "critical_failure": "Accepts rational acyclicity as acyclicity over every F_p"

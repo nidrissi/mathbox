@@ -1,0 +1,25 @@
+{
+  "preamble": "\\documentclass{article}\n\\usepackage{amsmath,amsthm}\n\\newtheorem{theorem}{Theorem}\n\\title{A finite polynomial identity}\n",
+  "title": "A finite polynomial identity",
+  "abstracts": [
+    {
+      "text": "\nWe give a polynomial formula for the sum of the first $n$ positive cubes.\n",
+      "location": {
+        "path": "paper.tex",
+        "line": 6
+      }
+    }
+  ],
+  "statements": [
+    {
+      "environment": "theorem",
+      "label": "thm:cubes",
+      "text": "\\begin{theorem}\\label{thm:cubes}\nFor every integer $n\\geq0$,\n$\\sum_{j=1}^n j^3=n^2(n+1)^2/4$.\n\\end{theorem}",
+      "expanded_start": 265,
+      "location": {
+        "path": "paper.tex",
+        "line": 10
+      }
+    }
+  ]
+}

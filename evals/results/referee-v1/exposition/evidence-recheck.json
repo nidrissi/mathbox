@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "previous_run": "project:.mathbox/referee/run-002",
+  "previous_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+  "current_contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_bytes_same": true,
+  "units_same": true,
+  "context_bytes_same": true,
+  "source_map_same": true,
+  "contract_change": "Preparation helper and documented boundary newline handling only; review lane/output semantics unchanged",
+  "historical_raw_artifacts": [
+    ".mathbox/referee/run-002/raw/correctness.json",
+    ".mathbox/referee/run-002/raw/adversarial.json",
+    ".mathbox/referee/run-002/raw/exposition.json",
+    ".mathbox/referee/run-002/raw/notation.json",
+    ".mathbox/referee/run-002/raw/claims.json"
+  ],
+  "historical_specialist_artifacts": [],
+  "actual_recheck": "Fresh full-source recheck reconstructs the difference/telescoping equations for A,B,C, checks A=n(n+1)/2, B=n(n+1)(2n+1)/6, 4C=n^4+6B-4A+n=n^4+2n^3+n^2, factors the conclusion, and handles empty n=0 and n=1. Abstract scope and all notation checked; the only concern remains the implicit strategy.",
+  "whole_paper_passes_reperformed": [
+    "notation",
+    "claims",
+    "final reconciliation"
+  ],
+  "all_five_dimensions_rechecked": true,
+  "provenance": "same executor, sequential self-review",
+  "computational_runs_reused_after_input_output_checks": false,
+  "new_computational_runs": 0,
+  "computation_manifest_revalidation": [],
+  "automatic_reuse": false
+}

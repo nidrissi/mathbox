@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "coverage": [
+    {
+      "lanes": [
+        "correctness"
+      ],
+      "scope": "Full manuscript: front matter, preamble, conventions, all five result/argument sections, and inspected references",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "referee_core_trial",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Separate sequential self-review pass over raw full source; no prior evaluation or conclusion artifacts supplied",
+      "status": "reused",
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "adversarial"
+      ],
+      "scope": "Full manuscript: front matter, preamble, conventions, all five result/argument sections, and inspected references",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "referee_core_trial",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Separate sequential self-review pass over raw full source; no prior evaluation or conclusion artifacts supplied",
+      "status": "reused",
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "exposition"
+      ],
+      "scope": "Full manuscript: front matter, preamble, conventions, all five result/argument sections, and inspected references",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "referee_core_trial",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Separate sequential self-review pass over raw full source; no prior evaluation or conclusion artifacts supplied",
+      "status": "reused",
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "notation"
+      ],
+      "scope": "Full manuscript: front matter, preamble, conventions, all five result/argument sections, and inspected references",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "referee_core_trial",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Separate sequential self-review pass over raw full source; no prior evaluation or conclusion artifacts supplied",
+      "status": "reused",
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "claims"
+      ],
+      "scope": "Full manuscript: front matter, preamble, conventions, all five result/argument sections, and inspected references",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "referee_core_trial",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Separate sequential self-review pass over raw full source; no prior evaluation or conclusion artifacts supplied",
+      "status": "reused",
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "correctness",
+        "adversarial"
+      ],
+      "scope": "References inspected at paper.tex:55-56; no mathematical claim or external citation",
+      "reviewed_unit_ids": [
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "referee_core_trial",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Read before accepting nonmathematical skip",
+      "status": "reused",
+      "skipped_obligations": [
+        {
+          "scope": "Proof checking within references",
+          "reason": "Text is only: No external results are used in this note."
+        }
+      ],
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "correctness",
+        "adversarial",
+        "claims"
+      ],
+      "scope": "Fresh proof-audit obligations: thm:cancel, thm:cardinality, abstract differentiation versus thm:derivative",
+      "reviewed_unit_ids": [
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1"
+      ],
+      "locators": [
+        "paper.tex:19-24",
+        "paper.tex:26-31",
+        "paper.tex:8-12",
+        "paper.tex:41-49"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012"
+      },
+      "executor": "/root/referee_core_trial/focused_proof_audit",
+      "method": "Inspected prior raw artifact and its original executor/method; reused only after current full-source, context, dependency and contract inspection recorded in reuse-recheck.json. Original method: Fresh isolated source-derived audit, no parent suspected answer or prior findings supplied; exact witnesses and coefficient argument independently inspected at final reconciliation",
+      "status": "reused",
+      "artifacts": [
+        "raw/run-002/specialists/proof-audit.md",
+        "raw/run-002/specialists/proof-audit.provenance.json"
+      ],
+      "limits": [
+        "Same model family may share errors; reviewer identity does not establish correctness.",
+        "Run-wide contract hash supplied by parent; specialist resources separately hashed."
+      ],
+      "origin_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+      "origin_manifest": "raw/run-002/manifest.json",
+      "origin_findings": "raw/run-002/findings.json",
+      "recheck_artifact": "rechecks/current-contract.md"
+    },
+    {
+      "lanes": [
+        "notation"
+      ],
+      "scope": "Current full manuscript including preamble, abstract, every result/argument section and inspected References",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916"
+      },
+      "executor": "referee_core_trial",
+      "method": "New current-contract whole-paper self-review; original findings known, so this is a recheck rather than an independent blind audit",
+      "status": "complete",
+      "artifacts": [
+        "passes/notation.md"
+      ]
+    },
+    {
+      "lanes": [
+        "claims"
+      ],
+      "scope": "Current full manuscript including preamble, abstract, every result/argument section and inspected References",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916"
+      },
+      "executor": "referee_core_trial",
+      "method": "New current-contract whole-paper self-review; original findings known, so this is a recheck rather than an independent blind audit",
+      "status": "complete",
+      "artifacts": [
+        "passes/claims.md"
+      ]
+    },
+    {
+      "lanes": [
+        "correctness",
+        "adversarial",
+        "exposition",
+        "notation",
+        "claims"
+      ],
+      "scope": "Current-contract final reconciliation and focused rederivation of all three final concerns, plus valid triangular and characteristic-zero arguments",
+      "reviewed_unit_ids": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "locators": [
+        "paper.tex:1-57"
+      ],
+      "context_units": [
+        "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+        "sha256:7d1e850613fa2301d5c330105f7bc561c5494c347e63a3a9e2cfa9de5e618b8d:1",
+        "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+        "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+        "sha256:4e2197d2fa274cc0c500d75e33056c0218b2a960b631dc4af0d0a25108b0b1d0:1",
+        "sha256:d6cd15c0f35a1cd934530a7557fe1b758e6aa8092250080ad225a253f0a13c32:1",
+        "sha256:1dd8e7f8cdec028523279d8b646bd866bf97bb84350b83381877e995ac8d81f7:1",
+        "sha256:9f060f713104f1531505823eec0253fae04ac0ffbccce6f81fa498bd388c044b:1"
+      ],
+      "context_hashes": {
+        "source_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+        "global_context_sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916"
+      },
+      "executor": "referee_core_trial",
+      "method": "Full source and raw evidence reread; exact statements, witnesses, locators, dependencies and calibrated conclusions explicitly rechecked. Prior fresh specialist return reused after resource/context verification; no new specialist execution.",
+      "status": "complete",
+      "artifacts": [
+        "rechecks/current-contract.md"
+      ],
+      "limits": [
+        "This pass knows the prior conclusions and is not independent of them."
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "F001",
+      "lane": "correctness",
+      "title": "The cancellation step requires injectivity",
+      "severity": "critical",
+      "type": "hidden-hypothesis",
+      "confidence": 1.0,
+      "location": "Theorem labelled thm:cancel and proof, paper.tex:20-23",
+      "quote": "Subtracting gives $a(b-c)=0$. Cancelling $a$ yields $b=c$.",
+      "analysis": "The derived equation a(b-c)=0 holds, but multiplication by arbitrary a need not be injective. The statement quantifies over a=0 in every nonzero commutative ring. In the two-element field, a=0, b=0, c=1 satisfy ab=ac=0 while b and c are distinct. Thus the statement is false, rather than merely unproved; it affects the abstract cancellation promise. The zero ring itself does not refute the claim because it has only one element.",
+      "suggested_fix": "Require that multiplication by a be injective (a is a non-zero-divisor under the chosen convention); alternatively assume an integral domain and a != 0. Restate the abstract at that scope.",
+      "unit_id": "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+      "reviewer": "correctness-self-review",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "F001",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "F002",
+      "lane": "correctness",
+      "title": "The cardinality assertion includes an empty set",
+      "severity": "critical",
+      "type": "hidden-hypothesis",
+      "confidence": 1.0,
+      "location": "Theorem labelled thm:cardinality and proof, paper.tex:27-30",
+      "quote": "For every $n\\in\\mathbb N_0$, the set $E_n$ satisfies $|E_n|\\geq 1$.",
+      "analysis": "Conventions paper.tex:15-16 explicitly include 0 in N_0 and define E_0 as the empty set. At n=0 the cardinality is 0, so the stated inequality is false; the subsequent claim that 1 lies in E_n also fails there. This refutes the displayed theorem supporting the advertised uniform estimate.",
+      "suggested_fix": "Restrict the estimate to n >= 1, or replace it with an inequality valid at n=0; state the exceptional case explicitly.",
+      "unit_id": "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+      "reviewer": "correctness-self-review",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "F002",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "F003",
+      "lane": "adversarial",
+      "title": "Zero multiplication refutes cancellation",
+      "severity": "critical",
+      "type": "degenerate-case",
+      "confidence": 1.0,
+      "location": "Theorem labelled thm:cancel, paper.tex:20",
+      "quote": "For every commutative ring $R$ and $a,b,c\\in R$, if $ab=ac$ then $b=c$.",
+      "analysis": "The global assumptions paper.tex:14 allow the field with two elements, and the quantified elements allow a=0, b=0, c=1. Both products are 0 and b != c. Merely restricting to nonzero a would not work in all commutative rings: in Z/6Z take a=2, b=0, c=3, so both products are 0. These witnesses are admissible and show the required restriction is injectivity of multiplication by a.",
+      "suggested_fix": "Add a non-zero-divisor assumption, or an integral-domain assumption together with a != 0; nonzero a alone does not suffice.",
+      "unit_id": "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+      "reviewer": "adversarial-self-review",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "F003",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "F004",
+      "lane": "adversarial",
+      "title": "The admitted parameter n=0 violates the estimate",
+      "severity": "critical",
+      "type": "degenerate-case",
+      "confidence": 1.0,
+      "location": "Conventions and theorem labelled thm:cardinality, paper.tex:15-16 and 27",
+      "quote": "For every $n\\in\\mathbb N_0$, the set $E_n$ satisfies $|E_n|\\geq 1$.",
+      "analysis": "The smallest admitted parameter is n=0. The conventions explicitly state E_0 is empty, so |E_0|=0<1. For n>=1 the listed element 1 is present. The failure is isolated to an admitted case but invalidates the displayed main assertion as written.",
+      "suggested_fix": "Separate the n=0 case and assert |E_n| >= 1 only for n>=1.",
+      "unit_id": "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+      "reviewer": "adversarial-self-review",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "F004",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "F005",
+      "lane": "claims",
+      "title": "The all-fields headline exceeds the characteristic-zero theorem",
+      "severity": "critical",
+      "type": "silent-hypothesis",
+      "confidence": 1.0,
+      "location": "Abstract, paper.tex:9-10; theorem labelled thm:derivative, paper.tex:42-43",
+      "quote": "We establish cancellation in commutative rings and show that polynomial\ndifferentiation has only constant kernel over all fields. We also give a",
+      "analysis": "The delivered theorem states verbatim: If $K$ is a field of characteristic zero and $D:K[x]\\to K[x]$ is\nformal differentiation, then $\\ker D=K$.\nIts coefficient argument is valid under that assumption. The abstract instead quantifies over all fields. In the two-element field, the nonconstant polynomial x^2 has formal derivative 2x=0. More generally x^p gives a witness in characteristic p. No later section establishes the all-fields headline. This is a false expanded headline, not an error in the characteristic-zero theorem.",
+      "suggested_fix": "Insert the characteristic-zero restriction into the abstract. An all-fields treatment would need a different statement of the kernel in positive characteristic.",
+      "unit_id": "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+      "reviewer": "claims-self-review",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "F005",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "PA001",
+      "lane": "correctness",
+      "title": "Universal cancellation fails",
+      "severity": "critical",
+      "type": "hidden-hypothesis",
+      "confidence": 0.99,
+      "location": "Theorem labelled thm:cancel, paper.tex:20; proof paper.tex:23",
+      "quote": "Subtracting gives $a(b-c)=0$. Cancelling $a$ yields $b=c$.",
+      "analysis": "The domain includes F_2 and a=0, b=0, c=1. Then ab=ac=0 but b is not c. The proof requires injectivity of multiplication by a. Nonzero alone is insufficient, as a=2 in Z/4Z with b=0, c=2 shows.",
+      "suggested_fix": "Require multiplication by a to be injective, or state a sufficient exact hypothesis such as a being a unit; align the cancellation promise with that restriction.",
+      "unit_id": "sha256:697f8c606b1f5968ec2e8e48672f84c206ad38107aef226834e127807407349c:1",
+      "reviewer": "focused_proof_audit",
+      "statement_quote": "For every commutative ring $R$ and $a,b,c\\in R$, if $ab=ac$ then $b=c$.",
+      "counterexample": {
+        "ring": "F_2",
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "ab": 0,
+        "ac": 0,
+        "domain_verified": true,
+        "conclusion_fails": true
+      },
+      "collection_note": "Collected from unchanged specialist provenance; assigned the prepared unit ID by exact source location. Raw specialist artifacts retained separately.",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "PA001",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "PA002",
+      "lane": "correctness",
+      "title": "Cardinality estimate includes the empty set",
+      "severity": "major",
+      "type": "hidden-hypothesis",
+      "confidence": 0.99,
+      "location": "Theorem labelled thm:cardinality, paper.tex:27; proof paper.tex:30; convention paper.tex:15-16",
+      "quote": "For every $n\\in\\mathbb N_0$, the set $E_n$ satisfies $|E_n|\\geq 1$.",
+      "analysis": "The explicit conventions admit n=0 and set E_0 to the empty set, whose cardinality is zero. The proof witness 1 is not a member in this case.",
+      "suggested_fix": "Restrict the estimate to n>=1, or state the exact cardinality |E_n|=n with the zero case included.",
+      "unit_id": "sha256:e8ecc5111c140cccb89bc89ea82d49f3988e9cc3846e1a9313379bea1ba005cd:1",
+      "reviewer": "focused_proof_audit",
+      "proof_quote": "The element $1$ lies in $E_n$, proving the estimate.",
+      "counterexample": {
+        "n": 0,
+        "E_n": "empty set",
+        "cardinality": 0,
+        "domain_verified": true,
+        "conclusion_fails": true
+      },
+      "collection_note": "Collected from unchanged specialist provenance; assigned the prepared unit ID by exact source location. Raw specialist artifacts retained separately.",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "PA002",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    },
+    {
+      "id": "PA003",
+      "lane": "claims",
+      "title": "Abstract extends differentiation beyond the established field hypothesis",
+      "severity": "major",
+      "type": "overclaim",
+      "confidence": 0.99,
+      "location": "Abstract paper.tex:9-10 versus thm:derivative, paper.tex:42-48",
+      "quote": "We establish cancellation in commutative rings and show that polynomial\ndifferentiation has only constant kernel over all fields. We also give a",
+      "analysis": "The written theorem and its proof require characteristic zero. Over the admitted field F_2, x^2 is a nonconstant formal polynomial with derivative 2x=0. The characteristic-zero coefficient proof is valid independently of the false ring-cancellation theorem.\nThe delivered theorem is exactly:\nIf $K$ is a field of characteristic zero and $D:K[x]\\to K[x]$ is\nformal differentiation, then $\\ker D=K$.",
+      "suggested_fix": "Restrict the abstract assertion to fields of characteristic zero, or add the correct positive-characteristic kernel statement and proof.",
+      "unit_id": "sha256:e4ebeb6b10d10dca9bb47abb722c99cdef59be73de0c64a976c8125fc3a3bccf:1",
+      "reviewer": "focused_proof_audit",
+      "theorem_quote": "If $K$ is a field of characteristic zero and $D:K[x]\\to K[x]$ is\nformal differentiation, then $\\ker D=K$.",
+      "counterexample": {
+        "field": "F_2",
+        "polynomial": "x^2",
+        "formal_derivative": "2x = 0",
+        "nonconstant": true,
+        "domain_verified": true,
+        "conclusion_fails": true
+      },
+      "collection_note": "Collected from unchanged specialist provenance; assigned the prepared unit ID by exact source location. Raw specialist artifacts retained separately.",
+      "origin_finding": {
+        "artifact": "raw/run-002/findings.json",
+        "id": "PA003",
+        "contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564"
+      },
+      "current_recheck": "rechecks/current-contract.md"
+    }
+  ],
+  "original_evidence": {
+    "findings": "raw/run-002/findings.json",
+    "original_contract_sha256": "5711c072942899111c4b4025799c4a909435f6550cc4012bf6fcfb7e53cec564",
+    "original_manuscript_sha256": "90715e630c11d2692d20f60d173bf39856ced9cc9f1a50dff87911ff8d655012",
+    "note": "The current top-level hashes pin this rechecked collection. Raw findings and their old pins remain unchanged in raw/run-002 and the original run-002; no historical evidence was repinned."
+  },
+  "recheck_record": "reuse-recheck.json"
+}

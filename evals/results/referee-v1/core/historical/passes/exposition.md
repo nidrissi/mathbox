@@ -1,0 +1,3 @@
+# Exposition pass (self-review)
+
+Read all units for an expert reader. The induction identifies its base case and next step. The differentiation proof identifies coefficient comparison and its characteristic assumption. The two-row triangular manipulation exposes its pairing idea sufficiently for routine finite-sum algebra. Its final sentence adds no new theorem or opaque essential implication. No material exposition concern was recorded: shortening or adding a pairing sentence would be an optional editorial preference. Cancellation and empty-set defects remain mathematical concerns. No proofreading component was requested, and no mechanical edit was made.

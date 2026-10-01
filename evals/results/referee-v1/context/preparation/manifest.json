@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "preparation_version": 1,
+  "main": "referee-context.tex",
+  "source_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "global_context_sha256": "f5d9401eebc37f4ddcbc98222fb4dd82bdedc84a75a1900bffa650598d369b81",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_files_sha256": "006b42b2f49dabebdbd6c9b6ef10beff1bffafb5a36313e66bcf1a0338176eb2",
+  "sources": [
+    {
+      "path": "referee-context.tex",
+      "sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+      "bytes": 568
+    }
+  ],
+  "source_map": [
+    {
+      "expanded_start": 0,
+      "expanded_end": 568,
+      "path": "referee-context.tex",
+      "source_start": 0,
+      "source_end": 568,
+      "source_line": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "sha256:f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592:1",
+      "sha256": "2094fbcf8b63185fae6a02df464dffd1596f60fa03c0105c03dde10d6d31fce1",
+      "identity_sha256": "f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592",
+      "title": "Front matter",
+      "kind": "front-matter",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/001-front-matter.tex",
+      "expanded_start": 118,
+      "expanded_end": 216,
+      "location": {
+        "path": "referee-context.tex",
+        "line": 5
+      }
+    },
+    {
+      "id": "sha256:afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e:1",
+      "sha256": "fb0bbcd261015f1d3d3835713bdd725f219bb3f6046f4ea58fd0eaee42073091",
+      "identity_sha256": "afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e",
+      "title": "Notation",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/002-notation.tex",
+      "expanded_start": 216,
+      "expanded_end": 311,
+      "location": {
+        "path": "referee-context.tex",
+        "line": 9
+      }
+    },
+    {
+      "id": "sha256:43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679:1",
+      "sha256": "c0daef08537022a26a572136d4b990e6eaa0510cdaca708b060a5f038f651670",
+      "identity_sha256": "43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679",
+      "title": "Identity",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/003-identity.tex",
+      "expanded_start": 311,
+      "expanded_end": 553,
+      "location": {
+        "path": "referee-context.tex",
+        "line": 12
+      }
+    }
+  ],
+  "limitations": [
+    "Lexical preparation only: no TeX execution or arbitrary macro expansion.",
+    "Conditionals, catcode changes, includeonly and custom input/section macros need manual inspection.",
+    "Literal masking covers verb/lstinline and common verbatim/listing/comment environments, not every package.",
+    "Bibliography files, graphics and package inputs are not loaded or authenticated.",
+    "Context is an extraction index; its order is not manuscript theorem numbering.",
+    "Hash comparison identifies text candidates, not dependency freshness or completed reviews."
+  ],
+  "comparison": {
+    "previous_source_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+    "candidate_unchanged": [
+      "sha256:43f0fc73119dc5d51b3b5efce695e91eb7b9ef228a46d1420479b52c9ffbd679:1",
+      "sha256:afa71899cc42f1b3d62df428c4cd7208ac3682438a63a9c218e1e03c4369ad1e:1",
+      "sha256:f10bbff823e9d322f26fb7712935ba79c2179f7e8668c5172e56a26ea8aa4592:1"
+    ],
+    "added": [],
+    "removed": [],
+    "ambiguous": [],
+    "contract_changed": true,
+    "global_context_changed": false,
+    "whole_paper_invalidated": true,
+    "reuse_requires_context_check": true
+  }
+}

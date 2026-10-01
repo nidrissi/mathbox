@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "scope": "Selected raw synthetic forward-test artifacts, copied byte for byte; original records are not rewritten.",
+  "omissions": "Redundant prepared TeX sections and earlier complete snapshots are omitted; published raw fixtures supply the unchanged manuscript bytes. Original paths in records are historical locators; use this mapping for retained copies.",
+  "fixtures": {
+    "core": "evals/fixtures/referee-core.tex",
+    "exposition": "evals/fixtures/referee-exposition.tex",
+    "enumeration": "evals/fixtures/referee-enumeration.tex",
+    "source": "evals/fixtures/referee-source.tex",
+    "context": "evals/fixtures/referee-context.tex"
+  },
+  "artifacts": [
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/report.md",
+      "retained_path": "evals/results/referee-v1/core/report.md",
+      "sha256": "985ded0737b072d4de56b788b640150a50072fecf6d4eef209256e1d2f03318f",
+      "bytes": 6377
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/findings.json",
+      "retained_path": "evals/results/referee-v1/core/findings.json",
+      "sha256": "3c5c24467ed74f6da444507dfe72883b5bce2674ec177ea49de873fe8623cb99",
+      "bytes": 36951
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/reconciliation.json",
+      "retained_path": "evals/results/referee-v1/core/reconciliation.json",
+      "sha256": "08f4aaba6236d6126a179ec2a99e932a567a95ac0f35e96962f787e3638e4632",
+      "bytes": 12936
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/manifest.json",
+      "retained_path": "evals/results/referee-v1/core/manifest.json",
+      "sha256": "298fbb1a9fed22f753e68c5926a116f8d4e3eabb45187429043448df795ccb8a",
+      "bytes": 7123
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/context.json",
+      "retained_path": "evals/results/referee-v1/core/context.json",
+      "sha256": "dff2c959e35efe934d3d37048b3cdf1576bd614b4f3f62d9c261704771167916",
+      "bytes": 1965
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/reuse-recheck.json",
+      "retained_path": "evals/results/referee-v1/core/reuse-recheck.json",
+      "sha256": "d56cf6b74fbd8f1367a239b17bb5b91a9448bfab8434c2491cf7195b698cbf9f",
+      "bytes": 12204
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/checks.json",
+      "retained_path": "evals/results/referee-v1/core/checks.json",
+      "sha256": "9b987d619bda12e3de9a31b7dfca84f3af601c82e4941b2f57ee2f3240b13453",
+      "bytes": 3847
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/rechecks/current-contract.md",
+      "retained_path": "evals/results/referee-v1/core/rechecks/current-contract.md",
+      "sha256": "1ae2e0f4466cf755232a4070457ffe2e38383570c20712fb9f445f2a9f3bfbb0",
+      "bytes": 4295
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/passes/notation.md",
+      "retained_path": "evals/results/referee-v1/core/passes/notation.md",
+      "sha256": "55e4dd8fa2ca72f3035e1f2eb6724cb71a04c00acf7d2fe9306fb29cc637fb47",
+      "bytes": 957
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/passes/claims.md",
+      "retained_path": "evals/results/referee-v1/core/passes/claims.md",
+      "sha256": "687856e7884fb05a6b99a7b4eabe1fcdb45fce1db886df50852c5c4dc090cf9a",
+      "bytes": 1112
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/correctness.md",
+      "retained_path": "evals/results/referee-v1/core/historical/passes/correctness.md",
+      "sha256": "2d0b4466e639a3d4f7d972a348ab6fe1a7b4ed8843cebd4b4c4ba05aad9ba5d7",
+      "bytes": 886
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/adversarial.md",
+      "retained_path": "evals/results/referee-v1/core/historical/passes/adversarial.md",
+      "sha256": "a7d42970d142fdd965a4328641406354d1a7a5f5d536113c6c53ce8cd4b11f58",
+      "bytes": 831
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/passes/exposition.md",
+      "retained_path": "evals/results/referee-v1/core/historical/passes/exposition.md",
+      "sha256": "06eee092f6203a7e5b18f6ea8b2eefc74c9112b90c2dde17e0efe515193e80e9",
+      "bytes": 664
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialists/proof-audit.md",
+      "retained_path": "evals/results/referee-v1/core/historical/specialists/proof-audit.md",
+      "sha256": "275c158ba95107e42b3a1ffc053d70ad29032eac1149126c7095b7e7edccda18",
+      "bytes": 17468
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialists/proof-audit.provenance.json",
+      "retained_path": "evals/results/referee-v1/core/historical/specialists/proof-audit.provenance.json",
+      "sha256": "74bf7c34cbc5539e180781f808a792bb902b5a3436b8917ff3c82b00def9c68f",
+      "bytes": 10552
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/.mathbox/referee/run-003/raw/run-002/specialist-quote-validation.json",
+      "retained_path": "evals/results/referee-v1/core/historical/specialist-quote-validation.json",
+      "sha256": "2994dc5614482a5aea9b4047c95be77fb5205cd3b57b429ff5a2cb1633db7a58",
+      "bytes": 1206
+    },
+    {
+      "case": "core",
+      "original_path": "/tmp/mathbox-referee-core-26dxm_qc/preparation-attempt-001.txt",
+      "retained_path": "evals/results/referee-v1/core/observed-preparation-failure.txt",
+      "sha256": "3008c098ca43b2d161a9e00c196eb0828b3631fd5fc60cf960c4614ff593774d",
+      "bytes": 396
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/report.md",
+      "retained_path": "evals/results/referee-v1/exposition/report.md",
+      "sha256": "879b6e157e8a99e6bc3f17239c3482da8de93d2cb8a3b01aa0475cd8dfe9f7f0",
+      "bytes": 2930
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/findings.json",
+      "retained_path": "evals/results/referee-v1/exposition/findings.json",
+      "sha256": "1479baeb5ba62a8c72ee374ac46d8c8320f8d92bf267b1c943ac8c10877b7283",
+      "bytes": 8555
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/reconciliation.json",
+      "retained_path": "evals/results/referee-v1/exposition/reconciliation.json",
+      "sha256": "84a6965b31496349a198cec3f249538e0e75c15c0549088475ebb0a5ed217b61",
+      "bytes": 1318
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/manifest.json",
+      "retained_path": "evals/results/referee-v1/exposition/manifest.json",
+      "sha256": "cc9ee522c6caadd86ee9730e0f100b79e9e0d2dfbfeccf473867ae0d700afb9b",
+      "bytes": 3065
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/context.json",
+      "retained_path": "evals/results/referee-v1/exposition/context.json",
+      "sha256": "c4d92842266c6ee88942a1d3f8a8dd632de50f27e6e5027ccf61e393f6fe02e9",
+      "bytes": 728
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/evidence-recheck.json",
+      "retained_path": "evals/results/referee-v1/exposition/evidence-recheck.json",
+      "sha256": "baa9d256fdf38ddabeba6aaa5dcbb0cdcfe3d3f79ff63d452952e28df7eae86d",
+      "bytes": 1529
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/artifact-validation.json",
+      "retained_path": "evals/results/referee-v1/exposition/artifact-validation.json",
+      "sha256": "872c5fb598fd9d5c9334fc0fb9b1aa2488f582d89445cf6c91547b81900d143f",
+      "bytes": 880
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/survey.md",
+      "retained_path": "evals/results/referee-v1/exposition/survey.md",
+      "sha256": "d41111a3ad9a82dd1e97929c90ac72bf30c79dbc05eb2627ad5e80b00648f58a",
+      "bytes": 2195
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/correctness.json",
+      "retained_path": "evals/results/referee-v1/exposition/passes/correctness.json",
+      "sha256": "ed7a0e200b722df92502250ea2fa2716a79652d7dd01823248b9811747c61025",
+      "bytes": 1692
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/adversarial.json",
+      "retained_path": "evals/results/referee-v1/exposition/passes/adversarial.json",
+      "sha256": "22a21d031c6ee0d9ec6b5838a47ea07a7fd8c572933829303e0c59b96daa8f33",
+      "bytes": 1692
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/exposition.json",
+      "retained_path": "evals/results/referee-v1/exposition/passes/exposition.json",
+      "sha256": "41f5f86c43c13aaa925b7e8372eb7a265cada607fa6633df5e30c1bc25467f25",
+      "bytes": 2771
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/notation.json",
+      "retained_path": "evals/results/referee-v1/exposition/passes/notation.json",
+      "sha256": "d42568cf14e79cebd14590cc671ea47566ce10db42b7bc0ca20d606268217adc",
+      "bytes": 1686
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/claims.json",
+      "retained_path": "evals/results/referee-v1/exposition/passes/claims.json",
+      "sha256": "80b6602f2148195d2dd1a73d0fe360a1e30b946f8c5031c0777e90dd5de0bd39",
+      "bytes": 1682
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/report.md",
+      "retained_path": "evals/results/referee-v1/enumeration/report.md",
+      "sha256": "f85d0bf2e5418e94a26ff7aec7e5b8459bb1cb24cee3408bf62a88a176d20cc2",
+      "bytes": 4285
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/findings.json",
+      "retained_path": "evals/results/referee-v1/enumeration/findings.json",
+      "sha256": "9419d11153f7158b784ecaf167168ae1a70fafd74ae3be40cc643749bf69b9d9",
+      "bytes": 11340
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/reconciliation.json",
+      "retained_path": "evals/results/referee-v1/enumeration/reconciliation.json",
+      "sha256": "8c1ad21c5f1b536d3db3fa804f4545a693331c64de87c523388b5688f773fb94",
+      "bytes": 2741
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/manifest.json",
+      "retained_path": "evals/results/referee-v1/enumeration/manifest.json",
+      "sha256": "cd6f2d87579e6908581c8d8442019ae4f97cd796e1b68f352ae9a51ecc47717e",
+      "bytes": 3703
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/context.json",
+      "retained_path": "evals/results/referee-v1/enumeration/context.json",
+      "sha256": "9388950f89e6d6148385c778db45318445eb7dadd23355f7fe2a9363b6c0152b",
+      "bytes": 693
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/evidence-recheck.json",
+      "retained_path": "evals/results/referee-v1/enumeration/evidence-recheck.json",
+      "sha256": "c52a60cb791577925590c62b6a8d99b98f7af8362b348cc67853966047642a3a",
+      "bytes": 2859
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/artifact-validation.json",
+      "retained_path": "evals/results/referee-v1/enumeration/artifact-validation.json",
+      "sha256": "2db80e807ea3bef32bdd1354735079cde49becf19511286dffe5fb386b0712ee",
+      "bytes": 880
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/survey.md",
+      "retained_path": "evals/results/referee-v1/enumeration/survey.md",
+      "sha256": "09ac3a35a0a4a409f38ac4e3a84265ca5b0eacf61df9289d50fc3985fc9122c9",
+      "bytes": 1853
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/correctness.json",
+      "retained_path": "evals/results/referee-v1/enumeration/passes/correctness.json",
+      "sha256": "04db8fc7883d67d3ef62cf565ba6e1749cba10a55412194180ffdc78d6966a43",
+      "bytes": 3198
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/adversarial.json",
+      "retained_path": "evals/results/referee-v1/enumeration/passes/adversarial.json",
+      "sha256": "c819822e42945e387a50cb1b74ad8a39046b9795816423b5274389335eb9e7e4",
+      "bytes": 3079
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/exposition.json",
+      "retained_path": "evals/results/referee-v1/enumeration/passes/exposition.json",
+      "sha256": "85e3dfaccf85851f9e4bf05df192637698e9732e64c350e86e245671a8ba120e",
+      "bytes": 2015
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/notation.json",
+      "retained_path": "evals/results/referee-v1/enumeration/passes/notation.json",
+      "sha256": "2aff22a8375c82f6ac4c1623fc934fcaa55c0e9d91672e55ee70481e09850567",
+      "bytes": 2011
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/claims.json",
+      "retained_path": "evals/results/referee-v1/enumeration/passes/claims.json",
+      "sha256": "876d3727401a39d9900539fed3bd6e4de1e13749421ef319d00f6e7a00811647",
+      "bytes": 2007
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/computation-audit.md",
+      "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/computation-audit.md",
+      "sha256": "a4b0bf69d2ccb2da90e1dbdf5e69f2bb42b2474a8b131280daf7510113913189",
+      "bytes": 2689
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialists/proof-audit.md",
+      "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/proof-audit.md",
+      "sha256": "0434cf9603fa09d299589c12d49ea63fcafb9f992c2b1ef1837eab4a2799fbfd",
+      "bytes": 2248
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-001/specialist-command-log.json",
+      "retained_path": "evals/results/referee-v1/enumeration/historical-specialists/command-log.json",
+      "sha256": "2d1e7ef7bd82183d947322a93d9bd2022c04b58806da7ed3403688787ea5809c",
+      "bytes": 2904
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/domain-audit-contract.json",
+      "retained_path": "evals/results/referee-v1/enumeration/checks/domain-audit-contract.json",
+      "sha256": "627e7750c8c1b4bbbce8fce0519e3e848d836a93b5dfce286b4abce6e603720c",
+      "bytes": 967
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/domain_audit.py",
+      "retained_path": "evals/results/referee-v1/enumeration/checks/domain_audit.py",
+      "sha256": "8e6c8fe94eee8c97d4499bd45740fa229fb1b9527f4bd16a05c6871daa8f0e28",
+      "bytes": 1080
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/supplied-contract.json",
+      "retained_path": "evals/results/referee-v1/enumeration/checks/supplied-contract.json",
+      "sha256": "1e842d56af72bad188e01857598e98f5de90d8ddfae114a764c6cbad2c3133e9",
+      "bytes": 928
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/supplied.py",
+      "retained_path": "evals/results/referee-v1/enumeration/checks/supplied.py",
+      "sha256": "a6225823bd1f864c786b2f98bd3865cee20679ab33ac7f87c3028b66219b67d6",
+      "bytes": 201
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/manifest.json",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/manifest.json",
+      "sha256": "35174aeaf15b2c8487024b74d05a844e0aed6dbda5519d29b63a4bbbdbcbaf24",
+      "bytes": 3612
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/result.json",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/result.json",
+      "sha256": "ee4d42235e4f513f2dfadb9c6b2cf863deb08646ec2ce627045eefd438c51e17",
+      "bytes": 1897
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/stderr.txt",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/stdout.txt",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/domain-audit/stdout.txt",
+      "sha256": "d0f48ad0573b408d1514cc9dce4e22764e15f03bd5a7e4fb090fcf8b4b5b94b0",
+      "bytes": 235
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/manifest.json",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/supplied/manifest.json",
+      "sha256": "d317245883b2dca38a798a68e22371cf093bd7df54cb3d7f7687c4f96592fc36",
+      "bytes": 3331
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/stderr.txt",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/supplied/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/stdout.txt",
+      "retained_path": "evals/results/referee-v1/enumeration/computations/supplied/stdout.txt",
+      "sha256": "0efd339254cbd925cc95413c4f4350e44c84deac0784a3441f6295d37b5d86d4",
+      "bytes": 5
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/report.md",
+      "retained_path": "evals/results/referee-v1/source/report.md",
+      "sha256": "d7f8ed81d4e86eef32235ae6f9634703f6041fe26cfb6064e69b2c583d40a9a3",
+      "bytes": 4927
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/findings.json",
+      "retained_path": "evals/results/referee-v1/source/findings.json",
+      "sha256": "74ce1af3987ffd409c864b46b2d939f0c60a788322cad829bb1a16cc131f3859",
+      "bytes": 14306
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/reconciliation.json",
+      "retained_path": "evals/results/referee-v1/source/reconciliation.json",
+      "sha256": "89f7e6a70e3322d58c46a1a021869471ad8974e45c1509410be4c86de741f9db",
+      "bytes": 2411
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/manifest.json",
+      "retained_path": "evals/results/referee-v1/source/manifest.json",
+      "sha256": "eef855f4b9bf104829840d33246bdb26170b22502847eacf2b48cb36dd15aacb",
+      "bytes": 4382
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/context.json",
+      "retained_path": "evals/results/referee-v1/source/context.json",
+      "sha256": "3b726542076311a2d08f40335f87c7ef198263fa8c2d74acdedb14d464100a63",
+      "bytes": 734
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/evidence-recheck.json",
+      "retained_path": "evals/results/referee-v1/source/evidence-recheck.json",
+      "sha256": "872651fbca515ad4073202473e676a3a069677c912c81eb55aef7e92c405efc8",
+      "bytes": 2006
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/artifact-validation.json",
+      "retained_path": "evals/results/referee-v1/source/artifact-validation.json",
+      "sha256": "032af135173d69e353edcb0c4ad93cd9be50fb6642b0de31dae1b6664b9143de",
+      "bytes": 880
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/survey.md",
+      "retained_path": "evals/results/referee-v1/source/survey.md",
+      "sha256": "d3ea94fa433e3d68fced095ef3563505851f27c5e13204a4d935f957e7886156",
+      "bytes": 2094
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/correctness.json",
+      "retained_path": "evals/results/referee-v1/source/passes/correctness.json",
+      "sha256": "a67717dd46fd348debff45c03bed7bdae1b78d71ee51a430c44d6c7ed631e6eb",
+      "bytes": 4074
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/adversarial.json",
+      "retained_path": "evals/results/referee-v1/source/passes/adversarial.json",
+      "sha256": "af5ffc2fda85f14cb42cc503d48cb2847bc4c807c7c95f0d2ba30dd912953c05",
+      "bytes": 2657
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/exposition.json",
+      "retained_path": "evals/results/referee-v1/source/passes/exposition.json",
+      "sha256": "58d56ea9cd723f9f277ed618b420bbacb42d2bb72bd3c3538b32ed4facc615e4",
+      "bytes": 2538
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/notation.json",
+      "retained_path": "evals/results/referee-v1/source/passes/notation.json",
+      "sha256": "a9855b4758f06c011894b3c5223f5c0674fec0f5c7cc159308dc58deafff59be",
+      "bytes": 3638
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/claims.json",
+      "retained_path": "evals/results/referee-v1/source/passes/claims.json",
+      "sha256": "baaff13290779238e3a48ec5ae1d502cfbc0591eb39dedfacdc4fa691e7916c9",
+      "bytes": 2369
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/literature-check.md",
+      "retained_path": "evals/results/referee-v1/source/historical-specialists/literature-check.md",
+      "sha256": "1ac3062642979bb50690a1da2447d2d289e13489a31269e14f4d8ded2ecc5eff",
+      "bytes": 2992
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-001/specialists/proof-audit.md",
+      "retained_path": "evals/results/referee-v1/source/historical-specialists/proof-audit.md",
+      "sha256": "75e16a4cc684e291620834ad3d9504275928237a9a9e91c8e509b94a52457697",
+      "bytes": 2832
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/report.md",
+      "retained_path": "evals/results/referee-v1/context/report.md",
+      "sha256": "b90ad6d5ea7beb65136756432935974402b488a19d5244c9b9ecc214a8a55825",
+      "bytes": 3152
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/findings.json",
+      "retained_path": "evals/results/referee-v1/context/findings.json",
+      "sha256": "c4c5ffbb0a69d645017b6d7e72dc643a0a1d76b8dda6faa78e6557611e599e27",
+      "bytes": 9388
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/reconciliation.json",
+      "retained_path": "evals/results/referee-v1/context/reconciliation.json",
+      "sha256": "a6320da45978edc5f19d605875a3cb6413292646ae1b5fae7b2a375125dd28a6",
+      "bytes": 2174
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/coverage.json",
+      "retained_path": "evals/results/referee-v1/context/coverage.json",
+      "sha256": "cf396375db8460babd4e224c75bf06d62239fbd047c6904d48e7200b88d62edc",
+      "bytes": 11146
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/verification.json",
+      "retained_path": "evals/results/referee-v1/context/verification.json",
+      "sha256": "d8d3fa42c91dc9f9833b1c9f0925a6bbd608a94de169b0a4ab79ddfa71622e46",
+      "bytes": 2382
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/revision-comparison.json",
+      "retained_path": "evals/results/referee-v1/context/revision-comparison.json",
+      "sha256": "d7c934386ed0d4125f056ce3e384cf0c510f4dd940c2504c3044bfe00daba82e",
+      "bytes": 1047
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-lead.json",
+      "retained_path": "evals/results/referee-v1/context/prior-lead.json",
+      "sha256": "3fa4c48a629d49f0bab0a694f1d86903c41c069e9c4ef8dcf71dfb4fb0a1f9f0",
+      "bytes": 622
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-local-review.txt",
+      "retained_path": "evals/results/referee-v1/context/prior-local-review.txt",
+      "sha256": "74eae22ac4fc9a342beb5ddeb990cb4fe93f99f119e772186579df6294a35902",
+      "bytes": 73
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/survey.md",
+      "retained_path": "evals/results/referee-v1/context/survey.md",
+      "sha256": "5dc97d54083fda7d086bb006fd4e73dd24e74fcd1654dfee4baf9502ff66b48c",
+      "bytes": 1831
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/01-current-correctness.json",
+      "retained_path": "evals/results/referee-v1/context/passes/01-current-correctness.json",
+      "sha256": "1de3edda581c922ab3c561f0ace2ce865196acd711d7b7a0e84fbf8ff0795baf",
+      "bytes": 2659
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/02-current-adversarial.json",
+      "retained_path": "evals/results/referee-v1/context/passes/02-current-adversarial.json",
+      "sha256": "723d2e27c43e81b5b99e4aa716576f97fb62bcbf02970925ae4dc3ac378bc752",
+      "bytes": 2676
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/03-current-exposition.json",
+      "retained_path": "evals/results/referee-v1/context/passes/03-current-exposition.json",
+      "sha256": "8ef8f0fa2ee0bf89706e3208f05df6f6bbf04632c167ff44ca0203d27190d9b6",
+      "bytes": 2697
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-notation.json",
+      "retained_path": "evals/results/referee-v1/context/passes/04-current-notation.json",
+      "sha256": "46b3990448d9e8d14fbfe93c09f0ac9cdaac7ad125124ae1eb726a09e4fcbe49",
+      "bytes": 3095
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims.json",
+      "retained_path": "evals/results/referee-v1/context/passes/05-current-claims.json",
+      "sha256": "656fc97334235d0648f318b2990de32573b7585b8be4c21f6182cef693bdd3c1",
+      "bytes": 2951
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims-quote-correction.json",
+      "retained_path": "evals/results/referee-v1/context/passes/05-current-claims-quote-correction.json",
+      "sha256": "3fa7537150f06445033730f1806ca3f8e4e1e8fa9d28da4becd9c97d30c63763",
+      "bytes": 1021
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-tau-search.txt",
+      "retained_path": "evals/results/referee-v1/context/passes/04-current-tau-search.txt",
+      "sha256": "3ec50b18d0b0a3ff4381cba77159f835518d057b82c3622971c1a23a8487cd5e",
+      "bytes": 163
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/manifest.json",
+      "retained_path": "evals/results/referee-v1/context/preparation/manifest.json",
+      "sha256": "46d3e0fbddc46f0b44d38fd6d3f20b5a57772076976481113885b94d7a261edd",
+      "bytes": 3759
+    },
+    {
+      "case": "context",
+      "original_path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/context.json",
+      "retained_path": "evals/results/referee-v1/context/preparation/context.json",
+      "sha256": "f5d9401eebc37f4ddcbc98222fb4dd82bdedc84a75a1900bffa650598d369b81",
+      "bytes": 698
+    },
+    {
+      "case": "routing",
+      "original_path": "/tmp/mathbox-referee-context-routing-lc2szztu/routing.json",
+      "retained_path": "evals/results/referee-v1/routing/routing.json",
+      "sha256": "058798eccd1e28cf0737849bd05cb48ee7651226cf27f91937fd09caa5d03579",
+      "bytes": 2093
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/grading.json",
+      "retained_path": "evals/results/referee-v1/grading.json",
+      "sha256": "55d149aadfdf1c17a39aa2423bd9393a4191832beb7d8a6a380ae073ee97f347",
+      "bytes": 34883
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/grading.md",
+      "retained_path": "evals/results/referee-v1/grading.md",
+      "sha256": "73b06a473945caf1b5326fee0ac37b463e9f8674c5add47ca5abed88ff1b8d1d",
+      "bytes": 11657
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/artifact-checks.json",
+      "retained_path": "evals/results/referee-v1/artifact-checks.json",
+      "sha256": "26735e3b387b81940c69626285da2857a7f59cebf5bd1c47c8b512ae9ac80c5e",
+      "bytes": 79983
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-context-artifact-inventory.json",
+      "retained_path": "evals/results/referee-v1/referee-context-artifact-inventory.json",
+      "sha256": "e308e9cc76d5872cf0aef5129eee09d239f98fa1c020b75caa2e3bd4b35dce4e",
+      "bytes": 8310
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-core-artifact-inventory.json",
+      "retained_path": "evals/results/referee-v1/referee-core-artifact-inventory.json",
+      "sha256": "c0fc9c40cf621c47f0e06a63516cabea5483a6e7cbe6b99545a334dcbb0d7a10",
+      "bytes": 10354
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-enumeration-artifact-inventory.json",
+      "retained_path": "evals/results/referee-v1/referee-enumeration-artifact-inventory.json",
+      "sha256": "32711511978a4f53e2e8cb361eb50de705af28a3f94e3c8e3f0f81dab977f198",
+      "bytes": 4914
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-exposition-artifact-inventory.json",
+      "retained_path": "evals/results/referee-v1/referee-exposition-artifact-inventory.json",
+      "sha256": "a3cb7cba3b87fb1dac6ccac06e068bd06efdb2b51424a11692084e9a81c99242",
+      "bytes": 4682
+    },
+    {
+      "case": "independent-grading",
+      "original_path": "/tmp/mathbox-referee-independent-grading-u37qerkw/referee-source-artifact-inventory.json",
+      "retained_path": "evals/results/referee-v1/referee-source-artifact-inventory.json",
+      "sha256": "f6a8a386d1a0732114c86e2355266ce2b6a726d52b1a4e3104ef4bf46e0db3db",
+      "bytes": 5024
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/correctness.md",
+      "retained_path": "evals/results/referee-v1/exposition/raw/correctness.md",
+      "sha256": "d1215198d86818fffb4afefbab6795a3fdfc9c0db74e15fe8f71cee97ceaa8c3",
+      "bytes": 1376
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/adversarial.md",
+      "retained_path": "evals/results/referee-v1/exposition/raw/adversarial.md",
+      "sha256": "7509d9781e2c6e1eea33adf6cc48117ea330de22a6c9f7c478490cf7f21b4762",
+      "bytes": 1263
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/exposition.md",
+      "retained_path": "evals/results/referee-v1/exposition/raw/exposition.md",
+      "sha256": "a05dd9ced1bf50a7efdbcd5534d41edd6500e6508ceea3ae025aa4fc6ee6b896",
+      "bytes": 1323
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/notation.md",
+      "retained_path": "evals/results/referee-v1/exposition/raw/notation.md",
+      "sha256": "2a18ff333af1a5c0464eff260a62a8539fb02fa106a78c7dce8e8ba0589dc6cf",
+      "bytes": 1403
+    },
+    {
+      "case": "exposition",
+      "original_path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/claims.md",
+      "retained_path": "evals/results/referee-v1/exposition/raw/claims.md",
+      "sha256": "a76a398c6b940b2500c4973196247677077b4f5fef87a12ea8563269e651d2b4",
+      "bytes": 1224
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/correctness.md",
+      "retained_path": "evals/results/referee-v1/source/raw/correctness.md",
+      "sha256": "99b9700138bef8d9cf48be7f00bc40a2b1c5817454e19d3296bf69a344ef1556",
+      "bytes": 1204
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/adversarial.md",
+      "retained_path": "evals/results/referee-v1/source/raw/adversarial.md",
+      "sha256": "a78abe9c3a01925e378ab78c8cc50b8025228ebf8d76fa0757cd3f45c7c7b65f",
+      "bytes": 1136
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/exposition.md",
+      "retained_path": "evals/results/referee-v1/source/raw/exposition.md",
+      "sha256": "63f51a3c00f43df436473759932881b0d3626787027c75c836fd69d80ed88e59",
+      "bytes": 938
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/notation.md",
+      "retained_path": "evals/results/referee-v1/source/raw/notation.md",
+      "sha256": "73a8c22c1c545f31bb1715697e82be73e2ad468709f6fedca3683f35c51628fe",
+      "bytes": 1057
+    },
+    {
+      "case": "source",
+      "original_path": "/tmp/mathbox-referee-source-9gqkd7wg/.mathbox/referee/run-002/raw/claims.md",
+      "retained_path": "evals/results/referee-v1/source/raw/claims.md",
+      "sha256": "1533970a028396f03837ebdbd2e7d866904bf5ab80076ccad9202ce9fe52f45f",
+      "bytes": 1208
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/correctness.md",
+      "retained_path": "evals/results/referee-v1/enumeration/raw/correctness.md",
+      "sha256": "411eeb3047aabbce16e7e4119f9e1683f842361f2f1166a543e4171ed9582e78",
+      "bytes": 1219
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/adversarial.md",
+      "retained_path": "evals/results/referee-v1/enumeration/raw/adversarial.md",
+      "sha256": "85537e05e13e918fb3c415a396f682fb0dcabb8a03f320a1d8fbc8e93b076dc2",
+      "bytes": 965
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/exposition.md",
+      "retained_path": "evals/results/referee-v1/enumeration/raw/exposition.md",
+      "sha256": "1bb43b44cce50631b9246f409a2e4767e671f01557bca125a49ba6e540f3b792",
+      "bytes": 907
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/notation.md",
+      "retained_path": "evals/results/referee-v1/enumeration/raw/notation.md",
+      "sha256": "0ed555f5ab5a5e5a043d30675e257251aca9a2d9ff64fe5165c08ab6ac1da828",
+      "bytes": 878
+    },
+    {
+      "case": "enumeration",
+      "original_path": "/tmp/mathbox-referee-enumeration-p8dfgm5i/.mathbox/referee/run-002/raw/claims.md",
+      "retained_path": "evals/results/referee-v1/enumeration/raw/claims.md",
+      "sha256": "db46f2e0519194f925173ad490f335996c0aa0064b47aaa8b725933c345e50dd",
+      "bytes": 972
+    }
+  ]
+}

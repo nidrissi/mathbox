@@ -1,0 +1,118 @@
+[
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/artifact-validation.json",
+    "sha256": "872c5fb598fd9d5c9334fc0fb9b1aa2488f582d89445cf6c91547b81900d143f",
+    "bytes": 880,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/context.json",
+    "sha256": "c4d92842266c6ee88942a1d3f8a8dd632de50f27e6e5027ccf61e393f6fe02e9",
+    "bytes": 728,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/evidence-recheck.json",
+    "sha256": "baa9d256fdf38ddabeba6aaa5dcbb0cdcfe3d3f79ff63d452952e28df7eae86d",
+    "bytes": 1529,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/findings.json",
+    "sha256": "1479baeb5ba62a8c72ee374ac46d8c8320f8d92bf267b1c943ac8c10877b7283",
+    "bytes": 8555,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/full-source.tex",
+    "sha256": "fdb4bd16b93fd24e012c4be71c87fddb3112a1f0587f824437799b7f606dda81",
+    "bytes": 735
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/manifest.json",
+    "sha256": "cc9ee522c6caadd86ee9730e0f100b79e9e0d2dfbfeccf473867ae0d700afb9b",
+    "bytes": 3065,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/adversarial.json",
+    "sha256": "22a21d031c6ee0d9ec6b5838a47ea07a7fd8c572933829303e0c59b96daa8f33",
+    "bytes": 1692,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/adversarial.md",
+    "sha256": "7509d9781e2c6e1eea33adf6cc48117ea330de22a6c9f7c478490cf7f21b4762",
+    "bytes": 1263
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/claims.json",
+    "sha256": "80b6602f2148195d2dd1a73d0fe360a1e30b946f8c5031c0777e90dd5de0bd39",
+    "bytes": 1682,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/claims.md",
+    "sha256": "a76a398c6b940b2500c4973196247677077b4f5fef87a12ea8563269e651d2b4",
+    "bytes": 1224
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/correctness.json",
+    "sha256": "ed7a0e200b722df92502250ea2fa2716a79652d7dd01823248b9811747c61025",
+    "bytes": 1692,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/correctness.md",
+    "sha256": "d1215198d86818fffb4afefbab6795a3fdfc9c0db74e15fe8f71cee97ceaa8c3",
+    "bytes": 1376
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/exposition.json",
+    "sha256": "41f5f86c43c13aaa925b7e8372eb7a265cada607fa6633df5e30c1bc25467f25",
+    "bytes": 2771,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/exposition.md",
+    "sha256": "a05dd9ced1bf50a7efdbcd5534d41edd6500e6508ceea3ae025aa4fc6ee6b896",
+    "bytes": 1323
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/notation.json",
+    "sha256": "d42568cf14e79cebd14590cc671ea47566ce10db42b7bc0ca20d606268217adc",
+    "bytes": 1686,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/raw/notation.md",
+    "sha256": "2a18ff333af1a5c0464eff260a62a8539fb02fa106a78c7dce8e8ba0589dc6cf",
+    "bytes": 1403
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/reconciliation.json",
+    "sha256": "84a6965b31496349a198cec3f249538e0e75c15c0549088475ebb0a5ed217b61",
+    "bytes": 1318,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/report.md",
+    "sha256": "879b6e157e8a99e6bc3f17239c3482da8de93d2cb8a3b01aa0475cd8dfe9f7f0",
+    "bytes": 2930
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/sections/001-front-matter.tex",
+    "sha256": "48a241645b3af1c3811434f11951fad7835b786c2473191f1a875b53d6d256f6",
+    "bytes": 107
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/sections/002-the-identity.tex",
+    "sha256": "c8ea4f63c8eeb1c98fe36165f190cf719234ab0130b60532d228c0e045ece990",
+    "bytes": 478
+  },
+  {
+    "path": "/tmp/mathbox-referee-exposition-zitqmuoo/.mathbox/referee/run-003/survey.md",
+    "sha256": "d41111a3ad9a82dd1e97929c90ac72bf30c79dbc05eb2627ad5e80b00648f58a",
+    "bytes": 2195
+  }
+]

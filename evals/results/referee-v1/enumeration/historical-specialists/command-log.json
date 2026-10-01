@@ -1,0 +1,100 @@
+[
+  {
+    "phase": "supplied",
+    "argv": [
+      "/usr/sbin/python3",
+      "/home/najib/source/mathbox/skills/computation-audit/scripts/run_experiment.py",
+      "--root",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i",
+      "--contract",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/supplied-contract.json",
+      "--input",
+      "paper.tex",
+      "--input",
+      "checks/supplied.py",
+      "--output",
+      "computations/supplied",
+      "--timeout",
+      "10",
+      "--max-output-bytes",
+      "1048576",
+      "--max-memory-bytes",
+      "268435456",
+      "--max-cpu-seconds",
+      "5",
+      "--max-cores",
+      "1",
+      "--max-threads",
+      "1",
+      "--",
+      "/usr/sbin/python3",
+      "checks/supplied.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\"manifest\": \"/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/manifest.json\", \"status\": \"completed\"}\n",
+    "stderr": ""
+  },
+  {
+    "phase": "supplied-validation",
+    "argv": [
+      "/usr/sbin/python3",
+      "/home/najib/source/mathbox/skills/computation-audit/scripts/validate_manifest.py",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/supplied/manifest.json",
+      "--root",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i"
+    ],
+    "returncode": 0,
+    "stdout": "valid evidence record; mathematical interpretation requires review\n",
+    "stderr": ""
+  },
+  {
+    "phase": "domain-audit",
+    "argv": [
+      "/usr/sbin/python3",
+      "/home/najib/source/mathbox/skills/computation-audit/scripts/run_experiment.py",
+      "--root",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i",
+      "--contract",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i/checks/domain-audit-contract.json",
+      "--input",
+      "paper.tex",
+      "--input",
+      "checks/domain_audit.py",
+      "--output",
+      "computations/domain-audit",
+      "--timeout",
+      "10",
+      "--max-output-bytes",
+      "1048576",
+      "--max-memory-bytes",
+      "268435456",
+      "--max-cpu-seconds",
+      "5",
+      "--max-cores",
+      "1",
+      "--max-threads",
+      "1",
+      "--result",
+      "computations/domain-audit/result.json",
+      "--",
+      "/usr/sbin/python3",
+      "checks/domain_audit.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\"manifest\": \"/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/manifest.json\", \"status\": \"completed\"}\n",
+    "stderr": ""
+  },
+  {
+    "phase": "domain-audit-validation",
+    "argv": [
+      "/usr/sbin/python3",
+      "/home/najib/source/mathbox/skills/computation-audit/scripts/validate_manifest.py",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i/computations/domain-audit/manifest.json",
+      "--root",
+      "/tmp/mathbox-referee-enumeration-p8dfgm5i"
+    ],
+    "returncode": 0,
+    "stdout": "valid evidence record; mathematical interpretation requires review\n",
+    "stderr": ""
+  }
+]

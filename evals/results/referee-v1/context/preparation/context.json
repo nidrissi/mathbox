@@ -1,0 +1,25 @@
+{
+  "preamble": "\\documentclass{article}\n\\usepackage{amsthm}\n\\newtheorem{lemma}{Lemma}\n\\title{A finite sum convention}\n",
+  "title": "A finite sum convention",
+  "abstracts": [
+    {
+      "text": "\nWe record the triangular sum identity, including its empty case.\n",
+      "location": {
+        "path": "referee-context.tex",
+        "line": 6
+      }
+    }
+  ],
+  "statements": [
+    {
+      "environment": "lemma",
+      "label": "lem:sum",
+      "text": "\\begin{lemma}\\label{lem:sum}\nFor each $n\\geq0$ one has $\\sum_{j=1}^n j=\\tau(n)$.\n\\end{lemma}",
+      "expanded_start": 330,
+      "location": {
+        "path": "referee-context.tex",
+        "line": 13
+      }
+    }
+  ]
+}

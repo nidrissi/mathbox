@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "preparation_version": 1,
+  "main": "paper.tex",
+  "source_sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+  "global_context_sha256": "9388950f89e6d6148385c778db45318445eb7dadd23355f7fe2a9363b6c0152b",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "source_files_sha256": "e308561ce3e626071f88379bad989e7d58730111beedca3890c4eea3c0039f67",
+  "sources": [
+    {
+      "path": "paper.tex",
+      "sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+      "bytes": 888
+    }
+  ],
+  "source_map": [
+    {
+      "expanded_start": 0,
+      "expanded_end": 888,
+      "path": "paper.tex",
+      "source_start": 0,
+      "source_end": 888,
+      "source_line": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "sha256:aa6709756ac669b3c53af8de5c5bf97814505780cdcdb03bc80c85dde8e6f1db:1",
+      "sha256": "fbb4ecad598ab971ed0cc2b6545553da929825fb85070f137ce9c77ad8742c39",
+      "identity_sha256": "aa6709756ac669b3c53af8de5c5bf97814505780cdcdb03bc80c85dde8e6f1db",
+      "title": "Front matter",
+      "kind": "front-matter",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/001-front-matter.tex",
+      "expanded_start": 119,
+      "expanded_end": 226,
+      "location": {
+        "path": "paper.tex",
+        "line": 5
+      }
+    },
+    {
+      "id": "sha256:bcfc0b87364a9ace6b96374602cb5f1be411f35e5278140ad2e9785277cd350a:1",
+      "sha256": "4ff4ade9b88daa9f78554fd1b4bef21ffc19a8e4e57bf8a3c69b9df6b58f73d3",
+      "identity_sha256": "bcfc0b87364a9ace6b96374602cb5f1be411f35e5278140ad2e9785277cd350a",
+      "title": "Objects",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/002-objects.tex",
+      "expanded_start": 226,
+      "expanded_end": 360,
+      "location": {
+        "path": "paper.tex",
+        "line": 9
+      }
+    },
+    {
+      "id": "sha256:0f0a49137cfd7a682c8e9655f2d57d71147a1ccc404c961bd51f4f0310af3f0f:1",
+      "sha256": "862d434916505eb4ae3de2a506049b6309d90cee86b1cd819b295dd10957b8b6",
+      "identity_sha256": "0f0a49137cfd7a682c8e9655f2d57d71147a1ccc404c961bd51f4f0310af3f0f",
+      "title": "Enumeration",
+      "kind": "section",
+      "reviewable": true,
+      "skip_reason": null,
+      "file": "sections/003-enumeration.tex",
+      "expanded_start": 360,
+      "expanded_end": 873,
+      "location": {
+        "path": "paper.tex",
+        "line": 12
+      }
+    }
+  ],
+  "limitations": [
+    "Lexical preparation only: no TeX execution or arbitrary macro expansion.",
+    "Conditionals, catcode changes, includeonly and custom input/section macros need manual inspection.",
+    "Literal masking covers verb/lstinline and common verbatim/listing/comment environments, not every package.",
+    "Bibliography files, graphics and package inputs are not loaded or authenticated.",
+    "Context is an extraction index; its order is not manuscript theorem numbering.",
+    "Hash comparison identifies text candidates, not dependency freshness or completed reviews."
+  ],
+  "comparison": {
+    "previous_source_sha256": "0a87d1c229c8f47bb3ee2b30128bab5418541e1243bc6346540cf67a5815a648",
+    "candidate_unchanged": [
+      "sha256:0f0a49137cfd7a682c8e9655f2d57d71147a1ccc404c961bd51f4f0310af3f0f:1",
+      "sha256:aa6709756ac669b3c53af8de5c5bf97814505780cdcdb03bc80c85dde8e6f1db:1",
+      "sha256:bcfc0b87364a9ace6b96374602cb5f1be411f35e5278140ad2e9785277cd350a:1"
+    ],
+    "added": [],
+    "removed": [],
+    "ambiguous": [],
+    "contract_changed": true,
+    "global_context_changed": false,
+    "whole_paper_invalidated": true,
+    "reuse_requires_context_check": true
+  }
+}

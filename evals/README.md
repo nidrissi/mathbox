@@ -3,8 +3,8 @@
 There are three different validation surfaces:
 
 1. `python3 scripts/check.py`: deterministic packaging, syntax and executable
-   state/experiment/cache regressions. These verify software contracts, not
-   mathematical performance.
+   state/experiment/cache/manuscript-preparation regressions. These verify
+   software contracts, not mathematical performance.
 2. `skills/*/evals/trigger-evals.json`: routing probes. A correct task answer does
    not establish that the right skill was selected.
 3. `skills/*/evals/evals.json` and the raw fixtures below: behavioral mathematical
@@ -40,10 +40,24 @@ of tool calls or reproducing a preferred proof.
 | `fixtures/novelty-vocabulary.md` | Recheck novelty using historical terminology and citation chains. |
 | `fixtures/parallel-reconciliation.md` | Reconcile conflicting parallel returns from a common checkpoint. |
 | `fixtures/inconclusive-continuation.md` | Resume a recurrence program after one inconclusive attempt with another continuation untried. |
+| `fixtures/referee-core.tex` | Referee a whole manuscript across correctness, edge cases, notation, exposition and claim calibration. |
+| `fixtures/referee-context.tex` | Reconcile a local undefined-notation suspicion against an earlier definition. |
+| `fixtures/referee-exposition.tex` | Assess a correct telescoping proof with little strategic signposting. |
+| `fixtures/referee-source.tex` | Review a coefficient extension with an unavailable synthetic source. |
+| `fixtures/referee-enumeration.tex` | Review a theorem supported by a filtered binary enumeration. |
+
+For `referee-context`, a reconciliation trial may supply the user-visible prior
+local finding "tau is undefined in the Identity section" together with the raw
+manuscript. Keep the grader's disposition and diagnosis out of solver context.
+Record a raw suspicion separately from the final conclusion. Routing trials
+must likewise record the selected entry point, not infer it from report wording.
 
 These cases test specific failure mechanisms using synthetic, publishable
 artifacts. They contain no project-derived names, paths, statements, outputs or
 provenance. They are not a validated measure of frontier research success. Keep
 confidential held-out project tasks outside this repository and report only
 aggregate outcomes before making comparative performance claims. See
-`docs/validation-v3.md` for the actual forward-testing scope of this redesign.
+[`docs/validation-v3.md`](../docs/validation-v3.md) for the actual forward-testing
+scope of the v3 redesign and
+[`docs/referee-validation.md`](../docs/referee-validation.md) for the referee
+integration, raw trial records and API-free Math Scout comparison.

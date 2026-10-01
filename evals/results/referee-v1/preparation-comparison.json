@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "scope": "API-free archived algorithms on synthetic inputs, not model performance",
+  "reference_version": "0.3.0a1",
+  "reference_archive_sha256": "7919f326105d863502a9427bedf0794088e48d6eaf9d5c8e104ea373ccd75723",
+  "reference_reviewer_sha256": "6dede2473e072afedfa7fe9201ef8ce5343f5363b84d547061c9daaf30e4b91e",
+  "native_contract_sha256": "5e41983f5185a3447e01e102947cc7d88421a090a44ea7c52105f1a5732bdc56",
+  "cases": [
+    {
+      "case": "ordinary-sections",
+      "reference": [
+        "One",
+        "Two"
+      ],
+      "native": [
+        "One",
+        "Two"
+      ],
+      "result": "preserved"
+    },
+    {
+      "case": "commented-section",
+      "reference": [
+        "Real",
+        "Last"
+      ],
+      "native": [
+        "Real",
+        "Last"
+      ],
+      "result": "preserved"
+    },
+    {
+      "case": "verbatim-section",
+      "reference": [
+        "Real"
+      ],
+      "native": [
+        "Real"
+      ],
+      "result": "preserved"
+    },
+    {
+      "case": "bibliography-heading",
+      "reference": [
+        "Main",
+        "Appendix"
+      ],
+      "native": [
+        "Main",
+        "Appendix"
+      ],
+      "result": "preserved"
+    },
+    {
+      "case": "one-nested-title",
+      "reference": [
+        "The $\\mathbb{Z}$-case"
+      ],
+      "native": [
+        "The $\\mathbb{Z}$-case"
+      ],
+      "result": "preserved"
+    },
+    {
+      "case": "inline-literal-section",
+      "reference": [
+        "Real",
+        "Fake"
+      ],
+      "native": [
+        "Real"
+      ],
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "commented-verbatim-opener",
+      "reference": [],
+      "native": [
+        "Real"
+      ],
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "balanced-deep-title",
+      "reference": [],
+      "native": [
+        "The {nested {deep}} case"
+      ],
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "nested-and-repeated-inputs",
+      "result": "preserved",
+      "expanded_sha256": "1eadbe11bc90e998114ef0374ca45c44de451437dbfd4fd4e7e39e3a6a48b2e2"
+    },
+    {
+      "case": "literal-input-not-expanded",
+      "reference_expands_literal": true,
+      "native_expands_literal": false,
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "input-eof-comment-boundary",
+      "reference": [],
+      "native": [
+        "Real"
+      ],
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "missing-input",
+      "reference": "warns and continues",
+      "native": "explicit preparation failure",
+      "result": "intentional-stricter-coverage"
+    },
+    {
+      "case": "cyclic-input",
+      "reference": "warns and continues",
+      "native": "explicit preparation failure",
+      "result": "intentional-stricter-coverage"
+    },
+    {
+      "case": "out-of-tree-input",
+      "reference": "warns and continues",
+      "native": "explicit preparation failure",
+      "result": "intentional-stricter-coverage"
+    },
+    {
+      "case": "append-section-preserves-former-last-unit",
+      "reference_stable": false,
+      "native_stable": true,
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "short-front-matter-retained",
+      "reference": [
+        "Main"
+      ],
+      "native": [
+        "Front matter",
+        "Main"
+      ],
+      "result": "intentional-improvement"
+    },
+    {
+      "case": "custom-theorem-context",
+      "reference_indexes_prop": false,
+      "native_indexes_prop": true,
+      "result": "intentional-improvement"
+    }
+  ],
+  "cases_passed": 17
+}

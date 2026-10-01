@@ -1,0 +1,53 @@
+{
+  "skill_name": "referee",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Referee the entire manuscript evals/fixtures/referee-core.tex. Leave the manuscript unchanged and retain raw findings and final reconciliation in an isolated run directory.",
+      "expected_output": "Covers all five dimensions; confirms the invalid ring cancellation through proof-audit and retains it, tests n=0, compares the all-fields headline to characteristic-zero delivery, and does not allege that tau is undefined.",
+      "assertions": ["Supplies a valid ring counterexample under the exact hypotheses", "Uses proof-audit to confirm the serious mathematical obligation", "Checks the empty set at n=0", "Quotes both the abstract promise and characteristic-zero theorem", "Searches full context before reporting missing notation", "Separates raw findings from final conclusions and states actual coverage"]
+    },
+    {
+      "id": 2,
+      "prompt": "Referee evals/fixtures/referee-context.tex. A prior local review of the Identity section says tau is undefined. Reconcile that suspicion against the manuscript and preserve its disposition.",
+      "expected_output": "Checks the earlier definition, dismisses the false positive in reconciliation, verifies the elementary identity including n=0, and does not retain the unsupported objection as an author question.",
+      "assertions": ["Locates the exact earlier definition", "Dismisses rather than hedges the undefined-symbol allegation", "Records why it was discarded", "Preserves an unstructured prior suspicion without inventing historical confidence or source hashes", "Allows an empty final concerns list"]
+    },
+    {
+      "id": 3,
+      "prompt": "Referee evals/fixtures/referee-exposition.tex for correctness and expert readability.",
+      "expected_output": "Checks the telescoping identities and n=0, identifies the missing strategy/signposting with an actionable remedy, and keeps this separate from mathematical invalidity.",
+      "assertions": ["Checks the actual displayed algebra", "Recognizes the proof as mathematically valid", "Suggests an exact strategy sentence or organization change", "Caps exposition severity at major and keeps it in exposition"]
+    },
+    {
+      "id": 4,
+      "prompt": "Referee evals/fixtures/referee-source.tex. The citation is synthetic and its source is unavailable; do not fabricate it.",
+      "expected_output": "Routes the bounded coefficient question through literature-check if available, isolates the unjustified rational-to-arbitrary-coefficients step, and leaves the exact external input conditional without inventing source contents or prior art.",
+      "assertions": ["Identifies the exact coefficient regime mismatch", "Uses literature-check or documents its unavailable fallback", "Marks unavailable source authentication and theorem content conditional", "Does not infer the theorem's falsity solely from unavailable evidence"]
+    },
+    {
+      "id": 5,
+      "prompt": "Referee evals/fixtures/referee-enumeration.tex, including the supplied enumeration code. You may execute its local standard-library code in a temporary directory.",
+      "expected_output": "Uses computation-audit, obtains or derives sixteen candidates but eight checked, identifies the filter as tautological, checks a valid odd-parity counterexample, and refuses to call the subset exhaustive.",
+      "assertions": ["Compares the claimed population and actual filtered iterator", "Reports the actual tested count", "Uses computation-audit for the load-bearing program", "Checks that a proposed counterexample is a binary vector of length four", "Distinguishes code success from theorem verification"]
+    },
+    {
+      "id": 6,
+      "prompt": "Referee a revised manuscript whose proof unit is byte-identical but whose earlier definition now changes its domain. The preparation comparison marks the local text unchanged; the previous report predates that definition.",
+      "expected_output": "Treats unchanged bytes as a reuse candidate only, rechecks changed dependency context, invalidates whole-paper notation/claims and final synthesis, and preserves old findings as historical evidence.",
+      "assertions": ["Does not certify freshness from unit hashes", "Checks context and lane-contract revision", "Reruns affected local obligations and whole-paper passes", "Does not initialize a second review-state database"]
+    },
+    {
+      "id": 7,
+      "prompt": "Referee an entire manuscript in a host without subagents, helper execution or installed Mathbox specialists. Only the PDF text with reliable page locators is available.",
+      "expected_output": "Runs separate sequential dimensions, records honest manual scope and self-review, performs direct focused checks where possible, leaves unverified leaves conditional, and produces a useful report without requiring a ledger or Math Scout.",
+      "assertions": ["Covers or explicitly marks gaps in all five dimensions", "States manual extraction and self-review provenance", "Does not invent hashes, specialist runs or source checks", "Works as a standalone skill"]
+    },
+    {
+      "id": 8,
+      "prompt": "Referee a multi-file paper whose input is missing or escapes the project boundary, and whose final notation pass failed after other lanes returned.",
+      "expected_output": "Refuses unsafe reads, resolves preparation failure or explicitly reports partial source coverage, retains available evidence, and states the failed notation scope in Summary rather than claiming complete review.",
+      "assertions": ["Does not read the out-of-bound input", "Does not silently treat an unresolved input as complete source", "Retains completed raw findings", "Names the unreviewed scope in final coverage"]
+    }
+  ]
+}

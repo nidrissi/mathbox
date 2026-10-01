@@ -1,0 +1,40 @@
+{
+  "claim_id": "C_BINARY",
+  "mathematics": {
+    "assertion_tested": "All 16 binary vectors are represented exactly once; 8 have even weight and 8 have odd weight, with explicit witness (1,0,0,0)",
+    "coefficient_domain": "Z, exact Python integers",
+    "conventions": "P(v) iff sum(v) is even; vectors have exactly four binary coordinates",
+    "inputs": [
+      "paper.tex",
+      "checks/domain_audit.py"
+    ],
+    "bounds": {
+      "mask_min": 0,
+      "mask_max": 15,
+      "vector_length": 4,
+      "coordinate_alphabet": [
+        0,
+        1
+      ]
+    },
+    "non_claims": [
+      "Does not establish that every binary vector has even parity",
+      "No claim about vector lengths other than four"
+    ]
+  },
+  "execution_artifacts": [
+    "paper.tex",
+    "checks/domain_audit.py"
+  ],
+  "software": [
+    {
+      "name": "Python",
+      "version": "3.14.7"
+    }
+  ],
+  "randomness": {
+    "used": false,
+    "generator": "",
+    "seed": null
+  }
+}

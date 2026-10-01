@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "manuscript_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "entries": [
+    {
+      "finding_id": "P001",
+      "raw_artifact": "prior-lead.json",
+      "disposition": "dismissed",
+      "reason": "The complete source explicitly defines tau(n)=n(n+1)/2 on the nonnegative integers in the Notation section at line 10, before its Identity-section uses at lines 14 and 18. Whole-source reading and the global literal search found no conflicting meaning. A missing definition in the prior local slice is therefore not a defect in the manuscript.",
+      "checked_locations": [
+        "referee-context.tex:1\u201320",
+        "referee-context.tex:10",
+        "referee-context.tex:14",
+        "referee-context.tex:18"
+      ],
+      "specialist_artifacts": [],
+      "final_concern_id": null,
+      "current_dismissal_confidence": 0.99,
+      "evidence_status": "Demonstrated prior false positive after full-source context check.",
+      "exact_evidence": [
+        {
+          "location": "referee-context.tex:10",
+          "quote": "For $n\\in\\{0,1,2,\\ldots\\}$ define $\\tau(n)=n(n+1)/2$."
+        },
+        {
+          "location": "referee-context.tex:14",
+          "quote": "For each $n\\geq0$ one has $\\sum_{j=1}^n j=\\tau(n)$."
+        },
+        {
+          "location": "referee-context.tex:18",
+          "quote": "adding $n+1$ gives $(n+1)(n+2)/2=\\tau(n+1)$."
+        }
+      ]
+    }
+  ],
+  "final_concerns": [],
+  "current_review_findings": "All five current lane returns have empty issues. There are no current findings to merge or retain.",
+  "provenance": "Final reconciliation is a further self-review by the same assistant, inspecting the full current source and each current raw pass.",
+  "new_final_referee_observations": [
+    {
+      "kind": "source-quotation transcription correction",
+      "artifact": "passes/05-current-claims-quote-correction.json",
+      "reason": "An escaped raw-note quotation was corrected by copying actual source lines; the historical raw return was preserved."
+    }
+  ]
+}

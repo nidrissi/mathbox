@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\title{A binary enumeration}
+\begin{document}
+\begin{abstract}
+We verify a property on all binary vectors of length four by enumeration.
+\end{abstract}
+\section{Objects}
+The vectors in question are exactly $\{0,1\}^4$.
+Property P is that the number of coordinates equal to one is even.
+\section{Enumeration}
+\begin{theorem}\label{thm:binary}
+Every binary vector of length four has property P.
+\end{theorem}
+\begin{proof}
+The accompanying program checks every vector and its assertions all pass.
+There are sixteen vectors, so this is an exhaustive proof.
+\end{proof}
+\begin{verbatim}
+from itertools import product
+vectors = list(product((0, 1), repeat=4))
+checked = [v for v in vectors if sum(v) % 2 == 0]
+for v in checked:
+    assert sum(v) % 2 == 0
+print(len(vectors), len(checked))
+\end{verbatim}
+\end{document}

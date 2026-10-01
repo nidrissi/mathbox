@@ -1,0 +1,21 @@
+{
+  "artifact": "passes/05-current-claims.json",
+  "provenance": "Final self-review source-quotation recheck",
+  "reason": "The first raw claims note represented backslashes twice in a source quotation. Preserve that return unchanged and supply the exact source lines here. This corrects transcription only; the claim comparison and empty issue list stand.",
+  "manuscript_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "contract_sha256": "b9b52b576ec3c6fffe062a615fda3ba7865527f35d047ed91f31f3069b552bd7",
+  "exact_evidence": [
+    {
+      "location": "referee-context.tex:7",
+      "quote": "We record the triangular sum identity, including its empty case."
+    },
+    {
+      "location": "referee-context.tex:14",
+      "quote": "For each $n\\geq0$ one has $\\sum_{j=1}^n j=\\tau(n)$."
+    },
+    {
+      "location": "referee-context.tex:17\u201318",
+      "quote": "Both sides are zero at $n=0$. Assuming the formula at $n$,\nadding $n+1$ gives $(n+1)(n+2)/2=\\tau(n+1)$."
+    }
+  ]
+}

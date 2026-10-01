@@ -1,13 +1,17 @@
 ---
 name: proof-audit
 description: >-
-  Adversarially audit an existing mathematical claim, proof, derivation, diagram, or theorem dependency for correctness. Use for requests to verify, referee, stress-test, type-check, find gaps, or isolate the exact remaining implication. Default to read-only. Do not use to invent a substantially new proof route or merely copyedit prose.
+  Adversarially audit an existing mathematical claim, proof, derivation, diagram, or theorem dependency for correctness. Use for focused requests to verify, referee, stress-test, type-check, find gaps, or isolate the exact remaining implication. Default to read-only. Do not use for a whole-manuscript referee report, inventing a substantially new proof route, or merely copyediting prose.
 ---
 
 # Mathematical proof audit
 
 Audit the claim actually stated, under its stated hypotheses. Do not rescue it
 by changing definitions, conventions, or scope.
+
+For a referee-style assessment of an entire manuscript, use the available
+`referee` skill (`mathbox:referee` in plugin installations). This skill remains
+responsible for focused mathematical obligations delegated by that review.
 
 ## Establish the target
 

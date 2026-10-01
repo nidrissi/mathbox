@@ -1,0 +1,187 @@
+[
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/coverage.json",
+    "sha256": "cf396375db8460babd4e224c75bf06d62239fbd047c6904d48e7200b88d62edc",
+    "bytes": 11146,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/findings.json",
+    "sha256": "c4c5ffbb0a69d645017b6d7e72dc643a0a1d76b8dda6faa78e6557611e599e27",
+    "bytes": 9388,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/01-correctness.json",
+    "sha256": "c3a46113f214762b186c55f6d9206404281ba0ac8a4cf657bdbf404990c7c885",
+    "bytes": 2970,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/01-current-correctness.json",
+    "sha256": "1de3edda581c922ab3c561f0ace2ce865196acd711d7b7a0e84fbf8ff0795baf",
+    "bytes": 2659,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/02-adversarial.json",
+    "sha256": "937fa01b65cfcc97fa194997e4c6e0e0f3e3e2cce35365303bf400078a6603a2",
+    "bytes": 2921,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/02-current-adversarial.json",
+    "sha256": "723d2e27c43e81b5b99e4aa716576f97fb62bcbf02970925ae4dc3ac378bc752",
+    "bytes": 2676,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/03-current-exposition.json",
+    "sha256": "8ef8f0fa2ee0bf89706e3208f05df6f6bbf04632c167ff44ca0203d27190d9b6",
+    "bytes": 2697,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/03-exposition.json",
+    "sha256": "38b610d9f7d1333ff2dbf64496cb5faa6076b2d2c4e6508b98e507bc2990865e",
+    "bytes": 2826,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-notation.json",
+    "sha256": "46b3990448d9e8d14fbfe93c09f0ac9cdaac7ad125124ae1eb726a09e4fcbe49",
+    "bytes": 3095,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-current-tau-search.txt",
+    "sha256": "3ec50b18d0b0a3ff4381cba77159f835518d057b82c3622971c1a23a8487cd5e",
+    "bytes": 163
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-notation.json",
+    "sha256": "4a229fc084135d493e75c0ec782d49f6965010872d5b66cbc115728b91a32d26",
+    "bytes": 3119,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/04-tau-search.txt",
+    "sha256": "3ec50b18d0b0a3ff4381cba77159f835518d057b82c3622971c1a23a8487cd5e",
+    "bytes": 163
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims-quote-correction.json",
+    "sha256": "3fa7537150f06445033730f1806ca3f8e4e1e8fa9d28da4becd9c97d30c63763",
+    "bytes": 1021,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/passes/05-current-claims.json",
+    "sha256": "656fc97334235d0648f318b2990de32573b7585b8be4c21f6182cef693bdd3c1",
+    "bytes": 2951,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/context.json",
+    "sha256": "f5d9401eebc37f4ddcbc98222fb4dd82bdedc84a75a1900bffa650598d369b81",
+    "bytes": 698,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/full-source.tex",
+    "sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+    "bytes": 568
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/manifest.json",
+    "sha256": "80eed1e282872e2f9123de1ce6a7e2ef95d797776b9035762fe4b9fdc29c2487",
+    "bytes": 3174,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/sections/001-front-matter.tex",
+    "sha256": "2094fbcf8b63185fae6a02df464dffd1596f60fa03c0105c03dde10d6d31fce1",
+    "bytes": 98
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/sections/002-notation.tex",
+    "sha256": "fb0bbcd261015f1d3d3835713bdd725f219bb3f6046f4ea58fd0eaee42073091",
+    "bytes": 95
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation/sections/003-identity.tex",
+    "sha256": "c0daef08537022a26a572136d4b990e6eaa0510cdaca708b060a5f038f651670",
+    "bytes": 242
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/context.json",
+    "sha256": "f5d9401eebc37f4ddcbc98222fb4dd82bdedc84a75a1900bffa650598d369b81",
+    "bytes": 698,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/full-source.tex",
+    "sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+    "bytes": 568
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/manifest.json",
+    "sha256": "46d3e0fbddc46f0b44d38fd6d3f20b5a57772076976481113885b94d7a261edd",
+    "bytes": 3759,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/sections/001-front-matter.tex",
+    "sha256": "2094fbcf8b63185fae6a02df464dffd1596f60fa03c0105c03dde10d6d31fce1",
+    "bytes": 98
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/sections/002-notation.tex",
+    "sha256": "fb0bbcd261015f1d3d3835713bdd725f219bb3f6046f4ea58fd0eaee42073091",
+    "bytes": 95
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/preparation-current/sections/003-identity.tex",
+    "sha256": "c0daef08537022a26a572136d4b990e6eaa0510cdaca708b060a5f038f651670",
+    "bytes": 242
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-lead.json",
+    "sha256": "3fa4c48a629d49f0bab0a694f1d86903c41c069e9c4ef8dcf71dfb4fb0a1f9f0",
+    "bytes": 622,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/prior-local-review.txt",
+    "sha256": "74eae22ac4fc9a342beb5ddeb990cb4fe93f99f119e772186579df6294a35902",
+    "bytes": 73
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/reconciliation.json",
+    "sha256": "a6320da45978edc5f19d605875a3cb6413292646ae1b5fae7b2a375125dd28a6",
+    "bytes": 2174,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/report.md",
+    "sha256": "b90ad6d5ea7beb65136756432935974402b488a19d5244c9b9ecc214a8a55825",
+    "bytes": 3152
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/revision-comparison.json",
+    "sha256": "d7c934386ed0d4125f056ce3e384cf0c510f4dd940c2504c3044bfe00daba82e",
+    "bytes": 1047,
+    "json_parse": "passed"
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/survey.md",
+    "sha256": "5dc97d54083fda7d086bb006fd4e73dd24e74fcd1654dfee4baf9502ff66b48c",
+    "bytes": 1831
+  },
+  {
+    "path": "/tmp/mathbox-referee-context-review-byojulbr/project/.mathbox/referee/context-run/verification.json",
+    "sha256": "d8d3fa42c91dc9f9833b1c9f0925a6bbd608a94de169b0a4ab79ddfa71622e46",
+    "bytes": 2382,
+    "json_parse": "passed"
+  }
+]
