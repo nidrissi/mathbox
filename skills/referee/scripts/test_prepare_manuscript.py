@@ -129,7 +129,7 @@ class PreparationTests(unittest.TestCase):
                 self.assertEqual([s["path"] for s in manifest["sources"]],
                                  ["intro.tex", "src/paper.tex"])
 
-    def test_tex_suffix_is_tried_first_and_include_always_appends_it(self):
+    def test_tex_suffix_is_tried_first_and_include_supplies_it(self):
         self.put("foo", "EXTENSIONLESS\n")
         self.put("foo.tex", "TEXFILE\n")
         _, tex, _ = self.prepare(paper("\\input{foo}\n"))
@@ -140,6 +140,10 @@ class PreparationTests(unittest.TestCase):
         self.assertIn("EXTENSIONLESS", tex)
         with self.assertRaisesRegex(prep.PreparationError, "Cannot find"):
             self.prepare(paper("\\include{foo}\n"))
+        # LaTeX strips an explicit .tex suffix before \include appends one.
+        self.put("chapter.tex", "CHAPTER\n")
+        _, tex, _ = self.prepare(paper("\\include{chapter.tex}\n"))
+        self.assertIn("CHAPTER", tex)
 
     def test_text_after_end_document_or_endinput_is_not_expanded(self):
         self.put("chapter.tex", "kept\n\\endinput\nscrap \\input{gone}\n\\section{Scrap}\n")
@@ -342,6 +346,11 @@ class PreparationTests(unittest.TestCase):
         self.assertNotIn(outside, reads)
         with self.assertRaises(prep.PreparationError):
             prep.prepare(outside, project)
+        # TeX would read the escaping linked.tex, so an in-tree fallback is unsafe.
+        (project / "linked").write_text("IN-TREE DECOY\n", encoding="utf-8")
+        source.write_text(paper("\\input{linked}\n"), encoding="utf-8")
+        with self.assertRaisesRegex(prep.PreparationError, "outside project"):
+            prep.prepare(source, project)
 
     def test_missing_dynamic_invalid_utf8_and_depth_size_failures(self):
         for text in (paper("\\input{missing}\n"), paper(r"\input{\filename}")):

@@ -83,11 +83,13 @@ compatibility with that revision. Historical hashes are unchanged. Older
 specialist returns carry their own actual revision and reuse records.
 
 Later revisions change the current contract to
-`2e974da362b55119657f98cf6ae72dd47b00c32a7e3d4217b580d0645ea1e380`:
+`a53c11089e090bddfb68073b7d6872bdc63572c21d5998b5faadf44290bbc148`:
 
 - Helper fixes stop scanning at `\endinput` and `\end{document}`, carry
   `alltt` state through nested inputs, and resolve inputs from a symlinked
-  entry point's directory. Twenty further preparation regressions cover them,
+  entry point's directory. Input lookup fails closed when an existing
+  candidate TeX would read lies outside the boundary, instead of falling back
+  to a later in-tree candidate. Further preparation regressions cover them,
   and `preparation.md` and `output-contract.md` describe them.
 - Native model assignments add
   [`model-assignments.md`](../skills/referee/references/model-assignments.md),

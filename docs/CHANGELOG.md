@@ -66,6 +66,9 @@ manifests have their own schema versions, independent of the plugin version.
 - `referee`: a symlinked main manuscript retains the supplied entry point's
   directory for input lookup while canonical paths still enforce confinement
   and identify source files. ([#15])
+- `referee`: input lookup fails when an existing file TeX would read first,
+  such as a `name.tex` symlink, lies outside the project boundary, instead of
+  silently preparing a later in-tree candidate like extensionless `name`. ([#15])
 
 ## [3.2.0] — 2026-09-24 — Deferred handoff ingestion
 

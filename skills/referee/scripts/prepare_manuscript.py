@@ -270,7 +270,7 @@ class SourceLoader:
     def reference(self, name: str, parent: Path, command: str) -> Path:
         if not name or any(c in name for c in "\\{}%\x00\r\n"):
             raise PreparationError(f"Input is not a supported literal filename: {name!r}")
-        # TeX tries name.tex before name; \include always appends .tex.
+        # TeX tries name.tex before name; \include strips a .tex suffix, then appends it.
         if name.endswith(".tex"):
             candidates = [name]
         elif command == "include":
@@ -284,6 +284,10 @@ class SourceLoader:
                 try:
                     path = self.confined(directory / candidate)
                 except PreparationError:
+                    # An existing escaping file is what TeX would read; skipping
+                    # it could select a different, in-tree file.
+                    if (directory / candidate).exists():
+                        raise
                     escaped = True
                     continue
                 if path.is_file():

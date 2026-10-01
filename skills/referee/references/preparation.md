@@ -21,7 +21,8 @@ lookup. A symlinked main file keeps the supplied entry point's directory for
 lookup; canonical paths identify and confine the source files.
 `\input{name}` tries `name.tex` before `name`; `\include{name}` reads
 only `name.tex`. Brace-less `\input` is supported. Paths and symlinks must
-remain inside the boundary before any content is read.
+remain inside the boundary before any content is read; an existing candidate
+that escapes it fails preparation rather than falling back to a later one.
 
 Lines end at CR, LF or CRLF, as in TeX. Comments and common literal
 environments, including inline `\verb`/`\lstinline` with any delimiter or
