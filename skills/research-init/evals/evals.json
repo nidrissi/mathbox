@@ -19,14 +19,14 @@
       "assertions": [
         "Proposes /.research-cache/ in the project Git ignore rules",
         "Treats the cache's own internal ignore rule as a fallback, not as the project rule",
-        "Records only metadata and hashes in the tracked literature ledger",
+        "Records only metadata and hashes in the tracked literature record",
         "Does not inspect or commit cached PDF or extracted-text content",
         "Makes source retention conditional on project authorization"
       ]
     },
     {
       "id": 3,
-      "prompt": "Initialize this repository and determine whether every theorem cited in its literature ledger has the hypotheses needed by the proofs.",
+      "prompt": "Initialize this repository and determine whether every theorem cited in its literature record has the hypotheses needed by the proofs.",
       "expected_output": "Inventories and configures the repository first, then executes the explicitly requested substantive theorem checks as a subsequent literature-check work package within the same assignment.",
       "assertions": [
         "Keeps repository initialization separate from source verification",
@@ -60,7 +60,7 @@
     },
     {
       "id": 6,
-      "prompt": "Inspect and propose a retrofit for this synthetic-style repository. It uses PLAN.md, STATUS.md, two dated HANDOFF files, THEOREMS.md, FACT_INVENTORY.md, docs/path-migrations.json, and computation manifests under checks/. AGENTS.md exists but CLAUDE.md does not; RESEARCH_LOG.md mixes linked index lines with full route prose.",
+      "prompt": "Inspect and propose a retrofit for this synthetic-style repository. It uses PLAN.md, STATUS.md, two dated HANDOFF files, THEOREMS.md, FACT_INVENTORY.md, docs/path-migrations.json, and computation manifests under checks/. AGENTS.md exists but CLAUDE.md does not; RESEARCH_LOG.md mixes linked index lines with full route prose. A root skills/ directory contains a local proof-audit/SKILL.md.",
       "expected_output": "Recognizes semantic role aliases rather than requiring canonical names, inventories computation manifests and path maps separately, accepts AGENTS.md without a CLAUDE.md bridge and reports multiple handoff candidates, classifies the log as mixed without choosing authority from filenames alone, and leaves source-derived inventory assertions pending verification.",
       "assertions": [
         "Recognizes plan, status, theorem/fact inventory and handoff variants",
@@ -137,7 +137,7 @@
     {
       "id": 12,
       "prompt": "Migrate a 2023 flat research log into program indexes. A theorem was proved only in a 2025 revision; the 2023 program cutoff is inferred from Git history, and two mission-relevant route entries have no defensible program assignment. Preserve all old links.",
-      "expected_output": "Builds retrospective closeouts that label the 2023 cutoff as inferred and distinguish the 2025 assessment, preserves the two routes in a linked unclassified inventory, reconciles every old entry to a program, unclassified inventory, or quarantine, and retains the old index and working links.",
+      "expected_output": "Builds historical closeouts that label the 2023 cutoff as inferred and distinguish the 2025 assessment, preserves the two routes in a linked unclassified inventory, reconciles every old entry to a program, unclassified inventory, or quarantine, and retains the old index and working links.",
       "assertions": [
         "Does not turn first Git appearance into a certain mathematical completion date",
         "Does not backdate the 2025 proof to a 2023 closeout",
@@ -155,6 +155,18 @@
         "Keeps durable proof above chat or user assertion for mathematical status",
         "Requires fresh adversarial review before promoting a material new claim",
         "Replaces every template placeholder"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Use research-init to inspect and plan a retrofit, without editing. AGENTS.md declares **Verification:** `python3 scripts/check.py` and **Status:** `STATUS.md`. RESEARCH_LOG.md starts with a ```markdown fenced example containing a ```python line and a fake route link; its true closing fence is followed by a dated route heading, a route field and a link to records/route.md. Do not invent a missing verification file from the command.",
+      "expected_output": "The read-only inspector reports STATUS.md as a declared path, excludes the verification command and fenced example from path/history findings, and retains the real dated route and record link after the closing fence for migration planning.",
+      "assertions": [
+        "Does not list a shell command under declared file paths",
+        "Does not treat a language-bearing fence inside an open code block as a closing fence",
+        "Classifies the real linked and dated route content as mixed history",
+        "Keeps line locators for prose references after the example",
+        "Does not edit during a plan-only request"
       ]
     }
   ]

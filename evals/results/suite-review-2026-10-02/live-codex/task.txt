@@ -1,0 +1,1 @@
+Use $research-program to inspect the open program P and attempt its first recorded route. This trial authorizes finite computations only at n=0,1,2,3; preserve the universal goal and every untried uniform continuation. Do not spawn agents or write any project file. Report the skill sources you actually read and the strongest supported result.

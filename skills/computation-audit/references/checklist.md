@@ -30,3 +30,9 @@
 - Environment and library versions are recorded.
 - Output serialization is round-trip tested when reused as evidence.
 - Timeouts and memory limits are reported as limits, not negative results.
+
+## Coverage
+
+Compare the claimed population cardinality with visited cases. Inspect strides,
+filters, random sampling, early exits and assertions that merely repeat the
+filter. Report only the tested subset unless a proved reduction covers omissions.

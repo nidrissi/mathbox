@@ -51,7 +51,7 @@ Install `mathbox` from Codex's plugin directory, start a new session, and try:
 $mathbox:proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
 ```
 
-If the plugin directory listing is not available yet, the built-in skill
+When installing standalone skills, the built-in skill
 installer can install the skills directly:
 
 ```text
@@ -118,40 +118,26 @@ Mathbox does not install SageMath, LaTeX, or other project dependencies.
 | [`manuscript-integrate`](skills/manuscript-integrate/) | transfer an already validated result into the authoritative LaTeX manuscript | explicit |
 | [`proofread-math`](skills/proofread-math/) | fix grammar, typography, LaTeX, references, or local typos whose correction is forced | automatic |
 
-A host may pick an **automatic** skill for any task that matches its
-description. An **explicit** skill runs only when you ask for it. This boundary
-is set in the skill's description and body, not in host-specific frontmatter.
-Any skill can be invoked by name. With the plugin, use `/mathbox:<skill>` in
-Claude Code or `$mathbox:<skill>` in Codex. With standalone installs, use
-`/<skill>` or `$<skill>`.
+A host may select an **automatic** skill for a matching task. Codex enforces
+**explicit** skills through `allow_implicit_invocation: false` in
+`agents/openai.yaml`; request `$mathbox:<skill>` (or its standalone name) to
+load one. Claude Code uses the description/body's explicit-request boundary.
+A plain task matching an explicit-only skill may therefore have no directly
+loaded skill in Codex. Other workflows can use their documented direct fallback
+when host invocation rules do not permit loading a specialist.
+
+Use `/mathbox:<skill>` in Claude Code or `$mathbox:<skill>` in Codex; standalone
+names omit `mathbox:`. Invocation policy does not override host tool or delegation
+authorization. See the [routing evaluation protocol](evals/README.md#routing-protocol).
 
 ### Safeguards
 
-- A bounded computation is evidence only for its stated range, never a
-  universal proof.
-- A proof audit reconstructs the claimed object independently. A computation
-  on a convenient substitute proves nothing about the original object. A
-  coverage claim must match the iterator that actually ran and the absolute
-  grading, not only samples or parity checks.
-- Proofreading never changes an argument. Use `proof-audit` to diagnose a
-  proof and `research-attempt` to develop a new one.
-- `referee` owns whole-manuscript assessment. It checks raw findings against
-  the full source, suppresses cross-section false positives, and delegates
-  concrete proof, source and computation obligations to available specialists.
-  Exposition concerns remain distinct from mathematical invalidity; agreement
-  between reviewers is not proof. Focused lemma checks stay with `proof-audit`.
-- `referee` applies user/project model and reasoning preferences through native
-  subagent controls where available. Unavailable settings fall back with explicit
-  provenance; hosts without delegation use sequential self-review. See
-  [model assignments](skills/referee/references/model-assignments.md).
-- `manuscript-integrate` transfers mathematics that has already been
-  validated. It does not make conjectural work ready for publication.
-- A failed literature search supports only a bounded search report, never a
-  claim of global novelty. A novelty check searches equivalent and historical
-  terminology and follows citation chains to primary sources where it can.
-- Any new question about what an external source proves goes through
-  `literature-check`, so every skill applies the same rules for exact versions,
-  cache use and evidence.
+- [Computation](skills/computation-audit/SKILL.md) supports only its audited assertion and range.
+- [Proof audits](skills/proof-audit/SKILL.md) inspect raw evidence and preserve unresolved gaps.
+- [Proofreading](skills/proofread-math/SKILL.md) changes only conservative local errors.
+- [Refereeing](skills/referee/SKILL.md) reconciles whole-paper findings; reviewer agreement is not proof.
+- [Integration](skills/manuscript-integrate/SKILL.md) requires current support for established claims.
+- [Literature checks](skills/literature-check/SKILL.md) verify exact implications and bound novelty reports.
 
 ### Example prompts
 
@@ -171,39 +157,11 @@ These tools are Python helpers bundled with the skills and use only the
 standard library. Projects that keep plain Markdown status files work without
 them.
 
-- **Research ledger** (`research-state`). This is an append-only, versioned
-  record in the project's `.mathbox/` directory. It records claim revisions,
-  dependencies, hashed evidence, review provenance, and the runs of programs
-  and routes. From these it generates brief handoff, impact and stale-evidence
-  reports. A label such as `proof-recorded` describes recorded evidence. It
-  does not certify a proof or replace the project's own promotion policy. A
-  host that cannot execute commands can return a deferred packet that is
-  ingested locally later. See the
-  [ledger contract](skills/research-state/references/ledger.md) and the
-  [deferred handoff](skills/research-state/references/deferred-handoff.md).
-- **Experiment runner** (`computation-audit`). It runs a bounded computation and
-  records the actual argv, the hashes of its inputs and results, bounded logs,
-  its finite scope, and optional POSIX resource limits. The result is a
-  version 2 computation manifest. See the
-  [runner contract](skills/computation-audit/references/runner.md).
-- **Literature cache** (`literature-check`). When a project authorizes keeping
-  source material, the helper stores PDFs and extracted text in
-  `.research-cache/literature/`, addressed by content. Keep a
-  `/.research-cache/` rule in the project's `.gitignore`. The helper refuses
-  to write anything Git would track, never fetches sources or handles
-  credentials, and never modifies the cache during lookups. See the
-  [cache contract](skills/literature-check/references/source-cache.md).
-- **Repository inspector** (`research-init`). It builds a read-only inventory
-  of research roles, live files, computation manifests and cache conventions
-  before setup or migration. See the
-  [existing-repository migration guide](skills/research-init/references/existing-repo-migration.md).
-- **Manuscript preparation** (`referee`). It resolves confined LaTeX inputs,
-  masks comments and literal markup for section extraction, retains original
-  source locators, and writes a new snapshot with stable unit hashes. Optional
-  prior-manifest comparison identifies unchanged text candidates; dependency
-  checks still govern reuse. No Math Scout installation, API adapter or ledger
-  is required. See the
-  [preparation contract](skills/referee/references/preparation.md).
+- [Research ledger](skills/research-state/references/ledger.md): append-only claim/evidence tracking, brief views and [deferred packets](skills/research-state/references/deferred-packet.md).
+- [Experiment runner](skills/computation-audit/references/runner.md): bounded execution and v2 provenance records, including observed status.
+- [Literature cache](skills/literature-check/references/source-cache.md): authorized, ignored local PDFs/text with metadata and hash checks.
+- [Repository inspector](skills/research-init/SKILL.md): read-only inventory before setup or migration.
+- [Manuscript preparation](skills/referee/references/preparation.md): immutable lexical snapshots and conservative reuse candidates.
 
 ## Repository layout
 

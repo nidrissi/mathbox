@@ -1,6 +1,6 @@
 # Exposition lane
 
-Read the shared protocol. Assess comprehension for a professional mathematician
+Read the [shared protocol](../review-protocol.md). Assess comprehension for a professional mathematician
 expert in the field but new to this particular argument. Do not substitute
 mechanical proofreading or demand textbook treatment of standard machinery.
 
@@ -23,3 +23,5 @@ confidence and never exceed major severity. Correct but poorly signposted
 mathematics remains mathematically correct. A genuine logical gap goes to
 correctness, unfixed symbol meaning to notation, misleading promises to claims.
 Only an explicitly requested proofreading component uses `proofread-math`.
+
+Do not run specialist skills unless the coordinator explicitly assigns them.

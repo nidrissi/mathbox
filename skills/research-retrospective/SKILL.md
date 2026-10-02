@@ -12,13 +12,13 @@ Default to no edits unless the user asks to reconcile files.
 ## Establish authority
 
 1. Determine repository root and applicable instructions.
-2. Resolve charter, live status, claims, conventions, literature ledger, durable
+2. Resolve charter, live status, claims, conventions, literature record, durable
    proofs, computations, verification, research-history index, and detailed
    record directory.
    Verify that referenced live-role paths exist and expose competing aliases or
    broken authority links.
-3. Read the current summary and search the compact history index for relevant
-   routes. Do not load a long dashboard, claims inventory or index in full just
+3. Read the current summary and search the history entry point; follow relevant
+   program/phase links to closeouts and designated route indexes. Do not load a long dashboard, claims inventory or index in full just
    to find the latest state. Open only the proof or research records needed to
    verify conflicts or load-bearing claims.
 4. Do not choose a newer timestamp over stronger evidence. Expose unresolved
@@ -35,29 +35,31 @@ affected proofs from artifacts;
 do not merely repeat generated labels. Do not initialize or migrate state as a
 side effect of a read-only retrospective.
 
-Do not start a broad literature search merely to complete a retrospective. If
-the requested review cannot be decided without establishing what a load-bearing
-external mathematical source says, route that bounded source question through
-the available `literature-check` skill (`mathbox:literature-check` in plugin
-installations), which checks an authorized project-local cache before fetching.
-Otherwise record the unresolved source check as a candidate next route.
+Do not start broad literature searches to fill a retrospective. Use available
+`literature-check` (`mathbox:literature-check` in plugin installations), or an
+exact-source fallback if unavailable, only for a necessary bounded source question;
+otherwise propose it as a next route.
 
 If `RESEARCH_LOG.md` still contains long-form legacy entries, read only the
 relevant embedded entries and support a mixture of legacy prose and new links.
-Report the pending `mathbox:research-init` migration, but do not perform or
+Report the pending migration through the available `research-init` skill
+(`mathbox:research-init` in plugin installations), or report it pending if unavailable, but do not perform or
 require it as a precondition for the retrospective.
 
 ## Build the portfolio
 
 For each active claim or work package, record:
 
-- exact target and current evidence label;
+- exact target, evidence label and strongest currently supported statement;
 - durable evidence and review status;
 - load-bearing dependencies;
 - first unresolved implication or smallest counterexample;
 - recent route and why it succeeded or stopped;
 - expected scientific value, cost, and risk;
 - whether it lies on the current critical path.
+
+Manuscript inclusion, bounded computation and failed search cannot upgrade
+evidence labels. Report omitted-issue counts from brief ledger checks.
 
 Identify duplicated efforts, stale claims, abandoned routes with reusable
 information, and mutable facts incorrectly embedded in instructions.
@@ -92,13 +94,17 @@ open flagship problem.
 
 Note recurring guidance failures, false `mathbox` plugin skill triggers,
 context sinks, duplicated records, non-reproducible computations, or
-verification gaps. General plugin-skill bugs belong in the `mathbox` feedback
-ledger; project rules belong in the repository.
+verification gaps. Report general plugin-skill bugs to the user or Mathbox issue tracker;
+project rules belong in the repository.
 
 Treat a live status dashboard as current state, not verification history. Flag
 stacked dated verification narratives as a context sink. When reconciliation
-edits are requested, keep the latest full current summary and replace older
-narratives with links to immutable research records or computation manifests.
+edits are requested, keep the latest full current summary. Replace an older
+narrative with a link only when it already has a durable home (indexed record,
+manifest or closeout), edit policy permits it and `pin-impact` shows no conflict.
+Otherwise leave it and report pending research-program closeout or research-init
+migration. Reconcile existing facts and rephrase next actions without changing
+their mathematical obligations; do not undertake compaction here.
 Do not rewrite indexed records or their history-index entries; append a linked
 correction record when history itself needs correction.
 
@@ -116,4 +122,6 @@ Lead with a concise project verdict. Then provide:
 3. critical path and principal blocker;
 4. recommended routes in priority order;
 5. files to reconcile, only if edits were requested;
-6. the single best next prompt for the `mathbox:research-attempt` plugin skill.
+6. the best next prompt for available `research-attempt` or, for multiple routes,
+   `research-program` (`mathbox:<name>` in plugin installations); if unavailable,
+   give an equivalent self-contained research prompt.

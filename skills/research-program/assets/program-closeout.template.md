@@ -14,8 +14,12 @@
 
 ## Routes closed by cutoff
 
-- <Route ID> — <first failed implication or obstruction> — <record link>;
-  reopen only with <new mathematical input>.
+- <Route ID> — <obstruction, or scoped reason no continuation remained> — <record link>;
+  reopen with <changed input addressing it>.
+
+## Open routes and continuations
+
+- <Route ID> — <untried/deferred step, next action, reason and resumption condition> — <record link>.
 
 ## Current decision
 
@@ -24,7 +28,7 @@
 - **Conflicting or stale evidence:**
 - **Next bounded action:**
 
-## Later assessment, if retrospective
+## Later assessment, if historical
 
 - **New evidence or review since cutoff:** <artifact and date links>
 - **Current status and difference from cutoff:**

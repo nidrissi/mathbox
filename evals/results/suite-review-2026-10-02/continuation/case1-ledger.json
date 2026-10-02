@@ -1,0 +1,66 @@
+{
+  "format": "raw-text-artifacts-v1",
+  "original_root": "/tmp/mathbox-continuation-trials/case1-ledger",
+  "files": {
+    ".mathbox/config.json": {
+      "sha256": "b0596362e66b69b4485c18fae00e4a036d8afc465370402761b92c98600eedb0",
+      "utf8": "{\n  \"schema_version\": 1,\n  \"projection\": {\n    \"semantics\": \"recorded-evidence-v1\"\n  }\n}\n"
+    },
+    ".mathbox/events/000001.json": {
+      "sha256": "dbb461587c65147731f2801440d5910867376e437d185ddb181b8a0216626ed9",
+      "utf8": "{\n  \"type\": \"claim\",\n  \"actor\": \"fixture-owner\",\n  \"payload\": {\n    \"id\": \"G\",\n    \"statement\": \"The stated Pell recurrence satisfies the target for every n >= 1.\",\n    \"hypotheses\": [\n      \"integer n >= 1\"\n    ],\n    \"regime\": \"integer recurrences, exact symbolic arithmetic\",\n    \"level\": \"scalar identity\",\n    \"dependencies\": [],\n    \"statement_artifact\": {\n      \"path\": \"TARGET.md\",\n      \"locator\": \"Target\",\n      \"sha256\": \"a1beffae424162ba998fb490c32e97ea7030824721d3906b7a8db0e75fe85bd3\"\n    }\n  },\n  \"event_id\": \"E000001\",\n  \"created_at\": \"2026-10-02T12:35:06.567606+00:00\",\n  \"previous\": null,\n  \"sha256\": \"ea50610bcb26af7a56e79fa95ffd67b5458590aae2b66c870fcf8b8ae49afeae\"\n}\n"
+    },
+    ".mathbox/events/000002.json": {
+      "sha256": "22fa3e4c06d8868000435167ffb3ee26c1116fe7fbeaf14312edac57d1285f61",
+      "utf8": "{\n  \"type\": \"route\",\n  \"actor\": \"fixture-owner\",\n  \"payload\": {\n    \"id\": \"R\",\n    \"claim\": \"G\",\n    \"mechanism\": \"Pell uniform recurrence identity\",\n    \"question\": \"Can the consecutive-vector identity be proved uniformly?\",\n    \"discriminator\": \"Uniform coefficient-product simplification or determinant recurrence\",\n    \"success\": \"Exact proof for every stated n\",\n    \"failure\": \"Valid counterexample or exact no-go for all proposed continuations\",\n    \"prerequisites\": [],\n    \"gain\": 4,\n    \"cost\": 2\n  },\n  \"event_id\": \"E000002\",\n  \"created_at\": \"2026-10-02T12:35:06.567855+00:00\",\n  \"previous\": \"ea50610bcb26af7a56e79fa95ffd67b5458590aae2b66c870fcf8b8ae49afeae\",\n  \"sha256\": \"2fb5493a6cf860d5375b030e83d42c6bc4ae8914c6b17e1483e5b6dd445134c9\"\n}\n"
+    },
+    ".mathbox/events/000003.json": {
+      "sha256": "c00fb3024b6e7f2e4b90ab673e1db0cf6ead61791ecd841b557a30de0af3538d",
+      "utf8": "{\n  \"type\": \"program\",\n  \"actor\": \"coordinator\",\n  \"payload\": {\n    \"id\": \"P\",\n    \"goal\": \"G\",\n    \"objective\": \"Resolve G through route R\",\n    \"base_event\": \"E000002\",\n    \"base_revision\": \"unversioned:case1-starting-snapshot\"\n  },\n  \"event_id\": \"E000003\",\n  \"created_at\": \"2026-10-02T12:35:06.770894+00:00\",\n  \"previous\": \"2fb5493a6cf860d5375b030e83d42c6bc4ae8914c6b17e1483e5b6dd445134c9\",\n  \"sha256\": \"8e070cb44b603337c7fe36236a6b2ba08db390563ab1d1cd6b958d1628bffa5e\"\n}\n"
+    },
+    ".mathbox/events/000004.json": {
+      "sha256": "2c73d1f092c17376d41e59650ff06d39cd48acc7ad2a07f5797c1b379e1bac80",
+      "utf8": "{\n  \"type\": \"program-observation\",\n  \"actor\": \"coordinator\",\n  \"payload\": {\n    \"program\": \"P\",\n    \"state\": \"waiting\",\n    \"summary\": \"Coefficient executor prepared; recurrence capability deferred in this synthetic phase\",\n    \"observed_revision\": \"unversioned:case1-later-snapshot\"\n  },\n  \"event_id\": \"E000004\",\n  \"created_at\": \"2026-10-02T12:35:06.950543+00:00\",\n  \"previous\": \"8e070cb44b603337c7fe36236a6b2ba08db390563ab1d1cd6b958d1628bffa5e\",\n  \"sha256\": \"822d9dda7dbb73b5660cf7ea9d0bf233536cff19243ce3914087ded1210356d9\"\n}\n"
+    },
+    ".mathbox/events/000005.json": {
+      "sha256": "b0e48c84a8ecfa969df16b59b3c944a700328ba956b1530b3cfb9b7bd52c51f0",
+      "utf8": "{\n  \"type\": \"route-run\",\n  \"actor\": \"coordinator\",\n  \"payload\": {\n    \"id\": \"RUN_LATER\",\n    \"program\": \"P\",\n    \"route\": \"R\",\n    \"base_event\": \"E000004\",\n    \"base_revision\": \"unversioned:case1-later-snapshot\",\n    \"executor\": \"coefficient-executor\",\n    \"work_scope\": [\n      \"Inspect coefficient input; no recurrence attempt\"\n    ]\n  },\n  \"event_id\": \"E000005\",\n  \"created_at\": \"2026-10-02T12:35:07.120883+00:00\",\n  \"previous\": \"822d9dda7dbb73b5660cf7ea9d0bf233536cff19243ce3914087ded1210356d9\",\n  \"sha256\": \"a827abd8d04460aced102c8d800cd07aea5bc51d877de8c79079796ead0eb267\"\n}\n"
+    },
+    ".mathbox/events/000006.json": {
+      "sha256": "99e74f407254848d6053c7c3ba59fdfff974f448c5b21617dce425de686fe5ca",
+      "utf8": "{\n  \"type\": \"run-result\",\n  \"actor\": \"coefficient-executor\",\n  \"payload\": {\n    \"run\": \"RUN_LATER\",\n    \"outcome\": \"inconclusive\",\n    \"reason\": \"Uniform coefficient-product simplification remains unresolved\",\n    \"next_question\": \"Derive the determinant recurrence when recurrence capability is restored\",\n    \"result_revision\": \"unversioned:case1-later-return\",\n    \"artifacts\": [\n      {\n        \"path\": \"research/records/2026-10-02-coefficients.md\",\n        \"sha256\": \"9df87e362292c361892333d78eb69671c1fdba777e3d99f7a256a6705f7aeea7\"\n      }\n    ]\n  },\n  \"event_id\": \"E000006\",\n  \"created_at\": \"2026-10-02T12:35:07.121337+00:00\",\n  \"previous\": \"a827abd8d04460aced102c8d800cd07aea5bc51d877de8c79079796ead0eb267\",\n  \"sha256\": \"8fd2918c0f7cd13a6ea7edbad3279c00646db37e4f2d0a802c7ebb01b096bba7\"\n}\n"
+    },
+    ".mathbox/events/000007.json": {
+      "sha256": "d30bf9d2cae980b7bf07513de856148fde1fa9562b99adb2a17445b16a176369",
+      "utf8": "{\n  \"type\": \"route-reconcile\",\n  \"actor\": \"coordinator\",\n  \"payload\": {\n    \"route\": \"R\",\n    \"results\": [\n      \"E000006\"\n    ],\n    \"base_event\": \"E000004\",\n    \"base_revision\": \"unversioned:case1-later-snapshot\",\n    \"current_revision\": \"unversioned:case1-reconciled\",\n    \"decision\": \"continue\",\n    \"reason\": \"Coefficient attempt inconclusive; recurrence untried and deferred pending restored recurrence capability\",\n    \"next_question\": \"Derive determinant recurrence after recurrence-symbolic access is restored\",\n    \"conflicts\": []\n  },\n  \"event_id\": \"E000007\",\n  \"created_at\": \"2026-10-02T12:35:07.121457+00:00\",\n  \"previous\": \"8fd2918c0f7cd13a6ea7edbad3279c00646db37e4f2d0a802c7ebb01b096bba7\",\n  \"sha256\": \"d2eafb2a02aebf3c208b09cd5c0e639002781b2c7dda4a9acd83e861519e5f38\"\n}\n"
+    },
+    "AGENTS.md": {
+      "sha256": "c7331a3bb08fb48818fed802736beebb01822b3e94bc9609d2c9f35fac3a1ad4",
+      "utf8": "# Synthetic trial authority\n\nThe exact target is in TARGET.md. RESEARCH_STATUS.md is the only live dashboard. RESEARCH_LOG.md is the history entry point; research/index.md is the designated route index. Durable route records are in research/records/. Indexed records and entries are immutable. The coordinator may append journal events and index entries and replace unpinned current status. Workers may write only the exact path delegated to them. No Git, network, or manuscript actions are authorized. Mathematical labels require durable arguments; a bookkeeping check is not a proof. Current claims are read from .mathbox when present.\n"
+    },
+    "RESEARCH_LOG.md": {
+      "sha256": "93ce585083508f337f9129175fec2f2de06e78706511eea1e4f8c24fc01fb59a",
+      "utf8": "# Research history\n\n- Program P opened; [route index](research/index.md).\n"
+    },
+    "RESEARCH_STATUS.md": {
+      "sha256": "6f5d190a578183712c7d526e25c0a0fea9db212e2218a15654561eddbd9592d1",
+      "utf8": "# Current state\n\nG is conjectural and unreviewed. The coefficient-product simplification is unresolved. R is open; a determinant recurrence is untried.\n"
+    },
+    "SCRATCH.md": {
+      "sha256": "91cd083de6446eac3709c571a00d5d279f13de85ef634ebf6ddbc9eeabbb1c00",
+      "utf8": "# Raw input\n\nThe characteristic equation is $r^2-2r-1=0$ with roots $1+\\sqrt2$ and $1-\\sqrt2$. No uniform coefficient-product simplification has been completed. No recurrence attempt is recorded.\n"
+    },
+    "TARGET.md": {
+      "sha256": "a1beffae424162ba998fb490c32e97ea7030824721d3906b7a8db0e75fe85bd3",
+      "utf8": "# Target\n\nLet $a_0=0$, $a_1=1$ and $a_{n+2}=2a_{n+1}+a_n$ for every integer $n\\geq0$. Determine whether $a_{n+1}a_{n-1}-a_n^2=(-1)^n$ for every integer $n\\geq1$.\n"
+    },
+    "research/index.md": {
+      "sha256": "eb3b69d2e72ccd9e5198fdb105764296e31c3e173b93d894107d5fa1bee10dc1",
+      "utf8": "# Route index\n"
+    },
+    "research/records/2026-10-02-coefficients.md": {
+      "sha256": "9df87e362292c361892333d78eb69671c1fdba777e3d99f7a256a6705f7aeea7",
+      "utf8": "# Coefficient attempt\n\n- Date: 2026-10-02\n- Program/route/claim: P/R/G\n- Base checkpoint: E000004; unversioned:case1-later-snapshot. Actual inputs: [target](../../TARGET.md), [scratch](../../SCRATCH.md).\n- Attempt outcome: inconclusive. Roots were identified but no uniform coefficient-product simplification was completed.\n- Evidence: conjectural; no theorem evidence added; unreviewed.\n- Route disposition: open.\n- Continuations: coefficient simplification tried but unresolved; determinant recurrence untried and deferred.\n- Reason: this synthetic capability phase permits inspection and record persistence but reserves recurrence work for a future tool-capable package.\n- Next action: derive the determinant recurrence when recurrence-symbolic access is restored.\n- Resumption condition: explicit recurrence-capable package available; no new mathematical premise is required.\n"
+    }
+  }
+}

@@ -52,12 +52,40 @@ PR; do not create a permanent duplicate inventory unless the project needs it.
   remove duplicated mutable facts only after their destination is verified.
   Replace blanket instructions to load whole growing files with a current
   summary plus targeted lookup, not with permission to skip relevant evidence.
-- Treat route-level prose in `RESEARCH_LOG.md` under the separate reviewed
-  legacy-log mapping in `SKILL.md`. Do not silently turn foreign or ambiguous
-  history into live project records.
+- Treat route-level prose under the reviewed history mapping below; do not
+  silently turn foreign or ambiguous history into live project records.
 - Keep contradictory mathematical statuses visible as unresolved until the
   exact proof, source, or computation has been checked. Never choose the newest
   confident sentence merely because it is newer.
+
+## Extract legacy or mixed history
+
+Even with broad retrofit authorization, present the source-span-to-destination
+mapping to the user or designated owner and obtain review before applying it.
+A plan-only task stops at the mapping; routine research/retrospectives do not
+trigger migration.
+
+1. Classify each entry as mission-relevant, foreign or ambiguous using cited
+   mission/target text; filenames, keywords and apparent quality are insufficient.
+2. Map relevant route-level text losslessly and chronologically to designated
+   immutable records (default `research/records/`). Carry evidence labels forward.
+3. Preserve foreign/ambiguous material with provenance and reasons in designated
+   quarantine (default `research/quarantine/legacy/`); do not index it as live
+   history without reviewed reclassification. Quarantine is not a math verdict.
+4. Use recorded dates, otherwise earliest Git appearance with `Date provenance:
+   inferred from Git history`; if unavailable use migration date and disclose
+   the original date is unknown. Preserve unmatched preamble as dated
+   `legacy-context` in quarantine pending relevance review.
+5. Show source spans, dates, filenames, relevance, labels and unresolved provenance
+   in the mapping. Revise in response to review before building a compact index.
+6. Reconcile every substantive old span into an indexed record, linked
+   unclassified-route inventory or quarantine before replacing the body or entry
+   point. Small projects use one chronological route link; sustained histories
+   use program/phase entry points and indexes below. Then follow flat-index
+   sharding below when needed; a linked index can require sharding even without
+   legacy prose.
+7. Keep records and historical entries immutable; corrections append linked
+   records. Historical closeouts separate cutoff from later assessment.
 
 ## Migrate a long flat history index
 
@@ -67,8 +95,7 @@ in bounded sections. Map each relevant route to a program or phase by the
 actual target and mechanism. Keep mission-relevant routes with unresolved
 program membership in a linked unclassified-route inventory, with source
 spans and reasons; do not force them into the nearest dated program. Foreign
-or mission-ambiguous entries follow the reviewed legacy-log quarantine policy
-in `SKILL.md`. Reconcile counts or IDs so every old entry is assigned to a
+or mission-ambiguous entries follow the reviewed history extraction/quarantine policy below. Reconcile counts or IDs so every old entry is assigned to a
 program/phase, the unclassified inventory, or quarantine. Write one linked
 closeout per material program/phase, carrying exact evidence and review limits
 and following the `research-program` closeout contract when that skill is
@@ -77,7 +104,7 @@ A short top-level entry point then links closeouts and route indexes; each route
 retains one-line links to its immutable records. Do not duplicate every route
 line at the top level.
 
-Each retrospective closeout identifies its historical cutoff and the date and
+Each historical closeout identifies its historical cutoff and the date and
 revision of the migration assessment. Report the result supported at the
 cutoff separately from later proof, audit, or retraction. If the cutoff is
 unknown, label it unknown rather than inventing a completion date or verdict.
@@ -123,7 +150,7 @@ old ones. Open full claim and review detail only for affected claims or
 issues. Inspect the full diff and `git diff --check`; use risk-based full
 checks for semantic-core or broad changes. Report skipped checks and remaining
 conflicts.
-Use project-specific advisory size or repeated-checkpoint triggers for the
+Propose missing project-specific advisory size or repeated-checkpoint triggers for the
 live view and top-level index; exceeding one calls for review, not deletion.
 
 Stop the affected migration step when authority, historical provenance, or a

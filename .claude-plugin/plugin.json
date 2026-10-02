@@ -14,7 +14,8 @@
     "research",
     "proof-audit",
     "literature",
-    "latex"
+    "latex",
+    "referee"
   ],
   "skills": [
     "./skills/computation-audit",

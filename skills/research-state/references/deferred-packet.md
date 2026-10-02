@@ -1,4 +1,4 @@
-# Deferred handoff for a non-executing host
+# Deferred packet for a non-executing host
 
 `mathbox-deferred-v1` carries work from a session that can inspect and reason
 about an initialized project but cannot execute the helper or write project
@@ -46,11 +46,10 @@ Return one complete JSON object with exactly these top-level fields:
 }
 ```
 
-The example's all-zero base hash is illustrative; replace it with the **actual**
-`sha256` of the inspected head event before emitting a packet. For an initialized
-ledger with no events, use `null` for both base values. The local command rejects
-a packet if either base value differs from the current ledger head. Do not infer
-the hash from an event ID or from a Git revision.
+The all-zero hash is illustrative. Copy `event_id` and `sha256` from the
+highest-numbered `.mathbox/events/NNNNNN.json` into the base; never hash the
+file bytes or infer the digest. For initialized state without events use `null`
+for both. Ingest rejects either value differing from the current ledger head.
 
 `artifacts` contains complete UTF-8 text for **new** files strictly inside an
 artifact root configured under the local write policy below, with a `.md`, `.tex`, `.txt` or `.bib` suffix. No

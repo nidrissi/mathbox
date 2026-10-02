@@ -20,6 +20,110 @@ def guard(errors, label):
         errors.append(f"{label}: {exc}")
 
 
+def folded_lines(lines):
+    """Fold ordinary lines, retaining paragraph breaks and extra indentation."""
+    nonempty = [index for index, line in enumerate(lines) if line]
+    if not nonempty:
+        return ""
+    result = "\n" * nonempty[0] + lines[nonempty[0]]
+    for previous, current in zip(nonempty, nonempty[1:]):
+        breaks = current - previous
+        if lines[previous][0] in " \t" or lines[current][0] in " \t":
+            separator = "\n" * breaks
+        else:
+            separator = " " if breaks == 1 else "\n" * (breaks - 1)
+        result += separator + lines[current]
+    return result
+
+
+def block_description(style, continuation):
+    """Decode the supported auto-indented YAML block scalars without dependencies."""
+    lines = continuation.split("\n")[:-1]
+    first = next((line for line in lines if line.strip()), "")
+    indent = len(first) - len(first.lstrip(" "))
+    if not first or not indent:
+        raise ValueError("description must be an indented YAML string scalar")
+    content = []
+    leading = True
+    for line in lines:
+        if line.strip():
+            if not line.startswith(" " * indent):
+                raise ValueError("inconsistent description indentation")
+            leading = False
+        elif leading and len(line) > indent:
+            raise ValueError("leading blank line exceeds description indentation")
+        if "\t" in line[:indent]:
+            raise ValueError("tabs are not supported in description indentation")
+        content.append(line[indent:])
+    description = folded_lines(content) if style.startswith(">") else "\n".join(content).rstrip("\n")
+    if not style.endswith("-"):
+        description += "\n"
+    return description
+
+
+def skill_frontmatter(body, name):
+    """Parse the suite's portable name and folded/literal description subset."""
+    parts = body.split("---", 2)
+    if len(parts) != 3 or parts[0].strip():
+        raise ValueError("missing opening/closing frontmatter")
+    header = parts[1]
+    keys = re.findall(r"^([^\s:#][^:]*):", header, re.M)
+    if sorted(keys) != ["description", "name"]:
+        raise ValueError("frontmatter must contain only name and description, once each")
+    if not re.search(r"^name: " + re.escape(name) + r"\s*$", header, re.M):
+        raise ValueError("frontmatter name differs from skill directory")
+    match = re.search(r"^description:[ \t]*([^\n]*)\n((?:[ \t]+[^\n]*\n|\n)*)", header, re.M)
+    if match is None:
+        raise ValueError("missing description")
+    initial, continuation = match.groups()
+    initial = initial.strip()
+    if initial in {">", ">-", "|", "|-"}:
+        description = block_description(initial, continuation)
+    elif initial.startswith(('"', "'")):
+        if continuation.strip():
+            raise ValueError("quoted descriptions must use one line")
+        if initial.startswith('"'):
+            description = json.loads(initial)
+        elif len(initial) >= 2 and initial.endswith("'"):
+            inner = initial[1:-1]
+            if "'" in inner.replace("''", ""):
+                raise ValueError("invalid single-quoted description")
+            description = inner.replace("''", "'")
+        else:
+            raise ValueError("invalid quoted description")
+    else:
+        plain = [initial, *continuation.splitlines()]
+        if (not initial or initial[0] in "[]{},&*!#>|%@`"
+                or re.match(r"^[-?:](?:[ \t]|$)", initial)
+                or initial.lower() in {"true", "false", "yes", "no", "on", "off", "null", "~"}
+                or re.fullmatch(r"[-+]?\d+(?:\.\d+)?", initial)
+                or any(re.search(r":(?:[ \t]|$)|[ \t]#", line) for line in plain)
+                or any("\t" in line[:len(line) - len(line.lstrip())] for line in plain)):
+            raise ValueError("description must be a supported YAML string scalar")
+        description = folded_lines([line.strip() for line in plain])
+    if not description.strip() or len(description) > 1024:
+        raise ValueError("description must contain 1..1024 characters")
+    other = header[:match.start()] + header[match.end():]
+    other = re.sub(r"^name: " + re.escape(name) + r"[ \t]*$|^#[^\n]*$", "", other, flags=re.M)
+    if other.strip():
+        raise ValueError("unsupported frontmatter content outside name and description")
+    return description
+
+
+def trigger_contract(cases):
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("trigger evals must be a nonempty array")
+    seen = set()
+    for case in cases:
+        if (not isinstance(case, dict) or set(case) != {"query", "should_trigger"}
+                or not isinstance(case["query"], str) or not case["query"].strip()
+                or type(case["should_trigger"]) is not bool):
+            raise ValueError("trigger case must be {query: nonempty str, should_trigger: bool}")
+        if case["query"] in seen:
+            raise ValueError(f"duplicate trigger query: {case['query']}")
+        seen.add(case["query"])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--static", action="store_true", help="skip executable regression suites")
@@ -38,6 +142,31 @@ def main():
             errors.append("package identities disagree")
         if codex.get("skills") != "./skills/" or sorted(claude["skills"]) != ["./skills/" + n for n in names]:
             errors.append("manifest inventory differs from canonical skills")
+        if codex["description"] != claude["description"] or market["plugins"][0]["description"] != claude["description"]:
+            errors.append("package descriptions disagree")
+        releases = re.findall(r"^## \[([0-9]+\.[0-9]+\.[0-9]+)\] — \d{4}-\d{2}-\d{2} — .+$",
+                              (root / "docs/CHANGELOG.md").read_text(encoding="utf-8"), re.M)
+        if not releases or releases[0] != claude["version"]:
+            errors.append("latest changelog release differs from manifest version")
+    with guard(errors, "README invocation inventory"):
+        readme = (root / "README.md").read_text(encoding="utf-8")
+        rows = re.findall(r"^\| \[`([^`]+)`\]\(skills/([^/]+)/\) \| [^\n]+ \| (automatic|explicit) \|$", readme, re.M)
+        if len(rows) != len(names) or sorted(row[0] for row in rows) != names:
+            errors.append("README skill inventory differs from canonical skills")
+        for name, directory, mode in rows:
+            if name != directory or name not in names:
+                errors.append(f"invalid README skill link: {name}")
+                continue
+            metadata = (root / "skills" / name / "agents/openai.yaml").read_text(encoding="utf-8")
+            policy = re.search(r"^  allow_implicit_invocation: (true|false)$", metadata, re.M)
+            if policy is None or (mode == "automatic") != (policy[1] == "true"):
+                errors.append(f"README invocation policy differs: {name}")
+    with guard(errors, "inspector canonical inventory"):
+        tree = ast.parse((root / "skills/research-init/scripts/inspect_repo.py").read_text(encoding="utf-8"))
+        catalogs = [ast.literal_eval(node.value) for node in tree.body if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == "CANONICAL" for target in node.targets)]
+        if catalogs != [set(names)]:
+            errors.append("inspector CANONICAL differs from skill directories")
     for path in [*root.glob("skills/**/*.json"), *root.glob("evals/**/*.json")]:
         with guard(errors, path.relative_to(root)):
             json.loads(path.read_text(encoding="utf-8"))
@@ -71,9 +200,7 @@ def main():
     for skill in skills:
         with guard(errors, skill.parent.name):
             body = skill.read_text(encoding="utf-8")
-            parts = body.split("---", 2)
-            if len(parts) != 3 or not re.search(r"^name: " + re.escape(skill.parent.name) + r"\s*$", parts[1], re.M) or "description:" not in parts[1]:
-                errors.append(f"invalid frontmatter: {skill.relative_to(root)}")
+            skill_frontmatter(body, skill.parent.name)
             for name in ("evals/evals.json", "evals/trigger-evals.json", "agents/openai.yaml"):
                 if not (skill.parent / name).is_file():
                     errors.append(f"missing {name}: {skill.parent.name}")
@@ -82,6 +209,7 @@ def main():
                                                   openai.read_text(encoding="utf-8"), re.M):
                 errors.append(f"undeclared OpenAI invocation policy: {skill.parent.name}")
             behavior = json.loads((skill.parent / "evals/evals.json").read_text(encoding="utf-8"))
+            trigger_contract(json.loads((skill.parent / "evals/trigger-evals.json").read_text(encoding="utf-8")))
             cases = behavior.get("evals") if isinstance(behavior.get("evals"), list) else []
             if behavior.get("skill_name") != skill.parent.name or not cases:
                 errors.append(f"invalid behavior evals: {skill.parent.name}")
@@ -106,7 +234,7 @@ def main():
     print(f"Static package checks passed for {len(skills)} skills.", flush=True)
     if not args.static:
         env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
-        for directory in sorted((root / "skills").glob("*/scripts")):
+        for directory in [root / "scripts", *sorted((root / "skills").glob("*/scripts"))]:
             if list(directory.glob("test_*.py")):
                 completed = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(directory),
                                             "-p", "test_*.py"], cwd=root, env=env)

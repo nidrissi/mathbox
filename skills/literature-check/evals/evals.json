@@ -9,7 +9,7 @@
         "Distinguishes primary source from abstract",
         "Checks coefficient regime explicitly",
         "Does not invent the missing integral statement",
-        "Returns a conditional or incompatible verdict if needed"
+        "Returns a conditional or inapplicable verdict if needed"
       ]
     },
     {
@@ -73,6 +73,46 @@
         "Keeps the paper's text out of the packet beyond brief necessary quotation",
         "Proposes source evidence only for the implication actually verified",
         "States that the packet has not been applied"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Translate the cited source statement from cohomological d:C^i -> C^{i+1} to our homological indexing C_n=C^{-n}, and check attribution from the supplied primary statement.",
+      "expected_output": "Explicit dictionary and hypothesis-preserving application, with attribution limited to supplied evidence.",
+      "assertions": [
+        "Lists checks performed separately",
+        "Uses defined implication vocabulary",
+        "Does not infer first priority from one source"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Assess whether the claim is apparently new using its current phrase and older synonyms, and report your actual search boundary.",
+      "expected_output": "Records full bounded search scope, citation graph, second strategy and blind spots.",
+      "assertions": [
+        "No global novelty conclusion",
+        "Reports unavailable search coverage"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Cache an authorized public PDF. The helper warns only its internal ignore rule covers it, and metadata for the same content conflicts. Locate the retention policy.",
+      "expected_output": "Reads source-cache, reports warning/conflict and changes tracked ignore rule only under authorization.",
+      "assertions": [
+        "No silent conflicting metadata overwrite",
+        "Does not equate ingest date with theorem verification"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Correct the metadata for this authorized cached public PDF. I authenticated it as arXiv:2401.00001v3, but the identical-content record incorrectly says v2 and also has a DOI. Use --replace-metadata and preserve the DOI. For a second authorized PDF, retain arXiv:2401.00002v2 with revision date 2024-01-15 as its version field; I have not verified either paper's theorems.",
+      "expected_output": "Reads source-cache, corrects the first record's versioned arXiv ID and numeric version through the helper while retaining the DOI, accepts the second record's revision-date metadata, and leaves theorem verification unperformed.",
+      "assertions": [
+        "Uses explicit metadata replacement only for the authorized identical-content correction",
+        "The corrected record has v3 without a conflicting v2 ID and retains its DOI",
+        "Does not reject the revision date merely because it is not a vN label",
+        "A lookup for the superseded v2 returns a candidate rather than an exact version hit",
+        "Does not treat either metadata update as theorem verification"
       ]
     }
   ]

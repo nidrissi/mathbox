@@ -59,18 +59,19 @@
     {
       "id": 6,
       "prompt": "Close out this authorized multi-route research program without starting new research. Its goal remains open, the live status contains fifteen dated checkpoint narratives, and a flat history index lists many route records. The ledger already records the latest claim and review states.",
-      "expected_output": "Checks the exact recorded evidence and base, writes one linked program synthesis without promoting the open goal, replaces superseded live narratives with a compact current decision view, and proposes or uses a program/route index hierarchy while preserving historical entries and ledger events.",
+      "expected_output": "Checks the exact recorded evidence and base, writes one linked program synthesis without promoting the open goal, replaces superseded live narratives with a compact current decision view, and reports flat-index migration as a pending research-init step without restructuring it while preserving historical entries and ledger events.",
       "assertions": [
         "Does not execute a new mathematical route in a closeout-only request",
         "Separates the still-open goal from strongest partial results and failed mechanisms",
         "Links exact proofs, reviews and route records instead of copying them into live status",
         "Does not add ledger events solely because a closeout occurred",
-        "Keeps old flat index entries and links reachable before changing the default entry point"
+        "Keeps old flat index entries and links reachable before changing the default entry point",
+        "Reports flat-index migration as pending research-init work without restructuring it"
       ]
     },
     {
       "id": 7,
-      "prompt": "Write a retrospective closeout for a 2024 program. Its last recorded route was inconclusive; a valid proof and independent review appeared in 2026. The exact 2024 ledger head is available, but one mission-relevant route cannot be assigned confidently to this or the next program.",
+      "prompt": "Write a historical closeout for a 2024 program. Its last recorded route was inconclusive; a valid proof and independent review appeared in 2026. The exact 2024 ledger head is available, but one mission-relevant route cannot be assigned confidently to this or the next program.",
       "expected_output": "States the outcome supported at the 2024 cutoff separately from the 2026 assessment, cites both checkpoints, leaves the old route outside the program verdict in a linked unclassified inventory, and does not fabricate a 2024 proof or review.",
       "assertions": [
         "Records both historical cutoff and later assessment dates and revisions",
@@ -82,7 +83,7 @@
     },
     {
       "id": 8,
-      "prompt": "Prepare a retrospective closeout for an old route collection whose dates conflict and whose cutoff revision cannot be recovered. A proof is available now, but there is no evidence that it existed during the old program.",
+      "prompt": "Prepare a historical closeout for an old route collection whose dates conflict and whose cutoff revision cannot be recovered. A proof is available now, but there is no evidence that it existed during the old program.",
       "expected_output": "Marks the historical cutoff and its outcome indeterminate, records the current assessment checkpoint and proof separately, and preserves the old routes without inventing a completion date.",
       "assertions": [
         "Marks cutoff provenance unavailable rather than picking a convenient date",
@@ -153,6 +154,34 @@
         "States the lemma's extra hypothesis and does not declare G reached",
         "Keeps the untried R2 in the handoff rather than closing it",
         "States that ingest remains pending"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Close out phase B. R1 and R2 remain open with deferred next actions awaiting computation access; their attempts were inconclusive.",
+      "expected_output": "Writes both open continuations and resumption conditions without demanding new math to resume.",
+      "assertions": [
+        "No terminal closures for resource waits",
+        "Template and handoff retain both routes"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Continue program P when host rules prohibit implicit invocation of research-attempt; bounded route execution is authorized.",
+      "expected_output": "Executes route directly using protocol fallback fields and evidence vocabulary.",
+      "assertions": [
+        "No unsupported implicit skill invocation",
+        "No abandonment due to absent package"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Two authorized delegated attempts return open continuations from the same checkpoint in a non-writing host. Persist the program findings.",
+      "expected_output": "Coordinator emits one complete deferred packet including both continuation updates.",
+      "assertions": [
+        "No child packets or shared writes",
+        "No closure of open routes",
+        "Actual inspected head hash"
       ]
     }
   ]

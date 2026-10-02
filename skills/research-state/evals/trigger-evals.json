@@ -46,5 +46,33 @@
   {
     "query": "I can inspect the .mathbox ledger but cannot execute scripts or write here. Produce a deferred packet for the new evidence so I can ingest it locally.",
     "should_trigger": true
+  },
+  {
+    "query": "This project has a .mathbox ledger; proofread the edited paragraph in Section 2.",
+    "should_trigger": false
+  },
+  {
+    "query": "This project uses .mathbox. Review the whole project and recommend the next three routes.",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up AGENTS.md, a charter and a live status file for this research repository.",
+    "should_trigger": false
+  },
+  {
+    "query": "Attack lemma L in this .mathbox project.",
+    "should_trigger": false
+  },
+  {
+    "query": "Close out program P and compact its status.",
+    "should_trigger": false
+  },
+  {
+    "query": "Migrate our flat research log into program indexes.",
+    "should_trigger": false
+  },
+  {
+    "query": "Validate this computation manifest.",
+    "should_trigger": false
   }
 ]

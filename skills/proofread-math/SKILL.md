@@ -1,12 +1,12 @@
 ---
 name: proofread-math
 description: >-
-  Conservatively proofread mathematical prose and LaTeX for grammar, typography, syntax, notation consistency, cross-references, and uniquely forced local mathematical typos. Use for explicit math-proofreading requests and final self-review of theorem-, proof-, or equation-heavy edits. Do not invent, replace, shorten, or substantively repair proofs.
+  Conservatively proofread mathematical prose and LaTeX for grammar, typography, syntax, notation consistency, cross-references, and uniquely forced local mathematical typos. Use for explicit math-proofreading requests and final self-review of theorem-, proof-, or equation-heavy edits. Not for correctness audits, referee reports, or source verification.
 ---
 
 # Conservative mathematical proofreading
 
-Proofread; do not re-author. Preserve the mathematics, notation, macros,
+Proofread; do not invent, replace, shorten or substantively repair proofs. Preserve the mathematics, notation, macros,
 authorial voice, language variant, and project conventions.
 
 ## Select the mode
@@ -16,9 +16,9 @@ authorial voice, language variant, and project conventions.
   without edits.
 - **Self-review mode:** invoked after a broader edit; inspect only the changed
   hunks and enough context to resolve notation, references, and prose. Correct
-  routine issues only in files already changed by the task.
+  routine issues only inside changed hunks; report issues elsewhere.
 
-Do not default from review-only to editing. For pasted LaTeX in edit mode,
+When corrections are not explicitly requested, default to review-only mode. For pasted LaTeX in edit mode,
 return corrected LaTeX. For repository files, do not rewrite unrelated text.
 If coverage is partial, state the exact scope reviewed.
 
@@ -31,19 +31,17 @@ If coverage is partial, state the exact scope reviewed.
 3. Review prose and display integration.
 4. Review LaTeX structure, environments, delimiters, labels, references,
    citations, and custom commands.
-5. Review local mathematical consistency without attempting a referee-level
-   proof audit.
+5. Review local mathematical consistency without auditing correctness, which
+   belongs to `proof-audit`.
 6. Apply only minimal, high-confidence edits; do not normalize equivalent LaTeX
    or replace correct wording by preference.
 7. Re-read every changed sentence/display in context.
 8. Run documented, proportionate validation when available; never invent a
    build or install dependencies.
 
-Checking citation syntax, keys, and local consistency does not authorize a
-substantive source lookup. If the caller asks whether a cited mathematical
-source actually supports a claim, treat that question as outside proofreading
-and route it through the available `literature-check` skill
-(`mathbox:literature-check` in plugin installations).
+Citation syntax is proofreading; substantive source questions use available
+`literature-check` (`mathbox:literature-check` in plugin installations), or return
+the exact source obligation if unavailable.
 
 The detailed checklist is in [checklist.md](references/checklist.md).
 

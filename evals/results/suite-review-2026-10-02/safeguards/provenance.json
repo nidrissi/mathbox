@@ -1,0 +1,46 @@
+{
+  "started_utc": "2026-10-02T12:34:08.203949+00:00",
+  "repository": "/home/najib/source/mathbox",
+  "git_head": "827bb0795d07a1ae5bd153da76cce16b66ed4589",
+  "git_status": " M README.md\n M docs/CHANGELOG.md\n M docs/suite-review-plan.md\n M skills/computation-audit/SKILL.md\n M skills/computation-audit/assets/computation-manifest.json\n M skills/computation-audit/evals/evals.json\n M skills/computation-audit/evals/trigger-evals.json\n M skills/computation-audit/references/checklist.md\n M skills/computation-audit/references/runner.md\n M skills/computation-audit/scripts/run_experiment.py\n M skills/computation-audit/scripts/test_experiments.py\n M skills/computation-audit/scripts/validate_manifest.py\n M skills/literature-check/SKILL.md\n M skills/literature-check/evals/evals.json\n M skills/literature-check/evals/trigger-evals.json\n M skills/literature-check/references/source-cache.md\n M skills/literature-check/references/source-record.md\n M skills/literature-check/scripts/literature_cache.py\n M skills/literature-check/scripts/test_literature_cache.py\n M skills/manuscript-integrate/SKILL.md\n M skills/manuscript-integrate/evals/evals.json\n M skills/manuscript-integrate/evals/trigger-evals.json\n M skills/manuscript-integrate/references/integration-checklist.md\n M skills/proof-audit/SKILL.md\n M skills/proof-audit/evals/evals.json\n M skills/proof-audit/evals/trigger-evals.json\n M skills/proof-audit/references/obligation-checklists.md\n M skills/proofread-math/SKILL.md\n M skills/proofread-math/evals/evals.json\n M skills/proofread-math/evals/trigger-evals.json\n M skills/referee/SKILL.md\n M skills/referee/evals/evals.json\n M skills/referee/evals/trigger-evals.json\n M skills/referee/references/final-referee.md\n M skills/referee/references/model-assignments.md\n M skills/referee/references/output-contract.md\n M skills/referee/references/preparation.md\n M skills/referee/references/review-protocol.md\n M skills/referee/references/reviewers/adversarial.md\n M skills/referee/references/reviewers/claims.md\n M skills/referee/references/reviewers/correctness.md\n M skills/referee/references/reviewers/exposition.md\n M skills/referee/references/reviewers/notation.md\n M skills/referee/scripts/prepare_manuscript.py\n M skills/referee/scripts/test_prepare_manuscript.py\n M skills/research-attempt/SKILL.md\n M skills/research-attempt/evals/evals.json\n M skills/research-attempt/evals/trigger-evals.json\n M skills/research-attempt/references/evidence-model.md\n M skills/research-attempt/references/project-context.md\n M skills/research-attempt/references/route-card.md\n M skills/research-init/SKILL.md\n M skills/research-init/assets/AGENTS.template.md\n D skills/research-init/assets/CLAUDE.md\n M skills/research-init/assets/LITERATURE.template.md\n M skills/research-init/assets/RESEARCH_STATUS.template.md\n M skills/research-init/evals/evals.json\n M skills/research-init/evals/trigger-evals.json\n M skills/research-init/references/existing-repo-migration.md\n M skills/research-init/references/output-contract.md\n M skills/research-init/scripts/inspect_repo.py\n M skills/research-program/SKILL.md\n M skills/research-program/assets/program-closeout.template.md\n M skills/research-program/evals/evals.json\n M skills/research-program/evals/trigger-evals.json\n M skills/research-program/references/program-closeout.md\n M skills/research-program/references/program-protocol.md\n M skills/research-retrospective/SKILL.md\n M skills/research-retrospective/evals/evals.json\n M skills/research-retrospective/evals/trigger-evals.json\n M skills/research-state/SKILL.md\n M skills/research-state/evals/evals.json\n M skills/research-state/evals/trigger-evals.json\n D skills/research-state/references/deferred-handoff.md\n M skills/research-state/references/ledger.md\n M skills/research-state/references/migration.md\n M skills/research-state/scripts/research_state.py\n M skills/research-state/scripts/test_research_state.py\n?? skills/research-init/assets/CLAUDE.template.md\n?? skills/research-state/references/deferred-packet.md\n?? skills/research-state/references/executions.md\n",
+  "skill_and_procedure_sha256": {
+    "evals/README.md": "5101ab55e95b225cd2d11ff02d5afb83867db133f8486c8851c046c3af353d9c",
+    "evals/fixtures/sampled-enumeration.md": "664c0a7d1cbc88a0ae4c993b688c76047155065dbec3088e7689c81f0a2821d3",
+    "skills/computation-audit/SKILL.md": "793a1fc2dbffc7951c6632af8bfaec6b79024f568f05efb19acde535f22b671d",
+    "skills/computation-audit/references/checklist.md": "8fa4e5708beadb903371c164f2faf7dc8c2f4bfd5de9e5bf36512f1392fafa18",
+    "skills/computation-audit/references/runner.md": "827341b685b68bdd3d93836d7dae9ab808ea152244d54c6bbd84a2326edba024",
+    "skills/computation-audit/scripts/run_experiment.py": "06b28f46a55327414ebbc202cd4434b22d6b3a2390979ac7ad65f2eae1a2284a",
+    "skills/computation-audit/scripts/validate_manifest.py": "fda9d340735b02a649038cc9c023da33d049ee1ae69d9c6ab06dd93b4d683e4e",
+    "skills/proof-audit/SKILL.md": "f2e689736b611d5f2a4752422ec40095536d2598c1f6b7a7de02e8e903380e48",
+    "skills/proof-audit/references/obligation-checklists.md": "904293ea4f9265ebdfba0c0f8979c49034860b0e89af6d1a63e871485bd7b1cd",
+    "skills/manuscript-integrate/SKILL.md": "af5039110440ac2ccc364635fd76a79fd6f5f4483db46cd69cc015ba3278dd77",
+    "skills/manuscript-integrate/references/integration-checklist.md": "541a428afb73878e49ab8b222c413d1c7f9c791b0043c6b3c27fea3e6349e26a",
+    "skills/proofread-math/SKILL.md": "fecdea11858320fed499549c7590cba072cac7dacba3ae525ed56ac12af7f3c3",
+    "skills/proofread-math/references/checklist.md": "a3dd31d524f8be47f4f38769d5ccc82ba07694d735ee43d8b7996b2054ecd198",
+    "skills/literature-check/SKILL.md": "7a5e4c6b34be49d566fd3fe8f91968d1cfe3bfcc59f3dd708c4625219313569b",
+    "skills/literature-check/references/source-record.md": "5c7b8cfa9cd062a51c9bbcd16fcfa78b4923000111d6707b51f0bd7627b9a2b0",
+    "skills/literature-check/references/source-cache.md": "1c37c415c652afe4575f32b6c33ce864d7ec4f2ee409f94000ae4419a70d597a",
+    "skills/research-state/SKILL.md": "fc4f4707fe126911116d1311445a22083dc8d2b2691c8f4fa60e1b8562abf2f5",
+    "skills/research-state/references/ledger.md": "2b2f80416d88cda92b640e602041b2d7934d87eac1a012cfe3ec0874037d3791",
+    "skills/research-state/scripts/research_state.py": "c7a1d1c301f689109bc3525c91ca7af020ca84a512a49ef1fcfa4ebef3d0717f"
+  },
+  "python": "3.14.7 (main, Aug 10 2026, 07:46:56) [GCC 16.1.1 20260728]",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.44",
+  "independence": "Fresh delegated agent, no rubrics, expected outputs, review plan, diffs, or author diagnoses read. Cases share this agent/session because further delegation is disallowed. New experiment and synthetic fixture authoring/self-review are not independent mathematical certification.",
+  "tool_availability": {
+    "shell": "tools.exec_command, Python standard library",
+    "filesystem": "repository read-only by task; /tmp writable",
+    "subagents": "prohibited",
+    "network": "not used; synthetic source task explicitly forbids outside sources"
+  },
+  "hash_timing_limitation": "The initial source hashes were captured before trial execution but after instruction reads; they are not claimed to be hashes of the exact earlier read bytes. Cases 6 and 7 capture read bytes and hashes together in skills-at-use.json. Cases share one fresh delegated session, with separate projects, rather than separate fresh sessions.",
+  "command_log_coverage": "Per-case logs capture the actual execution/read/verification subprocess argv, cwd, exit status, stdout and stderr. Initial reads and fixture/report construction are present in the session tool transcript; their exact construction commands were not all independently logged to files.",
+  "repository_bytecode_side_effect": {
+    "path": "skills/computation-audit/scripts/__pycache__/validate_manifest.cpython-314.pyc",
+    "observed_mtime_utc": "2026-10-02T12:35:03.943749+00:00",
+    "attribution": "Refreshed by the GF(5) runner import; time matches run launch.",
+    "prior_cache_bytes": "not observed",
+    "cleanup": "Preserved generated bytecode in trial directory; repository cache left in place for root agent decision. Further commands suppress bytecode writes.",
+    "preserved_sha256": "8e1e62c4de296c9e7c0191039176f1acebb40f5de94e0cfd262dc0026d39156f"
+  }
+}

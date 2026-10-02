@@ -22,5 +22,37 @@
   {
     "query": "Verify the exact source theorem in a read-only web host and return an authorized deferred source evidence record.",
     "should_trigger": true
+  },
+  {
+    "query": "Does citation [17] prove this?",
+    "should_trigger": true
+  },
+  {
+    "query": "Check whether Theorem 3.2 of the cited paper, in our sign conventions, gives the statement we use in Lemma 5.",
+    "should_trigger": true
+  },
+  {
+    "query": "Who first proved this result, and is our attribution in the introduction accurate?",
+    "should_trigger": true
+  },
+  {
+    "query": "Attack Lemma 5 by applying Theorem 2.1 of the cited paper after translating its notation, and record the route.",
+    "should_trigger": false
+  },
+  {
+    "query": "Check that every \\cite key in paper.tex resolves.",
+    "should_trigger": false
+  },
+  {
+    "query": "Referee this paper.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit the proof of Lemma 4 for gaps.",
+    "should_trigger": false
+  },
+  {
+    "query": "Use literature-check to correct the cached arXiv version for an authorized PDF while preserving its DOI and revision metadata.",
+    "should_trigger": true
   }
 ]

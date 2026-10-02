@@ -2,21 +2,38 @@
 
 Store artifacts in the chosen run directory when writing is available;
 otherwise return them with explicit scope and extraction/provenance limits.
-Prepared snapshots, raw review findings and final conclusions are separate.
+Snapshot files (`manifest.json`, `full-source.tex`, `context.json`, `sections/`)
+are immutable inside `referee/<run>/`. Add `passes/<pass_id>.json`,
+`prior-leads.md`, `findings.json`, `reconciliation.json` and `report.md` beside
+them. Raw returns and prior leads remain separate from final conclusions.
 
 ## Structured raw findings
 
 `findings.json` has `schema_version: 1`, `manuscript_sha256`,
-`contract_sha256`, `coverage` and `issues`. Use the preparation manifest's
-hashes where available; use `null` and explain unavailable hashing rather
-than inventing it in a non-executing host. Coverage entries name lane(s),
-scope, reviewed unit IDs/locators, context units/hashes, executor, method and
-status (`complete`, `partial`, `not_reviewed`, `reused`). Include all five
-dimensions, skipped scopes with reasons, and failed executions. A complete
-pass with no findings is different from one that never ran.
+`source_files_sha256`, `contract_sha256`, `coverage` and `issues`.
+Copy `manuscript_sha256` from manifest `source_sha256`, plus its
+`source_files_sha256` and `contract_sha256`; use null with an explanation if
+unavailable. Include all five dimensions, skipped scopes/reasons and failed
+executions. Each coverage entry has:
 
-Each new coverage entry also carries a `model_assignment` object. Use the
-same shape for the final reconciliation executor:
+```json
+{
+  "pass_id": "corr-s3", "lanes": ["correctness"], "scope": "Section 3",
+  "unit_ids": [], "context": [], "executor": "coordinator",
+  "method": "self-review", "status": "complete",
+  "model_assignment": {
+    "assignment_source": null, "requested_model": null,
+    "requested_reasoning": null, "actual_model": null,
+    "actual_reasoning": null, "fallback_reason": null
+  }
+}
+```
+
+Fill actual unit IDs and context locators/hashes. Status is `complete`, `partial`,
+`not_reviewed` or `reused`; a launch alone is not complete. `model_assignment`
+uses the following object for new coverage, including default inheritance.
+
+For prescribed settings, fill this object, also used for final reconciliation:
 
 ```json
 {
@@ -46,40 +63,12 @@ artifacts need not be rewritten. Reused coverage keeps the original pass's
 settings, treats absent historical fields as unknown, and notes deviations
 from the current assignment without claiming a new execution.
 
-Each issue requires these fields:
+Children use the return schema in [review-protocol.md](review-protocol.md).
+The coordinator gathers every pass's issues without renumbering them; each
+issue's `reviewer` is its coverage `pass_id`.
 
-```json
-{
-  "id": "F001",
-  "lane": "correctness",
-  "title": "Cancellation requires a non-zero-divisor",
-  "severity": "major",
-  "type": "hidden-hypothesis",
-  "confidence": 0.95,
-  "location": "Proof of Theorem labelled thm:cancel, paper.tex:18",
-  "quote": "Cancelling $a$ yields $b=c$.",
-  "analysis": "The statement allows zero divisors; the cancellation inference needs an additional hypothesis.",
-  "suggested_fix": "Require that multiplication by a is injective, or prove the missing restriction.",
-  "unit_id": "sha256:<identity-hash>:<occurrence>",
-  "reviewer": "correctness-pass"
-}
-```
-
-The sample is illustrative, not evidence of a check. Copy `unit_id` exactly
-from the preparation manifest's `units[].id`, never from a unit's content
-`sha256`, or use `null` with a manual locator when no prepared units exist.
-IDs must be unique within the run. `lane` is
-correctness/adversarial/exposition/notation/
-claims; severity and confidence follow the shared protocol. `type` uses the
-lane taxonomy or `other`. Record secondary quotations and locators in analysis
-for comparisons, and an actual derivation for numerical disagreements.
-Reviewer identity does not establish independence; coverage describes what
-inputs and context the executor received. Preserve individual agent returns
-alongside the collected findings if delegation was used.
-
-Preserve unstructured or historical user-supplied suspicions separately as
-prior leads, verbatim, with a stable ID and any actually supplied scope or
-revision. Unknown historical severity, confidence, quotation or hash remains
+Preserve unstructured or historical user-supplied suspicions separately
+in `prior-leads.md`, verbatim, with stable ID and supplied scope/revision. Unknown historical severity, confidence, quotation or hash remains
 unknown; do not invent it to fill a new-issue schema. `findings.json` may link
 the prior-lead artifact. If a current check turns a lead into a new finding,
 assign the required fields from that check and identify their current provenance.
@@ -88,19 +77,26 @@ full source resolves it.
 
 ## Reconciliation
 
-`reconciliation.json` records the current manuscript/contract hashes and an
-entry for every raw finding: `finding_id`, `disposition`, `reason`,
+`reconciliation.json` has `schema_version: 1`, `manuscript_sha256`,
+`source_files_sha256`, `contract_sha256` copied as above, `entries` and `concerns`.
+Each entry dispositions a raw finding or prior lead using `finding_id`,
+`disposition`, `reason`,
 `checked_locations`, `specialist_artifacts` (empty if none), and
 `final_concern_id` (null if dismissed). Dispositions are `retained`,
 `dismissed`, `merged`, `conditional`, or `stale`. Retained/conditional/merged
 items name a final concern; merged items name the same concern as their
 canonical finding. Stale evidence needs a current recheck before retention.
-Final concerns carry the reconciled severity, confidence and evidence status;
-do not silently inherit an earlier review's confidence. New final-referee
-observations identify their provenance and supporting source too.
+Each `concerns` entry has `id`, `title`, `lane`, `severity`, `confidence`,
+`evidence_status`, `location`, `quote`, `analysis`, `suggested_fix`, `finding_ids`
+and `provenance` (executor, method and checked artifacts). Evidence status is
+`refuted`, `gap`, `conditional`, `question` or `presentation`. Recalibrate it
+from actual checking; do not inherit raw confidence. New final-referee concerns
+identify their supporting source and provenance, with empty `finding_ids` when
+no raw issue preceded them. Positive "checked"/"valid" statements name the
+method: proof-audit, independent recheck or self-review.
 
-For new reviews, top-level `executor`, `method` and `model_assignment` describe
-the pass that actually performed final reconciliation, including self-review
+For new reviews, `reconciliation.json` top-level `executor`, `method` and
+`model_assignment` describe the pass that actually performed final reconciliation, including self-review
 or a delegated final referee. Preserve its native execution evidence too.
 
 A dismissal reason identifies the actual earlier definition, excluded case,

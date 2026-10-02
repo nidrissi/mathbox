@@ -1,0 +1,6 @@
+{
+  "task": "A prior local review of the Identity section says tau is undefined. Reconcile this supplied suspicion against the full manuscript.",
+  "supplied_lead": "tau is undefined in the Identity section",
+  "condition": "Simulated no-delegation host; sequential self-review only.",
+  "scope": "Focused prior-lead reconciliation, not a new whole-paper referee verdict."
+}

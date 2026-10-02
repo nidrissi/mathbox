@@ -1,0 +1,1616 @@
+{
+  "date": "2026-10-02",
+  "review_baseline": "9717972",
+  "plan_head_sha256": "4267f76609e74b6ed6815aee56a6324aaf68d439b2d9b703c5aca19a4e311e65",
+  "finding_count": 152,
+  "findings": [
+    {
+      "id": "RS-1",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-2",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-3",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-4",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-5",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-13",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-16",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-17",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-18",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-19",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-20",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-21",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-1",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-3",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-10",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-13",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-5",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-10",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-9",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-1",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-2",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-5",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-8",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-11",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-21",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-7",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-8",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-21",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-25",
+      "batch": 1,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-1",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-3",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-16",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-2",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-10",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PM-12",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-2",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-4",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-5",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-9",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-8",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-1",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-2",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-4",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-6",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-4",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-6",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-14",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-15",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RR-1",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RR-19",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-7",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-21",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-9",
+      "batch": 2,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-1",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-2",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-3",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-4",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-5",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-6",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-7",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-8",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-9",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-22",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-24",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-23",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-15",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-17",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RR-5",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-6",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-3",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-4",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-10",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-11",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-14",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-15",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-16",
+      "batch": 3,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-1",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-2",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-14",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-6",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-13",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-5",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-12",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-11",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-22",
+      "batch": 4,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-2",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-24",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-8",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-9",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-10",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-11",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-12",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-15",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-23",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-25",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-12",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-13",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-18",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RP-19",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RA-14",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-11",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-12",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-14",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-15",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-19",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-20",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-18",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-9",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-10",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-16",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-17",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-18",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-21",
+      "batch": 5,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-8",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-9",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-6",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-15",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-16",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-17",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-24",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-22",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PM-23",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-11",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-15",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-10",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-12",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-20",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "X-23",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-22",
+      "batch": 6,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-14",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "CA-16",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-3",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-8",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-11",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-12",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "LC-17",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-5",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-9",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PA-14",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PM-8",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "PM-21",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-15",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "MI-17",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-7",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-13",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-18",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-19",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RF-20",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RR-12",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RI-17",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-22",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    },
+    {
+      "id": "RS-24",
+      "batch": 7,
+      "implementation": "implemented",
+      "acceptance": "see bounded validation scope"
+    }
+  ],
+  "body_word_counts": {
+    "research-init": {
+      "baseline_body_words": 2239,
+      "current_body_words": 1122,
+      "current_file_words": 1190,
+      "baseline_file_words": 2327,
+      "target_file_words": 1200
+    },
+    "research-state": {
+      "baseline_body_words": 1413,
+      "current_body_words": 1016,
+      "current_file_words": 1096,
+      "baseline_file_words": 1493,
+      "target_file_words": 1140
+    },
+    "research-program": {
+      "baseline_body_words": 1499,
+      "current_body_words": 1291,
+      "current_file_words": 1370,
+      "baseline_file_words": 1592,
+      "target_file_words": 1370
+    },
+    "research-attempt": {
+      "baseline_body_words": 1348,
+      "current_body_words": 1219,
+      "current_file_words": 1290,
+      "baseline_file_words": 1408,
+      "target_file_words": 1290
+    },
+    "computation-audit": {
+      "baseline_body_words": 735,
+      "current_body_words": 621,
+      "current_file_words": 680,
+      "baseline_file_words": 781,
+      "target_file_words": 680
+    },
+    "literature-check": {
+      "baseline_body_words": 823,
+      "current_body_words": 703,
+      "current_file_words": 778,
+      "baseline_file_words": 906,
+      "target_file_words": 800
+    },
+    "referee/preparation": {
+      "baseline_body_words": 1218,
+      "current_body_words": 445,
+      "current_file_words": 445,
+      "baseline_file_words": 1218,
+      "target_file_words": 450
+    }
+  },
+  "decisions": {
+    "D1": "fillable v2 record accepted in executable regression; ship v2 template",
+    "D2": "validate unknown payload keys only on new writes; existing journal replay unchanged",
+    "D3": "split executions.md from ledger.md",
+    "D4": "actual host delegation authority; existing authority honored; sequential self-review fallback",
+    "D5": "narrow reconcile-only retrospective edits; route compaction away",
+    "D6": "unversioned arXiv matches report arxiv-version-candidate",
+    "D7": "direct research-program fallback implemented and observed in explicit live Codex trial; no automatic whole-suite selection claim",
+    "D8": "additive per-file contract_files map in schema 1; historical manifests supported",
+    "D9": "one working-tree change; no commits, releases or PR mutations requested"
+  },
+  "behavioral_case_definitions": 135,
+  "trigger_cases": 174,
+  "unique_trigger_queries": 158,
+  "reviewer": "root coordinator; separate from the three forward-trial executors",
+  "files_changed": [
+    {
+      "status": "M",
+      "path": ".claude-plugin/marketplace.json"
+    },
+    {
+      "status": "M",
+      "path": ".claude-plugin/plugin.json"
+    },
+    {
+      "status": "M",
+      "path": ".codex-plugin/plugin.json"
+    },
+    {
+      "status": "M",
+      "path": "AGENTS.md"
+    },
+    {
+      "status": "M",
+      "path": "README.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/CHANGELOG.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/suite-review-plan.md"
+    },
+    {
+      "status": "M",
+      "path": "evals/README.md"
+    },
+    {
+      "status": "M",
+      "path": "scripts/check.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/assets/computation-manifest.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/references/checklist.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/references/runner.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/scripts/run_experiment.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/scripts/test_experiments.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/computation-audit/scripts/validate_manifest.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/references/source-cache.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/references/source-record.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/scripts/literature_cache.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/literature-check/scripts/test_literature_cache.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/manuscript-integrate/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/manuscript-integrate/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/manuscript-integrate/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/manuscript-integrate/references/integration-checklist.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/proof-audit/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/proof-audit/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/proof-audit/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/proof-audit/references/obligation-checklists.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/proofread-math/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/proofread-math/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/proofread-math/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/final-referee.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/model-assignments.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/output-contract.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/preparation.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/review-protocol.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/reviewers/adversarial.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/reviewers/claims.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/reviewers/correctness.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/reviewers/exposition.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/references/reviewers/notation.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/scripts/prepare_manuscript.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/referee/scripts/test_prepare_manuscript.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-attempt/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-attempt/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-attempt/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-attempt/references/evidence-model.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-attempt/references/project-context.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-attempt/references/route-card.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/assets/AGENTS.template.md"
+    },
+    {
+      "status": "D",
+      "path": "skills/research-init/assets/CLAUDE.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/assets/LITERATURE.template.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/assets/RESEARCH_STATUS.template.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/references/existing-repo-migration.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/references/output-contract.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/scripts/inspect_repo.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-init/scripts/test_inspect_repo.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/agents/openai.yaml"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/assets/program-closeout.template.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/references/program-closeout.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-program/references/program-protocol.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-retrospective/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-retrospective/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-retrospective/evals/trigger-evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/agents/openai.yaml"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/evals/evals.json"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/evals/trigger-evals.json"
+    },
+    {
+      "status": "D",
+      "path": "skills/research-state/references/deferred-handoff.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/references/ledger.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/references/migration.md"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/scripts/research_state.py"
+    },
+    {
+      "status": "M",
+      "path": "skills/research-state/scripts/test_research_state.py"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/README.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/checks.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/case1-ledger.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/case2-closeout.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/case3-deferred.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/case3-normal.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/case5-retrospective.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/raw.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/retrospective.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/sharding-plan.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/continuation/trial-notes.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/implementation.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/arithmetic.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/escalated-execution.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/escalated-stderr.log"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/escalated-stdout.jsonl"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/execution.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/extended-execution.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/extended-response.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/extended-stderr.log"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/extended-stdout.jsonl"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/preservation.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/stderr.log"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/live-codex/task.txt"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/native-program/closeout.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/native-program/coordinator.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/native-program/deferred-project.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/native-program/normal-project.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/native-program/squares.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/native-program/sum.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/child-assignments.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/child-format-task.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/child-format.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/child-format.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/no-delegation-task.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/no-delegation.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/no-delegation.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/prior-lead-task.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/prior-lead.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/referee/prior-lead.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/artifact-validation.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/blind-queries.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/commands-and-results.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/final-observed-hashes.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/final-routing-contract-comparison.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/raw-routing-decisions.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/routing-comparison.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/skill-revision-hashes.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/suite-descriptions-and-policies.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/routing/trial-summary.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/01-sampled-enumeration.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/01-sampled-enumeration.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/02-gf5-rank.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/02-gf5-rank.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/03-proof-audit.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/03-proof-audit.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/04-established-integration.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/04-established-integration.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/05-conditional-integration.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/05-conditional-integration.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/06-proofread.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/06-proofread.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/07-source-application.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/07-source-application.md"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/provenance.json"
+    },
+    {
+      "status": "??",
+      "path": "evals/results/suite-review-2026-10-02/safeguards/trial-notes.md"
+    },
+    {
+      "status": "??",
+      "path": "scripts/test_check.py"
+    },
+    {
+      "status": "??",
+      "path": "skills/research-init/assets/CLAUDE.template.md"
+    },
+    {
+      "status": "??",
+      "path": "skills/research-state/references/deferred-packet.md"
+    },
+    {
+      "status": "??",
+      "path": "skills/research-state/references/executions.md"
+    }
+  ]
+}

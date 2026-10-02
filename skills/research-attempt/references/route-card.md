@@ -8,6 +8,8 @@ Write each durable route as a standalone Markdown file:
 - **Date:** <YYYY-MM-DD>
 - **Kind:** <attempt, finding, counterexample, decision, correction, or project kind>
 - **Corrects:** <relative link, only for a correction>
+- **Program/route/claim IDs:** <existing IDs, or not registered>
+- **Base checkpoint:** <Git revision or ledger event; actual inputs>
 - **Target:**
 - **Hypotheses and types:**
 - **Active conventions:**
@@ -20,7 +22,7 @@ Write each durable route as a standalone Markdown file:
 - **Failure/no-go criterion:**
 - **Cheapest decisive check:**
 - **Attempt outcome:**
-- **Route disposition and scope:** <open, deferred, or closed as succeeded, failed, blocked or inconclusive; scope and reason>
+- **Route disposition and scope:** <open (continuations may be deferred) or closed as succeeded/failed/blocked/inconclusive; scope and reason>
 - **Continuations:** <tried, untried, obstructed with evidence, or deferred with resumption condition>
 - **Evidence label:**
 - **Review and freshness status:**
@@ -31,6 +33,12 @@ Write each durable route as a standalone Markdown file:
 - **Uniform route or obstruction, when evidence is bounded:**
 - **What another bounded case would discriminate, if applicable:**
 ```
+
+Route dispositions: `succeeded` meets its criterion; `failed` has an established
+obstruction; terminal `blocked` has a scoped reason no continuation remains
+executable; terminal `inconclusive` exhausts known scoped continuations without
+settling the mechanism. Resource/access waits keep the route open with a deferred
+continuation. Attempt outcome is separate from all these dispositions.
 
 Unless project instructions specify another convention, store the record under
 `research/records/` as `YYYY-MM-DD-normalized-title.md`. Normalize the title to

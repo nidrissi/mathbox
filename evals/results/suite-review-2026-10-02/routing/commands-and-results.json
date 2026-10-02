@@ -1,0 +1,55 @@
+{
+  "records": [
+    {
+      "command": "git status --short",
+      "exit_code": 0,
+      "result": "Inspected pre-existing repository modifications; no repository edits performed by this executor."
+    },
+    {
+      "command": "cat evals/README.md",
+      "exit_code": 0,
+      "result": "Read independent-task and routing protocols before expected labels."
+    },
+    {
+      "command": "Python query-only extraction from skills/*/evals/trigger-evals.json",
+      "exit_code": 0,
+      "result": "Collected 158 unique query strings without exposing should_trigger values; saved blind-queries.json."
+    },
+    {
+      "command": "Description-based manual routing, serialized with Python",
+      "exit_code": 0,
+      "result": "158 raw decisions saved and SHA-256 frozen before expected-label comparison."
+    },
+    {
+      "command": "Python membership comparison against expected should_trigger labels after freeze",
+      "exit_code": 0,
+      "result": "174 cases; zero binary task-fit conflicts; 27 explicit-only positives separately recorded as supplied-skill applicability."
+    },
+    {
+      "command": "python3 /home/najib/source/mathbox/skills/referee/scripts/prepare_manuscript.py paper.tex --root /tmp/mathbox-routing-referee-trials/no-delegation-project --output /tmp/mathbox-routing-referee-trials/no-delegation-project/referee/trial-01",
+      "exit_code": 0,
+      "result": "Prepared 3 units from 1 source file."
+    },
+    {
+      "command": "python3 /home/najib/source/mathbox/skills/referee/scripts/prepare_manuscript.py paper.tex --root /tmp/mathbox-routing-referee-trials/prior-lead-project --output /tmp/mathbox-routing-referee-trials/prior-lead-project/referee/trial-01",
+      "exit_code": 0,
+      "result": "Prepared 3 units from 1 source file."
+    },
+    {
+      "command": "python3 /home/najib/source/mathbox/skills/referee/scripts/prepare_manuscript.py paper.tex --root /tmp/mathbox-routing-referee-trials/child-format-project --output /tmp/mathbox-routing-referee-trials/child-format-project/referee/trial-01",
+      "exit_code": 0,
+      "result": "Prepared 3 units from 1 source file."
+    },
+    {
+      "command": "Sequential reasoning passes and JSON/Markdown artifact writes",
+      "exit_code": 0,
+      "result": "Five-lane self-review, supplied-lead reconciliation, and two simulated child-return roles. Raw derivations are recorded in pass checks; these are model reasoning, not an executable mathematical oracle."
+    },
+    {
+      "command": "python3 /tmp/mathbox-routing-referee-trials/validate_trial_artifacts.py",
+      "exit_code": 0,
+      "result": "Passed structure/provenance checks and exact manuscript-byte comparisons."
+    }
+  ],
+  "note": "Representative commands and actual outcomes. Manual reasoning and inline artifact-generation operations are identified rather than misrepresented as reproducible mathematical computations."
+}

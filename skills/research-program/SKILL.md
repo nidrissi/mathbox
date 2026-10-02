@@ -1,21 +1,18 @@
 ---
 name: research-program
 description: >-
-  Pursue or close out a substantial mathematical research program across multiple proof, counterexample, literature, and computational routes. Use when the user asks for sustained investigation, several approaches, continuation until a goal is reached, or an authorized closeout of one named program or phase that compacts its live status and history. Coordinate successive attempts and preserve their evidence. Do not use for a single bounded lemma attempt, ordinary explanation, proofreading, a read-only project retrospective, or a repository-wide migration of instructions or a flat research log into program indexes.
+  Pursue a substantial mathematical goal across multiple proof, counterexample, literature and computational routes, or close out one named program or phase by compacting its live status and history. Use for sustained investigation, several approaches, continuing after failed routes until a goal is reached, or an authorized program/phase closeout. Do not use for a single bounded attempt, explanation, proofreading, a read-only project retrospective, or migrating instructions or a flat research log into program indexes.
 ---
 
 # Sustained mathematical research
 
-Own the user's mathematical objective across route changes. A route ending is
-not the assignment ending. Produce mathematics, not a portfolio of unexecuted
-suggestions. Do not promise a solution to an open problem or relabel an exhausted
-attempt as one.
-For a closeout-only request, reconcile recorded results and compact the handoff;
-do not start new mathematical routes unless the user also requested research.
-A closeout covers one named program or phase. Restructuring the repository's
-history across programs, such as turning a flat research log into program
-indexes, is a `research-init` migration; its closeouts follow this skill's
-closeout contract.
+Own the user's mathematical objective across route changes. A route ending does
+not end the assignment. Produce mathematics, not unexecuted suggestions. Do not
+promise solutions to open problems or relabel exhausted attempts.
+For closeout-only requests reconcile recorded results; start new routes only
+if requested. Repository-wide history restructuring belongs to available
+`research-init` (`mathbox:research-init` in plugin installations); if unavailable,
+report migration pending and preserve existing history.
 
 ## Establish the target once
 
@@ -37,14 +34,8 @@ Use existing project records, starting with the current summary and nearest
 relevant records rather than the complete status/history archive. When an
 executable `.mathbox/` ledger is present, use the available `research-state`
 skill's brief goal handoff and freshness check; open full claim/review details
-only for the active decision. Before starting a run, inspect live, stale, and
-unreconciled runs of the same route. Recheck stale results that bear on the
-decision and reconcile completed results before relying on them. Compare a
-proposed run's work scope with live runs to avoid duplicate work. Distinct
-parallel runs may proceed from an explicit base with disjoint write scopes
-without closing existing live runs.
-Initialize it only when useful and authorized; its absence never blocks
-research. Read [program protocol](references/program-protocol.md) for
+only for the active decision. Initialize a `.mathbox/` ledger only when useful
+and authorized; absence never blocks research. Read [program protocol](references/program-protocol.md) for
 route selection and checkpoints when executing routes; for a closeout-only
 request, go to [program closeout](references/program-closeout.md).
 
@@ -58,31 +49,29 @@ target when a counterexample would settle it.
 
 For each route, state the central mathematical move, its first uncertain
 implication, the cheapest discriminating check, and success/failure criteria.
-Treat alternative mechanisms as a portfolio and jointly required lemmas as
-claim dependencies. When a route is recorded under a parent goal but directly
-advances a named sub-obligation, identify that obligation explicitly rather than
-retargeting the route or duplicating the mechanism.
+Treat alternatives as routes and jointly required lemmas as dependencies;
+identify a route's resolved sub-obligation without changing its owner.
 Run the decisive check, then pursue the promising route to a substantive
-checkpoint using `research-attempt` if available. Its one-route boundary applies
-to each work package, not to this whole program. Follow the user's breadth
-requirement: if they ask to try every proposed route, execute each one.
+checkpoint using the available `research-attempt` skill (`mathbox:research-attempt` in
+plugin installations) if host invocation rules permit. Otherwise follow the
+minimal route-record and evidence contract in the program protocol. Its one-route boundary applies
+to each work package, not to the whole program. Honor requested breadth:
+execute every proposed route if requested.
 
-When routes or runs execute in parallel, give each one an owner, base
-checkpoint and disjoint write scope. Require returned artifacts to identify
-that base and their actual inputs. Reconcile them against the common base; do
-not infer chronology or supersession from response order, directory names or
-wall-clock completion.
-Preserve incompatible results as competing evidence until their mathematics is
-resolved.
+For parallel work, assign an owner, base checkpoint and disjoint write scope;
+require actual inputs and hashes in each return. The coordinator checks and
+reconciles proposed updates, then appends shared state or one deferred packet.
+Preserve incompatible evidence; arrival order establishes no supersession.
 
 Allocate effort by expected information gain, relevance to the goal and cost.
-Do not fabricate numerical success probabilities. Attack high-impact uncertain
-dependencies before polishing their downstream consequences. Formulate auxiliary
+Do not fabricate success probabilities. Attack high-impact uncertain
+dependencies before polishing downstream consequences. Formulate auxiliary
 lemmas that remove shared bottlenecks. Transfer techniques across fields only
 after writing the actual source-to-target dictionary.
 
-Use `literature-check` for source-dependent implications and `computation-audit`
-for load-bearing experiments. If a specialist skill is unavailable, carry out
+Use the available `literature-check` and `computation-audit` skills
+(`mathbox:<name>` in plugin installations) for source-dependent implications and
+load-bearing experiments. If a specialist skill is unavailable, carry out
 the relevant exact-source or finite-evidence check directly with available
 tools and disclose its limits; an absent workflow package is not a mathematical
 obstruction.
@@ -109,7 +98,7 @@ method, an implementation bug, and an inaccessible source.
 - Another finite case is useful only if it distinguishes alternatives, checks
   an independent invariant, or reaches a new regime.
 
-An inconclusive attempt does not by itself close its route. Before closing an
+An inconclusive attempt alone does not close its route. Before closing an
 unresolved route, account for the proposed continuations: what was tried, what
 remains untried, what evidence rules one out, and what is deferred with a reason
 and resumption condition. An obstruction to one construction closes only that
@@ -140,41 +129,32 @@ reviewer the exact claim, raw proof and required sources without the author's
 verdict or route narrative. Request an independent derivation of the critical
 step. Otherwise perform a separate adversarial pass and label it self-review.
 Agreement between agents is not a proof certificate. Resolve disagreements by
-the underlying mathematics. Use [the handoff contract](references/handoff.md)
-when delegating or resuming.
+the underlying mathematics.
 
 ## Persist and report
 
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
 When persistence is authorized but this host cannot execute or write, use the
-`research-state` deferred-handoff contract for new durable artifacts, one
+`research-state` deferred packet contract for new durable artifacts, at most one
 guarded index entry, and ledger proposals; state that ingest remains pending.
 Update only state that actually changed; replace old dashboard checkpoint prose
 with links only once it has a durable home and the project permits, and do not
 rewrite indexed history.
 User-authorized repository deliverables remain part of completion.
 
-At a substantial program boundary, or when the user explicitly requests
-compaction, follow [program closeout](references/program-closeout.md). Produce
-one linked synthesis of decisive outcomes and a small current decision view;
-keep route records and ledger events intact. Closeout is not required after
-every session and does not close an unresolved mathematical goal. If the
-history index has become a long flat list, use the project's hierarchical
-program/route index policy rather than copying all routes into the live view.
-For retrospective closeout, distinguish the historical cutoff from the later
-assessment; do not attribute later evidence to the old program.
+Integrate into a manuscript only on explicit request and after audit; integration
+is not validation. Route novelty questions through literature-check; a failed
+search is not novelty.
 
-For a long or externally executed route, distinguish queued, running,
-last-observed, completed, failed, timed out and abandoned states. Do not keep a
-route marked running merely because a prior session launched it. Record the
-last observation and execution identifier without treating process completion
-as mathematical success.
+At a substantial program or phase boundary, or an explicit compaction request,
+follow [program closeout](references/program-closeout.md); it does not close an
+unresolved goal. Repository-wide flat-index restructuring belongs to research-init.
 
 Lead with whether the original goal was reached and the exact result. State the
 proof/review status, decisive mechanism, files and meaningful checks. If it
 remains open, distinguish partial results from the goal, list executed routes
-with their precise obstructions, and preserve an executable next handoff.
+with their precise obstructions, and preserve a [continuation handoff](references/handoff.md).
 When all presently available routes are exhausted, or tools/resources block
 every remaining continuation, say so honestly; leave blocked routes open with
 their deferred next steps. Never invent progress to satisfy “do not stop”.

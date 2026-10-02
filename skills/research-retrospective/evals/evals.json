@@ -78,6 +78,24 @@
         "Does not hide the presence or count of omitted stale issues",
         "Maintains the read-only boundary"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "Reconcile the dashboard. An old narrative has no indexed record or manifest and its bytes are pinned by current evidence.",
+      "expected_output": "Leaves the narrative intact and reports pending closeout/migration and pin conflict.",
+      "assertions": [
+        "No destructive compaction",
+        "No hash refresh to suppress warning"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Review a project whose history entry point links a phase closeout and a nested route index. Its brief check omits 19 issues.",
+      "expected_output": "Follows relevant links and reports omitted count plus strongest supported statement.",
+      "assertions": [
+        "No blind repetition of proved label",
+        "No hidden issue overflow"
+      ]
     }
   ]
 }

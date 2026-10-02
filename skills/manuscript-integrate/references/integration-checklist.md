@@ -1,6 +1,6 @@
 # Manuscript integration checklist
 
-- The theorem statement matches the durable result word for word in scope.
+- The theorem statement matches the durable result exactly in scope and hypotheses, modulo the recorded notation translation.
 - Every hypothesis used in the proof appears in the statement or standing
   assumptions.
 - Coefficients, characteristic, dimensions, connectedness, finiteness,

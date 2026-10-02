@@ -1,0 +1,72 @@
+{
+  "skills": [
+    {
+      "skill": "computation-audit",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "literature-check",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "manuscript-integrate",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "proof-audit",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "proofread-math",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "referee",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "research-attempt",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "research-init",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "research-program",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": true
+    },
+    {
+      "skill": "research-retrospective",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": false
+    },
+    {
+      "skill": "research-state",
+      "description_changed": false,
+      "implicit_invocation_changed": false,
+      "presentation_yaml_changed": true
+    }
+  ],
+  "description_changes": 0,
+  "implicit_policy_changes": 0
+}

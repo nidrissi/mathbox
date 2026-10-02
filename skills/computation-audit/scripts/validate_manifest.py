@@ -381,7 +381,8 @@ def main(argv=None):
               + "; ".join(legacy_limits(obj, args.root, args.manifest))
               + "; mathematical interpretation requires review")
     else:
-        print("valid evidence record; mathematical interpretation requires review")
+        print(f"valid evidence record (run status: {obj['run']['status']}); "
+              "mathematical interpretation requires review")
     return 0
 
 

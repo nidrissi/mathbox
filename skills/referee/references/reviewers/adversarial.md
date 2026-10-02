@@ -1,6 +1,6 @@
 # Adversarial lane
 
-Read the shared protocol. Stress-test admissible cases and reductions, using
+Read the [shared protocol](../review-protocol.md). Stress-test admissible cases and reductions, using
 the actual definitions and global hypotheses. Skepticism is rigor, not an
 instruction to invent objections.
 
@@ -23,6 +23,8 @@ finding. State whether the conclusion fails or only the proposed proof lacks
 justification. A fragile step needing a local explanation is usually moderate;
 a valid counterexample affecting the headline result may be critical.
 
-Use `proof-audit` to confirm consequential obligations. A theorem failing on a
+Return exact consequential `proof-audit` obligations to the coordinator. A theorem failing on a
 case its statement admits belongs here; an abstract omitting the theorem's
 restriction belongs to claims. Keep notation and exposition in their lanes.
+
+Do not run specialist skills unless the coordinator explicitly assigns them.

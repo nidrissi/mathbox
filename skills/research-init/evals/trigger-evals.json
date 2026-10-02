@@ -24,7 +24,7 @@
     "should_trigger": true
   },
   {
-    "query": "Migrate our flat research log's old routes into program indexes with retrospective closeouts, keeping unassigned routes discoverable.",
+    "query": "Migrate our flat research log's old routes into program indexes with historical closeouts, keeping unassigned routes discoverable.",
     "should_trigger": true
   },
   {
@@ -58,5 +58,21 @@
   {
     "query": "Close out the finished descent program and compact its live status, without restructuring the history index.",
     "should_trigger": false
+  },
+  {
+    "query": "Compact the live dashboard and move dated checkpoints into records.",
+    "should_trigger": true
+  },
+  {
+    "query": "Initialize a .mathbox ledger for this project and register Claims A and B.",
+    "should_trigger": false
+  },
+  {
+    "query": "What should I work on next in this project?",
+    "should_trigger": false
+  },
+  {
+    "query": "Use research-init to inspect and plan a repository retrofit, distinguishing verification commands from paths and fenced examples from real research history.",
+    "should_trigger": true
   }
 ]

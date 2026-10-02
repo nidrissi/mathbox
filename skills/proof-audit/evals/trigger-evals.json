@@ -1,7 +1,16 @@
 [
-  {"query": "Check the proof of Lemma 4.2.", "should_trigger": true},
-  {"query": "Referee this entire manuscript.", "should_trigger": false},
-  {"query": "Audit this manuscript section by section and reconcile the results.", "should_trigger": false},
+  {
+    "query": "Check the proof of Lemma 4.2.",
+    "should_trigger": true
+  },
+  {
+    "query": "Referee this entire manuscript.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit this manuscript section by section and reconcile the results.",
+    "should_trigger": false
+  },
   {
     "query": "Audit this proof and isolate the first gap.",
     "should_trigger": true
@@ -25,5 +34,25 @@
   {
     "query": "Audit this proof in a read-only host and prepare an authorized deferred review record if the audit changes the ledger state.",
     "should_trigger": true
+  },
+  {
+    "query": "Referee only the proof of Proposition 3.1.",
+    "should_trigger": true
+  },
+  {
+    "query": "Stress-test this whole paper.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this manuscript for mathematical correctness.",
+    "should_trigger": false
+  },
+  {
+    "query": "Proofread this paper.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit the Sage enumeration supporting Claim C7.",
+    "should_trigger": false
   }
 ]

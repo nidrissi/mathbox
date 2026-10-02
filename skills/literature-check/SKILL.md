@@ -1,88 +1,75 @@
 ---
 name: literature-check
 description: >-
-  Verify an external mathematical theorem, citation, notation translation, source-dependent implication, or bounded novelty claim, reusing authorized project-local source copies when available. Use when a proof relies on a named paper/result, when exact hypotheses or versions matter, when the user asks whether a claim is known, or when an authenticated mathematical source should be cached for later checks. Prefer primary sources and record the search scope. Do not treat snippets or failed searches as proof or global novelty.
+  Verify what an external mathematical source proves: exact theorem, hypotheses and version, citation, notation translation, source-dependent implication, attribution, or a bounded novelty claim; cache authenticated sources for reuse. Use when a proof relies on a named result, the user asks whether a claim is known, or to cache a source. Do not use to audit internal proof logic, attack an implication, format bibliographies, or insert citations into a manuscript.
 ---
 
 # Mathematical literature check
 
-Verify the exact implication, not merely the presence of related terminology.
+Verify the exact implication, not merely related terminology. Prefer primary
+sources; snippets and failed searches establish neither proof nor global novelty.
 
 ## Define the source question
 
-State:
-
-- the project claim or arrow requiring support;
-- likely source/result and acceptable source class;
-- required coefficients, grading, variance, finiteness, equivariance,
-  normalization, version, and range;
-- whether the task is theorem verification, attribution, notation translation,
-  overlap classification, or bounded novelty search.
-- for overlap or novelty, the terminology variants, older vocabulary, adjacent
-  fields, date horizon and citation graph likely to contain the same result.
-
-Read an existing literature-ledger entry and the dependent proof before
-searching when they exist.
+State the project claim or arrow, likely result, acceptable source class, exact
+version and required hypotheses: coefficients, grading, variance, finiteness,
+actions, normalization, completion and range. Identify theorem verification,
+attribution, notation translation, overlap classification or bounded novelty
+as the task. Read existing literature records and dependent arguments first.
 
 ## Acquire and authenticate
 
-1. When the project permits local source retention, query its literature cache
-   by exact DOI, arXiv version, ISBN, or other stable identifier before fetching.
+1. Query an authorized project-local cache by stable identifier before fetching;
+   read [source-cache.md](references/source-cache.md) before **any cache command**.
    A different or unversioned arXiv copy is only a discovery candidate.
-2. Prefer the published paper, official preprint, author manuscript, formal
-   documentation, or another primary source.
-3. Record title, authors, publication/preprint identifier, exact version or
-   revision date, stable locator, and date checked.
-4. Use abstracts, reviews, search snippets, lecture notes, and citation chains
-   only as discovery aids unless they are themselves the result being cited.
-5. For a changing preprint, verify that theorem numbering and hypotheses belong
-   to the version actually used by the project.
-6. Respect confidentiality and copyright; do not upload or reproduce licensed
-   or private material without authorization.
+2. Prefer the published paper, official preprint, author manuscript or other
+   primary source. Abstracts, reviews, snippets and citation chains are discovery
+   aids unless they themselves are the cited result.
+3. Record title, authors, identifier, exact version/revision, stable locator and
+   date checked. Verify theorem numbering and hypotheses in the project's version.
+4. Respect confidentiality and copyright. Quote only the needed statement;
+   never copy fetched or cached full text into tracked files, reports or deferred
+   packets, or upload licensed/private material without authorization.
 
-After acquiring an authorized source, add it to the cache at a natural
-checkpoint so later agents can reuse both the PDF and any extracted text. Read
-[source-cache.md](references/source-cache.md) before initializing or modifying
-the cache. Cache hits save acquisition work; they do not authenticate the
-source or verify its mathematical content.
+When the user or project authorizes local retention, add acquired sources at a
+natural checkpoint for reuse. Cache hits save acquisition work; they do not
+verify mathematical content or authenticate metadata. Retain an established
+alternate cache rather than creating a duplicate.
 
 ## Extract and translate
 
-Record the exact theorem, definition, or formula used, including all hypotheses,
-exceptions, coefficient restrictions, source/target categories, variance,
-actions, grading, and completion assumptions. Note whether the source proves,
-sketches, states, conjectures, or only motivates it.
+Extract the exact theorem, definition or formula and its hypotheses and exceptions.
+State whether the source proves, sketches, states, conjectures or motivates it.
+Write a notation dictionary to project conventions and check the application
+one arrow at a time. A citation supplies no unstated functor, equivalence,
+coherence datum or limiting argument. Objectwise, natural, equivariant, filtered,
+integral and completed statements are different contracts until a bridge is proved.
 
-Write an explicit notation dictionary to the project conventions. Verify the
-project implication one arrow at a time. A citation supplies no unstated
-functor, equivalence, coherence datum, normalization, or limiting argument.
+Separate **source authentication**, **theorem extraction** and **project
+application**; record which checks actually occurred. Label the implication:
 
-Separate **source authentication**, **theorem extraction**, and **application
-to this project**. Record which of these was actually checked. A correctly
-identified paper can still be inapplicable. Treat objectwise, natural,
-equivariant, filtered, integral and completed statements as different contracts
-until a comparison argument supplies the missing structure.
+- **verified**: the exact source result and translation establish the arrow;
+- **conditional**: name the missing hypothesis or bridge;
+- **inapplicable**: a checked mismatch prevents the proposed application;
+- **unverified**: available evidence does not settle it.
 
-Use [source-record.md](references/source-record.md) for durable entries.
+An authenticated paper may be inapplicable. Unavailable exact text is unverified,
+or conditional when the required assumption can be named, rather than confirmed.
+Use [source-record.md](references/source-record.md) for the durable source record.
 
 ## Novelty and overlap
 
-Run discovery and verification as separate passes. In discovery, search the
-exact statement together with synonyms, older terminology, equivalent
-formulations and the names of the objects/invariants rather than only the
-project's current title. Follow backward references from the closest source and
-forward citations when available; inspect relevant authors' earlier work and
-bibliographies in neighboring fields. Use more than one suitable index when
-feasible and record which coverage was unavailable.
+Separate discovery from verification. Search the exact statement, synonyms,
+older vocabulary, equivalent formulations, object/invariant names and neighboring
+fields. Follow backward references and available forward citations, relevant
+authors' earlier work and adjacent bibliographies. Use multiple suitable indices
+when feasible and disclose unavailable coverage.
 
-In verification, read the strongest candidates in their primary versions and
-compare exact hypotheses and conclusion level. A title/abstract that appears
-adjacent can still contain the needed theorem, while matching terminology can
-hide an inapplicable result. For a material “apparently new” claim, use a second
-search strategy or fresh reviewer when available; disclose when the same searcher
-performed both passes.
+Read strongest candidates in primary versions and compare exact hypotheses and
+conclusions. For a material “apparently new” claim, use a second strategy or
+fresh reviewer when available; disclose a same-searcher second pass.
 
-Classify only as:
+Use only these overlap labels:
 
 - known verbatim;
 - known after translation of notation;
@@ -92,36 +79,27 @@ Classify only as:
 - apparently new within the stated search scope;
 - conjectural or explicitly open in a checked source.
 
-For “apparently new,” report databases, exact and synonym queries, date range,
-languages or fields searched, backward/forward citation chains followed, the
-second-pass method, and important blind spots. A failed search is never a global
-novelty theorem. Later-discovered overlap is a correction to append and propagate,
-not a reason to rewrite the earlier scoped search as though it never occurred.
+For “apparently new,” report databases, exact/synonym queries, date horizon,
+languages/fields, citation chains, second-pass method and blind spots. A failed
+search is never a global novelty theorem. Append later-discovered overlap as a
+correction and propagate it; preserve the earlier scoped search.
 
 ## Record and report
 
-Update the project's literature ledger only when authorized and when the check
-changes a dependency or attribution. Update status/log only if live research
-state changes.
+Update literature records only when authorized and the check changes a dependency
+or attribution; update status/history only for changed live research state.
+Preserve old checks when versions or interpretations change and inspect dependents.
 
-When a `.mathbox/` ledger is in use, record a source evidence event through the
-available `research-state` skill, pinning the durable extraction/translation
-report. If a source version or interpretation changes, examine dependent claims
-and record a correction; do not overwrite the old check or silently refresh a
-hash. The cache's content hash alone is not a verified-source event.
-If persistence is authorized but this host cannot execute or write, use the
-`research-state` deferred-handoff contract for a new extraction report and
-source evidence proposal; state that local ingest has not recorded them.
+When persistence is authorized in a `.mathbox/` project, record `source` evidence
+only for an implication verified here through the available `research-state`
+skill (`mathbox:research-state` in plugin installations), pinning the source
+record. For a conditional application, record the checked conditional implication
+and a `conditional` review naming its missing bridge; never record positive
+support for an unverified application. The cache hash alone supplies no such
+verification. If research-state is unavailable, report proposed source evidence
+fields and say nothing was recorded. On an authorized non-writing host, use its
+deferred packet contract and say it is unapplied.
 
-Report:
-
-1. exact source and version, plus the cache content hash and extraction
-   status when the source was retained locally;
-2. exact result used;
-3. notation/hypothesis translation;
-4. whether the implication is valid;
-5. overlap/novelty classification and search boundary;
-6. unresolved source ambiguity or missing implication.
-
-Return **unverified** or **conditional** when the exact source is unavailable,
-the translation fails, or the needed implication is neither stated nor formal.
+Report exact source/version, retained hash and extraction status, result used,
+notation/hypothesis translation, **checks performed** (authentication, extraction,
+application), implication verdict, overlap/search scope and unresolved ambiguity.

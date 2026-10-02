@@ -22,7 +22,8 @@ convert during submission. Keep the skills portable across both hosts.
   conversion path.
 - `.claude-plugin/marketplace.json` is the public Claude marketplace catalog;
   keep its root-source entry aligned with the plugin manifest.
-- `evals/evals.json` checks behavior and `evals/trigger-evals.json` checks
+- `skills/<name>/evals/evals.json` checks behavior and
+  `skills/<name>/evals/trigger-evals.json` checks
   routing. Treat both as part of the skill contract.
 - `README.md` is the public inventory and installation guide. Keep it aligned
   with the canonical skill directories and their invocation policies.

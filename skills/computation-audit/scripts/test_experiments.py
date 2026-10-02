@@ -16,6 +16,31 @@ from validate_manifest import legacy_limits, main as validate_main, validate
 
 
 class ExperimentTests(unittest.TestCase):
+    def test_validator_reports_unsuccessful_run_status(self):
+        self.code.write_text("import time\ntime.sleep(30)\n")
+        manifest, path = execute(self.args(timeout=0.1))
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(validate_main([str(path)]), 0)
+        self.assertIn("run status: timeout", output.getvalue())
+        self.assertEqual(manifest["run"]["status"], "timeout")
+
+    def test_hand_filled_v2_template_accepts_observed_provenance(self):
+        path = Path(__file__).parents[1] / "assets/computation-manifest.json"
+        manifest = json.loads(path.read_text())
+        self.assertEqual(manifest["schema_version"], 2)
+        result = self.root / "result.txt"
+        result.write_text("21 cases checked\n")
+        manifest.update(claim_id="A", command=[sys.executable, "run.py"], result="21 cases passed",
+                        declared_results=["result.txt"])
+        manifest["repository"].update(commit="unavailable", dirty=True)
+        manifest["environment"]["software"] = [{"name": "Python", "version": sys.version.split()[0]}]
+        manifest["mathematics"] = json.loads(self.contract.read_text())["mathematics"]
+        manifest["run"].update(started_at="2026-10-02T00:00:00Z", runtime_seconds=0.1, exit_status=0, status="completed")
+        manifest["input_artifacts"] = [{"path": "run.py", "sha256": sha(self.code), "sha256_after": sha(self.code)}]
+        manifest["outputs"] = [{"path": "result.txt", "sha256": sha(result), "kind": "result"}]
+        self.assertEqual(validate(manifest, root=self.root), [])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

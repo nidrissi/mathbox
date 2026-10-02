@@ -10,10 +10,42 @@ import subprocess
 import tempfile
 import unittest
 
-from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown
+from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown, unfenced_lines
 
 
 class InspectorTests(unittest.TestCase):
+    def test_brief_declared_paths_remain_bounded_with_explicit_overflow(self):
+        self.write("AGENTS.md", "\n".join(f"- **Claims:** `claims/c{i}.md`" for i in range(30)))
+        result = inspect(self.root, 5)
+        brief = brief_markdown(result)
+        self.assertIn("Declared paths: 30.", brief)
+        self.assertIn("22 more; inspect --full", brief)
+        self.assertNotIn("`claims/c29.md`", brief)
+        self.assertIn("claims/c29.md", markdown(result))
+
+    def test_filled_template_declares_every_live_role_and_fences_are_not_history(self):
+        assets = Path(__file__).resolve().parents[1] / "assets"
+        template = (assets / "AGENTS.template.md").read_text()
+        paths = {"CHARTER_FILE": "PROJECT_CHARTER.md", "STATUS_FILE": "RESEARCH_STATUS.md",
+                 "CLAIMS_FILE": "CLAIMS.md", "CONVENTIONS_FILE": "CONVENTIONS.md",
+                 "LITERATURE_FILE": "LITERATURE.md", "RESEARCH_LOG": "RESEARCH_LOG.md",
+                 "RESEARCH_RECORDS": "research/records", "VERIFICATION_FILE": "VERIFICATION.md",
+                 "ROUTE_INDEX_LOCATION": "research/routes.md"}
+        for key, value in paths.items():
+            template = template.replace("{{" + key + "}}", value)
+            if key != "RESEARCH_RECORDS":
+                self.write(value)
+        self.write("AGENTS.md", template)
+        result = inspect(self.root, 5)
+        roles = {entry["role"] for entry in result["declared_paths"]}
+        self.assertTrue({"charter", "status", "claims", "verification", "route_index"} <= roles)
+        self.assertIn("declared_paths", markdown(result))
+        self.assertIn("research/routes.md", brief_markdown(result))
+        log = self.write("log.md", (assets / "RESEARCH_LOG.template.md").read_text())
+        classification = classify_research_log(log)
+        self.assertEqual(classification["linked_entries"], 0)
+        self.assertEqual(classification["route_markers"], 0)
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
@@ -73,6 +105,47 @@ class InspectorTests(unittest.TestCase):
             ("backtick-path", "proof/missing.tex"),
         })
 
+    def test_verification_commands_are_not_declared_paths(self):
+        self.write("AGENTS.md", "- **Verification:** `python3 scripts/check.py`\n"
+                   "- **Verification commands:** `pytest`\n"
+                   "- **Verification:** `make`\n"
+                   "- **Verification:** `scripts/check.py; exit`\n"
+                   "- **Verification:** `VERIFICATION.md`\n"
+                   "- **Claims:** `claims/current.md`\n"
+                   "```markdown\n- **Status:** `example/STATUS.md`\n```\n")
+        result = inspect(self.root, 5)
+        self.assertEqual({(entry["role"], entry["path"]) for entry in result["declared_paths"]},
+                         {("verification", "VERIFICATION.md"), ("claims", "claims/current.md")})
+        self.assertNotIn("python3 scripts/check.py", brief_markdown(result))
+
+    def test_nested_fence_examples_do_not_hide_real_history_or_links(self):
+        for marker in ("`", "~"):
+            for length in (3, 4):
+                with self.subTest(marker=marker, length=length):
+                    opener = marker * length
+                    other = "~" if marker == "`" else "`"
+                    text = (f"{opener}markdown\n{marker * 3}python\n"
+                            "[fake](fake.md)\n- **Route**: example\n"
+                            f"{opener}still-content\n{other * 3}\n"
+                            + ("```\n[fake too](fake-too.md)\n" if length == 4 else "")
+                            + f"{opener}  \n"
+                            "## 2030-01-02\n- **Route**: Real route\n"
+                            "- [Record](records/real.md)\n")
+                    path = self.write("RESEARCH_LOG.md", text)
+                    result = inspect(self.root, 5)
+                    classified = classify_research_log(path)
+                    self.assertEqual(classified["classification"], "mixed")
+                    self.assertEqual(classified["linked_entries"], 1)
+                    self.assertEqual(classified["route_markers"], 2)
+                    findings = result["broken_path_references"]
+                    self.assertEqual([entry["reference"] for entry in findings], ["records/real.md"])
+                    self.assertEqual(findings[0]["line"], len(text.splitlines()))
+
+    def test_unfenced_lines_handles_fence_lengths_kinds_and_unclosed_blocks(self):
+        text = ("before\n````markdown\n```python\ninside\n```\n~~~~\n"
+                "````comment\n`````\nafter\n~~~text\n```\nunclosed\n")
+        self.assertEqual(list(unfenced_lines(text)), [(1, "before"), (9, "after")])
+
     def test_brief_report_counts_historical_candidates_without_dumping_them(self):
         self.write("docs/live.md", "\n".join(f"[missing](missing-{i}.md)" for i in range(12)))
         self.write("research/imports/old.md", "\n".join(f"[old](missing-{i}.md)" for i in range(310)))
@@ -104,6 +177,19 @@ class InspectorTests(unittest.TestCase):
         self.assertIn("`skills/foo/SKILL.md`", brief)
         self.assertIn("## Project skill files (1)", brief)
         self.assertIn("## Build/verification manifests (1)", brief)
+
+    def test_brief_report_bounds_manifests_and_keeps_full_semantic_details_optional(self):
+        for number in range(30):
+            self.write(f"research/manifests/run-{number:02d}.json", "{}")
+            self.write(f"research/records/claim-{number:02d}.md", "# Claim\n")
+        result = inspect(self.root, 5)
+        brief = brief_markdown(result)
+        self.assertIn("## Computation manifests (30)", brief)
+        self.assertIn("22 more; use --full or --format json", brief)
+        self.assertNotIn("run-29.json", brief)
+        self.assertNotIn('"semantic_roles"', brief)
+        self.assertIn("run-29.json", markdown(result))
+        self.assertIn('"semantic_roles"', markdown(result))
 
     def test_local_copy_of_every_canonical_skill_is_an_override(self):
         for name in ("referee", "research-state"):

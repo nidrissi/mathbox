@@ -41,6 +41,24 @@
         "Routes the integral source question to literature-check",
         "Does not silently alter the theorem based on an unchecked citation"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Proofread this paper: Every positive integer is even. Proof: this is clear. No corrections were requested.",
+      "expected_output": "Review-only; flags the substantive issue without mathematical repair.",
+      "assertions": [
+        "No file edits by default",
+        "Proof gap is not proofreading typo"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Correct the typo in this local LaTeX sentence: Let f be the identity on X. Thus $f(x)=y$ for every $x\\in X$. This sentence has no other variables.",
+      "expected_output": "Changes y to x only as uniquely forced local token typo and lists it.",
+      "assertions": [
+        "Reports exact mathematical-token change",
+        "Does not change unrelated reasoning"
+      ]
     }
   ]
 }

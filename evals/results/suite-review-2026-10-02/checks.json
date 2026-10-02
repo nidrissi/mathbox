@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-02",
+  "commands": [
+    {
+      "command": "python3 scripts/check.py",
+      "exit_code": 0,
+      "regressions": {
+        "package_checker": 4,
+        "computation": 32,
+        "literature_cache": 20,
+        "manuscript_preparation": 47,
+        "repository_inspector": 15,
+        "research_state": 75
+      },
+      "total_regression_tests": 193,
+      "scope": "software/package contracts, not mathematical behavior"
+    },
+    {
+      "command": "JSON lint over .codex-plugin/*.json, .claude-plugin/*.json, skills/*/evals/*.json and skills/*/assets/*.json",
+      "exit_code": 0
+    },
+    {
+      "command": "claude plugin validate .claude-plugin/plugin.json",
+      "exit_code": 0
+    },
+    {
+      "command": "claude plugin validate --strict .claude-plugin/marketplace.json",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPYCACHEPREFIX=/tmp/mathbox-pycache python3 -m py_compile scripts/*.py skills/*/scripts/*.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 skills/computation-audit/scripts/validate_manifest.py skills/computation-audit/assets/computation-manifest.json --template",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 skills/research-init/scripts/inspect_repo.py --root . --format json",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": "skill-creator quick_validate.py for each canonical skills/* directory",
+      "exit_code": 0,
+      "skills_checked": 11
+    },
+    {
+      "command": "decode raw-text-artifacts-v1 bundles and verify SHA-256; independently classify all finite matrices; verify frozen routing digest",
+      "exit_code": 0,
+      "bundles": 19,
+      "artifact_hashes": 564,
+      "matrices": 625
+    },
+    {
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "note": "A terminal blank line in the standalone sum display copy was removed; raw bundled evidence bytes and pins were preserved."
+    }
+  ],
+  "trials": {
+    "applicability_routing_cases": 174,
+    "unique_queries": 158,
+    "supplied_binary_label_conflicts": 0,
+    "explicit_only_positive_applicability_cases": 27,
+    "actual_delegated_packages": 2,
+    "live_codex_explicit_program": {
+      "cli_version": "0.160.0",
+      "exit_code": 0,
+      "completion_seconds": 123.99402491003275,
+      "internal_sandbox": "read-only",
+      "entry_point": "research-program",
+      "research_attempt_loaded": false,
+      "direct_fallback_observed": true
+    }
+  },
+  "contract_review": {
+    "skills": 11,
+    "reviewers": [
+      "suite_safeguard_trials",
+      "suite_continuation_trials",
+      "suite_routing_referee_trials"
+    ],
+    "findings_fixed": [
+      "brief inspector unbounded JSON dump",
+      "description non-scalar and length bypass",
+      "awkward legacy-migration fallback prose found during final coordinator review"
+    ],
+    "subsequent_load_trim": "clarity-only changes to computation-audit, research-attempt and research-program; preserve evaluated semantics; evaluated revisions remain separately pinned"
+  },
+  "not_run": [
+    {
+      "check": "full 135-case behavioral trial suite",
+      "reason": "scenario definitions are not a complete runnable fixture set; bounded synthetic forward trials are documented separately and no all-case pass is claimed"
+    },
+    {
+      "check": "automatic full-suite routing on Codex and Claude",
+      "reason": "catalog applicability and one explicitly named live Codex program were exercised; no comparable automatic-selection harness was run"
+    },
+    {
+      "check": "nonempty referee issue calibration, duplicate merging and serious specialist confirmation in these new trials",
+      "reason": "the selected context manuscript produces empty issue arrays; code/schema review is not a substitute for those behavioral cases"
+    },
+    {
+      "check": "manuscript compilation and external publication authentication",
+      "reason": "no documented build contract or real external source dependency in the selected synthetic trials"
+    },
+    {
+      "check": "Windows/non-POSIX runner branches",
+      "reason": "session runs Linux"
+    }
+  ],
+  "legacy_term_search": {
+    "remaining": "a legacy deferred-handoff user-query probe and literature-ledger inspector alias",
+    "reason": "compatibility inputs retained; active contract prose uses deferred packet and literature record"
+  },
+  "final_skill_hashes": {
+    "skills/computation-audit/SKILL.md": "712f586d7b324466f597f9fa2418c8297878d3e139a79570fe9e1845bc14e199",
+    "skills/literature-check/SKILL.md": "7a5e4c6b34be49d566fd3fe8f91968d1cfe3bfcc59f3dd708c4625219313569b",
+    "skills/manuscript-integrate/SKILL.md": "af5039110440ac2ccc364635fd76a79fd6f5f4483db46cd69cc015ba3278dd77",
+    "skills/proof-audit/SKILL.md": "f2e689736b611d5f2a4752422ec40095536d2598c1f6b7a7de02e8e903380e48",
+    "skills/proofread-math/SKILL.md": "9ace712f6f8d9d3e7ccad59e5eb10726ebf65d28aed512d1222dee882b9f9a76",
+    "skills/referee/SKILL.md": "aabaf34132e9b92c0456897128b29bf4dae1c0bc8d11c1d39da60a1face44802",
+    "skills/research-attempt/SKILL.md": "1cd8218a76ae6571caa33d411ab69ce332a7c0723b592724395ff0453882e0e8",
+    "skills/research-init/SKILL.md": "af3aef9edb330cb071eb87e5a5f7458d3e4320c96ec7d9c91c57c3994f01682f",
+    "skills/research-program/SKILL.md": "cb18d623b18ed1ec915885381382157a40d6b687397e10b3e4577b07fe45dfb4",
+    "skills/research-retrospective/SKILL.md": "4f4a6052a485f7e1f0c9400b2c9dca2f43bfd7067bc0bdec172ef73539d5cfd9",
+    "skills/research-state/SKILL.md": "fc4f4707fe126911116d1311445a22083dc8d2b2691c8f4fa60e1b8562abf2f5"
+  }
+}
