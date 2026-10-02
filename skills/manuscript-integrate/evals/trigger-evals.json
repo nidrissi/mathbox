@@ -18,5 +18,25 @@
   {
     "query": "Fix typos in the introduction.",
     "should_trigger": false
+  },
+  {
+    "query": "Incorporate our responses to the referee's comments into paper.tex.",
+    "should_trigger": true
+  },
+  {
+    "query": "Lemma 3 is now proved.",
+    "should_trigger": false
+  },
+  {
+    "query": "Check whether Theorem 2 in paper.tex is correct.",
+    "should_trigger": false
+  },
+  {
+    "query": "Referee this manuscript.",
+    "should_trigger": false
+  },
+  {
+    "query": "Check whether the corrected lemma is right before we add it to the paper.",
+    "should_trigger": false
   }
 ]

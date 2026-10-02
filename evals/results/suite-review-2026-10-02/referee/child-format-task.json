@@ -1,0 +1,6 @@
+{
+  "task": "Two disjoint pass-role child-return-format exercise with existing delegation authorization.",
+  "condition": "SIMULATION: sequential role enactment by one executor; no agents launched.",
+  "authorization": "Existing user delegation authorization supplied for this exercise.",
+  "scope": "Correctness on Identity with prerequisite Notation; notation on whole manuscript. These are disjoint lane obligations, not independent executors or full five-lane referee coverage."
+}

@@ -2,24 +2,29 @@
 
 ## Scope and authority
 
-- **Mission, deliverable, success, fallback, and exclusions:** See `{{CHARTER_FILE}}`.
-- **Current evidence, blocker, and next action:** See `{{STATUS_FILE}}`.
+- **Charter:** `{{CHARTER_FILE}}`
+- **Live status:** `{{STATUS_FILE}}`
+
+## Mission (only when no separate charter exists)
+
+{{MISSION_DELIVERABLE_SUCCESS_FALLBACK_EXCLUSIONS}}
 
 These instructions apply at the repository root. A closer nested `AGENTS.md`
 may add genuinely local rules for its subtree.
 
 ## Project map
 
-- **Claims/obligations:** `{{CLAIMS_FILE}}`
+- **Claims:** `{{CLAIMS_FILE}}`
 - **Conventions:** `{{CONVENTIONS_FILE}}`
 - **Durable proofs:** {{PROOF_LOCATIONS}}
-- **Literature ledger:** `{{LITERATURE_FILE}}`
+- **Literature:** `{{LITERATURE_FILE}}`
 - **Local literature cache:** {{LITERATURE_CACHE_POLICY}}
 - **Research-history index:** `{{RESEARCH_LOG}}`
+- **Route indexes:** `{{ROUTE_INDEX_LOCATION}}`
 - **Detailed research records:** `{{RESEARCH_RECORDS}}`
 - **Verification:** `{{VERIFICATION_FILE}}`
 
-Authority on mathematical status: exact durable proof or checked computation,
+Authority on mathematical status: exact durable proof or checked computation (for its exact finite assertion),
 then claims/status summary, then plans, then historical records, then chat.
 Explicit current user direction sets scope and priorities; a statement in chat
 does not make a claim proved, so check it against the durable evidence. If
@@ -30,9 +35,9 @@ default.
 ## Evidence standards
 
 Label mathematical evidence as proved, externally proved, computationally
-verified, conditional, heuristic, conjectural, or refuted. Record review
-provenance (unreviewed, self-reviewed, independently audited) and freshness
-(current, stale, retracted, superseded) separately from that evidence. Obtain
+verified, conditional, heuristic, conjectural, refuted or superseded. Record review
+provenance (unreviewed, self-reviewed, independently audited, disputed) and freshness
+(current, stale, retracted) separately from that evidence. Obtain
 fresh adversarial review before promoting a material new claim. A citation
 supplies only the exact theorem checked; a computation establishes only its
 implemented finite assertion and range. Record the first failed implication

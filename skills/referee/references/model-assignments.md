@@ -40,11 +40,7 @@ particular project file or metadata extension is required. Keep these
 preferences in user/project instructions; shared skill frontmatter and
 `agents/openai.yaml` do not acquire a model-routing schema.
 
-Without a prescribed model, prefer an available model suited to mathematical
-reasoning for correctness, adversarial review and final reconciliation, when
-the host exposes enough information to choose one. Otherwise inherit the
-host's default. Choose suitable available models for the other lanes without
-inventing a capability ranking. Do not equate one host's reasoning labels
+Without prescribed settings, inherit host defaults and record null requested fields. Do not equate one host's reasoning labels
 with another's; use only settings the current host actually supports. Respect
 the user's budget and host limits.
 
@@ -55,7 +51,8 @@ When subagents are supported and authorized, start isolated reviewers and
 pass the selected model and reasoning setting through the actual native
 controls. A prompt telling a child to act as a named model does not select
 that model. If the interface requires a fresh context to override settings,
-supply the lane contract, protocol, exact source and dependencies explicitly.
+supply resolved protocol/lane/snapshot paths, pass ID/prefix, return filename,
+exact source and dependencies explicitly (paste text only when unreadable).
 Do not copy prior suspected answers into a fresh correctness review.
 
 Use the same procedure in Codex, Claude and other harnesses: adapt to the
@@ -79,7 +76,8 @@ them self-review, including their model-selection limitations.
 For `final-referee`, apply the preference to the actual reconciliation
 executor. If a prescribed setting requires a different executor, delegate
 reconciliation to a compatible isolated agent when supported, supplying the
-full source, protocol, coverage, raw findings and specialist artifacts. Check
+full source, protocol, [final-referee.md](final-referee.md),
+[output-contract.md](output-contract.md), coverage, raw findings and specialist artifacts. Check
 the returned reconciliation and report before delivery. Otherwise reconcile
 directly and disclose the inherited settings as the fallback. Do not claim
 that the coordinator changed models because its prompt requested a different

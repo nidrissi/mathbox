@@ -1,6 +1,6 @@
 # Claim and scope lane
 
-Read the shared protocol and the whole manuscript. Compare promises in the
+Read the [shared protocol](../review-protocol.md) and the whole manuscript. Compare promises in the
 abstract/introduction/conclusion with exact theorem statements, restrictions,
 examples and actual delivered results. Treat proof correctness as a separate
 question while making this textual comparison.
@@ -28,7 +28,9 @@ contribution language is usually minor.
 
 Without verified sources, positioning doubts are questions grounded in the
 manuscript's own text, not assertions that a result is known or duplicates
-another paper. Use `literature-check` for a bounded material source question;
+another paper. State the bounded `literature-check` question for the coordinator;
 do not search every bibliography entry. A failed search cannot prove novelty.
 Assess significance specifically or leave it unassessed: "seems incremental"
 is not evidence. Exposition is separate from misleading framing.
+
+Do not run specialist skills unless the coordinator explicitly assigns them.

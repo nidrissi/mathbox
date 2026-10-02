@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "checks": [
+    "Frozen routing decisions retain their pre-label SHA-256.",
+    "no-delegation-project: source bytes, raw IDs, unit IDs, aggregation, hash provenance, lane inventory and ordered report headings valid.",
+    "prior-lead-project: source bytes, raw IDs, unit IDs, aggregation, hash provenance, lane inventory and ordered report headings valid.",
+    "child-format-project: source bytes, raw IDs, unit IDs, aggregation, hash provenance, lane inventory and ordered report headings valid.",
+    "Supplied prior lead is separately preserved and explicitly dismissed."
+  ],
+  "limitations": [
+    "Structural validation is not mathematical validation.",
+    "Empty issue lists do not exercise populated issue fields or duplicate merging.",
+    "Simulated child roles are one-executor self-review, not independent agents."
+  ]
+}

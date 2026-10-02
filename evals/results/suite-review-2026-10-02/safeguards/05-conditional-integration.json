@@ -1,0 +1,110 @@
+{
+  "format": "raw-text-artifacts-v1",
+  "original_root": "/tmp/mathbox-safeguard-trials/05-conditional-integration",
+  "files": {
+    "before-RESEARCH_LOG.md": {
+      "sha256": "94de006f57e79b0a83fb47c244ef2707f05b778a711ecaf3db27a5f0e9309fca",
+      "utf8": "# Research record index\n\n- [Input for conditional P](research/records/input.md): proposed P and unavailable T.\n"
+    },
+    "before-paper.tex": {
+      "sha256": "27e471aab35d59aef73575218c7248ccf1585c9604db34bc29fff18c83b1b8a2",
+      "utf8": "\\documentclass{article}\n\\newtheorem{proposition}{Proposition}\n\\begin{document}\n\\section{Setup}\nFix a class $\\mathcal C$, a predicate $H$ on $\\mathcal C$, and a function\n$\\mu:\\mathcal C\\to\\mathbb Z$. Let $X\\in\\mathcal C$ satisfy $H(X)$.\n\\section{Application}\nThe statement $\\mu(X)=0$ is awaiting conditional integration.\n\\bibliographystyle{plain}\n\\bibliography{references}\n\\end{document}\n"
+    },
+    "before-proof-source.md": {
+      "sha256": "aa06a7c9a0ca729319aebcec00fcafe3c365ac6c3d5f1849c0d77d222f79fe61",
+      "utf8": "# Conditional input P\n\nStanding hypotheses: $X\\in\\mathcal C$ and $H(X)$; $\\mu:\\mathcal C\\to\\mathbb Z$.\n\nP: $\\mu(X)=0$.\n\nUnavailable cited Theorem T (exact assumed form): for every $Y\\in\\mathcal C$ with $H(Y)$, $\\mu(Y)=0$.\n\nSupplied conditional argument: assume T holds in this exact form; apply it to $Y=X$ using $H(X)$.\n\nSource: synthetic fixture T, identifier `synthetic:T`, claimed version v1, locator Theorem T; exact primary text and bibliographic metadata unavailable. No source verification has occurred.\n"
+    },
+    "before-references.bib": {
+      "sha256": "086f76bf2045b5217552eddcdbec9077c4942ed9767edb60138eb81e0ed6dabd",
+      "utf8": "@misc{syntheticT,\n  title = {Theorem T (synthetic unavailable source)},\n  note = {Placeholder supplied for a conditional trial; source text and bibliographic metadata unavailable}\n}\n"
+    },
+    "before-research__records__input.md": {
+      "sha256": "ec4311e57239013cb12138b2d7e1600fb61a0b8d0b4bf5574a5136499bc220b4",
+      "utf8": "# Input record\n\nP awaits conditional integration. Theorem T is an unavailable synthetic citation, not verified evidence. See proof-source.md for the supplied implication.\n"
+    },
+    "before-status.md": {
+      "sha256": "3d234444679523cf545ab438f1424dd4bb357930bd1d006eee9b47bb440e8e38",
+      "utf8": "# Research status\n\nP: awaiting conditional integration.\nDependency: unavailable Theorem T in proof-source.md.\nSource verification: not performed; source text unavailable.\nHuman or specialist review: not performed.\nNo mathematical verifier or manuscript build command documented.\n"
+    },
+    "fixture-before.json": {
+      "sha256": "a2a0b41efc8ff0bdf8fd062ec4afb2d69a1d83b7dce735a868babdb164246818",
+      "utf8": "{\n  \"paper.tex\": \"27e471aab35d59aef73575218c7248ccf1585c9604db34bc29fff18c83b1b8a2\",\n  \"proof-source.md\": \"aa06a7c9a0ca729319aebcec00fcafe3c365ac6c3d5f1849c0d77d222f79fe61\",\n  \"status.md\": \"3d234444679523cf545ab438f1424dd4bb357930bd1d006eee9b47bb440e8e38\",\n  \"references.bib\": \"086f76bf2045b5217552eddcdbec9077c4942ed9767edb60138eb81e0ed6dabd\",\n  \"RESEARCH_LOG.md\": \"94de006f57e79b0a83fb47c244ef2707f05b778a711ecaf3db27a5f0e9309fca\",\n  \"research/records/input.md\": \"ec4311e57239013cb12138b2d7e1600fb61a0b8d0b4bf5574a5136499bc220b4\"\n}\n"
+    },
+    "logs/001.json": {
+      "sha256": "fc9063b2241e4273751f3d2bbbe2aa54a76e545096b8bd0b4d52db0a4c7f61bf",
+      "utf8": "{\n  \"argv\": [\n    \"cat\",\n    \"paper.tex\",\n    \"proof-source.md\",\n    \"status.md\",\n    \"references.bib\",\n    \"RESEARCH_LOG.md\",\n    \"research/records/input.md\"\n  ],\n  \"cwd\": \"/tmp/mathbox-safeguard-trials/05-conditional-integration/project\",\n  \"started_utc\": \"2026-10-02T12:36:43.560861+00:00\",\n  \"elapsed_seconds\": 0.0023927130387164652,\n  \"exit_code\": 0,\n  \"stdout\": \"05-conditional-integration/logs/001.stdout.txt\",\n  \"stderr\": \"05-conditional-integration/logs/001.stderr.txt\"\n}\n"
+    },
+    "logs/001.stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "logs/001.stdout.txt": {
+      "sha256": "aece99cd2fc7f365590e9a57ee02ba40113ad5fe8e87167f59915f8e7c47d497",
+      "utf8": "\\documentclass{article}\n\\newtheorem{proposition}{Proposition}\n\\begin{document}\n\\section{Setup}\nFix a class $\\mathcal C$, a predicate $H$ on $\\mathcal C$, and a function\n$\\mu:\\mathcal C\\to\\mathbb Z$. Let $X\\in\\mathcal C$ satisfy $H(X)$.\n\\section{Application}\nThe statement $\\mu(X)=0$ is awaiting conditional integration.\n\\bibliographystyle{plain}\n\\bibliography{references}\n\\end{document}\n# Conditional input P\n\nStanding hypotheses: $X\\in\\mathcal C$ and $H(X)$; $\\mu:\\mathcal C\\to\\mathbb Z$.\n\nP: $\\mu(X)=0$.\n\nUnavailable cited Theorem T (exact assumed form): for every $Y\\in\\mathcal C$ with $H(Y)$, $\\mu(Y)=0$.\n\nSupplied conditional argument: assume T holds in this exact form; apply it to $Y=X$ using $H(X)$.\n\nSource: synthetic fixture T, identifier `synthetic:T`, claimed version v1, locator Theorem T; exact primary text and bibliographic metadata unavailable. No source verification has occurred.\n# Research status\n\nP: awaiting conditional integration.\nDependency: unavailable Theorem T in proof-source.md.\nSource verification: not performed; source text unavailable.\nHuman or specialist review: not performed.\nNo mathematical verifier or manuscript build command documented.\n@misc{syntheticT,\n  title = {Theorem T (synthetic unavailable source)},\n  note = {Placeholder supplied for a conditional trial; source text and bibliographic metadata unavailable}\n}\n# Research record index\n\n- [Input for conditional P](research/records/input.md): proposed P and unavailable T.\n# Input record\n\nP awaits conditional integration. Theorem T is an unavailable synthetic citation, not verified evidence. See proof-source.md for the supplied implication.\n"
+    },
+    "logs/002.json": {
+      "sha256": "6a87629c78dd8dbb0d606f8025df240f982355a1bd7536936079400c43291f85",
+      "utf8": "{\n  \"argv\": [\n    \"rg\",\n    \"-n\",\n    \"awaiting conditional integration|Conditional|unavailable|prop:P|syntheticT|\\\\\\\\\\\\\\\\mathbb\",\n    \"paper.tex\",\n    \"proof-source.md\",\n    \"status.md\",\n    \"references.bib\",\n    \"RESEARCH_LOG.md\",\n    \"research/records\"\n  ],\n  \"cwd\": \"/tmp/mathbox-safeguard-trials/05-conditional-integration/project\",\n  \"started_utc\": \"2026-10-02T12:37:57.716019+00:00\",\n  \"elapsed_seconds\": 0.016815091017633677,\n  \"exit_code\": 0,\n  \"stdout\": \"05-conditional-integration/logs/002.stdout.txt\",\n  \"stderr\": \"05-conditional-integration/logs/002.stderr.txt\"\n}\n"
+    },
+    "logs/002.stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "logs/002.stdout.txt": {
+      "sha256": "8cf56fdea0e899a92f708c04f5310ed6ca8fdb75f785f4ea59729dc3049e7dd2",
+      "utf8": "paper.tex:9:\\begin{proposition}[Conditional on Theorem T]\\label{prop:P}\npaper.tex:10:Assume Theorem T of the unavailable source~\\cite{syntheticT} in the following\npaper.tex:14:\\noindent\\textbf{Conditional proof.}\nRESEARCH_LOG.md:3:- [Input for conditional P](research/records/input.md): proposed P and unavailable T.\nRESEARCH_LOG.md:5:- [Conditional integration of P](research/records/conditional-integration.md): Proposition `prop:P` assumes unavailable T in its exact stated form; source and human review remain open.\nreferences.bib:1:@misc{syntheticT,\nreferences.bib:2:  title = {Theorem T (synthetic unavailable source)},\nreferences.bib:3:  note = {Placeholder supplied for a conditional trial; source text and bibliographic metadata unavailable}\nstatus.md:3:P: conditional proposition integrated in `paper.tex`, Proposition `prop:P`.\nstatus.md:5:Dependency: unavailable Theorem T in the exact assumed form in `proof-source.md`.\nstatus.md:6:Source verification: not performed; source text unavailable.\nresearch/records/input.md:3:P awaits conditional integration. Theorem T is an unavailable synthetic citation, not verified evidence. See proof-source.md for the supplied implication.\nresearch/records/conditional-integration.md:1:# Conditional integration of P\nresearch/records/conditional-integration.md:5:Source evidence: unavailable synthetic source `synthetic:T`, claimed v1, Theorem T. Authentication and theorem verification were not performed. The missing obligation is to acquire the exact primary text and check its coefficients, domain, hypotheses and conclusion against the assumed form. Until then P is conditional and human or specialist review remains open.\nproof-source.md:1:# Conditional input P\nproof-source.md:11:Source: synthetic fixture T, identifier `synthetic:T`, claimed version v1, locator Theorem T; exact primary text and bibliographic metadata unavailable. No source verification has occurred.\nproof-source.md:13:Integration status: the supplied implication is integrated conditionally as Proposition `prop:P`; neither T nor an unconditional P has been verified.\n"
+    },
+    "logs/003.json": {
+      "sha256": "bad8451f9a5c9db167e0b2cf4232fd4ffa7236198eedca4f9d2457e0bc2530fa",
+      "utf8": "{\n  \"argv\": [\n    \"diff\",\n    \"-u\",\n    \"/tmp/mathbox-safeguard-trials/05-conditional-integration/before-paper.tex\",\n    \"paper.tex\"\n  ],\n  \"cwd\": \"/tmp/mathbox-safeguard-trials/05-conditional-integration/project\",\n  \"started_utc\": \"2026-10-02T12:41:08.550835+00:00\",\n  \"elapsed_seconds\": 0.0018641100032255054,\n  \"exit_code\": 1,\n  \"stdout\": \"05-conditional-integration/logs/003.stdout.txt\",\n  \"stderr\": \"05-conditional-integration/logs/003.stderr.txt\"\n}\n"
+    },
+    "logs/003.stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "logs/003.stdout.txt": {
+      "sha256": "fa484f8b492a15ef9ec717ad52546f4ae9fa6b3d307abccbc3bc80af3cd9026d",
+      "utf8": "--- /tmp/mathbox-safeguard-trials/05-conditional-integration/before-paper.tex\t2026-10-02 14:36:43.401878788 +0200\n+++ paper.tex\t2026-10-02 14:37:57.531022205 +0200\n@@ -1,11 +1,20 @@\n \\documentclass{article}\n+\\usepackage{amssymb}\n \\newtheorem{proposition}{Proposition}\n \\begin{document}\n \\section{Setup}\n Fix a class $\\mathcal C$, a predicate $H$ on $\\mathcal C$, and a function\n $\\mu:\\mathcal C\\to\\mathbb Z$. Let $X\\in\\mathcal C$ satisfy $H(X)$.\n \\section{Application}\n-The statement $\\mu(X)=0$ is awaiting conditional integration.\n+\\begin{proposition}[Conditional on Theorem T]\\label{prop:P}\n+Assume Theorem T of the unavailable source~\\cite{syntheticT} in the following\n+exact form: for every $Y\\in\\mathcal C$ satisfying $H(Y)$, $\\mu(Y)=0$.\n+Under this assumption, $\\mu(X)=0$.\n+\\end{proposition}\n+\\noindent\\textbf{Conditional proof.}\n+Apply the assumed Theorem T to $Y=X$, using the standing hypothesis $H(X)$.\n+The source text and its hypotheses have not been verified; this proposition\n+records only the supplied conditional implication.\n \\bibliographystyle{plain}\n \\bibliography{references}\n \\end{document}\n"
+    },
+    "project/RESEARCH_LOG.md": {
+      "sha256": "7be71cb1ff393d9a84d356a711e8e2ce6e8df2d5650b34ab33bf72de13ecb347",
+      "utf8": "# Research record index\n\n- [Input for conditional P](research/records/input.md): proposed P and unavailable T.\n\n- [Conditional integration of P](research/records/conditional-integration.md): Proposition `prop:P` assumes unavailable T in its exact stated form; source and human review remain open.\n"
+    },
+    "project/paper.tex": {
+      "sha256": "5425e2399223ea059c34f110ace90af97c465523ae496c5c7beb2bd1130d39e4",
+      "utf8": "\\documentclass{article}\n\\usepackage{amssymb}\n\\newtheorem{proposition}{Proposition}\n\\begin{document}\n\\section{Setup}\nFix a class $\\mathcal C$, a predicate $H$ on $\\mathcal C$, and a function\n$\\mu:\\mathcal C\\to\\mathbb Z$. Let $X\\in\\mathcal C$ satisfy $H(X)$.\n\\section{Application}\n\\begin{proposition}[Conditional on Theorem T]\\label{prop:P}\nAssume Theorem T of the unavailable source~\\cite{syntheticT} in the following\nexact form: for every $Y\\in\\mathcal C$ satisfying $H(Y)$, $\\mu(Y)=0$.\nUnder this assumption, $\\mu(X)=0$.\n\\end{proposition}\n\\noindent\\textbf{Conditional proof.}\nApply the assumed Theorem T to $Y=X$, using the standing hypothesis $H(X)$.\nThe source text and its hypotheses have not been verified; this proposition\nrecords only the supplied conditional implication.\n\\bibliographystyle{plain}\n\\bibliography{references}\n\\end{document}\n"
+    },
+    "project/proof-source.md": {
+      "sha256": "e7d22195d64236735e511786c54b6898b1d64ce21ddbe3a8921c510e30fe614c",
+      "utf8": "# Conditional input P\n\nStanding hypotheses: $X\\in\\mathcal C$ and $H(X)$; $\\mu:\\mathcal C\\to\\mathbb Z$.\n\nP: $\\mu(X)=0$.\n\nUnavailable cited Theorem T (exact assumed form): for every $Y\\in\\mathcal C$ with $H(Y)$, $\\mu(Y)=0$.\n\nSupplied conditional argument: assume T holds in this exact form; apply it to $Y=X$ using $H(X)$.\n\nSource: synthetic fixture T, identifier `synthetic:T`, claimed version v1, locator Theorem T; exact primary text and bibliographic metadata unavailable. No source verification has occurred.\n\nIntegration status: the supplied implication is integrated conditionally as Proposition `prop:P`; neither T nor an unconditional P has been verified.\n"
+    },
+    "project/references.bib": {
+      "sha256": "086f76bf2045b5217552eddcdbec9077c4942ed9767edb60138eb81e0ed6dabd",
+      "utf8": "@misc{syntheticT,\n  title = {Theorem T (synthetic unavailable source)},\n  note = {Placeholder supplied for a conditional trial; source text and bibliographic metadata unavailable}\n}\n"
+    },
+    "project/research/records/conditional-integration.md": {
+      "sha256": "c8ae185504dbe17276dad684465b02f5a6e6ea3a0b7a474a2197258634f95329",
+      "utf8": "# Conditional integration of P\n\nThe live manuscript now states P only under the exact assumed form of Theorem T. The supplied conditional proof specializes T to the fixed object X using H(X); no new argument was invented.\n\nSource evidence: unavailable synthetic source `synthetic:T`, claimed v1, Theorem T. Authentication and theorem verification were not performed. The missing obligation is to acquire the exact primary text and check its coefficients, domain, hypotheses and conclusion against the assumed form. Until then P is conditional and human or specialist review remains open.\n\nThe earlier input record is preserved. Status and proof-source.md record the conditional scope. No manuscript build or mathematical verifier is documented; neither will be invented.\n"
+    },
+    "project/research/records/input.md": {
+      "sha256": "ec4311e57239013cb12138b2d7e1600fb61a0b8d0b4bf5574a5136499bc220b4",
+      "utf8": "# Input record\n\nP awaits conditional integration. Theorem T is an unavailable synthetic citation, not verified evidence. See proof-source.md for the supplied implication.\n"
+    },
+    "project/status.md": {
+      "sha256": "d2f87edb1aa9531027f77ed9bc4bfec91f3da6e8bf6a7f7e7da3438f1fdcbccb",
+      "utf8": "# Research status\n\nP: conditional proposition integrated in `paper.tex`, Proposition `prop:P`.\nExact claim: assuming Theorem T states and proves that every $Y\\in\\mathcal C$ with $H(Y)$ satisfies $\\mu(Y)=0$, the fixed $X$ satisfies $\\mu(X)=0$.\nDependency: unavailable Theorem T in the exact assumed form in `proof-source.md`.\nSource verification: not performed; source text unavailable.\nHuman or specialist review: not performed; still required.\nNo mathematical verifier or manuscript build command documented.\n"
+    },
+    "raw-response.md": {
+      "sha256": "8b9af761fe020afe40f8196a39df3472cd335b98ee1e1b851c0187e14d5d044c",
+      "utf8": "Integrated **P as a conditional proposition**, not as established mathematics. Proposition prop:P assumes the exact stated form of unavailable Theorem T, cites the synthetic placeholder at that assumption, and carries source-unverified language into the manuscript. Its proof uses only the supplied specialization T at X under H(X).\n\nSource and target: proof-source.md supplies P, the exact assumed T and the conditional argument; the target is paper.tex, Application section. All standing hypotheses ($X\\in\\mathcal C$, $H(X)$, and $\\mu:\\mathcal C\\to\\mathbb Z$) are preserved. No notation translation is needed. The only external dependency is synthetic:T, claimed v1, Theorem T; authentication, extraction from a primary text and unconditional application verification are unavailable. The request explicitly authorizes conditional integration.\n\nChanged files: paper.tex, proof-source.md, status.md, RESEARCH_LOG.md; added research/records/conditional-integration.md. The existing historical input record and references.bib are unchanged. Status is conditional, and neither source nor human review is promoted. Added the standard amssymb preamble package because the supplied setup uses \\mathbb; no dependency was installed. This is a syntax support correction, not mathematical evidence.\n\nVerification: conservative self-review found the changed proposition, supplied proof, labels and citation key consistent with the existing source and bibliography. The proof adds no missing mathematical argument. Superseded “awaiting conditional integration” wording will be searched in live dependents and preserved only in the historical input record. Mathematical verifier and manuscript build: not run, neither is documented. Without a build, rendered references and numbering are not verified. Human or specialist review and exact source verification remain open.\n"
+    },
+    "side-effects.json": {
+      "sha256": "82daa0f8c7d0784e86a562b6f37e815a73fc65571a737470f2452f27bf0ee976",
+      "utf8": "{\n  \"before\": {\n    \"paper.tex\": \"27e471aab35d59aef73575218c7248ccf1585c9604db34bc29fff18c83b1b8a2\",\n    \"proof-source.md\": \"aa06a7c9a0ca729319aebcec00fcafe3c365ac6c3d5f1849c0d77d222f79fe61\",\n    \"status.md\": \"3d234444679523cf545ab438f1424dd4bb357930bd1d006eee9b47bb440e8e38\",\n    \"references.bib\": \"086f76bf2045b5217552eddcdbec9077c4942ed9767edb60138eb81e0ed6dabd\",\n    \"RESEARCH_LOG.md\": \"94de006f57e79b0a83fb47c244ef2707f05b778a711ecaf3db27a5f0e9309fca\",\n    \"research/records/input.md\": \"ec4311e57239013cb12138b2d7e1600fb61a0b8d0b4bf5574a5136499bc220b4\"\n  },\n  \"after\": {\n    \"RESEARCH_LOG.md\": \"7be71cb1ff393d9a84d356a711e8e2ce6e8df2d5650b34ab33bf72de13ecb347\",\n    \"references.bib\": \"086f76bf2045b5217552eddcdbec9077c4942ed9767edb60138eb81e0ed6dabd\",\n    \"status.md\": \"d2f87edb1aa9531027f77ed9bc4bfec91f3da6e8bf6a7f7e7da3438f1fdcbccb\",\n    \"proof-source.md\": \"e7d22195d64236735e511786c54b6898b1d64ce21ddbe3a8921c510e30fe614c\",\n    \"paper.tex\": \"5425e2399223ea059c34f110ace90af97c465523ae496c5c7beb2bd1130d39e4\",\n    \"research/records/conditional-integration.md\": \"c8ae185504dbe17276dad684465b02f5a6e6ea3a0b7a474a2197258634f95329\",\n    \"research/records/input.md\": \"ec4311e57239013cb12138b2d7e1600fb61a0b8d0b4bf5574a5136499bc220b4\"\n  },\n  \"project_files_changed\": [\n    \"paper.tex\",\n    \"proof-source.md\",\n    \"status.md\",\n    \"RESEARCH_LOG.md\"\n  ],\n  \"project_files_added\": [\n    \"research/records/conditional-integration.md\"\n  ],\n  \"source_verification\": false,\n  \"status\": \"conditional\",\n  \"human_review\": \"not performed\",\n  \"bibliography_changed\": false\n}\n"
+    },
+    "task.md": {
+      "sha256": "c5980a4889fda21e14c4ff61482fbf33dca8584ff17c2ddbb4a27d2d19696255",
+      "utf8": "Explicitly integrate P as a conditional proposition following from an unavailable cited theorem T. Use the supplied claim and implication, preserve the missing source condition, and update this isolated project’s existing research records.\n"
+    }
+  }
+}

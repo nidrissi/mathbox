@@ -9,7 +9,7 @@
         "Distinguishes primary source from abstract",
         "Checks coefficient regime explicitly",
         "Does not invent the missing integral statement",
-        "Returns a conditional or incompatible verdict if needed"
+        "Returns a conditional or inapplicable verdict if needed"
       ]
     },
     {
@@ -73,6 +73,34 @@
         "Keeps the paper's text out of the packet beyond brief necessary quotation",
         "Proposes source evidence only for the implication actually verified",
         "States that the packet has not been applied"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Translate the cited source statement from cohomological d:C^i -> C^{i+1} to our homological indexing C_n=C^{-n}, and check attribution from the supplied primary statement.",
+      "expected_output": "Explicit dictionary and hypothesis-preserving application, with attribution limited to supplied evidence.",
+      "assertions": [
+        "Lists checks performed separately",
+        "Uses defined implication vocabulary",
+        "Does not infer first priority from one source"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Assess whether the claim is apparently new using its current phrase and older synonyms, and report your actual search boundary.",
+      "expected_output": "Records full bounded search scope, citation graph, second strategy and blind spots.",
+      "assertions": [
+        "No global novelty conclusion",
+        "Reports unavailable search coverage"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Cache an authorized public PDF. The helper warns only its internal ignore rule covers it, and metadata for the same content conflicts. Locate the retention policy.",
+      "expected_output": "Reads source-cache, reports warning/conflict and changes tracked ignore rule only under authorization.",
+      "assertions": [
+        "No silent conflicting metadata overwrite",
+        "Does not equate ingest date with theorem verification"
       ]
     }
   ]

@@ -11,6 +11,23 @@ There are three different validation surfaces:
    tasks. Evaluate actual derivations, commands, persisted artifacts and scope.
    Do not score these by searching for reassuring phrases.
 
+## Routing protocol
+
+Assume the complete suite is installed; record the host and invocation policy.
+First collect query text without expected labels. Record the direct entry point
+before evaluating correctness: following a specialist internally does not mean
+it should have been the original entry point. Compare risky pairs in both directions.
+
+Run two separate probes: task applicability from descriptions/body boundaries,
+and actual host selection. For explicit-only skills, a positive applies when the
+skill is explicitly named or supplied as the evaluation's entry point. On Codex,
+an unadorned positive task may match that skill but produce no automatic load;
+score this as policy-consistent rather than a false negative. Claude's wording
+boundary may allow an explicit task request, but actual loaded skill identity
+must still be recorded. Do not infer selection from reassuring report language.
+A routing replay by an agent with a supplied catalog is a simulated applicability
+trial, not evidence of automatic selection in another live host.
+
 ## Independent task protocol
 
 Start a fresh agent/session with the named skill, the task and raw fixture only.
@@ -66,6 +83,8 @@ artifacts. They contain no project-derived names, paths, statements, outputs or
 provenance. They are not a validated measure of frontier research success. Keep
 confidential held-out project tasks outside this repository and report only
 aggregate outcomes before making comparative performance claims. See
+[`suite review validation`](results/suite-review-2026-10-02/README.md) for the
+current implementation's bounded trials and remaining acceptance coverage,
 [`docs/validation-v3.md`](../docs/validation-v3.md) for the actual forward-testing
 scope of the v3 redesign and
 [`docs/referee-validation.md`](../docs/referee-validation.md) for the referee

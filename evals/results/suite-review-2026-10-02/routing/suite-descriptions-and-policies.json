@@ -1,0 +1,57 @@
+[
+  {
+    "skill": "computation-audit",
+    "frontmatter": "name: computation-audit\ndescription: >-\n  Design, run, or audit a mathematical computation supporting a research claim when correctness, provenance, tested range, reproducibility, or interpretation matters. Includes symbolic, exact, finite-field, representation-theoretic, homological and numerical experiments. Do not use to verify a cited theorem, audit a proof with no load-bearing computation, pursue a whole research route, or for general programming.",
+    "openai": "interface:\n  display_name: \"Mathbox: Computation Audit\"\n  short_description: \"Audit claim-supporting mathematical computation\"\n  default_prompt: \"Use $mathbox:computation-audit to validate this mathematical computation and its scope.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  },
+  {
+    "skill": "literature-check",
+    "frontmatter": "name: literature-check\ndescription: >-\n  Verify what an external mathematical source proves: exact theorem, hypotheses and version, citation, notation translation, source-dependent implication, attribution, or a bounded novelty claim; cache authenticated sources for reuse. Use when a proof relies on a named result, the user asks whether a claim is known, or to cache a source. Do not use to audit internal proof logic, attack an implication, format bibliographies, or insert citations into a manuscript.",
+    "openai": "interface:\n  display_name: \"Mathbox: Literature Check\"\n  short_description: \"Verify or cache a mathematical source\"\n  default_prompt: \"Use $mathbox:literature-check to verify the exact source, hypotheses, and implication.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  },
+  {
+    "skill": "manuscript-integrate",
+    "frontmatter": "name: manuscript-integrate\ndescription: >-\n  Integrate an already validated mathematical result, correction, citation, or response to referee comments into an authoritative LaTeX manuscript while preserving hypotheses, evidence status, notation, and dependencies. Use only when the user explicitly requests manuscript integration. Do not use to invent a proof or to perform routine copyediting.",
+    "openai": "interface:\n  display_name: \"Mathbox: Manuscript Integrate\"\n  short_description: \"Integrate validated mathematics into LaTeX\"\n  default_prompt: \"Use $mathbox:manuscript-integrate to transfer this validated result into the live manuscript.\"\npolicy:\n  allow_implicit_invocation: false\n"
+  },
+  {
+    "skill": "proof-audit",
+    "frontmatter": "name: proof-audit\ndescription: >-\n  Adversarially audit an existing mathematical claim, proof, derivation, diagram, or theorem dependency for correctness. Use to verify, check, stress-test, type-check or find gaps in a single claim, proof or dependency. Do not use for a whole-manuscript referee report, inventing a substantially new proof route, or merely copyediting prose.",
+    "openai": "interface:\n  display_name: \"Mathbox: Proof Audit\"\n  short_description: \"Adversarially audit a mathematical proof\"\n  default_prompt: \"Use $mathbox:proof-audit to stress-test this claim and isolate the exact gap.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  },
+  {
+    "skill": "proofread-math",
+    "frontmatter": "name: proofread-math\ndescription: >-\n  Conservatively proofread mathematical prose and LaTeX for grammar, typography, syntax, notation consistency, cross-references, and uniquely forced local mathematical typos. Use for explicit math-proofreading requests and final self-review of theorem-, proof-, or equation-heavy edits. Not for correctness audits, referee reports, or source verification.",
+    "openai": "interface:\n  display_name: \"Mathbox: Proofread Mathematics\"\n  short_description: \"Conservative proofreading for mathematical LaTeX\"\n  default_prompt: \"Use $mathbox:proofread-math to proofread this mathematical LaTeX conservatively.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  },
+  {
+    "skill": "referee",
+    "frontmatter": "name: referee\ndescription: >-\n  Referee a whole mathematical manuscript for correctness, edge cases, notation, exposition and claim calibration. Use for a referee report, whole-paper stress test, or section-by-section manuscript audit. Do not use for a focused claim or proof audit, proofreading alone, a standalone citation or computation check, answering referee comments on one's own paper, or developing new proofs.",
+    "openai": "interface:\n  display_name: \"Mathbox: Referee\"\n  short_description: \"Review a whole manuscript and reconcile findings\"\n  default_prompt: \"Use $mathbox:referee to assess this entire manuscript and produce a calibrated referee report.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  },
+  {
+    "skill": "research-attempt",
+    "frontmatter": "name: research-attempt\ndescription: >-\n  Run one bounded, auditable mathematical research route: a proof attempt, reduction, counterexample search, or a computational or source-based attack. Use when the user explicitly asks to attack a research question or invokes this skill. Do not use to audit an existing proof, computation or source alone, or for a sustained multi-route investigation that continues after failed approaches, routine editing, explanation, or an unchanged verification rerun.",
+    "openai": "interface:\n  display_name: \"Mathbox: Research Attempt\"\n  short_description: \"Run one bounded mathematical research route\"\n  default_prompt: \"Use $mathbox:research-attempt to pursue one bounded, auditable mathematical route.\"\npolicy:\n  allow_implicit_invocation: false\n"
+  },
+  {
+    "skill": "research-init",
+    "frontmatter": "name: research-init\ndescription: >-\n  Set up, plan a retrofit of, substantially revise, or migrate an AI-assisted mathematical research repository's agent architecture: AGENTS.md, CLAUDE.md, live status/history, workflow files and their authority structure, including moving a flat research log into program indexes. Use only on an explicit request. Do not use for an ordinary research attempt, closing out one named program or phase, or a read-only project retrospective.",
+    "openai": "interface:\n  display_name: \"Mathbox: Research Init\"\n  short_description: \"Configure a mathematical research repository\"\n  default_prompt: \"Use $mathbox:research-init to inspect and configure this mathematical research repository.\"\npolicy:\n  allow_implicit_invocation: false\n"
+  },
+  {
+    "skill": "research-program",
+    "frontmatter": "name: research-program\ndescription: >-\n  Pursue a substantial mathematical goal across multiple proof, counterexample, literature and computational routes, or close out one named program or phase by compacting its live status and history. Use for sustained investigation, several approaches, continuing after failed routes until a goal is reached, or an authorized program/phase closeout. Do not use for a single bounded attempt, explanation, proofreading, a read-only project retrospective, or migrating instructions or a flat research log into program indexes.",
+    "openai": "interface:\n  display_name: \"Mathbox: Research Program\"\n  short_description: \"Pursue a goal across multiple research routes\"\n  default_prompt: \"Use $mathbox:research-program to pursue this research goal through distinct routes, preserving evidence and continuing after failed attempts.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  },
+  {
+    "skill": "research-retrospective",
+    "frontmatter": "name: research-retrospective\ndescription: >-\n  Reconcile a mathematical research repository's current claims, proofs, computations, status, literature dependencies, and failed routes, then recommend the next bounded research moves. Use only when the user asks for a project review, weekly/monthly retrospective, prioritization, a prose project handoff, or \u201cwhat should I do next?\u201d. Do not use to write a program closeout, migrate research history, operate a .mathbox ledger, or generate its dependency-aware handoff. Default to read-only.",
+    "openai": "interface:\n  display_name: \"Mathbox: Research Retrospective\"\n  short_description: \"Reconcile project state and choose next routes\"\n  default_prompt: \"Use $mathbox:research-retrospective to review this mathematics project and prioritize the next bounded routes.\"\npolicy:\n  allow_implicit_invocation: false\n"
+  },
+  {
+    "skill": "research-state",
+    "frontmatter": "name: research-state\ndescription: >-\n  Read or update a local append-only .mathbox ledger of exact claims, evidence revisions, dependency impact, review provenance, routes and parallel or delayed runs. Use when the user asks to set up, check, record in or reconcile such a ledger, detect stale evidence, or generate its dependency-aware handoff. Do not use merely because a ledger exists, for a casual math question, as a substitute for proof auditing, or for a prose retrospective from status files.",
+    "openai": "interface:\n  display_name: \"Mathbox: Research State\"\n  short_description: \"Track evidence, dependencies and research runs\"\n  default_prompt: \"Use $mathbox:research-state to check this project\u2019s claim dependencies, stale evidence, route executions and next research routes.\"\npolicy:\n  allow_implicit_invocation: true\n"
+  }
+]

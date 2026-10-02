@@ -1,9 +1,37 @@
 #!/usr/bin/env python3
-"""Prepare an immutable, lexical LaTeX snapshot for a native manuscript review.
+r"""Prepare an immutable, lexical LaTeX snapshot for a native manuscript review.
 
 Standard library only. No TeX execution, network, model calls or review verdicts.
 Offset-preserving masking and confined input lookup adapt Math Scout's
 preparation methodology (MIT; see ../references/math-scout-license.txt).
+
+Lexical implementation notes:
+Lines end at CR, LF or CRLF, as in TeX. Comments and common literal
+environments, including inline `\verb`/`\lstinline` with any delimiter or
+braces, cannot cause fake inputs or sections. `alltt` is not literal: its
+commands, inputs included, are processed, and a percent sign there is text.
+Its lexical state flows into included files and back into the caller, including
+when an included file opens or closes `alltt`.
+Reading a file stops where TeX stops: after the line containing a top-level
+`\endinput`, or after a top-level `\end{document}`, which also ends every
+including file. Inputs past those points are never resolved or read, and the
+expanded source omits the rest of the file; unfinished literals or arguments
+in that ignored material cannot fail preparation. The line ending after
+`\end{document}` is retained, but ignored text on that same line is omitted.
+`sources` hashes still cover whole files. Insert a boundary newline after an
+expanded file without a terminal newline, so its final comment or control word
+cannot consume the caller's next command. The source map marks that newline
+as synthetic, with null original locators.
+
+Missing files, cycles, unsupported dynamic filenames, invalid UTF-8, unclosed
+literal environments/arguments and exceeded limits fail with exit code 2,
+before snapshot creation. Limits are 32 levels, 512 unique files, 4096 input
+expansions in total and 16 MiB of expanded characters (also a 16 MiB limit per
+input file in bytes). A cycle does not silently erase content. Repeated
+noncyclic inputs are allowed; each file is read once, and reached lexical
+segments are cached by their incoming state and file stopping point. A failed
+write may leave an incomplete directory, but the manifest is written last;
+choose a fresh output directory for a retry.
 """
 from __future__ import annotations
 
@@ -510,6 +538,14 @@ def extract(tex: str, spans: list):
     return units, context
 
 
+def contract_files() -> dict:
+    """Portable per-file revisions for checking local lane reuse."""
+    skill = Path(__file__).resolve().parent.parent
+    files = [skill / "SKILL.md", Path(__file__).resolve(), *sorted((skill / "references").rglob("*.md"))]
+    return {path.relative_to(skill).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in files if path.is_file()}
+
+
 def contract_digest() -> str:
     skill = Path(__file__).resolve().parent.parent
     files = [skill / "SKILL.md", Path(__file__).resolve(), *sorted((skill / "references").rglob("*.md"))]
@@ -529,6 +565,12 @@ def compare_previous(current: dict, path: Path) -> dict:
     for key in ("source_sha256", "source_files_sha256", "global_context_sha256", "contract_sha256"):
         if not isinstance(previous.get(key), str) or not HASH_RE.fullmatch(previous[key]):
             raise PreparationError(f"Invalid previous manifest {key}")
+    old_contracts = previous.get("contract_files")
+    if old_contracts is not None and (not isinstance(old_contracts, dict) or not old_contracts
+            or any(not isinstance(name, str) or Path(name).is_absolute() or ".." in Path(name).parts
+                   or not isinstance(value, str) or not HASH_RE.fullmatch(value)
+                   for name, value in old_contracts.items())):
+        raise PreparationError("Invalid previous manifest contract_files")
     units = previous.get("units")
     if not isinstance(units, list):
         raise PreparationError("Previous manifest units must be an array")
@@ -558,6 +600,9 @@ def compare_previous(current: dict, path: Path) -> dict:
             "candidate_unchanged": sorted((new & old) - set(ambiguous)),
             "added": sorted(new - old), "removed": sorted(old - new),
             "ambiguous": sorted(ambiguous), "contract_changed": contract_changed,
+            "contract_files_changed": (None if old_contracts is None else sorted(
+                name for name in old_contracts.keys() | current["contract_files"].keys()
+                if old_contracts.get(name) != current["contract_files"].get(name))),
             "global_context_changed": previous["global_context_sha256"] != current["global_context_sha256"],
             "whole_paper_invalidated": (main_changed
                                        or previous["source_sha256"] != current["source_sha256"]
@@ -583,7 +628,7 @@ def prepare(main: Path, root: Path | None = None, previous: Path | None = None):
     manifest = {"schema_version": SCHEMA_VERSION, "preparation_version": PREPARATION_VERSION,
                 "main": main.relative_to(loader.root).as_posix(), "source_sha256": digest(tex),
                 "global_context_sha256": digest(context_identity(context)),
-                "contract_sha256": contract_digest(),
+                "contract_sha256": contract_digest(), "contract_files": contract_files(),
                 "source_files_sha256": digest(json.dumps(sources, sort_keys=True)), "sources": sources,
                 "source_map": spans, "units": units, "limitations": LIMITATIONS,
                 "comparison": None}
@@ -622,10 +667,10 @@ def write_snapshot(output: Path, manifest: dict, tex: str, context_text: str):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("manuscript", type=Path)
-    parser.add_argument("--root", type=Path, help="Input boundary (default: main manuscript directory)")
-    parser.add_argument("--output", required=True, type=Path, help="New snapshot directory")
-    parser.add_argument("--previous", type=Path, help="Earlier manifest, for candidate comparison only")
+    parser.add_argument("manuscript", type=Path, help="main TeX file, relative to --root when supplied")
+    parser.add_argument("--root", type=Path, help="authorized input boundary (default: main file directory); rebases relative manuscript paths")
+    parser.add_argument("--output", required=True, type=Path, help="new snapshot directory, relative to current directory")
+    parser.add_argument("--previous", type=Path, help="earlier manifest, relative to current directory; candidate comparison only")
     args = parser.parse_args(argv)
     try:
         manifest, tex, context_text = prepare(args.manuscript, args.root, args.previous)

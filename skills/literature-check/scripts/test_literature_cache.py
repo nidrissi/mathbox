@@ -21,6 +21,36 @@ SPEC.loader.exec_module(CACHE)
 
 
 class LiteratureCacheTests(unittest.TestCase):
+    def test_unversioned_arxiv_is_candidate_even_for_identical_identifier(self):
+        self.add_pdf("unversioned", "fixture", "arxiv:2401.09999")
+        result = self.run_cache("find", "--root", str(self.repo), "--id", "arxiv:2401.09999")
+        self.assertEqual(result["matches"][0]["match"], "arxiv-version-candidate")
+
+    def test_add_requires_identifier_date_and_consistent_arxiv_version(self):
+        base = ["add", "--root", str(self.repo), "--pdf", str(self.pdf),
+                "--retention-basis", "fixture", "--no-extract"]
+        for extra in ([], ["--id", "doi:10.1000/x", "--date-checked", "yesterday"],
+                      ["--id", "arxiv:2401.00001v2", "--version", "v5"],
+                      ["--id", "arxiv:2401.00001v2", "--id", "arxiv:2401.00001v3"]):
+            with self.subTest(extra=extra):
+                self.assertEqual(self.invoke(*base, *extra).returncode, 2)
+                self.assertFalse(self.records_dir().exists())
+        self.run_cache(*base, "--id", "arxiv:2401.00001v2", "--version", "v2", "--date-checked", "2026-01-02")
+        before = next(self.records_dir().glob("*.json")).read_bytes()
+        self.assertEqual(self.invoke(*base, "--id", "arxiv:2401.00001v3").returncode, 2)
+        self.assertEqual(next(self.records_dir().glob("*.json")).read_bytes(), before)
+
+    def test_query_matches_line_wrapped_extraction_and_ingest_date_refreshes(self):
+        self.text.write_text("A spectral\n   sequence is computed.\n", encoding="utf-8")
+        self.add_fixture()
+        result = self.run_cache("find", "--root", str(self.repo), "--query", "spectral sequence")
+        self.assertEqual(result["matches"][0]["match"], "text")
+        base = ["add", "--root", str(self.repo), "--pdf", str(self.pdf), "--id", "doi:10.1000/abc",
+                "--retention-basis", "fixture", "--no-extract", "--date-checked"]
+        self.run_cache(*base, "2026-01-02")
+        second = self.run_cache(*base, "2026-01-03")
+        self.assertEqual(second["record"]["date_checked"], "2026-01-03")
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="mathbox-literature-cache-")
         self.base = Path(self.temporary.name)
@@ -218,7 +248,7 @@ class LiteratureCacheTests(unittest.TestCase):
     def test_text_tool_requires_text_on_every_path(self) -> None:
         self.add_fixture()
         process = self.invoke(
-            "add", "--root", str(self.repo), "--pdf", str(self.pdf),
+            "add", "--root", str(self.repo), "--pdf", str(self.pdf), "--id", "doi:10.1000/abc",
             "--retention-basis", "test fixture", "--text-tool", "other-extractor",
         )
         self.assertEqual(process.returncode, CACHE.EXIT_ERROR)
@@ -228,7 +258,7 @@ class LiteratureCacheTests(unittest.TestCase):
         self.add_fixture(no_extract=True)
         conflicting = [
             "add", "--root", str(self.repo), "--pdf", str(self.pdf),
-            "--title", "Fixture Paper (revised)",
+            "--id", "doi:10.1000/abc", "--title", "Fixture Paper (revised)",
             "--retention-basis", "test fixture", "--no-extract",
         ]
         refused = self.run_cache(*conflicting, expected=CACHE.EXIT_ERROR)
@@ -246,7 +276,7 @@ class LiteratureCacheTests(unittest.TestCase):
             check=True,
         )
         refused = self.run_cache(
-            "add", "--root", str(self.repo), "--pdf", str(self.pdf),
+            "add", "--root", str(self.repo), "--pdf", str(self.pdf), "--id", "doi:10.1000/abc",
             "--retention-basis", "test fixture", "--no-extract",
             expected=CACHE.EXIT_ERROR,
         )

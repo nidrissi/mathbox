@@ -16,11 +16,39 @@
     "should_trigger": false
   },
   {
-    "query": "Explain what a Gr\u00f6bner basis is.",
+    "query": "Explain what a Gröbner basis is.",
     "should_trigger": false
   },
   {
     "query": "Refactor this unrelated CLI.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit the enumeration supporting Proposition 2.",
+    "should_trigger": true
+  },
+  {
+    "query": "Design a finite-field rank computation for Conjecture 2 up to n=12 and say what each outcome implies.",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this floating-point eigenvalue check enough for Lemma 4?",
+    "should_trigger": true
+  },
+  {
+    "query": "Find gaps in Theorem 2's proof.",
+    "should_trigger": false
+  },
+  {
+    "query": "Show stale evidence in the .mathbox ledger.",
+    "should_trigger": false
+  },
+  {
+    "query": "Referee this whole paper, including its computational appendix.",
+    "should_trigger": false
+  },
+  {
+    "query": "Attack the conjecture by searching for a counterexample up to n = 20 and record the route.",
     "should_trigger": false
   }
 ]

@@ -1,14 +1,13 @@
 ---
 name: referee
 description: >-
-  Conduct a referee-style assessment of a mathematical manuscript as a whole, covering correctness, adversarial edge cases, notation and consistency, exposition, and claim calibration. Use for a referee report, whole-paper stress test, or section-by-section manuscript audit with final reconciliation against the full source. Do not use for a focused claim or proof audit, mechanical proofreading alone, a standalone citation or computation check, or developing new proofs and research routes.
+  Referee a whole mathematical manuscript for correctness, edge cases, notation, exposition and claim calibration. Use for a referee report, whole-paper stress test, or section-by-section manuscript audit. Do not use for a focused claim or proof audit, proofreading alone, a standalone citation or computation check, answering referee comments on one's own paper, or developing new proofs.
 ---
 
 # Mathematical manuscript referee
 
-Assess the manuscript actually supplied. Port mathematical review methodology,
-not an LLM runtime: use the host's native reasoning and delegation, never the
-Math Scout executable, provider SDKs, credentials, pricing or model tables.
+Assess the manuscript supplied using native reasoning and delegation; do not
+install external review runtimes, provider SDKs or credentials.
 Default to leaving the manuscript unchanged. A review request authorizes review
 artifacts, not rewriting proofs, contacting authors or submitting a report.
 
@@ -17,12 +16,8 @@ artifacts, not rewriting proofs, contacting authors or submitting a report.
 1. Read applicable project instructions and resolve the authoritative manuscript,
    its version, source/project boundary, and requested review scope. Ask before
    choosing between genuinely competing manuscripts or unclear boundaries.
-2. Use `proof-audit` for one lemma, theorem dependency or proof. Use
-   `proofread-math` for mechanical proofreading alone, `literature-check` for a
-   standalone source question, and `computation-audit` for a standalone
-   computation. Developing a new argument belongs to `research-attempt` or
-   `research-program`. A whole-paper report remains this skill's responsibility
-   when it delegates particular obligations.
+2. Focused obligations use the available specialists below; whole-paper coverage
+   and synthesis remain this skill's responsibility.
 3. Read [review-protocol.md](references/review-protocol.md) before reviewing.
    Its severity, confidence, evidence and limited-context rules apply to every
    pass, including synthesis.
@@ -40,7 +35,8 @@ artifacts, not rewriting proofs, contacting authors or submitting a report.
    research-state ledger, which pins evidence only from outside it. Creating a
    review directory never initializes a ledger.
 5. Read the manifest, preparation limits and full source. Resolve preparation
-   errors before claiming complete coverage. If only a PDF, pasted text or a
+   errors without reading outside the authorized boundary; ask before widening
+   `--root`. Do not claim complete coverage until resolved. If only a PDF, pasted text or a
    host without execution is available, build the same scope/coverage inventory
    manually, use real page/result locators, and disclose extraction limits.
 
@@ -69,22 +65,29 @@ Read each lane contract when assigning or performing that lane:
 | Notation | Whole manuscript, including definitions, conventions and cross-references; [notation.md](references/reviewers/notation.md) |
 | Claims | Whole manuscript, comparing headline promises with delivery and evidenced framing; [claims.md](references/reviewers/claims.md) |
 
-Read [model-assignments.md](references/model-assignments.md) before assigning
-passes, including final reconciliation. Resolve user/project model and reasoning
-preferences against the host's available native controls. Prefer the prescribed
-settings; continue with a disclosed fallback when they cannot be applied.
+When user/project instructions prescribe models or reasoning, read
+[model-assignments.md](references/model-assignments.md); otherwise inherit host
+defaults and record null requested fields. Use only exposed native controls;
+disclose any fallback.
 
-Use isolated native subagents where supported and authorized. Apply resolved
-settings through the native delegation controls, not merely in the child
-prompt. Give each a specific unit/question, lane contract, shared protocol,
-exact source revision, raw source, necessary dependency context, and disjoint
-output scope. Let agents
-request more context; do not give a fresh correctness auditor the suspected
-answer. Bound concurrency by the host's capacity and mathematical usefulness.
-Several lanes may share a pass, and coupled sections may share an agent; do
-not spawn one agent per section per lane mechanically. Coverage of all five
-dimensions is the invariant, not the number of agents. Split passes when their
-model assignments differ, unless a disclosed fallback makes them compatible.
+Follow the host's delegation authorization rules. Skill invocation authorizes
+subagents only if those rules permit it; where explicit user delegation is
+required, obtain it or use disclosed sequential self-review. Honor existing
+authorization without asking again.
+
+For each pass assign a unique `pass_id` and issue prefix, e.g. `corr-s3` and
+`corr-s3-F`. A child writes only `passes/<pass_id>.json`. Give it resolved paths
+for [review-protocol.md](references/review-protocol.md), its lane file and snapshot
+unit files (paste text only if it cannot read files), exact source revision,
+necessary dependencies and its disjoint scope. Withhold prior findings from
+correctness/adversarial passes; whole-paper lanes may receive unverified leads.
+Children return exact specialist obligations; the coordinator arranges fresh
+confirmation. They do not launch specialists unless explicitly assigned.
+
+Several compatible lanes may share a pass and coupled units may share an agent.
+Bound concurrency by host capacity and mathematical usefulness; five-dimensional
+coverage, rather than agent count, is the invariant. Apply model preferences
+through native controls, with fresh context when required. Allow context requests.
 
 Without delegation, perform separate sequential passes and label their
 provenance as self-review. Preserve raw returns and disclose failed, partial,
@@ -127,20 +130,12 @@ leave anything not settled conditional.
 
 ## Reconcile and report
 
-Read [final-referee.md](references/final-referee.md). Inspect every important
-raw finding independently against the full manuscript and specialist evidence.
-Verify its searchable quote, exact claim, hypotheses and dependency impact;
-search globally before alleging undefined notation or absent results. Reject
-false positives, merge duplicate defects, preserve distinct consequences, and
-recalibrate severity and confidence. Agreement between reviewers is not proof.
-
-Retain raw findings separately from final conclusions, with the disposition
-and reason for each in the reconciliation record. Write a synthesized report
-in the stable structure from [output-contract.md](references/output-contract.md),
-including exact coverage, unresolved leaves, and actual checks. Do not
-concatenate reviewer returns or turn exposition concerns into mathematical
-invalidity. A partial review can deliver a report but must say it is partial;
-absence of findings never certifies the whole paper or its novelty.
+Follow [final-referee.md](references/final-referee.md) and
+[output-contract.md](references/output-contract.md) for dispositions, concerns
+and the ordered report. Recheck raw findings against full source and specialist
+evidence; reviewer agreement is not proof. Keep raw returns separate from final
+conclusions, and disclose partial coverage. Absence of findings certifies neither
+whole-paper correctness nor novelty.
 
 For a revised manuscript, use the modest comparison/reuse rules in
 [preparation.md](references/preparation.md). Unchanged unit text is only a

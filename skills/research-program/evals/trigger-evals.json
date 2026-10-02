@@ -20,7 +20,7 @@
     "should_trigger": true
   },
   {
-    "query": "Write a retrospective closeout for the finished descent program, keeping its historical outcome separate from later proofs.",
+    "query": "Write a historical closeout for the finished descent program, keeping its historical outcome separate from later proofs.",
     "should_trigger": true
   },
   {
@@ -40,7 +40,7 @@
     "should_trigger": false
   },
   {
-    "query": "Migrate our flat research log into program indexes, with a retrospective closeout for each old program.",
+    "query": "Migrate our flat research log into program indexes, with a historical closeout for each old program.",
     "should_trigger": false
   },
   {
@@ -54,5 +54,13 @@
   {
     "query": "Continue the full research program in this read-only host and return a deferred packet for material findings.",
     "should_trigger": true
+  },
+  {
+    "query": "Make one bounded attempt at Lemma 3 via Mayer–Vietoris, then stop.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain why this spectral sequence degenerates.",
+    "should_trigger": false
   }
 ]

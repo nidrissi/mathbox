@@ -1,7 +1,7 @@
 ---
 name: manuscript-integrate
 description: >-
-  Integrate an already validated mathematical result, correction, citation, or referee response into an authoritative LaTeX manuscript while preserving hypotheses, evidence status, notation, and dependencies. Use only when the user explicitly requests manuscript integration. Do not use to invent a proof or to perform routine copyediting.
+  Integrate an already validated mathematical result, correction, citation, or response to referee comments into an authoritative LaTeX manuscript while preserving hypotheses, evidence status, notation, and dependencies. Use only when the user explicitly requests manuscript integration. Do not use to invent a proof or to perform routine copyediting.
 ---
 
 # Manuscript integration
@@ -14,21 +14,29 @@ supply mathematical validation or human review.
 1. Determine repository root, inspect the worktree, and read applicable
    instructions.
 2. Resolve the authoritative manuscript, proof source, current status/claims,
-   conventions, literature ledger, bibliography, and verification commands.
+   conventions, literature record, bibliography, and verification commands.
 3. Identify the exact validated result and its evidence/review status.
    If `.mathbox/` is present, use the available `research-state` workflow to
    check the current claim revision, artifact freshness and dependency closure.
    Read the proof itself; a generated `proved` label does not validate it.
-4. Stop if the source proof conflicts with current status or the target
-   manuscript is ambiguous.
-5. If a required external theorem has not been checked, pause integration and
-   route that source question through the available `literature-check` skill
-   (`mathbox:literature-check` in plugin installations). That workflow checks an
-   authorized project-local cache before fetching. Resume only after the exact
-   source implication is verified. If the skill is unavailable, perform the
-   exact-source check directly. If the source remains unavailable, keep that
-   result conditional rather than supplying validation here. Continue any
-   independent, already validated integration work the user authorized.
+4. To integrate a result as established, require current durable evidence for
+   its exact statement and scope: proved, externally proved, or computationally
+   verified within the stated range, with no active failed review. A label alone
+   is insufficient. Block promotion of stale, heuristic, unvalidated or gappy
+   input. Route correctness questions through the available `proof-audit` skill
+   (`mathbox:proof-audit` in plugin installations) and new arguments through the
+   available `research-attempt` skill (`mathbox:research-attempt` in plugin
+   installations); if unavailable, return the exact obligation. Do not repair
+   proofs here. Stop on source/status conflicts or an ambiguous manuscript.
+5. Route unchecked external inputs through the available `literature-check` skill
+   (`mathbox:literature-check` in plugin installations), or check the exact source
+   directly if unavailable. Do not integrate an unverified result unless the
+   user explicitly asks for a conditional statement; then carry the missing
+   hypothesis/dependency and conditional status into the manuscript. Otherwise
+   report integration blocked with status unchanged. Continue independent
+   validated work already authorized.
+6. Validated citation changes, corrections and removals need support for the
+   change, not positive proof evidence for a claim no longer asserted.
 
 ## Build the integration map
 
@@ -50,18 +58,16 @@ State:
 
 - Change the smallest coherent manuscript region.
 - Keep hypotheses adjacent to the claim and preserve every limitation.
-- Distinguish internal proof, external input, computation, heuristic, and open
-  question.
+- Preserve project evidence labels: proved, externally proved, computationally
+  verified in a stated range, conditional, heuristic and conjectural.
 - Do not make a publishable theorem depend accidentally on an optional stronger
   conjecture or unfinished route.
 - Preserve historical source files; correct the live manuscript and record the
   correction rather than rewriting chronology.
 - Update notation, theorem names/numbers, references, citations, introduction,
   comparison, and outlook only where the result requires it.
-- For a scope removal or restriction, search every project-declared dependent
-  view before claiming consistency. Update authorized dependents together; if a
-  protected or separately governed file cannot be changed, mark the exact
-  conflict in the live view and do not report the propagation complete.
+- If a protected dependent cannot be changed, mark the exact conflict and do
+  not report propagation complete.
 - Do not edit generated output or bibliography entries without checking the
   project's source convention.
 
@@ -70,19 +76,20 @@ load-bearing theorem changes.
 
 ## Synchronize durable state
 
-When the mathematical state changes, update the durable proof, claims/status,
-one standalone research record, and its compact history-index entry together.
-Use the project-designated paths, or `research/records/` and `RESEARCH_LOG.md`
-by default. Do not put route details in the index, rewrite indexed history, or
+When integration changes a claim's statement, scope or status (not its prose),
+and the project keeps research records, update its durable proof, claims/status,
+one standalone record and compact route-index entry together. Use designated
+paths, or `research/records/` and `RESEARCH_LOG.md` when records already exist. Do not put route details in the index, rewrite indexed history, or
 log routine prose or formatting. Keep any specialist or human-review obligation
 open until it has actually occurred.
 
 ## Verify
 
-1. Perform a conservative pass with the `mathbox:proofread-math` plugin skill
-   over the changed TeX and needed context.
-2. Run the documented targeted mathematical verifier.
-3. Run the appropriate out-of-tree or canonical manuscript build.
+1. Use the available `proofread-math` skill (`mathbox:proofread-math` in plugin
+   installations) over changed TeX and context, or apply conservative proofreading
+   directly if unavailable.
+2. Run the targeted mathematical verifier when documented; otherwise report not run.
+3. Run the documented manuscript build; otherwise report not run.
 4. Inspect undefined references/citations, warnings in the changed region,
    theorem numbering, bibliography changes, and `git diff --check`.
 5. Search for the superseded statement, scope and terminology across declared
@@ -94,4 +101,5 @@ open until it has actually occurred.
 
 Report the integrated result, files changed, source evidence, claim/status
 changes, commands and warnings, unresolved mathematical or manuscript risk, and
-remaining human review.
+remaining human review. A clean build or proofreading pass does not validate
+mathematical correctness.

@@ -1,6 +1,12 @@
 [
-  {"query": "Proofread this paper.", "should_trigger": true},
-  {"query": "Referee this entire manuscript.", "should_trigger": false},
+  {
+    "query": "Proofread this paper.",
+    "should_trigger": true
+  },
+  {
+    "query": "Referee this entire manuscript.",
+    "should_trigger": false
+  },
   {
     "query": "Proofread the new proof in paper.tex conservatively.",
     "should_trigger": true
@@ -43,6 +49,10 @@
   },
   {
     "query": "Audit the correctness of the main theorem and find gaps.",
+    "should_trigger": false
+  },
+  {
+    "query": "Integrate the validated Lemma 4.1 into paper.tex and update its cross-references.",
     "should_trigger": false
   }
 ]

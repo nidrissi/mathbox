@@ -11,68 +11,90 @@ manifests have their own schema versions, independent of the plugin version.
 
 ### Added
 
-- `referee`: whole-manuscript assessment across correctness, adversarial
-  cases, exposition, notation and claim calibration, adapting Math Scout's
-  shared severity, confidence and exact-evidence discipline. Native agents
-  can divide work by mathematical dependencies; final synthesis rechecks raw
-  findings against the full source, dismisses false positives and merges
-  duplicates. Historical or informal reviewer suspicions retain their original
-  provenance as prior leads until checked. Focused proof, source and computation
-  obligations use available Mathbox specialists. Standalone installations
-  support direct checks and honest sequential self-review without Math Scout
-  or provider SDKs. Review artifacts go to the project's designated review area
-  or a new `referee/<run>/` directory, never under `.mathbox/`, so refereeing
-  never creates a ledger and an existing ledger can pin the report. ([#15])
-- `referee`: standard-library LaTeX preparation with confined input resolution,
-  comment/literal masking, section and context extraction, original source
-  locators and stable hashes. Inputs resolve from the main file's directory as
-  in TeX, and reading stops at `\endinput` and `\end{document}`; CR line ends,
-  brace-delimited `\lstinline` and `alltt` are handled, and a total
-  input-expansion limit bounds repeated inputs. New immutable snapshots retain
-  skipped material; optional prior-manifest comparison identifies unchanged
-  text candidates, including across a renamed main file, without certifying
-  review freshness or requiring a research-state ledger. ([#15])
-- Synthetic manuscript behavioral fixtures and preparation regressions for
-  actual errors, resolved false positives, external/computational leaves and
-  incremental coverage. See the [migration map](referee-migration.md) and
-  [validation evidence](referee-validation.md). ([#15])
+- `referee`: whole-manuscript assessment across correctness, adversarial cases,
+  exposition, notation and claim calibration. Native passes review dependency
+  units; final synthesis checks raw findings against the full source, dismisses
+  false positives and merges duplicates. Prior leads retain original provenance.
+  Focused obligations use available specialists, with direct fallbacks for
+  standalone installations. Review artifacts live outside `.mathbox/`; no ledger,
+  Math Scout runtime or provider SDK is required. ([#15])
+- `referee`: standard-library LaTeX preparation with confined input lookup,
+  comment/literal masking, source locators and immutable hashed snapshots.
+  Reading stops when TeX stops; CR line endings, inline literals, nested `alltt`
+  state and repeated-input limits are supported. Symlinked entry points retain
+  their input lookup directory while canonical paths enforce confinement;
+  out-of-bound first candidates fail rather than falling back. Comparison
+  identifies unchanged text candidates across renamed main files without
+  certifying freshness. ([#15])
+- `referee`: role-specific user/project model and reasoning assignments through
+  native controls, including final reconciliation, with disclosed alternatives
+  or sequential self-review. Requested and confirmed execution settings remain
+  distinct, including unknown historical identities. ([#15])
+- Synthetic manuscript fixtures, preparation regressions and raw trial records;
+  see [referee validation](referee-validation.md). ([#15])
+- Suite boundary cases for iterator coverage, repair/integration safeguards,
+  continuation persistence, delegation scope and explicit-only routing.
+- Bounded suite-review evidence for catalog routing, mathematical safeguards,
+  continuation persistence, actual delegated packages and an explicit live Codex
+  program; [validation scope](../evals/results/suite-review-2026-10-02/README.md)
+  distinguishes these checks from the unexecuted full behavioral suite.
 
 ### Changed
 
-- `referee` applies role-specific user/project model and reasoning preferences
-  through each host's native delegation controls, including final reconciliation.
-  Reviews continue with disclosed alternatives or sequential self-review when
-  settings or delegation are unavailable. New coverage and reconciliation records
-  distinguish requested settings from confirmed execution settings; unknown and
-  historical model identities remain unknown. ([#15])
-- `proof-audit` handles focused claims and delegated mathematical obligations;
-  whole-manuscript referee reports route to `referee`. Proofreading-only
-  requests retain the `proofread-math` boundary. ([#15])
-- `research-init` treats `referee` as a canonical Mathbox skill: the repository
-  inspector reports a project-local `referee` as an override, and setup never
-  synthesizes a local copy. ([#15])
-- Package validation checks portable resource links in nested reference
-  directories, including the new internal reviewer lanes. ([#15])
+- Proof audits handle focused obligations and cannot close a gap with a new
+  unaudited argument. Whole-paper reports use `referee`; proofreading defaults
+  to review-only when corrections are not requested.
+- Manuscript integration requires current durable support for the exact scope,
+  with no active failed review. Explicit conditional statements retain their
+  unresolved inputs; validated removals and citation corrections require support
+  for the change rather than a proof of a claim no longer asserted.
+- Computation audits explicitly compare claimed populations with actual iterators,
+  define read-only/design/execution scope, and classify failed or stale provenance
+  separately from mathematical counterexamples. New runs prefer the bounded
+  runner; outside-runner records use a fillable version-2 manifest.
+- Source checks separate authentication, extraction and project application,
+  define implication verdicts, and record positive ledger evidence only for a
+  checked implication. Retention needs authorization; full cached text stays
+  outside tracked reports and deferred packets.
+- Program closeouts retain every open route's untried/deferred continuation and
+  resumption conditions. Delegated attempts return proposed shared-state updates
+  to the coordinator, which writes them or emits one deferred packet. Attempt
+  outcomes, evidence labels and route dispositions remain separate.
+- Skill routing distinguishes existing audits, single attacks, sustained programs,
+  whole-manuscript refereeing, setup, retrospectives and requested ledger work.
+  Ledger existence alone no longer triggers research-state. README and routing
+  evaluation guidance distinguish task applicability from host invocation policy.
+- Conditional execution and history-migration detail moves to linked references;
+  research-init and research-state entry points are smaller, referee model guidance
+  loads only for prescribed settings, and children receive the shared return schema.
+- Deferred persistence is called a deferred packet; its reference is now
+  `references/deferred-packet.md`. The initializer's Claude asset is
+  `CLAUDE.template.md`, and project templates declare route indexes and checkpoint
+  revisions explicitly.
+- Package checks enforce portable frontmatter and description limits, trigger
+  shapes, README/catalog invocation consistency, aligned manifest descriptions
+  and the current changelog release. Refereeing is included in package keywords.
 
 ### Fixed
 
-- Corrected the suite review plan recommendations for
-  delegation authorization, manuscript validation, ill-typed target status,
-  continuation checkpoints and new computation commands, with acceptance cases
-  for each boundary.
-- `referee`: preparation stops lexical scanning when TeX stops reading, so
-  unfinished draft literals or arguments after `\endinput` or
-  `\end{document}` cannot reject a valid manuscript. A document-ending input
-  also prevents scanning ignored caller text. ([#15])
-- `referee`: `alltt` state flows through nested inputs and back to callers;
-  cached scans distinguish incoming states, so inputs after literal percent
-  signs are included and changes to those files invalidate the snapshot. ([#15])
-- `referee`: a symlinked main manuscript retains the supplied entry point's
-  directory for input lookup while canonical paths still enforce confinement
-  and identify source files. ([#15])
-- `referee`: input lookup fails when an existing file TeX would read first,
-  such as a `name.tex` symlink, lies outside the project boundary, instead of
-  silently preparing a later in-tree candidate like extensionless `name`. ([#15])
+- New ledger writes reject unknown payload fields and report allowed keys while
+  existing journals replay unchanged. Documentation now names reconciliation
+  `decision`, shared execution bases and generated review labels; revalidated
+  evidence supersedes old records instead of retracting valid history.
+- Manifest validation displays actual run status; runner help documents the
+  default 60-second and 4-MiB bounds. A valid timeout record is not success.
+- Literature cache matches for unversioned arXiv identifiers remain discovery
+  candidates. Ingest requires identifiers, validates ISO dates and rejects version
+  conflicts; text search normalizes whitespace, with misses remaining inconclusive.
+- Referee passes use unique IDs, disjoint return files and explicit coverage and
+  concern fields. Snapshot manifests expose portable per-file contract hashes for
+  local reuse; historical manifests without them remain supported conservatively.
+- Repository inspection recognizes filled charter/status/claims/verification/route
+  path maps, includes declarations and cache alternatives in brief views and full
+  semantic classifications in complete views, and ignores fenced history examples.
+- Retrospective reconciliation preserves narratives without a durable home or with
+  active pin conflicts, follows hierarchical history links, and reports omitted
+  issue counts and the strongest currently supported statement.
 
 ## [3.2.0] — 2026-09-24 — Deferred handoff ingestion
 
@@ -87,7 +109,7 @@ manifests have their own schema versions, independent of the plugin version.
   section of `.mathbox/config.json` allows. Artifacts are hashed during staging,
   and proposals go through ordinary batch validation. The local command
   generates event IDs, hashes and timestamps; the packet never supplies them.
-  See the [deferred handoff contract](../skills/research-state/references/deferred-handoff.md).
+  See the [deferred packet contract](../skills/research-state/references/deferred-packet.md).
   ([#12])
 - `research-program`, `research-attempt`, `proof-audit` and `literature-check`
   emit a deferred packet when persistence is authorized but the host cannot

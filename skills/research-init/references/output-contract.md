@@ -47,7 +47,7 @@
   closeouts and route indexes, without repeating all route lines at the top.
 - Program closeouts preserve the original target, strongest surviving result,
   first failed steps, evidence/review conditions, and next decision with links.
-- Retrospective closeouts distinguish a provenance-labeled historical cutoff
+- Historical closeouts distinguish a provenance-labeled historical cutoff
   from the later assessment checkpoint; later evidence is not backdated.
 - Standalone records have a title, date, normalized filename, outcome/evidence
   label, decisive evidence, and next unresolved question.
@@ -101,14 +101,6 @@
 - Deterministic rules have a script/test/CI/hook plan where appropriate.
 - Canonical mathematical benchmarks are named.
 - Final report lists checks not run.
-- Inspector output distinguishes clean Git from unavailable metadata, inventories
-  computation manifests separately, reports semantic role aliases and potential
-  duplicate dashboards/handoffs, and conservatively identifies broken relative
-  links/path-shaped code spans. Its brief report counts omitted candidates,
-  keeps log and manifest classifications and skill-location findings, and
-  separates historical-path examples from current-path examples; route
-  records count as current. Dated
-  checkpoint-marker counts remain tentative and never decide claim status.
 - Project-specific size or repeated-checkpoint triggers prompt compaction review
   but never license automatic truncation of current mathematical conditions.
 

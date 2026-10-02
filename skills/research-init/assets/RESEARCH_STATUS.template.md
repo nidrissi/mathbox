@@ -1,6 +1,6 @@
 # Research status
 
-Last reconciled: {{DATE}}
+Last reconciled: {{DATE}} at {{GIT_REVISION_OR_LEDGER_HEAD}}
 
 This file describes current state. Find earlier checkpoints through the
 research-history entry point, program closeouts, and linked records. Do not

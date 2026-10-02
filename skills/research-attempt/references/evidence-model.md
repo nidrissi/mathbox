@@ -13,6 +13,16 @@ Recommended labels:
 - **refuted** — a valid counterexample is recorded;
 - **superseded** — historical statement replaced by an explicit correction.
 
+An attempt outcome is not an evidence label. Proved as written maps to proved;
+externally proved maps to externally proved; a restricted proof supports only
+its restricted statement; finite verification supports only its assertion/range;
+conditional, heuristic and refuted outcomes support the corresponding statement.
+An incomplete/inconclusive or ill-typed construction supplies no promotion.
+If it reveals no defect in independently supported target evidence, leave that
+label intact. If the target or existing support is defective, report the affected
+contract, evidence and dependents, audit it and correct authorized status;
+an old label is then not reliable. Superseded labels describe historical claims.
+
 A claim is promoted only when its durable evidence, dependencies, and review
 status are linked. Computation never becomes proof without an argument that the
 finite assertion decides the mathematical claim.

@@ -1,22 +1,98 @@
 [
-  {"query": "Referee this paper.", "should_trigger": true},
-  {"query": "Referee this multi-file LaTeX paper through its symlinked entry point, including input files inside alltt.", "should_trigger": true},
-  {"query": "Review this manuscript for mathematical correctness.", "should_trigger": true},
-  {"query": "Give me a referee report on the attached mathematical manuscript.", "should_trigger": true},
-  {"query": "Stress-test this whole paper.", "should_trigger": true},
-  {"query": "Audit this manuscript section by section and reconcile the results.", "should_trigger": true},
-  {"query": "Referee this entire manuscript, including a mechanical proofreading component.", "should_trigger": true},
-  {"query": "Referee this paper using the project-prescribed models for correctness, adversarial review and final reconciliation.", "should_trigger": true},
-  {"query": "Give me a whole-manuscript referee report in this host without model selection; disclose any fallback from my preferred review models.", "should_trigger": true},
-  {"query": "Referee this manuscript in a harness without subagents using separate sequential review passes.", "should_trigger": true},
-  {"query": "Check the proof of Lemma 4.2.", "should_trigger": false},
-  {"query": "Audit the main theorem and isolate its first unproved implication.", "should_trigger": false},
-  {"query": "Proofread this paper.", "should_trigger": false},
-  {"query": "Does citation [17] prove this?", "should_trigger": false},
-  {"query": "Audit the enumeration supporting Proposition 2.", "should_trigger": false},
-  {"query": "Try a new proof of this conjecture.", "should_trigger": false},
-  {"query": "Pursue this research program until we have a proof or counterexample.", "should_trigger": false},
-  {"query": "Review our research status and recommend what to attack next.", "should_trigger": false},
-  {"query": "Configure my coding harness's default subagent model.", "should_trigger": false},
-  {"query": "Explain how model selection works in this harness.", "should_trigger": false}
+  {
+    "query": "Referee this paper.",
+    "should_trigger": true
+  },
+  {
+    "query": "Give a referee report covering the proofs and all sections of this paper.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this manuscript for mathematical correctness.",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me a referee report on the attached mathematical manuscript.",
+    "should_trigger": true
+  },
+  {
+    "query": "Stress-test this whole paper.",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit this manuscript section by section and reconcile the results.",
+    "should_trigger": true
+  },
+  {
+    "query": "Referee this entire manuscript, including a mechanical proofreading component.",
+    "should_trigger": true
+  },
+  {
+    "query": "Assess the whole manuscript for correctness, exposition and claim scope.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review every section of the manuscript and synthesize the major mathematical concerns.",
+    "should_trigger": true
+  },
+  {
+    "query": "Referee this manuscript in a harness without subagents using separate sequential review passes.",
+    "should_trigger": true
+  },
+  {
+    "query": "Check the proof of Lemma 4.2.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit the main theorem and isolate its first unproved implication.",
+    "should_trigger": false
+  },
+  {
+    "query": "Proofread this paper.",
+    "should_trigger": false
+  },
+  {
+    "query": "Does citation [17] prove this?",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit the enumeration supporting Proposition 2.",
+    "should_trigger": false
+  },
+  {
+    "query": "Try a new proof of this conjecture.",
+    "should_trigger": false
+  },
+  {
+    "query": "Pursue this research program until we have a proof or counterexample.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review our research status and recommend what to attack next.",
+    "should_trigger": false
+  },
+  {
+    "query": "Configure my coding harness's default subagent model.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how model selection works in this harness.",
+    "should_trigger": false
+  },
+  {
+    "query": "Referee the proof of Lemma 3.2 only.",
+    "should_trigger": false
+  },
+  {
+    "query": "Check this paper's notation consistency and cross-references.",
+    "should_trigger": false
+  },
+  {
+    "query": "Incorporate our responses to the referee's comments into paper.tex.",
+    "should_trigger": false
+  },
+  {
+    "query": "Do a final pass over the whole paper for typos, LaTeX errors and broken references.",
+    "should_trigger": false
+  }
 ]

@@ -1,0 +1,32 @@
+{
+  "routing": {
+    "unique_queries": 158,
+    "per_skill_cases": 174,
+    "task_fit_conflicts": 0,
+    "explicit_only_positive_applicability_cases": 27,
+    "explicit_only_positive_codex_selections": 0,
+    "frozen_decisions_sha256": "db39cb7cbb723d47a9d158447092048bc6f5a3ee3ab6a6c629a1ad0f2670e9dd",
+    "description_changes_during_trial": 0,
+    "implicit_invocation_policy_changes_during_trial": 0
+  },
+  "referee": {
+    "original": "Five sequential self-review passes; no findings. All three source units and preamble covered. No agents launched.",
+    "prior_lead_variant": "Historical tau suspicion preserved and dismissed against paper.tex:10 before uses at lines 14 and 18. Other lanes explicitly outside focused variant.",
+    "child_format": "Two sequential simulated child roles, corr-identity and notation-global, with neutral path-based assignments and assigned IDs. No agent launches; no independence claim. Other three lanes not reviewed."
+  },
+  "preservation": {
+    "repository_files_edited": [],
+    "all_manuscript_copies_byte_equal_to_fixture": true,
+    "source_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748"
+  },
+  "limits": [
+    "Zero conflicts applies to supplied per-skill binary labels, not an exhaustive full-suite gold routing matrix.",
+    "Current Codex explicit-only selection interprets explicit skill naming as required; query 103 explicitly names the plugin but not the skill, and no native Codex routing harness was exercised.",
+    "Both referee host conditions are explicit simulations, not native authorization-enforcement tests.",
+    "All mathematical review is sequential self-review; a separate reviewer must judge derivations and behavior.",
+    "All issue lists are empty, so nonempty issue-field calibration, duplicate merging and serious specialist confirmation are untested.",
+    "TeX compilation, external source verification and computational specialist checks were not needed for this source and were not run.",
+    "Concurrent edits changed some skill bodies and referee preparation.md. Initial manifests preserve the contracts read/prepared; current descriptions and implicit invocation policies are unchanged. Final hashes are recorded separately without refreshing old evidence.",
+    "Repository consistency/eval suites were not run because this is a read-only raw behavioral trial, not a repository change."
+  ]
+}

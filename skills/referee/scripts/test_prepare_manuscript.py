@@ -15,6 +15,26 @@ def paper(body, preamble=""):
 
 
 class PreparationTests(unittest.TestCase):
+    def test_contract_file_revisions_are_portable_and_compare_individually(self):
+        text = paper("\\section{Main}\nbody\n")
+        old, previous = self.snapshot("old", text)
+        contracts = old["contract_files"]
+        self.assertIn("references/reviewers/correctness.md", contracts)
+        self.assertTrue(all(not Path(name).is_absolute() for name in contracts))
+        changed = dict(contracts)
+        changed["references/reviewers/correctness.md"] = "0" * 64
+        with patch.object(prep, "contract_files", return_value=changed), patch.object(prep, "contract_digest", return_value="1" * 64):
+            new, _, _ = self.prepare(text, previous)
+        self.assertEqual(new["comparison"]["contract_files_changed"], ["references/reviewers/correctness.md"])
+        old.pop("contract_files")
+        previous.write_text(json.dumps(old))
+        legacy, _, _ = self.prepare(text, previous)
+        self.assertIsNone(legacy["comparison"]["contract_files_changed"])
+        old["contract_files"] = {"../../outside": "0" * 64}
+        previous.write_text(json.dumps(old))
+        with self.assertRaisesRegex(prep.PreparationError, "contract_files"):
+            self.prepare(text, previous)
+
     def setUp(self):
         self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

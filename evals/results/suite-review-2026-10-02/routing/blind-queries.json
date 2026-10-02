@@ -1,0 +1,634 @@
+[
+  {
+    "id": 1,
+    "query": "Audit the Sage calculation supporting Claim C7."
+  },
+  {
+    "id": 2,
+    "query": "Run the finite-field experiment and state exactly what it proves."
+  },
+  {
+    "id": 3,
+    "query": "Run this exact checker with reproducible input and result hashes plus memory and CPU caps."
+  },
+  {
+    "id": 4,
+    "query": "Check whether the paper states its recurrence over integers."
+  },
+  {
+    "id": 5,
+    "query": "Explain what a Gr\u00f6bner basis is."
+  },
+  {
+    "id": 6,
+    "query": "Refactor this unrelated CLI."
+  },
+  {
+    "id": 7,
+    "query": "Audit the enumeration supporting Proposition 2."
+  },
+  {
+    "id": 8,
+    "query": "Design a finite-field rank computation for Conjecture 2 up to n=12 and say what each outcome implies."
+  },
+  {
+    "id": 9,
+    "query": "Is this floating-point eigenvalue check enough for Lemma 4?"
+  },
+  {
+    "id": 10,
+    "query": "Find gaps in Theorem 2's proof."
+  },
+  {
+    "id": 11,
+    "query": "Show stale evidence in the .mathbox ledger."
+  },
+  {
+    "id": 12,
+    "query": "Referee this whole paper, including its computational appendix."
+  },
+  {
+    "id": 13,
+    "query": "Attack the conjecture by searching for a counterexample up to n = 20 and record the route."
+  },
+  {
+    "id": 14,
+    "query": "Verify that Theorem 4.3 of this paper has the hypotheses we need."
+  },
+  {
+    "id": 15,
+    "query": "Search whether this result is known and bound the novelty claim."
+  },
+  {
+    "id": 16,
+    "query": "Cache this authenticated arXiv PDF so later source checks can reuse it."
+  },
+  {
+    "id": 17,
+    "query": "Prove the lemma directly without literature."
+  },
+  {
+    "id": 18,
+    "query": "Format this BibTeX entry."
+  },
+  {
+    "id": 19,
+    "query": "Verify the exact source theorem in a read-only web host and return an authorized deferred source evidence record."
+  },
+  {
+    "id": 20,
+    "query": "Does citation [17] prove this?"
+  },
+  {
+    "id": 21,
+    "query": "Check whether Theorem 3.2 of the cited paper, in our sign conventions, gives the statement we use in Lemma 5."
+  },
+  {
+    "id": 22,
+    "query": "Who first proved this result, and is our attribution in the introduction accurate?"
+  },
+  {
+    "id": 23,
+    "query": "Attack Lemma 5 by applying Theorem 2.1 of the cited paper after translating its notation, and record the route."
+  },
+  {
+    "id": 24,
+    "query": "Check that every \\cite key in paper.tex resolves."
+  },
+  {
+    "id": 25,
+    "query": "Referee this paper."
+  },
+  {
+    "id": 26,
+    "query": "Audit the proof of Lemma 4 for gaps."
+  },
+  {
+    "id": 27,
+    "query": "Integrate the validated lemma into article.tex."
+  },
+  {
+    "id": 28,
+    "query": "Update the theorem and introduction after the proof correction."
+  },
+  {
+    "id": 29,
+    "query": "Verify the exact hypotheses of this cited theorem."
+  },
+  {
+    "id": 30,
+    "query": "Draft a new proof for the missing lemma."
+  },
+  {
+    "id": 31,
+    "query": "Fix typos in the introduction."
+  },
+  {
+    "id": 32,
+    "query": "Incorporate our responses to the referee's comments into paper.tex."
+  },
+  {
+    "id": 33,
+    "query": "Lemma 3 is now proved."
+  },
+  {
+    "id": 34,
+    "query": "Check whether Theorem 2 in paper.tex is correct."
+  },
+  {
+    "id": 35,
+    "query": "Referee this manuscript."
+  },
+  {
+    "id": 36,
+    "query": "Check whether the corrected lemma is right before we add it to the paper."
+  },
+  {
+    "id": 37,
+    "query": "Check the proof of Lemma 4.2."
+  },
+  {
+    "id": 38,
+    "query": "Referee this entire manuscript."
+  },
+  {
+    "id": 39,
+    "query": "Audit this manuscript section by section and reconcile the results."
+  },
+  {
+    "id": 40,
+    "query": "Audit this proof and isolate the first gap."
+  },
+  {
+    "id": 41,
+    "query": "Are the signs and variance in Proposition 3.2 correct?"
+  },
+  {
+    "id": 42,
+    "query": "Look up what the cited paper proves over integral coefficients."
+  },
+  {
+    "id": 43,
+    "query": "Find a new proof of the theorem from scratch."
+  },
+  {
+    "id": 44,
+    "query": "Copyedit this theorem statement."
+  },
+  {
+    "id": 45,
+    "query": "Audit this proof in a read-only host and prepare an authorized deferred review record if the audit changes the ledger state."
+  },
+  {
+    "id": 46,
+    "query": "Referee only the proof of Proposition 3.1."
+  },
+  {
+    "id": 47,
+    "query": "Stress-test this whole paper."
+  },
+  {
+    "id": 48,
+    "query": "Review this manuscript for mathematical correctness."
+  },
+  {
+    "id": 49,
+    "query": "Proofread this paper."
+  },
+  {
+    "id": 50,
+    "query": "Audit the Sage enumeration supporting Claim C7."
+  },
+  {
+    "id": 51,
+    "query": "Proofread the new proof in paper.tex conservatively."
+  },
+  {
+    "id": 52,
+    "query": "Check these equations for dropped indices and LaTeX mistakes."
+  },
+  {
+    "id": 53,
+    "query": "Do a final copyedit of the changed theorem hunks."
+  },
+  {
+    "id": 54,
+    "query": "Review this proof as a copyeditor; flag logical concerns instead of fixing them."
+  },
+  {
+    "id": 55,
+    "query": "Prove that every finite subgroup of a field multiplicative group is cyclic."
+  },
+  {
+    "id": 56,
+    "query": "Write a new LaTeX proof of the snake lemma from scratch."
+  },
+  {
+    "id": 57,
+    "query": "Convert these handwritten notes into a polished chapter."
+  },
+  {
+    "id": 58,
+    "query": "Shorten this proof by replacing the spectral-sequence argument."
+  },
+  {
+    "id": 59,
+    "query": "Search the literature to see whether this theorem is known."
+  },
+  {
+    "id": 60,
+    "query": "Confirm the cited paper proves this over integers."
+  },
+  {
+    "id": 61,
+    "query": "Audit the correctness of the main theorem and find gaps."
+  },
+  {
+    "id": 62,
+    "query": "Integrate the validated Lemma 4.1 into paper.tex and update its cross-references."
+  },
+  {
+    "id": 63,
+    "query": "Give a referee report covering the proofs and all sections of this paper."
+  },
+  {
+    "id": 64,
+    "query": "Give me a referee report on the attached mathematical manuscript."
+  },
+  {
+    "id": 65,
+    "query": "Referee this entire manuscript, including a mechanical proofreading component."
+  },
+  {
+    "id": 66,
+    "query": "Assess the whole manuscript for correctness, exposition and claim scope."
+  },
+  {
+    "id": 67,
+    "query": "Review every section of the manuscript and synthesize the major mathematical concerns."
+  },
+  {
+    "id": 68,
+    "query": "Referee this manuscript in a harness without subagents using separate sequential review passes."
+  },
+  {
+    "id": 69,
+    "query": "Audit the main theorem and isolate its first unproved implication."
+  },
+  {
+    "id": 70,
+    "query": "Try a new proof of this conjecture."
+  },
+  {
+    "id": 71,
+    "query": "Pursue this research program until we have a proof or counterexample."
+  },
+  {
+    "id": 72,
+    "query": "Review our research status and recommend what to attack next."
+  },
+  {
+    "id": 73,
+    "query": "Configure my coding harness's default subagent model."
+  },
+  {
+    "id": 74,
+    "query": "Explain how model selection works in this harness."
+  },
+  {
+    "id": 75,
+    "query": "Referee the proof of Lemma 3.2 only."
+  },
+  {
+    "id": 76,
+    "query": "Check this paper's notation consistency and cross-references."
+  },
+  {
+    "id": 77,
+    "query": "Do a final pass over the whole paper for typos, LaTeX errors and broken references."
+  },
+  {
+    "id": 78,
+    "query": "Attack the next unresolved lemma and record a bounded route."
+  },
+  {
+    "id": 79,
+    "query": "Try to find the smallest counterexample to this conjecture."
+  },
+  {
+    "id": 80,
+    "query": "Test one bounded route against the current blocker in this research repository."
+  },
+  {
+    "id": 81,
+    "query": "Run one bounded proof route in a program with a separate phase-level route index."
+  },
+  {
+    "id": 82,
+    "query": "Look up the exact hypotheses of Theorem 4.3 in the cited paper."
+  },
+  {
+    "id": 83,
+    "query": "Explain the definition of a spectral sequence."
+  },
+  {
+    "id": 84,
+    "query": "Fix the grammar in this paragraph."
+  },
+  {
+    "id": 85,
+    "query": "Pursue the conjecture across many approaches and keep trying after failed routes."
+  },
+  {
+    "id": 86,
+    "query": "Migrate our entire flat research-history index into a program-level hierarchy."
+  },
+  {
+    "id": 87,
+    "query": "Try one bounded construction and hand any unfinished continuation back to the program."
+  },
+  {
+    "id": 88,
+    "query": "Keep pursuing the program across its untried continuations after an inconclusive attempt."
+  },
+  {
+    "id": 89,
+    "query": "In this read-only web host, pursue one bounded lemma route and provide a deferred handoff for any ledger-worthy result."
+  },
+  {
+    "id": 90,
+    "query": "Try to prove the comparison map is injective in degree 0 using the transfer."
+  },
+  {
+    "id": 91,
+    "query": "Check whether the proof of Lemma 2 has a gap."
+  },
+  {
+    "id": 92,
+    "query": "Audit the Sage script supporting Claim C7 and record its provenance."
+  },
+  {
+    "id": 93,
+    "query": "Rerun the existing verification script unchanged."
+  },
+  {
+    "id": 94,
+    "query": "Record this route result in the .mathbox ledger."
+  },
+  {
+    "id": 95,
+    "query": "Close out phase B."
+  },
+  {
+    "id": 96,
+    "query": "Set up this repository for AI-assisted mathematical research."
+  },
+  {
+    "id": 97,
+    "query": "Refresh AGENTS.md and the research workflow architecture."
+  },
+  {
+    "id": 98,
+    "query": "Rework this project's oversized AGENTS.md and live status into a compact research repository setup."
+  },
+  {
+    "id": 99,
+    "query": "Plan a safe migration of this research repository's oversized status, agent instructions, and existing ledger without editing yet."
+  },
+  {
+    "id": 100,
+    "query": "Migrate our existing mathematical research handoff into one current dashboard while preserving dated history."
+  },
+  {
+    "id": 101,
+    "query": "Retrofit our long flat research log into a compact program index and linked route indexes."
+  },
+  {
+    "id": 102,
+    "query": "Migrate our flat research log's old routes into program indexes with historical closeouts, keeping unassigned routes discoverable."
+  },
+  {
+    "id": 103,
+    "query": "Use the mathbox plugin to initialize this mathematical research repository."
+  },
+  {
+    "id": 104,
+    "query": "Set up a Git-ignored local literature cache for this research repository."
+  },
+  {
+    "id": 105,
+    "query": "Verify whether this cited theorem has the hypotheses we need."
+  },
+  {
+    "id": 106,
+    "query": "Work on the main theorem."
+  },
+  {
+    "id": 107,
+    "query": "Record the outcome of this single bounded research route in its existing phase index."
+  },
+  {
+    "id": 108,
+    "query": "Summarize what changed in the current research status, without editing the repository."
+  },
+  {
+    "id": 109,
+    "query": "Run the tests."
+  },
+  {
+    "id": 110,
+    "query": "Close out the finished descent program and compact its live status, without restructuring the history index."
+  },
+  {
+    "id": 111,
+    "query": "Compact the live dashboard and move dated checkpoints into records."
+  },
+  {
+    "id": 112,
+    "query": "Initialize a .mathbox ledger for this project and register Claims A and B."
+  },
+  {
+    "id": 113,
+    "query": "What should I work on next in this project?"
+  },
+  {
+    "id": 114,
+    "query": "Pursue the full conjecture by trying three approaches; keep going after a route fails."
+  },
+  {
+    "id": 115,
+    "query": "Continue the investigation until we have a proof or a counterexample."
+  },
+  {
+    "id": 116,
+    "query": "Try several alternative mechanisms for these two remaining proof obligations and keep going after failures."
+  },
+  {
+    "id": 117,
+    "query": "Continue this research program across the remaining routes and maintain a concise current handoff."
+  },
+  {
+    "id": 118,
+    "query": "Close out this completed research phase and compact its status and route history without starting another proof attempt."
+  },
+  {
+    "id": 119,
+    "query": "Write a historical closeout for the finished descent program, keeping its historical outcome separate from later proofs."
+  },
+  {
+    "id": 120,
+    "query": "Audit the proof of Lemma 2."
+  },
+  {
+    "id": 121,
+    "query": "Proofread this paragraph."
+  },
+  {
+    "id": 122,
+    "query": "Review our project and suggest what to try next, without doing research."
+  },
+  {
+    "id": 123,
+    "query": "Record the failed route and its obstruction in the ledger."
+  },
+  {
+    "id": 124,
+    "query": "Migrate our flat research log into program indexes, with a historical closeout for each old program."
+  },
+  {
+    "id": 125,
+    "query": "Continue the research program after an inconclusive attempt; another proposed continuation remains untried."
+  },
+  {
+    "id": 126,
+    "query": "Only record this inconclusive run and its remaining continuation in the existing .mathbox ledger."
+  },
+  {
+    "id": 127,
+    "query": "Continue the full research program in this read-only host and return a deferred packet for material findings."
+  },
+  {
+    "id": 128,
+    "query": "Make one bounded attempt at Lemma 3 via Mayer\u2013Vietoris, then stop."
+  },
+  {
+    "id": 129,
+    "query": "Explain why this spectral sequence degenerates."
+  },
+  {
+    "id": 130,
+    "query": "Review the whole project and tell me the best next three routes."
+  },
+  {
+    "id": 131,
+    "query": "Prepare a weekly research handoff from status, claims, and log."
+  },
+  {
+    "id": 132,
+    "query": "Review this bloated research dashboard and prioritize the next mathematical routes without editing it."
+  },
+  {
+    "id": 133,
+    "query": "Search the literature for the exact version of this theorem."
+  },
+  {
+    "id": 134,
+    "query": "Prove the current lemma."
+  },
+  {
+    "id": 135,
+    "query": "Compile the paper."
+  },
+  {
+    "id": 136,
+    "query": "Generate the dependency-aware handoff from the .mathbox event ledger."
+  },
+  {
+    "id": 137,
+    "query": "Write a historical closeout for the finished descent program."
+  },
+  {
+    "id": 138,
+    "query": "Migrate the flat research log into program indexes."
+  },
+  {
+    "id": 139,
+    "query": "This project uses .mathbox. Review the whole project and recommend the next three routes."
+  },
+  {
+    "id": 140,
+    "query": "Review this manuscript and write a referee report."
+  },
+  {
+    "id": 141,
+    "query": "Check the .mathbox ledger and tell me which proofs are stale."
+  },
+  {
+    "id": 142,
+    "query": "Set up executable evidence and dependency tracking for this research project."
+  },
+  {
+    "id": 143,
+    "query": "Reconcile these delayed parallel route runs against their shared base revision in the .mathbox ledger."
+  },
+  {
+    "id": 144,
+    "query": "Generate a goal-scoped ledger handoff with active review conditions and route prerequisites."
+  },
+  {
+    "id": 145,
+    "query": "Batch these claim and evidence proposals into the .mathbox journal, then show which claims pin this manuscript file."
+  },
+  {
+    "id": 146,
+    "query": "Explain the definition of a chain complex."
+  },
+  {
+    "id": 147,
+    "query": "Audit this proof without creating project files."
+  },
+  {
+    "id": 148,
+    "query": "Prepare a weekly research handoff from the status file, claims and log."
+  },
+  {
+    "id": 149,
+    "query": "Pursue this conjecture through several approaches until one works."
+  },
+  {
+    "id": 150,
+    "query": "Reconcile this inconclusive run in .mathbox and preserve its untried continuation for a later run."
+  },
+  {
+    "id": 151,
+    "query": "Correct a premature route closure in the .mathbox ledger without changing the mathematical premises."
+  },
+  {
+    "id": 152,
+    "query": "I can inspect the .mathbox ledger but cannot execute scripts or write here. Produce a deferred packet for the new evidence so I can ingest it locally."
+  },
+  {
+    "id": 153,
+    "query": "This project has a .mathbox ledger; proofread the edited paragraph in Section 2."
+  },
+  {
+    "id": 154,
+    "query": "Set up AGENTS.md, a charter and a live status file for this research repository."
+  },
+  {
+    "id": 155,
+    "query": "Attack lemma L in this .mathbox project."
+  },
+  {
+    "id": 156,
+    "query": "Close out program P and compact its status."
+  },
+  {
+    "id": 157,
+    "query": "Migrate our flat research log into program indexes."
+  },
+  {
+    "id": 158,
+    "query": "Validate this computation manifest."
+  }
+]

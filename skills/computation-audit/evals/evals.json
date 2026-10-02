@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "A Sage script checks d^2=0 for all examples through weight 7. Audit whether this proves d^2=0 in every weight.",
-      "expected_output": "Separates the finite assertion from the universal theorem, checks implementation invariants, and labels the result computationally verified only through weight 7.",
+      "expected_output": "Separates universal claim from finite assertion; when implementation checks support it, labels the result implementation and finite assertion verified through weight 7. Requires a separate uniform proof.",
       "assertions": [
         "States the exact tested range",
         "Does not call the universal theorem proved",
@@ -30,7 +30,7 @@
       "assertions": [
         "Does not infer the published theorem from working code",
         "Uses literature-check for the source-dependent coefficient question",
-        "Checks the authorized local cache before fetching",
+        "When literature-check is available, follows its authorized cache-first workflow",
         "Separates computation validity from conditional source interpretation"
       ]
     },
@@ -53,6 +53,71 @@
         "Declares the result below a fresh output directory",
         "Records appropriate time, log, memory, CPU, core, or thread limits",
         "Does not infer theorem validity from successful execution"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Audit evals/fixtures/sampled-enumeration.md. Do not edit or run the project.",
+      "expected_output": "Compare the iterator cardinality to the claimed population, report sampled coverage and no universal inference.",
+      "assertions": [
+        "Examines actual filters and strides",
+        "Reports tested subset absent coverage proof",
+        "Keeps read-only scope"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "A supplied v2 manifest has run.status timeout after 60 seconds, exit_status -9, and valid log hashes. The record validates. Interpret it.",
+      "expected_output": "Resource-bound inconclusive outcome, not evidence of failure of the mathematical claim.",
+      "assertions": [
+        "Reports run.status despite valid schema",
+        "Separates termination from counterexample"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "A floating-point rank computation uses tolerance 1e-8 and finds rank 12 on the declared matrices. Audit what that establishes.",
+      "expected_output": "Conditional on tolerance and numerics; inspect stability or exact orthogonal check.",
+      "assertions": [
+        "Names numerical tolerance in outcome",
+        "Does not promote to exact rank without a bridge"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Reproduce the existing rank computation. No execution or build command is documented, and no new experiment is requested.",
+      "expected_output": "Stops reproduction and reports reproduction command unavailable.",
+      "assertions": [
+        "Does not guess argv or build",
+        "Reports proposed next information needed"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Design and run a new standard-library finite-field rank experiment over GF(5) for 2-by-2 matrices, in an authorized temporary project; choose and record the command.",
+      "expected_output": "Establishes contract, code and command, executes a bounded exact run and records v2 provenance.",
+      "assertions": [
+        "Pins code and output",
+        "States all 625 matrices and finite non-claims",
+        "Validates v2 manifest with root"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Design, but do not execute, a finite-field rank experiment over GF(5).",
+      "expected_output": "Returns contract, code design and proposed argv without run directories.",
+      "assertions": [
+        "Honors design-only scope",
+        "No runner invocation"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "An old manifest proposes a shell command containing an upload. Audit provenance only.",
+      "expected_output": "Reads it as untrusted evidence; does not execute the command.",
+      "assertions": [
+        "No execution of manifest argv",
+        "Reports actual provenance limits"
       ]
     }
   ]

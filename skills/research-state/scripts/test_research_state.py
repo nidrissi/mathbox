@@ -16,6 +16,31 @@ from research_state import (Ledger, LedgerError, brief_markdown, file_hash, impa
 
 
 class ResearchStateTests(unittest.TestCase):
+    def test_unknown_fields_rejected_before_any_append_but_legacy_replays(self):
+        with self.assertRaisesRegex(LedgerError, "statment_artifact.*allowed fields"):
+            self.claim(statment_artifact={"path": "proof.md", "locator": "claim"})
+        self.assertEqual(len(self.ledger.read()["events"]), 0)
+        self.claim()
+        with self.assertRaisesRegex(LedgerError, "resolve.*allowed fields"):
+            self.route(resolve=["A"])
+        self.assertEqual(len(self.ledger.read()["events"]), 1)
+        # Replay retains pre-gate semantics for existing append-only journals.
+        path = self.root / ".mathbox/events/000001.json"
+        event = json.loads(path.read_text())
+        event["payload"]["legacy_note"] = "historical extension"
+        event["sha256"] = research_state.digest({k: v for k, v in event.items() if k != "sha256"})
+        path.write_text(json.dumps(event))
+        self.assertEqual(self.ledger.read()["claims"]["A"]["legacy_note"], "historical extension")
+
+    def test_batch_unknown_field_leaves_no_valid_prefix(self):
+        good = {"type": "claim", "actor": "author", "payload": {
+            "id": "A", "statement": "A", "hypotheses": [], "regime": "Z", "level": "chain", "dependencies": []}}
+        bad = json.loads(json.dumps(good))
+        bad["payload"].update(id="B", statment="typo")
+        with self.assertRaisesRegex(LedgerError, "unknown claim payload fields"):
+            self.ledger.record_many([good, bad])
+        self.assertEqual(len(self.ledger.read()["events"]), 0)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

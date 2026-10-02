@@ -172,6 +172,42 @@
         "Treats opening a deferred location as a local decision rather than packet content",
         "Does not claim that the ledger or repository was modified"
       ]
+    },
+    {
+      "id": 16,
+      "prompt": "After real mathematical revalidation of changed proof evidence E, replace it in an authorized temporary ledger.",
+      "expected_output": "Records replacement evidence with supersedes [E], not an erroneous retraction.",
+      "assertions": [
+        "Historical event remains",
+        "Old stale issue removed only by genuine replacement"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Record a finite assertion with a validated version-2 manifest in a temporary ledger, then change its input and inspect impact.",
+      "expected_output": "Pins manifest closure, marks stale finite evidence and reports dependents.",
+      "assertions": [
+        "Matching claim_id and completed status",
+        "No universal promotion"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "What is 2+2? There is no research-state setup authorization.",
+      "expected_output": "Answers the casual question without init.",
+      "assertions": [
+        "No .mathbox creation"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "In an authorized temporary ledger, register a goal and route, start program P at one checkpoint, then execute R at a later checkpoint and preserve a deferred recurrence.",
+      "expected_output": "Uses matching execution/reconciliation base, result without base fields and decision continue.",
+      "assertions": [
+        "Reuses open P",
+        "next and handoff expose continuation",
+        "Separate program start retained"
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Notation and consistency lane
 
-Read the shared protocol and the whole manuscript. Consistency relates at
+Read the [shared protocol](../review-protocol.md) and the whole manuscript. Consistency relates at
 least two occurrences; a section-only suspicion does not establish it.
 
 - `hypothesis-mismatch`: statement/proof text disagree about assumptions, or
@@ -29,3 +29,5 @@ Group all instances of one convention or symbol. Equivalent notation you
 would spell differently is not a defect. Consequential mathematical ambiguity
 may require a correctness escalation; stylistic consistency normally leaves
 the theorem intact and is at most major. Do not audit grammar or prior art.
+
+Do not run specialist skills unless the coordinator explicitly assigns them.

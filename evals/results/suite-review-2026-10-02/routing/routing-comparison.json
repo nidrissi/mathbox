@@ -1,0 +1,2444 @@
+{
+  "case_count": 174,
+  "unique_queries": 158,
+  "task_conflict_count": 0,
+  "cases": [
+    {
+      "id": 1,
+      "eval_skill": "computation-audit",
+      "query": "Audit the Sage calculation supporting Claim C7.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 2,
+      "eval_skill": "computation-audit",
+      "query": "Run the finite-field experiment and state exactly what it proves.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 3,
+      "eval_skill": "computation-audit",
+      "query": "Run this exact checker with reproducible input and result hashes plus memory and CPU caps.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 4,
+      "eval_skill": "computation-audit",
+      "query": "Check whether the paper states its recurrence over integers.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 5,
+      "eval_skill": "computation-audit",
+      "query": "Explain what a Gr\u00f6bner basis is.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 6,
+      "eval_skill": "computation-audit",
+      "query": "Refactor this unrelated CLI.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 7,
+      "eval_skill": "computation-audit",
+      "query": "Audit the enumeration supporting Proposition 2.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 8,
+      "eval_skill": "computation-audit",
+      "query": "Design a finite-field rank computation for Conjecture 2 up to n=12 and say what each outcome implies.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 9,
+      "eval_skill": "computation-audit",
+      "query": "Is this floating-point eigenvalue check enough for Lemma 4?",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 10,
+      "eval_skill": "computation-audit",
+      "query": "Find gaps in Theorem 2's proof.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 11,
+      "eval_skill": "computation-audit",
+      "query": "Show stale evidence in the .mathbox ledger.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 12,
+      "eval_skill": "computation-audit",
+      "query": "Referee this whole paper, including its computational appendix.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 13,
+      "eval_skill": "computation-audit",
+      "query": "Attack the conjecture by searching for a counterexample up to n = 20 and record the route.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 14,
+      "eval_skill": "literature-check",
+      "query": "Verify that Theorem 4.3 of this paper has the hypotheses we need.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 15,
+      "eval_skill": "literature-check",
+      "query": "Search whether this result is known and bound the novelty claim.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 16,
+      "eval_skill": "literature-check",
+      "query": "Cache this authenticated arXiv PDF so later source checks can reuse it.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 17,
+      "eval_skill": "literature-check",
+      "query": "Prove the lemma directly without literature.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 18,
+      "eval_skill": "literature-check",
+      "query": "Format this BibTeX entry.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 19,
+      "eval_skill": "literature-check",
+      "query": "Verify the exact source theorem in a read-only web host and return an authorized deferred source evidence record.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 20,
+      "eval_skill": "literature-check",
+      "query": "Does citation [17] prove this?",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 21,
+      "eval_skill": "literature-check",
+      "query": "Check whether Theorem 3.2 of the cited paper, in our sign conventions, gives the statement we use in Lemma 5.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 22,
+      "eval_skill": "literature-check",
+      "query": "Who first proved this result, and is our attribution in the introduction accurate?",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 23,
+      "eval_skill": "literature-check",
+      "query": "Attack Lemma 5 by applying Theorem 2.1 of the cited paper after translating its notation, and record the route.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 24,
+      "eval_skill": "literature-check",
+      "query": "Check that every \\cite key in paper.tex resolves.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 25,
+      "eval_skill": "literature-check",
+      "query": "Referee this paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 26,
+      "eval_skill": "literature-check",
+      "query": "Audit the proof of Lemma 4 for gaps.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 27,
+      "eval_skill": "manuscript-integrate",
+      "query": "Integrate the validated lemma into article.tex.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 28,
+      "eval_skill": "manuscript-integrate",
+      "query": "Update the theorem and introduction after the proof correction.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 29,
+      "eval_skill": "manuscript-integrate",
+      "query": "Verify the exact hypotheses of this cited theorem.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 30,
+      "eval_skill": "manuscript-integrate",
+      "query": "Draft a new proof for the missing lemma.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 31,
+      "eval_skill": "manuscript-integrate",
+      "query": "Fix typos in the introduction.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 32,
+      "eval_skill": "manuscript-integrate",
+      "query": "Incorporate our responses to the referee's comments into paper.tex.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 33,
+      "eval_skill": "manuscript-integrate",
+      "query": "Lemma 3 is now proved.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 34,
+      "eval_skill": "manuscript-integrate",
+      "query": "Check whether Theorem 2 in paper.tex is correct.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 35,
+      "eval_skill": "manuscript-integrate",
+      "query": "Referee this manuscript.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 36,
+      "eval_skill": "manuscript-integrate",
+      "query": "Check whether the corrected lemma is right before we add it to the paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 37,
+      "eval_skill": "proof-audit",
+      "query": "Check the proof of Lemma 4.2.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 38,
+      "eval_skill": "proof-audit",
+      "query": "Referee this entire manuscript.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 39,
+      "eval_skill": "proof-audit",
+      "query": "Audit this manuscript section by section and reconcile the results.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 40,
+      "eval_skill": "proof-audit",
+      "query": "Audit this proof and isolate the first gap.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 41,
+      "eval_skill": "proof-audit",
+      "query": "Are the signs and variance in Proposition 3.2 correct?",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 42,
+      "eval_skill": "proof-audit",
+      "query": "Look up what the cited paper proves over integral coefficients.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 43,
+      "eval_skill": "proof-audit",
+      "query": "Find a new proof of the theorem from scratch.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 44,
+      "eval_skill": "proof-audit",
+      "query": "Copyedit this theorem statement.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 45,
+      "eval_skill": "proof-audit",
+      "query": "Audit this proof in a read-only host and prepare an authorized deferred review record if the audit changes the ledger state.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 46,
+      "eval_skill": "proof-audit",
+      "query": "Referee only the proof of Proposition 3.1.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 47,
+      "eval_skill": "proof-audit",
+      "query": "Stress-test this whole paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 48,
+      "eval_skill": "proof-audit",
+      "query": "Review this manuscript for mathematical correctness.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 49,
+      "eval_skill": "proof-audit",
+      "query": "Proofread this paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 50,
+      "eval_skill": "proof-audit",
+      "query": "Audit the Sage enumeration supporting Claim C7.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 49,
+      "eval_skill": "proofread-math",
+      "query": "Proofread this paper.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 38,
+      "eval_skill": "proofread-math",
+      "query": "Referee this entire manuscript.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 51,
+      "eval_skill": "proofread-math",
+      "query": "Proofread the new proof in paper.tex conservatively.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 52,
+      "eval_skill": "proofread-math",
+      "query": "Check these equations for dropped indices and LaTeX mistakes.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 53,
+      "eval_skill": "proofread-math",
+      "query": "Do a final copyedit of the changed theorem hunks.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 54,
+      "eval_skill": "proofread-math",
+      "query": "Review this proof as a copyeditor; flag logical concerns instead of fixing them.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 55,
+      "eval_skill": "proofread-math",
+      "query": "Prove that every finite subgroup of a field multiplicative group is cyclic.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 56,
+      "eval_skill": "proofread-math",
+      "query": "Write a new LaTeX proof of the snake lemma from scratch.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 57,
+      "eval_skill": "proofread-math",
+      "query": "Convert these handwritten notes into a polished chapter.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 58,
+      "eval_skill": "proofread-math",
+      "query": "Shorten this proof by replacing the spectral-sequence argument.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 59,
+      "eval_skill": "proofread-math",
+      "query": "Search the literature to see whether this theorem is known.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 60,
+      "eval_skill": "proofread-math",
+      "query": "Confirm the cited paper proves this over integers.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 61,
+      "eval_skill": "proofread-math",
+      "query": "Audit the correctness of the main theorem and find gaps.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 62,
+      "eval_skill": "proofread-math",
+      "query": "Integrate the validated Lemma 4.1 into paper.tex and update its cross-references.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 25,
+      "eval_skill": "referee",
+      "query": "Referee this paper.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 63,
+      "eval_skill": "referee",
+      "query": "Give a referee report covering the proofs and all sections of this paper.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 48,
+      "eval_skill": "referee",
+      "query": "Review this manuscript for mathematical correctness.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 64,
+      "eval_skill": "referee",
+      "query": "Give me a referee report on the attached mathematical manuscript.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 47,
+      "eval_skill": "referee",
+      "query": "Stress-test this whole paper.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 39,
+      "eval_skill": "referee",
+      "query": "Audit this manuscript section by section and reconcile the results.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 65,
+      "eval_skill": "referee",
+      "query": "Referee this entire manuscript, including a mechanical proofreading component.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 66,
+      "eval_skill": "referee",
+      "query": "Assess the whole manuscript for correctness, exposition and claim scope.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 67,
+      "eval_skill": "referee",
+      "query": "Review every section of the manuscript and synthesize the major mathematical concerns.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 68,
+      "eval_skill": "referee",
+      "query": "Referee this manuscript in a harness without subagents using separate sequential review passes.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 37,
+      "eval_skill": "referee",
+      "query": "Check the proof of Lemma 4.2.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 69,
+      "eval_skill": "referee",
+      "query": "Audit the main theorem and isolate its first unproved implication.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 49,
+      "eval_skill": "referee",
+      "query": "Proofread this paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 20,
+      "eval_skill": "referee",
+      "query": "Does citation [17] prove this?",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 7,
+      "eval_skill": "referee",
+      "query": "Audit the enumeration supporting Proposition 2.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 70,
+      "eval_skill": "referee",
+      "query": "Try a new proof of this conjecture.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 71,
+      "eval_skill": "referee",
+      "query": "Pursue this research program until we have a proof or counterexample.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 72,
+      "eval_skill": "referee",
+      "query": "Review our research status and recommend what to attack next.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 73,
+      "eval_skill": "referee",
+      "query": "Configure my coding harness's default subagent model.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 74,
+      "eval_skill": "referee",
+      "query": "Explain how model selection works in this harness.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 75,
+      "eval_skill": "referee",
+      "query": "Referee the proof of Lemma 3.2 only.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 76,
+      "eval_skill": "referee",
+      "query": "Check this paper's notation consistency and cross-references.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 32,
+      "eval_skill": "referee",
+      "query": "Incorporate our responses to the referee's comments into paper.tex.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 77,
+      "eval_skill": "referee",
+      "query": "Do a final pass over the whole paper for typos, LaTeX errors and broken references.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 78,
+      "eval_skill": "research-attempt",
+      "query": "Attack the next unresolved lemma and record a bounded route.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 79,
+      "eval_skill": "research-attempt",
+      "query": "Try to find the smallest counterexample to this conjecture.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 80,
+      "eval_skill": "research-attempt",
+      "query": "Test one bounded route against the current blocker in this research repository.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 81,
+      "eval_skill": "research-attempt",
+      "query": "Run one bounded proof route in a program with a separate phase-level route index.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 82,
+      "eval_skill": "research-attempt",
+      "query": "Look up the exact hypotheses of Theorem 4.3 in the cited paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 83,
+      "eval_skill": "research-attempt",
+      "query": "Explain the definition of a spectral sequence.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 84,
+      "eval_skill": "research-attempt",
+      "query": "Fix the grammar in this paragraph.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 85,
+      "eval_skill": "research-attempt",
+      "query": "Pursue the conjecture across many approaches and keep trying after failed routes.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 86,
+      "eval_skill": "research-attempt",
+      "query": "Migrate our entire flat research-history index into a program-level hierarchy.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 87,
+      "eval_skill": "research-attempt",
+      "query": "Try one bounded construction and hand any unfinished continuation back to the program.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 88,
+      "eval_skill": "research-attempt",
+      "query": "Keep pursuing the program across its untried continuations after an inconclusive attempt.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 89,
+      "eval_skill": "research-attempt",
+      "query": "In this read-only web host, pursue one bounded lemma route and provide a deferred handoff for any ledger-worthy result.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 90,
+      "eval_skill": "research-attempt",
+      "query": "Try to prove the comparison map is injective in degree 0 using the transfer.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 23,
+      "eval_skill": "research-attempt",
+      "query": "Attack Lemma 5 by applying Theorem 2.1 of the cited paper after translating its notation, and record the route.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 13,
+      "eval_skill": "research-attempt",
+      "query": "Attack the conjecture by searching for a counterexample up to n = 20 and record the route.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 91,
+      "eval_skill": "research-attempt",
+      "query": "Check whether the proof of Lemma 2 has a gap.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 92,
+      "eval_skill": "research-attempt",
+      "query": "Audit the Sage script supporting Claim C7 and record its provenance.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 93,
+      "eval_skill": "research-attempt",
+      "query": "Rerun the existing verification script unchanged.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 94,
+      "eval_skill": "research-attempt",
+      "query": "Record this route result in the .mathbox ledger.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 95,
+      "eval_skill": "research-attempt",
+      "query": "Close out phase B.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 96,
+      "eval_skill": "research-init",
+      "query": "Set up this repository for AI-assisted mathematical research.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 97,
+      "eval_skill": "research-init",
+      "query": "Refresh AGENTS.md and the research workflow architecture.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 98,
+      "eval_skill": "research-init",
+      "query": "Rework this project's oversized AGENTS.md and live status into a compact research repository setup.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 99,
+      "eval_skill": "research-init",
+      "query": "Plan a safe migration of this research repository's oversized status, agent instructions, and existing ledger without editing yet.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 100,
+      "eval_skill": "research-init",
+      "query": "Migrate our existing mathematical research handoff into one current dashboard while preserving dated history.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 101,
+      "eval_skill": "research-init",
+      "query": "Retrofit our long flat research log into a compact program index and linked route indexes.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 102,
+      "eval_skill": "research-init",
+      "query": "Migrate our flat research log's old routes into program indexes with historical closeouts, keeping unassigned routes discoverable.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 103,
+      "eval_skill": "research-init",
+      "query": "Use the mathbox plugin to initialize this mathematical research repository.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 104,
+      "eval_skill": "research-init",
+      "query": "Set up a Git-ignored local literature cache for this research repository.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 105,
+      "eval_skill": "research-init",
+      "query": "Verify whether this cited theorem has the hypotheses we need.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 106,
+      "eval_skill": "research-init",
+      "query": "Work on the main theorem.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 107,
+      "eval_skill": "research-init",
+      "query": "Record the outcome of this single bounded research route in its existing phase index.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 108,
+      "eval_skill": "research-init",
+      "query": "Summarize what changed in the current research status, without editing the repository.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 109,
+      "eval_skill": "research-init",
+      "query": "Run the tests.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 110,
+      "eval_skill": "research-init",
+      "query": "Close out the finished descent program and compact its live status, without restructuring the history index.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 111,
+      "eval_skill": "research-init",
+      "query": "Compact the live dashboard and move dated checkpoints into records.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 112,
+      "eval_skill": "research-init",
+      "query": "Initialize a .mathbox ledger for this project and register Claims A and B.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 113,
+      "eval_skill": "research-init",
+      "query": "What should I work on next in this project?",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 114,
+      "eval_skill": "research-program",
+      "query": "Pursue the full conjecture by trying three approaches; keep going after a route fails.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 115,
+      "eval_skill": "research-program",
+      "query": "Continue the investigation until we have a proof or a counterexample.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 116,
+      "eval_skill": "research-program",
+      "query": "Try several alternative mechanisms for these two remaining proof obligations and keep going after failures.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 117,
+      "eval_skill": "research-program",
+      "query": "Continue this research program across the remaining routes and maintain a concise current handoff.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 118,
+      "eval_skill": "research-program",
+      "query": "Close out this completed research phase and compact its status and route history without starting another proof attempt.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 119,
+      "eval_skill": "research-program",
+      "query": "Write a historical closeout for the finished descent program, keeping its historical outcome separate from later proofs.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 120,
+      "eval_skill": "research-program",
+      "query": "Audit the proof of Lemma 2.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 121,
+      "eval_skill": "research-program",
+      "query": "Proofread this paragraph.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 122,
+      "eval_skill": "research-program",
+      "query": "Review our project and suggest what to try next, without doing research.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 123,
+      "eval_skill": "research-program",
+      "query": "Record the failed route and its obstruction in the ledger.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 124,
+      "eval_skill": "research-program",
+      "query": "Migrate our flat research log into program indexes, with a historical closeout for each old program.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 125,
+      "eval_skill": "research-program",
+      "query": "Continue the research program after an inconclusive attempt; another proposed continuation remains untried.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 126,
+      "eval_skill": "research-program",
+      "query": "Only record this inconclusive run and its remaining continuation in the existing .mathbox ledger.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 127,
+      "eval_skill": "research-program",
+      "query": "Continue the full research program in this read-only host and return a deferred packet for material findings.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 128,
+      "eval_skill": "research-program",
+      "query": "Make one bounded attempt at Lemma 3 via Mayer\u2013Vietoris, then stop.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 129,
+      "eval_skill": "research-program",
+      "query": "Explain why this spectral sequence degenerates.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 130,
+      "eval_skill": "research-retrospective",
+      "query": "Review the whole project and tell me the best next three routes.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 131,
+      "eval_skill": "research-retrospective",
+      "query": "Prepare a weekly research handoff from status, claims, and log.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 132,
+      "eval_skill": "research-retrospective",
+      "query": "Review this bloated research dashboard and prioritize the next mathematical routes without editing it.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 133,
+      "eval_skill": "research-retrospective",
+      "query": "Search the literature for the exact version of this theorem.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "literature-check"
+      ],
+      "blind_codex_entry_points": [
+        "literature-check"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 134,
+      "eval_skill": "research-retrospective",
+      "query": "Prove the current lemma.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 135,
+      "eval_skill": "research-retrospective",
+      "query": "Compile the paper.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 136,
+      "eval_skill": "research-retrospective",
+      "query": "Generate the dependency-aware handoff from the .mathbox event ledger.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 137,
+      "eval_skill": "research-retrospective",
+      "query": "Write a historical closeout for the finished descent program.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 138,
+      "eval_skill": "research-retrospective",
+      "query": "Migrate the flat research log into program indexes.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 113,
+      "eval_skill": "research-retrospective",
+      "query": "What should I work on next in this project?",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 139,
+      "eval_skill": "research-retrospective",
+      "query": "This project uses .mathbox. Review the whole project and recommend the next three routes.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 140,
+      "eval_skill": "research-retrospective",
+      "query": "Review this manuscript and write a referee report.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "referee"
+      ],
+      "blind_codex_entry_points": [
+        "referee"
+      ],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 111,
+      "eval_skill": "research-retrospective",
+      "query": "Compact the live dashboard and move dated checkpoints into records.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": true,
+      "task_match_conflict": false
+    },
+    {
+      "id": 141,
+      "eval_skill": "research-state",
+      "query": "Check the .mathbox ledger and tell me which proofs are stale.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 142,
+      "eval_skill": "research-state",
+      "query": "Set up executable evidence and dependency tracking for this research project.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 143,
+      "eval_skill": "research-state",
+      "query": "Reconcile these delayed parallel route runs against their shared base revision in the .mathbox ledger.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 144,
+      "eval_skill": "research-state",
+      "query": "Generate a goal-scoped ledger handoff with active review conditions and route prerequisites.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 145,
+      "eval_skill": "research-state",
+      "query": "Batch these claim and evidence proposals into the .mathbox journal, then show which claims pin this manuscript file.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 146,
+      "eval_skill": "research-state",
+      "query": "Explain the definition of a chain complex.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 147,
+      "eval_skill": "research-state",
+      "query": "Audit this proof without creating project files.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proof-audit"
+      ],
+      "blind_codex_entry_points": [
+        "proof-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 148,
+      "eval_skill": "research-state",
+      "query": "Prepare a weekly research handoff from the status file, claims and log.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 149,
+      "eval_skill": "research-state",
+      "query": "Pursue this conjecture through several approaches until one works.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 150,
+      "eval_skill": "research-state",
+      "query": "Reconcile this inconclusive run in .mathbox and preserve its untried continuation for a later run.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 151,
+      "eval_skill": "research-state",
+      "query": "Correct a premature route closure in the .mathbox ledger without changing the mathematical premises.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 152,
+      "eval_skill": "research-state",
+      "query": "I can inspect the .mathbox ledger but cannot execute scripts or write here. Produce a deferred packet for the new evidence so I can ingest it locally.",
+      "expected_task_trigger": true,
+      "blind_task_match": true,
+      "blind_wording_entry_points": [
+        "research-state"
+      ],
+      "blind_codex_entry_points": [
+        "research-state"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 153,
+      "eval_skill": "research-state",
+      "query": "This project has a .mathbox ledger; proofread the edited paragraph in Section 2.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "proofread-math"
+      ],
+      "blind_codex_entry_points": [
+        "proofread-math"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 139,
+      "eval_skill": "research-state",
+      "query": "This project uses .mathbox. Review the whole project and recommend the next three routes.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-retrospective"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 154,
+      "eval_skill": "research-state",
+      "query": "Set up AGENTS.md, a charter and a live status file for this research repository.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 155,
+      "eval_skill": "research-state",
+      "query": "Attack lemma L in this .mathbox project.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-attempt"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 156,
+      "eval_skill": "research-state",
+      "query": "Close out program P and compact its status.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-program"
+      ],
+      "blind_codex_entry_points": [
+        "research-program"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 157,
+      "eval_skill": "research-state",
+      "query": "Migrate our flat research log into program indexes.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "research-init"
+      ],
+      "blind_codex_entry_points": [],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    },
+    {
+      "id": 158,
+      "eval_skill": "research-state",
+      "query": "Validate this computation manifest.",
+      "expected_task_trigger": false,
+      "blind_task_match": false,
+      "blind_wording_entry_points": [
+        "computation-audit"
+      ],
+      "blind_codex_entry_points": [
+        "computation-audit"
+      ],
+      "host_policy_explicit_only": false,
+      "task_match_conflict": false
+    }
+  ],
+  "conflicts": []
+}

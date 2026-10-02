@@ -1,0 +1,9 @@
+{
+  "task": "Referee this manuscript",
+  "project": "/tmp/mathbox-routing-referee-trials/no-delegation-project",
+  "manuscript": "paper.tex",
+  "condition": "SIMULATED host policy requires explicit user permission for subagents; none given. No subagents launched.",
+  "source_fixture_sha256": "eefda5cdf57b10e80353029959129cca3e63960706de90cf41cd320d56ad0748",
+  "execution": "sequential self-review by trial executor, not independent agents",
+  "tool_limitations": "No environment_status tool exposed; no external sources or execution needed for this manuscript."
+}

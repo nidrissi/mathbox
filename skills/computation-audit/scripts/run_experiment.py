@@ -415,20 +415,20 @@ def execute(args):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, required=True)
-    parser.add_argument("--contract", type=Path, required=True)
+    parser.add_argument("--root", type=Path, required=True, help="project root and child working directory")
+    parser.add_argument("--contract", type=Path, required=True, help="JSON mathematical and execution contract")
     parser.add_argument("--output", required=True, help="new project-relative run directory")
-    parser.add_argument("--input", action="append", default=[])
+    parser.add_argument("--input", action="append", default=[], help="repeatable project-relative input to hash before and after")
     parser.add_argument("--result", action="append", default=[],
                         help="project-relative result file below the fresh output directory")
-    parser.add_argument("--timeout", type=float, default=60)
-    parser.add_argument("--max-output-bytes", type=int, default=4 * 1024 * 1024)
+    parser.add_argument("--timeout", type=float, default=60, help="wall-clock seconds (default: %(default)s)")
+    parser.add_argument("--max-output-bytes", type=int, default=4 * 1024 * 1024, help="combined log-byte cap (default: %(default)s)")
     parser.add_argument("--max-memory-bytes", type=int, help="POSIX child address-space cap")
     parser.add_argument("--max-cpu-seconds", type=int, help="POSIX per-process CPU-time cap")
     parser.add_argument("--max-cores", type=int, help="POSIX CPU-affinity cap where supported")
     parser.add_argument("--max-threads", type=int,
                         help="set conventional numerical-library thread environment caps")
-    parser.add_argument("argv", nargs=argparse.REMAINDER)
+    parser.add_argument("argv", nargs=argparse.REMAINDER, help="authorized command argv after --")
     args = parser.parse_args(argv)
     try:
         manifest, path = execute(args)

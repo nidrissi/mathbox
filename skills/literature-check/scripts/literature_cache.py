@@ -392,6 +392,21 @@ def ingest(args: argparse.Namespace) -> dict:
     if args.text_tool and not args.text:
         raise CacheError("--text-tool requires --text")
 
+    identifiers = sorted({normalize_identifier(item) for item in args.identifier})
+    if not identifiers:
+        raise CacheError("add requires at least one --id")
+    if args.date_checked:
+        try:
+            parsed_date = dt.date.fromisoformat(args.date_checked)
+        except ValueError:
+            raise CacheError("--date-checked must be an ISO date YYYY-MM-DD") from None
+        if parsed_date.isoformat() != args.date_checked:
+            raise CacheError("--date-checked must be an ISO date YYYY-MM-DD")
+    versions = {match.group(1).lower() for item in identifiers if item.startswith("arxiv:")
+                and (match := re.search(r"(v\d+)$", item, re.I))}
+    if len(versions) > 1 or (versions and args.version and args.version.lower() not in versions):
+        raise CacheError("conflicting arXiv identifier and --version")
+
     root = Path(args.root)
     cache, status = initialize(root)
     pdf = Path(args.pdf).expanduser().resolve()
@@ -400,7 +415,6 @@ def ingest(args: argparse.Namespace) -> dict:
     if not pdf_is_plausible(pdf):
         raise CacheError(f"file does not appear to be a PDF: {pdf}")
 
-    identifiers = sorted({normalize_identifier(item) for item in args.identifier})
     digest = sha256_file(pdf)
     record_path = cache / "records" / f"{digest}.json"
     destination_pdf = cache / "pdf" / f"{digest}.pdf"
@@ -422,6 +436,12 @@ def ingest(args: argparse.Namespace) -> dict:
     record["authors"] = list(dict.fromkeys(record.get("authors", []) + (args.author or [])))
     record["locators"] = list(dict.fromkeys(record.get("locators", []) + (args.source_url or [])))
     merge_scalar(record, "title", args.title, args.replace_metadata)
+    combined_versions = {match.group(1).lower() for item in record["identifiers"]
+                         if item.startswith("arxiv:") and (match := re.search(r"(v\d+)$", item, re.I))}
+    effective_version = args.version or record.get("version")
+    if len(combined_versions) > 1 or (combined_versions and effective_version
+                                     and effective_version.lower() not in combined_versions):
+        raise CacheError("conflicting cached arXiv identifiers and version")
     merge_scalar(record, "version", args.version, args.replace_metadata)
     prior_bases = record.pop("retention_basis", None)
     bases = record.get("retention_bases", [])
@@ -510,6 +530,8 @@ def record_summary(record: dict, cache: Path, match: str | None = None, snippet:
 
 def bounded_snippet(text: str, query: str, width: int = 240) -> str | None:
     """Return a bounded window that always shows the match, eliding a long one."""
+    text = " ".join(text.split())
+    query = " ".join(query.split())
     position = text.casefold().find(query.casefold())
     if position < 0:
         return None
@@ -549,7 +571,8 @@ def find_records(args: argparse.Namespace) -> dict:
             if not isinstance(identifiers, list):
                 continue
             if wanted in identifiers:
-                matches.append(record_summary(record, cache, "exact-identifier"))
+                label = "arxiv-version-candidate" if wanted_base and not re.search(r"v\d+$", wanted) else "exact-identifier"
+                matches.append(record_summary(record, cache, label))
             elif wanted_base and any(
                 arxiv_base(item) == wanted_base for item in identifiers if isinstance(item, str)
             ):
@@ -557,11 +580,11 @@ def find_records(args: argparse.Namespace) -> dict:
             if len(matches) >= args.limit:
                 break
     else:
-        query = args.query.strip()
+        query = " ".join(args.query.split())
         if not query:
             raise CacheError("search query must not be empty")
         for record in all_records:
-            metadata = searchable_metadata(record)
+            metadata = " ".join(searchable_metadata(record).split())
             match = "metadata" if query.casefold() in metadata.casefold() else None
             snippet = bounded_snippet(metadata, query) if match else None
             if not match and record.get("text") is not None:
@@ -729,12 +752,12 @@ def parser() -> argparse.ArgumentParser:
     add = commands.add_parser("add", help="ingest a local PDF")
     add_common_options(add)
     add.add_argument("--pdf", required=True)
-    add.add_argument("--id", dest="identifier", action="append", default=[], help="repeatable scheme:value identifier")
+    add.add_argument("--id", dest="identifier", action="append", required=True, help="repeatable scheme:value identifier (at least one required)")
     add.add_argument("--title")
     add.add_argument("--author", action="append")
     add.add_argument("--version")
     add.add_argument("--source-url", action="append")
-    add.add_argument("--date-checked")
+    add.add_argument("--date-checked", help="ingest date YYYY-MM-DD (default: current UTC date; refreshed on re-ingest)")
     add.add_argument("--retention-basis", required=True, help="why local retention is authorized")
     add.add_argument("--text", help="pre-extracted plaintext to cache")
     add.add_argument("--text-tool", help="tool that produced supplied --text")

@@ -14,12 +14,12 @@ Create a contract JSON with these fields (this is a concrete small example):
     "assertion_tested": "n(n+1) is even for each tested n",
     "coefficient_domain": "Z, exact integers",
     "conventions": "ordinary integer multiplication",
-    "inputs": ["checks/parity.py"],
+    "inputs": ["integers n with -100 <= n <= 100"],
     "bounds": {"n_min": -100, "n_max": 100},
     "non_claims": ["Does not establish the assertion for all integers"]
   },
   "execution_artifacts": ["checks/parity.py"],
-  "software": [{"name": "computation Python", "version": "record actual version"}],
+  "software": [{"name": "computation Python", "version": ""}],
   "randomness": {"used": false, "generator": "", "seed": null}
 }
 ```
@@ -39,14 +39,14 @@ runner cannot infer the dependency closure of arbitrary programs or authenticate
 a declared mathematical bound.
 
 ```bash
-python3 "$SKILL_DIR/scripts/run_experiment.py" \
+python3 <skill-directory>/scripts/run_experiment.py \
   --root /path/to/project --contract /path/to/project/contract.json \
   --input checks/parity.py --output computations/parity-001 \
   --result computations/parity-001/table.json \
   --timeout 30 --max-output-bytes 1048576 \
   --max-memory-bytes 1073741824 --max-cpu-seconds 20 \
   --max-cores 1 --max-threads 1 -- python3 checks/parity.py
-python3 "$SKILL_DIR/scripts/validate_manifest.py" \
+python3 <skill-directory>/scripts/validate_manifest.py \
   /path/to/project/computations/parity-001/manifest.json --root /path/to/project
 ```
 
@@ -54,8 +54,7 @@ The example assumes `checks/parity.py` itself creates
 `computations/parity-001/table.json`; `--result` declares and checks that file but
 does not redirect stdout or synthesize the result.
 
-`SKILL_DIR` is the resolved installed computation-audit directory, not a guessed
-path inside the research project. The output directory must be new and inside
+`<skill-directory>` is the resolved installed computation-audit directory. The output directory must be new and inside
 the project. Every repeated `--result` is a project-relative regular file that
 the command must create below that fresh directory. Results cannot be inputs or
 runner-owned `manifest.json`, `stdout.txt`, or `stderr.txt`; missing, symlinked,
@@ -74,7 +73,9 @@ actual run status. When a parent process already has a stricter hard limit, the
 manifest records the effective enforced limit. It is written atomically after it
 validates.
 
-Wall-clock time and combined log bytes are always bounded. The following caps
+Wall-clock time and combined log bytes are always bounded: defaults are
+60 seconds and 4 MiB (4194304 bytes), overridden by `--timeout` and
+`--max-output-bytes`. Set suitable bounds for long Sage runs before execution. The following caps
 are optional:
 
 - `--max-memory-bytes` uses POSIX `RLIMIT_AS` and bounds each process's address
@@ -105,23 +106,13 @@ or recording failure. A failed run can be a valid provenance record. Even a
 completed run requires review of the implemented assertion and output before
 being registered as finite evidence. It never automatically records a proof.
 
-Version 2 is emitted by the runner and requires structured software
-`name`/`version` records plus input provenance. Historical version 1 records may
-instead contain nonempty human-readable software version strings and may lack a
-repository revision. The validator accepts those historical shapes and reports
-the missing provenance rather than inventing it.
+The runner and hand-fillable template use version 2: structured software
+versions, observed before/after input hashes, status and hashed outputs.
+A complete hand-filled record can link in research-state after validation;
+missing observations cannot be invented. Historical v1 records remain readable
+with their reported provenance limits. With `--root`, ambiguous project/manifest-
+relative v1 outputs are rejected; absent project outputs may fall back to the
+manifest directory. V1 pins only as an ordinary ledger artifact.
 
-With `--root`, a v1 output path is resolved against the project root first. Only
-when that file is absent may it fall back to the manifest directory, and the
-successful validation reports the fallback. If distinct files exist at both
-interpretations, validation rejects the ambiguous record. V2 output paths are
-always project-relative.
-
-The validator reports that v1 cannot establish execution-input freshness,
-declared-result completeness, or machine-checkable resource limits. This is
-compatibility, not an evidence upgrade: both versions still reject empty outputs,
-invalid hashes, missing bounds, and incomplete run metadata.
-
-Unfilled templates must be checked with `validate_manifest.py --template`;
-they are not evidence. `--root` additionally checks stored output hashes and,
-for v2, whether pinned inputs still match the end of the run.
+`--template` checks scaffolds, not evidence. A valid record can document failure;
+interpret its status and mathematical contract separately.

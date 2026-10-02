@@ -1,0 +1,9 @@
+**The cited implication is inapplicable to the required integral natural equivalence.**
+
+The local primary source `synthetic:rational-comparison`, v1 (2026-10-02), Theorem 1, proves rational vector-space isomorphism separately for each object. Under the translation A=F and B=G, it supports C_Q. The project target additionally requires integral component maps and naturality for every morphism. Neither is supplied by the theorem or its separately chosen-basis proof. Integral lifting and coherent choices remain exact obligations; this check does not settle the full target.
+
+Checks performed: verified the supplied synthetic identifier/version and local content hash; read Theorem 1 and its proof; checked hypotheses and the coefficient/naturality translation against context.md. Publication authentication is outside this synthetic fixture, and no external sources were consulted. The existing sources/ store was retained without creating a duplicate cache.
+
+Recorded the durable check in records/source-check.md and the literature index in LITERATURE.md. Authorized ledger source evidence is restricted to the verified rational objectwise claim C_Q. No positive source or proof evidence was proposed for C_MAIN or either bridge obligation. No conditional application was verified. The ledger should retain those unresolved claims without promotion; actual record receipts and final status are preserved in logs.
+
+Search scope: one local synthetic primary source, no novelty search or citation-chain coverage. Overlap: partial or adjacent result only relative to C_MAIN. This is a self-review of a fixture constructed within this agent/session; it is not independent mathematical certification. The retained source hash and extraction status appear in source-at-check.json and records/source-check.md.

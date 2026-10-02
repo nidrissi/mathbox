@@ -1,5 +1,10 @@
 # Project-context resolution
 
+Terminology: the **history entry point** is the navigational file reaching program
+or phase histories; a **route index** contains compact linked outcomes; a
+**route record** is the immutable standalone account of one material attempt.
+In a small flat project, entry point and route index may be the same file.
+
 Use explicit paths in the applicable `AGENTS.md` first. Otherwise prefer:
 
 - charter: `PROJECT_CHARTER.md`;

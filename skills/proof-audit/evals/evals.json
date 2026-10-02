@@ -5,7 +5,11 @@
       "id": 8,
       "prompt": "Check the proof of Lemma 4.2. It is one step in a longer manuscript, but only this lemma's correctness is requested.",
       "expected_output": "Performs a focused proof audit under the actual hypotheses, without launching a whole-paper referee workflow. Whole-manuscript referee reports route to referee; serious obligations delegated from that skill still use proof-audit.",
-      "assertions": ["Keeps the requested lemma as the audit target", "Reads only necessary dependency context", "Does not substitute a whole-manuscript report"]
+      "assertions": [
+        "Keeps the requested lemma as the audit target",
+        "Reads only necessary dependency context",
+        "Does not substitute a whole-manuscript report"
+      ]
     },
     {
       "id": 1,
@@ -79,6 +83,16 @@
         "Writes the complete audit report as a new file under the configured reviews/ root",
         "Proposes a review of exactly E000004 with outcome fail and an honest independence declaration",
         "Invents no hashes or event IDs and states that the packet has not been applied"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Audit and fix: for every real x >= 0, x/x = 1. The proof cancels x. You may correct the statement but do not invent an argument.",
+      "expected_output": "Identifies x=0 and permits only the justified x>0 restriction; full-claim evidence fails review.",
+      "assertions": [
+        "Does not close gap with a new proof",
+        "Reports changed scope and downstream impact",
+        "Maps restricted verdict to fail for original full-claim evidence"
       ]
     }
   ]

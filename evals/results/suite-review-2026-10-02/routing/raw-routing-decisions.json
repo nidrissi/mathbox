@@ -1,0 +1,2530 @@
+{
+  "protocol": "Blind decisions from SKILL.md descriptions and agents/openai.yaml. Expected labels and origins not consulted. Explicit-only task applicability is distinct from implicit Codex selection. A named plugin is not treated as naming an explicit-only skill.",
+  "decided_at": "2026-10-02T12:34:37.173848+00:00",
+  "queries": [
+    {
+      "id": 1,
+      "query": "Audit the Sage calculation supporting Claim C7.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 2,
+      "query": "Run the finite-field experiment and state exactly what it proves.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 3,
+      "query": "Run this exact checker with reproducible input and result hashes plus memory and CPU caps.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 4,
+      "query": "Check whether the paper states its recurrence over integers.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 5,
+      "query": "Explain what a Gr\u00f6bner basis is.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 6,
+      "query": "Refactor this unrelated CLI.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 7,
+      "query": "Audit the enumeration supporting Proposition 2.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 8,
+      "query": "Design a finite-field rank computation for Conjecture 2 up to n=12 and say what each outcome implies.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 9,
+      "query": "Is this floating-point eigenvalue check enough for Lemma 4?",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 10,
+      "query": "Find gaps in Theorem 2's proof.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 11,
+      "query": "Show stale evidence in the .mathbox ledger.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 12,
+      "query": "Referee this whole paper, including its computational appendix.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 13,
+      "query": "Attack the conjecture by searching for a counterexample up to n = 20 and record the route.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 14,
+      "query": "Verify that Theorem 4.3 of this paper has the hypotheses we need.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 15,
+      "query": "Search whether this result is known and bound the novelty claim.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 16,
+      "query": "Cache this authenticated arXiv PDF so later source checks can reuse it.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 17,
+      "query": "Prove the lemma directly without literature.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "A request to prove a current lemma directly can initiate one research route; no sustained-program wording."
+    },
+    {
+      "id": 18,
+      "query": "Format this BibTeX entry.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 19,
+      "query": "Verify the exact source theorem in a read-only web host and return an authorized deferred source evidence record.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 20,
+      "query": "Does citation [17] prove this?",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 21,
+      "query": "Check whether Theorem 3.2 of the cited paper, in our sign conventions, gives the statement we use in Lemma 5.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 22,
+      "query": "Who first proved this result, and is our attribution in the introduction accurate?",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 23,
+      "query": "Attack Lemma 5 by applying Theorem 2.1 of the cited paper after translating its notation, and record the route.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 24,
+      "query": "Check that every \\cite key in paper.tex resolves.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 25,
+      "query": "Referee this paper.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 26,
+      "query": "Audit the proof of Lemma 4 for gaps.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 27,
+      "query": "Integrate the validated lemma into article.tex.",
+      "wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": true,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches manuscript-integrate description."
+    },
+    {
+      "id": 28,
+      "query": "Update the theorem and introduction after the proof correction.",
+      "wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": true,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "The requested update follows an existing proof correction; treat it as integration of supplied correction."
+    },
+    {
+      "id": 29,
+      "query": "Verify the exact hypotheses of this cited theorem.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 30,
+      "query": "Draft a new proof for the missing lemma.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "A missing lemma and new proof request initiate a single research route."
+    },
+    {
+      "id": 31,
+      "query": "Fix typos in the introduction.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 32,
+      "query": "Incorporate our responses to the referee's comments into paper.tex.",
+      "wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": true,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches manuscript-integrate description."
+    },
+    {
+      "id": 33,
+      "query": "Lemma 3 is now proved.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Statement of progress contains no request for a skill action."
+    },
+    {
+      "id": 34,
+      "query": "Check whether Theorem 2 in paper.tex is correct.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 35,
+      "query": "Referee this manuscript.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 36,
+      "query": "Check whether the corrected lemma is right before we add it to the paper.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 37,
+      "query": "Check the proof of Lemma 4.2.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 38,
+      "query": "Referee this entire manuscript.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 39,
+      "query": "Audit this manuscript section by section and reconcile the results.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 40,
+      "query": "Audit this proof and isolate the first gap.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 41,
+      "query": "Are the signs and variance in Proposition 3.2 correct?",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 42,
+      "query": "Look up what the cited paper proves over integral coefficients.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 43,
+      "query": "Find a new proof of the theorem from scratch.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "A new proof from scratch is a single research route, assuming a research target rather than an exposition exercise."
+    },
+    {
+      "id": 44,
+      "query": "Copyedit this theorem statement.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 45,
+      "query": "Audit this proof in a read-only host and prepare an authorized deferred review record if the audit changes the ledger state.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 46,
+      "query": "Referee only the proof of Proposition 3.1.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 47,
+      "query": "Stress-test this whole paper.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 48,
+      "query": "Review this manuscript for mathematical correctness.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 49,
+      "query": "Proofread this paper.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 50,
+      "query": "Audit the Sage enumeration supporting Claim C7.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 51,
+      "query": "Proofread the new proof in paper.tex conservatively.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 52,
+      "query": "Check these equations for dropped indices and LaTeX mistakes.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 53,
+      "query": "Do a final copyedit of the changed theorem hunks.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 54,
+      "query": "Review this proof as a copyeditor; flag logical concerns instead of fixing them.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 55,
+      "query": "Prove that every finite subgroup of a field multiplicative group is cyclic.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Standard explanatory proof request; no research or audit context."
+    },
+    {
+      "id": 56,
+      "query": "Write a new LaTeX proof of the snake lemma from scratch.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Standard expository LaTeX proof request; not conservative proofreading or validated integration."
+    },
+    {
+      "id": 57,
+      "query": "Convert these handwritten notes into a polished chapter.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Broad authoring from notes exceeds conservative proofreading and lacks validated integration input."
+    },
+    {
+      "id": 58,
+      "query": "Shorten this proof by replacing the spectral-sequence argument.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Replacing a proof mechanism asks for a new bounded research route, not conservative shortening."
+    },
+    {
+      "id": 59,
+      "query": "Search the literature to see whether this theorem is known.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 60,
+      "query": "Confirm the cited paper proves this over integers.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 61,
+      "query": "Audit the correctness of the main theorem and find gaps.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 62,
+      "query": "Integrate the validated Lemma 4.1 into paper.tex and update its cross-references.",
+      "wording_entry_points": [
+        "manuscript-integrate"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": true,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches manuscript-integrate description."
+    },
+    {
+      "id": 63,
+      "query": "Give a referee report covering the proofs and all sections of this paper.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 64,
+      "query": "Give me a referee report on the attached mathematical manuscript.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 65,
+      "query": "Referee this entire manuscript, including a mechanical proofreading component.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 66,
+      "query": "Assess the whole manuscript for correctness, exposition and claim scope.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 67,
+      "query": "Review every section of the manuscript and synthesize the major mathematical concerns.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 68,
+      "query": "Referee this manuscript in a harness without subagents using separate sequential review passes.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 69,
+      "query": "Audit the main theorem and isolate its first unproved implication.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 70,
+      "query": "Try a new proof of this conjecture.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Trying a new conjecture proof is one bounded attempt."
+    },
+    {
+      "id": 71,
+      "query": "Pursue this research program until we have a proof or counterexample.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 72,
+      "query": "Review our research status and recommend what to attack next.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 73,
+      "query": "Configure my coding harness's default subagent model.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 74,
+      "query": "Explain how model selection works in this harness.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 75,
+      "query": "Referee the proof of Lemma 3.2 only.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 76,
+      "query": "Check this paper's notation consistency and cross-references.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 77,
+      "query": "Do a final pass over the whole paper for typos, LaTeX errors and broken references.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 78,
+      "query": "Attack the next unresolved lemma and record a bounded route.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 79,
+      "query": "Try to find the smallest counterexample to this conjecture.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 80,
+      "query": "Test one bounded route against the current blocker in this research repository.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 81,
+      "query": "Run one bounded proof route in a program with a separate phase-level route index.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 82,
+      "query": "Look up the exact hypotheses of Theorem 4.3 in the cited paper.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 83,
+      "query": "Explain the definition of a spectral sequence.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 84,
+      "query": "Fix the grammar in this paragraph.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 85,
+      "query": "Pursue the conjecture across many approaches and keep trying after failed routes.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 86,
+      "query": "Migrate our entire flat research-history index into a program-level hierarchy.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 87,
+      "query": "Try one bounded construction and hand any unfinished continuation back to the program.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 88,
+      "query": "Keep pursuing the program across its untried continuations after an inconclusive attempt.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 89,
+      "query": "In this read-only web host, pursue one bounded lemma route and provide a deferred handoff for any ledger-worthy result.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 90,
+      "query": "Try to prove the comparison map is injective in degree 0 using the transfer.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 91,
+      "query": "Check whether the proof of Lemma 2 has a gap.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 92,
+      "query": "Audit the Sage script supporting Claim C7 and record its provenance.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches computation-audit description."
+    },
+    {
+      "id": 93,
+      "query": "Rerun the existing verification script unchanged.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Unchanged generic verification rerun lacks a stated load-bearing mathematical computation; do not select a research route."
+    },
+    {
+      "id": 94,
+      "query": "Record this route result in the .mathbox ledger.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 95,
+      "query": "Close out phase B.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Explicit request to close a named phase."
+    },
+    {
+      "id": 96,
+      "query": "Set up this repository for AI-assisted mathematical research.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 97,
+      "query": "Refresh AGENTS.md and the research workflow architecture.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 98,
+      "query": "Rework this project's oversized AGENTS.md and live status into a compact research repository setup.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 99,
+      "query": "Plan a safe migration of this research repository's oversized status, agent instructions, and existing ledger without editing yet.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 100,
+      "query": "Migrate our existing mathematical research handoff into one current dashboard while preserving dated history.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 101,
+      "query": "Retrofit our long flat research log into a compact program index and linked route indexes.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 102,
+      "query": "Migrate our flat research log's old routes into program indexes with historical closeouts, keeping unassigned routes discoverable.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 103,
+      "query": "Use the mathbox plugin to initialize this mathematical research repository.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Explicit plugin use is present, but no skill is named; current Codex explicit-only selection is withheld."
+    },
+    {
+      "id": 104,
+      "query": "Set up a Git-ignored local literature cache for this research repository.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Local literature-cache setup is repository workflow infrastructure rather than checking a particular source."
+    },
+    {
+      "id": 105,
+      "query": "Verify whether this cited theorem has the hypotheses we need.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 106,
+      "query": "Work on the main theorem.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Underspecified work request does not choose a bounded route or sustained program."
+    },
+    {
+      "id": 107,
+      "query": "Record the outcome of this single bounded research route in its existing phase index.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Recording a past result in a phase index does not by itself initiate a research attempt; no ledger is named."
+    },
+    {
+      "id": 108,
+      "query": "Summarize what changed in the current research status, without editing the repository.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Read-only reconciliation of research status fits retrospective."
+    },
+    {
+      "id": 109,
+      "query": "Run the tests.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 110,
+      "query": "Close out the finished descent program and compact its live status, without restructuring the history index.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 111,
+      "query": "Compact the live dashboard and move dated checkpoints into records.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Compacting dashboard and moving checkpoints restructures repository status/history."
+    },
+    {
+      "id": 112,
+      "query": "Initialize a .mathbox ledger for this project and register Claims A and B.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 113,
+      "query": "What should I work on next in this project?",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 114,
+      "query": "Pursue the full conjecture by trying three approaches; keep going after a route fails.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 115,
+      "query": "Continue the investigation until we have a proof or a counterexample.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 116,
+      "query": "Try several alternative mechanisms for these two remaining proof obligations and keep going after failures.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 117,
+      "query": "Continue this research program across the remaining routes and maintain a concise current handoff.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 118,
+      "query": "Close out this completed research phase and compact its status and route history without starting another proof attempt.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 119,
+      "query": "Write a historical closeout for the finished descent program, keeping its historical outcome separate from later proofs.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 120,
+      "query": "Audit the proof of Lemma 2.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 121,
+      "query": "Proofread this paragraph.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 122,
+      "query": "Review our project and suggest what to try next, without doing research.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 123,
+      "query": "Record the failed route and its obstruction in the ledger.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 124,
+      "query": "Migrate our flat research log into program indexes, with a historical closeout for each old program.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 125,
+      "query": "Continue the research program after an inconclusive attempt; another proposed continuation remains untried.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 126,
+      "query": "Only record this inconclusive run and its remaining continuation in the existing .mathbox ledger.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 127,
+      "query": "Continue the full research program in this read-only host and return a deferred packet for material findings.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 128,
+      "query": "Make one bounded attempt at Lemma 3 via Mayer\u2013Vietoris, then stop.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-attempt description."
+    },
+    {
+      "id": 129,
+      "query": "Explain why this spectral sequence degenerates.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Explanation request lacks an adversarial audit or research action."
+    },
+    {
+      "id": 130,
+      "query": "Review the whole project and tell me the best next three routes.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 131,
+      "query": "Prepare a weekly research handoff from status, claims, and log.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 132,
+      "query": "Review this bloated research dashboard and prioritize the next mathematical routes without editing it.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 133,
+      "query": "Search the literature for the exact version of this theorem.",
+      "wording_entry_points": [
+        "literature-check"
+      ],
+      "codex_entry_points": [
+        "literature-check"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches literature-check description."
+    },
+    {
+      "id": 134,
+      "query": "Prove the current lemma.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "A current lemma proof request in research context starts one bounded route."
+    },
+    {
+      "id": 135,
+      "query": "Compile the paper.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 136,
+      "query": "Generate the dependency-aware handoff from the .mathbox event ledger.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 137,
+      "query": "Write a historical closeout for the finished descent program.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 138,
+      "query": "Migrate the flat research log into program indexes.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 139,
+      "query": "This project uses .mathbox. Review the whole project and recommend the next three routes.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Presence of .mathbox does not select state when the task is prose project review."
+    },
+    {
+      "id": 140,
+      "query": "Review this manuscript and write a referee report.",
+      "wording_entry_points": [
+        "referee"
+      ],
+      "codex_entry_points": [
+        "referee"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches referee description."
+    },
+    {
+      "id": 141,
+      "query": "Check the .mathbox ledger and tell me which proofs are stale.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 142,
+      "query": "Set up executable evidence and dependency tracking for this research project.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 143,
+      "query": "Reconcile these delayed parallel route runs against their shared base revision in the .mathbox ledger.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 144,
+      "query": "Generate a goal-scoped ledger handoff with active review conditions and route prerequisites.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 145,
+      "query": "Batch these claim and evidence proposals into the .mathbox journal, then show which claims pin this manuscript file.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 146,
+      "query": "Explain the definition of a chain complex.",
+      "wording_entry_points": [],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "No suite description directly matches the request."
+    },
+    {
+      "id": 147,
+      "query": "Audit this proof without creating project files.",
+      "wording_entry_points": [
+        "proof-audit"
+      ],
+      "codex_entry_points": [
+        "proof-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proof-audit description."
+    },
+    {
+      "id": 148,
+      "query": "Prepare a weekly research handoff from the status file, claims and log.",
+      "wording_entry_points": [
+        "research-retrospective"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": true
+      },
+      "reason": "Task directly matches research-retrospective description."
+    },
+    {
+      "id": 149,
+      "query": "Pursue this conjecture through several approaches until one works.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 150,
+      "query": "Reconcile this inconclusive run in .mathbox and preserve its untried continuation for a later run.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 151,
+      "query": "Correct a premature route closure in the .mathbox ledger without changing the mathematical premises.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 152,
+      "query": "I can inspect the .mathbox ledger but cannot execute scripts or write here. Produce a deferred packet for the new evidence so I can ingest it locally.",
+      "wording_entry_points": [
+        "research-state"
+      ],
+      "codex_entry_points": [
+        "research-state"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-state description."
+    },
+    {
+      "id": 153,
+      "query": "This project has a .mathbox ledger; proofread the edited paragraph in Section 2.",
+      "wording_entry_points": [
+        "proofread-math"
+      ],
+      "codex_entry_points": [
+        "proofread-math"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches proofread-math description."
+    },
+    {
+      "id": 154,
+      "query": "Set up AGENTS.md, a charter and a live status file for this research repository.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 155,
+      "query": "Attack lemma L in this .mathbox project.",
+      "wording_entry_points": [
+        "research-attempt"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": true,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Explicit attack on one lemma selects attempt; ledger presence alone does not select state."
+    },
+    {
+      "id": 156,
+      "query": "Close out program P and compact its status.",
+      "wording_entry_points": [
+        "research-program"
+      ],
+      "codex_entry_points": [
+        "research-program"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-program description."
+    },
+    {
+      "id": 157,
+      "query": "Migrate our flat research log into program indexes.",
+      "wording_entry_points": [
+        "research-init"
+      ],
+      "codex_entry_points": [],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": true,
+        "research-retrospective": false
+      },
+      "reason": "Task directly matches research-init description."
+    },
+    {
+      "id": 158,
+      "query": "Validate this computation manifest.",
+      "wording_entry_points": [
+        "computation-audit"
+      ],
+      "codex_entry_points": [
+        "computation-audit"
+      ],
+      "supplied_skill_applicability": {
+        "manuscript-integrate": false,
+        "research-attempt": false,
+        "research-init": false,
+        "research-retrospective": false
+      },
+      "reason": "Manifest validation fits the evidence/reproducibility surface of computation audit."
+    }
+  ]
+}

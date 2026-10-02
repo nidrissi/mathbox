@@ -1,10 +1,7 @@
 # Ledger format and commands
 
 The journal is `.mathbox/events/000001.json`, etc., with schema version 1 in
-`.mathbox/config.json`. New configurations also declare the
-`recorded-evidence-v1` projection semantics. A pre-existing version-1 config
-without that declaration remains readable and receives the same neutral
-projection. Keep it in project version control. Events form a hash
+`.mathbox/config.json`. Keep it in project version control. Events form a hash
 chain, have UTC timestamps and actor attribution, and are written atomically
 under an exclusive writer lock. Hash chaining detects accidental corruption; it
 is not authentication against someone who can rewrite the whole journal. Git
@@ -37,12 +34,14 @@ python3 "$TOOL" --root /path/to/project pin-impact statements/parity.md
 subject (claim, evidence, route, run, program or retraction target) and the
 paths and hashes it pinned; `--json record` prints the complete event. Proposals
 contain exactly `type`, `actor`, and `payload`. Generated timestamps, hashes and
-revision snapshots belong to the helper. Exit codes: 0 success; 1 stale evidence
-from `check`; 2 invalid input, unsupported version, integrity or I/O error.
+revision snapshots belong to the helper. New proposals reject unknown payload
+keys and list allowed keys in the error; historical replay remains unchanged.
+Artifact objects use `path`, optional observed `sha256`, and a `locator` when required. Exit codes: 0 success; 1 any freshness or integrity issue
+reported by `check`; 2 invalid input, unsupported version, integrity or I/O error.
 Open conjectures are valid state and do not make `check` fail.
 `check --summary` prints event and claim counts, counts by evidence/review status,
 the total issue count and at most eight example issues. The omitted count is
-explicit. `check --summary --full` prints every issue; `--json check` prints
+explicit. `check --full` and `check --summary --full` print every issue; `--json check` prints
 the complete projection. Human `status` and `handoff` likewise default to brief
 views; add `--full` after either subcommand for the complete Markdown report,
 or put `--json` before the subcommand for the complete machine view. When
@@ -82,7 +81,7 @@ omitted count. Each receipt lists up to eight pinned paths and hashes, with a
 that output selectively for a large batch.
 
 For a host that can reason from the ledger but cannot execute or write, use the
-[deferred handoff protocol](deferred-handoff.md). `ingest PACKET.json --dry-run`
+[deferred packet protocol](deferred-packet.md). `ingest PACKET.json --dry-run`
 validates staged text artifacts, one guarded index append, and the ordinary
 batch proposals against an exact ledger head. Only locations that the optional
 `deferred` section of `.mathbox/config.json` opens can receive files or an index
@@ -162,7 +161,7 @@ cannot be detected by this tool. A finite computation that exhausts a finite
 theorem still needs a separate proof artifact establishing exhaustive coverage
 and implementation correctness. The helper never infers such a bridge.
 
-A computation can link a strict computation manifest instead of duplicating its
+A computation can link a version-2 manifest (v1 manifests pin only as ordinary artifacts) instead of duplicating its
 file closure in `artifacts`:
 
 ```json
@@ -216,14 +215,12 @@ whether the reviewer actually worked independently. Active failed reviews block
 their evidence; conflicting proof/counterexample evidence yields `disputed`.
 A counterexample with an active conditional review leaves the claim
 `conditional` unless another unqualified counterexample supports a negative
-record. The same conditional rule applies to computation evidence. Coexisting
-positive and counterexample evidence yields `disputed`.
+record. The same conditional rule applies to computation evidence.
 
 Each projected claim contains its active `reviews`, keyed by review event ID,
 with the evidence link, outcome, independence declaration, actor, summary,
-report artifact, timestamp and current artifact issues. The compact `review`
-field reports an independent pass, a conditional review, a failed review, or
-conflicting pass/fail reviews. Inspect the full objects before resolving a
+report artifact, timestamp and current artifact issues. The compact `review` field is one of `no-independent-pass-recorded`, `independent-pass-recorded`,
+`conditional-review-recorded`, `failed-review-recorded` or `conflicting-reviews-recorded`. Inspect the full objects before resolving a
 condition or conflict.
 
 Retract an erroneous evidence or review event with:
@@ -232,8 +229,9 @@ Retract an erroneous evidence or review event with:
 {"type":"retract","actor":"researcher","payload":{"target":"E000002","reason":"The witness does not satisfy the connectedness hypothesis."}}
 ```
 
-A claim whose dependencies are not `proof-recorded` or `source-recorded` is
-reported `conditional`, including when its own attached evidence is a finite computation.
+A claim with current proof, source or computation evidence whose dependencies
+are not `proof-recorded` or `source-recorded` is `conditional`. Without evidence
+it is `conjectural`; an unqualified counterexample is `counterexample-recorded`.
 Finite evidence never reads as verified while its inputs remain open.
 
 Generated evidence states deliberately avoid project-level mathematical
@@ -257,8 +255,7 @@ states through the repository's own approval policy; do not rename them to
 Changes in a claim's transitive revision snapshot or artifact bytes make evidence
 stale. Dependency evidence being retracted or counterexample-supported instead makes downstream
 arguments conditional. Re-record after mathematical revalidation, never just
-to refresh bookkeeping. Generated labels describe recorded local proof, source,
-finite evidence, counterexample, missing evidence, conflict or staleness.
+to refresh bookkeeping.
 
 New evidence can include `supersedes`, an array of prior evidence event IDs for
 the same claim. Use this after actually revalidating a changed proof or contract.
@@ -292,9 +289,10 @@ is impossible. Do not use terminal `blocked` or `inconclusive` merely to park an
 unfinished attempt for time, tools or priority; keep the route open and describe
 the deferred action and resumption condition in its durable record and handoff.
 Correction/reopening is a new route ID with `reopens` equal to the terminal
-route-result or reconciliation event ID and a `changed_input` explanation. An exact repeated target/mechanism
-without this explanation is rejected, whether the earlier route is open or
-closed. Semantic duplicates still need human or agent judgment. Route success
+route-result or reconciliation event ID and a `changed_input` explanation. A new route repeating an earlier route's owning `claim` and `mechanism` is
+rejected unless it `reopens` that route's terminal event with identical owner,
+`resolves` and mechanism. To apply a mechanism to another obligation, make that
+obligation the owner. Semantic duplicates still need human or agent judgment. Route success
 does not itself create proof evidence.
 
 For an established mathematical obstruction, `changed_input` must explain what
@@ -324,97 +322,7 @@ list only open candidates. Each open candidate in `next` and `handoff` carries
 route's latest `continue` reconciliation. Both Markdown handoff views print it
 under the route.
 
-## Programs, executions and reconciliation
+## Programs and executions
 
-Use lifecycle events when work spans agents, branches, delayed responses, or
-multiple sessions. Ordinary route/result records remain valid.
-
-Start a program against a precise ledger head and external project revision:
-
-```json
-{
-  "type": "program",
-  "actor": "coordinator",
-  "payload": {
-    "id": "P_MAIN",
-    "goal": "C_MAIN",
-    "objective": "Resolve the registered goal through the live route portfolio.",
-    "base_event": "E000012",
-    "base_revision": "git:0123456789abcdef"
-  }
-}
-```
-
-The base event must already exist in the ledger. The revision is an external
-immutable identifier or an explicit unversioned snapshot label; the helper
-cannot verify a VCS revision. A `program-observation` records `program`, a state
-(`active`, `waiting`, `blocked`, or `unknown`), `summary`, and
-`observed_revision`. Use `unknown` when importing an old launch whose liveness
-has not been observed; do not infer that it is active. A terminal
-`program-result` records `program`, an outcome (`completed`, `blocked`, or
-`abandoned`), `reason`, `next_action`, and `closed_revision`. Programs are
-status containers and never promote claims. Close or explicitly abandon every
-run before closing its program.
-
-Start every execution separately, including parallel executions of one route:
-
-```json
-{
-  "type": "route-run",
-  "actor": "coordinator",
-  "payload": {
-    "id": "RUN_A",
-    "program": "P_MAIN",
-    "route": "R_LIFT",
-    "base_event": "E000013",
-    "base_revision": "git:0123456789abcdef",
-    "executor": "worker-a",
-    "work_scope": ["construct the lift", "do not edit the main ledger"]
-  }
-}
-```
-
-The route's owner or one of its resolved targets must belong to the program goal
-or its dependency closure. A
-`run-observation` records `run`, state (`active`, `waiting`, `blocked`, or
-`unknown`), `summary`, and `observed_revision`. Its event becomes the generated
-last observation. A `run-result` records `run`, outcome (`succeeded`, `failed`,
-`blocked`, `inconclusive`, or `abandoned`), `reason`, `next_question`,
-`result_revision`, and optional pinned `artifacts`. It closes only that
-execution. Results may arrive after their route closed because their
-base and result revisions, rather than event arrival order, carry chronology.
-
-The ledger's single writer then records `route-reconcile` with `route`, one or
-more run-result event IDs in `results`, their common `base_event` and
-`base_revision`, `current_revision`, `reason`, `next_question`, and an explicit
-`conflicts` string array. Runs based on different snapshots need separate
-reconciliations. Differing run outcomes and `late-conflict` require a nonempty
-conflict record. Decisions are:
-
-- `continue`: retain an open route while waiting or adapting;
-- `succeeded`, `failed`, `blocked`, or `inconclusive`: close an open route;
-- `late-consistent`, `late-conflict`, `late-superseded`, or
-  `late-not-applicable`: disposition a newly arrived result after closure.
-
-For example, if a coefficient ansatz is inconclusive and a recurrence remains
-untried, record the run's outcome as `inconclusive` and reconcile with `continue`.
-Name the recurrence as the next action, or state why it is deferred and when to
-resume it. The route stays in `next` and `handoff` with that next action and
-reason as its `continuation`; a later run of that same route does not need
-`reopens` or `changed_input`. These helpers do not schedule deferred work or
-lower its score; read each candidate's `continuation` and apply the recorded
-resource and priority conditions when choosing among candidates.
-
-Each reconciliation must add at least one result not previously reconciled; a
-later cumulative reconciliation may also cite earlier results. A terminal
-reconciliation event is the event named by `reopens`. No outcome is inferred
-from completion or arrival order. This serial proposal workflow records parallel
-and delayed work without merging or renumbering journals. A run result or
-reconciliation never creates mathematical evidence; record separate evidence
-only after checking the result against the exact claim.
-
-JSON status and handoff output include active review objects, `programs`, `runs`, and
-`reconciliations`. Each program/run has a projected lifecycle status and a
-generated `last_observed` event and timestamp. Changed terminal run artifacts
-produce `stale-result` plus a ledger issue; they do not silently change the
-recorded terminal outcome.
+Read [executions.md](executions.md) for multi-session, parallel or delayed work:
+program/run fields, shared bases, `decision`, continuation and late dispositions.

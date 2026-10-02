@@ -15,9 +15,9 @@ outcomes. With a ledger, use a brief goal handoff and freshness check; inspect
 full contracts, active review reports, and artifacts for every status used in
 the synthesis. Record the assessment Git revision or ledger head and the
 complete pre-existing issue list from `check --summary --full`; the plain
-summary samples only eight issues. Do not infer proof from a generated label.
+summary may omit issues. Do not infer proof from a generated label.
 
-For a retrospective closeout, record two distinct provenance points: the
+For a historical closeout, record two distinct provenance points: the
 historical cutoff (date and exact Git revision or ledger event when available)
 and the migration-time assessment (date and current revision/head). Say whether
 the cutoff date was recorded, inferred from Git, or unavailable. A first Git
@@ -38,8 +38,10 @@ remove empty fields rather than filling them with speculation. State:
 - the strongest results supported at the cutoff and their claim IDs, each
   linked to its proof, source check, or bounded computation rather than
   reprinting them;
-- mechanisms closed by the cutoff and their first failed implication, plus the
-  new mathematical input required to reopen any of them;
+- closed mechanisms, their obstruction or scoped reason no continuation
+  remained, and changed input addressing that reason before reopening;
+- open routes and continuations: untried/deferred step, next action, reason and
+  resumption condition for every open route, even if another route is active;
 - unresolved dependencies, active route, cheapest discriminating next action,
   and any conflicting review or stale evidence;
 - cutoff and assessment identifiers, relevant verification scope, and links
@@ -88,7 +90,8 @@ For an existing flat index, use the reviewed `research-init` migration rather
 than pretending its history disappeared. If that skill is unavailable, keep the
 flat index intact and report the migration as pending.
 
-Set an advisory project-specific size or repeated-checkpoint trigger for the
+If project instructions lack one, propose an advisory project-specific size or
+repeated-checkpoint trigger for the
 live view and top-level index. Exceeding it prompts review, not automatic
 truncation or deletion. Agents should load the current summary and targeted
 index entries, never every historical program by default.
@@ -98,7 +101,7 @@ index entries, never every historical program by default.
 Before replacing old live prose, map each substantive span to the current
 view, a linked closeout/route record, or an explicitly retained unresolved
 archive. Reconcile exact claim wording, evidence and review conditions,
-unresolved questions, and affected pins. Check links and compare the complete
+unresolved questions, deferred continuations and affected pins. Check links and compare the complete
 ledger issue list with the base; do not repair staleness by refreshing hashes.
 Run the project's risk-appropriate checks and inspect the full diff. Report
 what remains open and any history that is only archived pending classification.

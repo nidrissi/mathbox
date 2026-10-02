@@ -9,7 +9,7 @@
     {
       "name": "mathbox",
       "source": ".",
-      "description": "Sustained mathematical research with versioned evidence and dependency tracking",
+      "description": "Sustained mathematical research with auditable claims, dependencies and reproducible experiments",
       "version": "3.2.0",
       "author": {
         "name": "Najib Idrissi-Kaïtouni",
@@ -22,7 +22,8 @@
       "tags": [
         "mathematics",
         "research",
-        "verification"
+        "verification",
+        "referee"
       ]
     }
   ]

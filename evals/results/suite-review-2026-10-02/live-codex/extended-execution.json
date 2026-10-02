@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "codex",
+    "exec",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--json",
+    "-C",
+    "/tmp/mathbox-live-routing",
+    "-"
+  ],
+  "exit_code": 0,
+  "timeout": false,
+  "seconds": 123.99402491003275,
+  "outer_sandbox": "escalated"
+}

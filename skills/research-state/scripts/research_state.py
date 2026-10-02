@@ -46,6 +46,26 @@ DEFERRED_SUFFIXES = {".bib", ".md", ".tex", ".txt"}
 INSTRUCTION_FILES = {"agents.md", "agents.override.md", "claude.md", "claude.local.md",
                      "gemini.md", "skill.md"}
 
+# Validate new proposals only: historical journals retain their replay semantics.
+PAYLOAD_FIELDS = {
+    "claim": {"id", "statement", "hypotheses", "regime", "level", "dependencies", "reason", "statement_artifact"},
+    "evidence": {"claim", "kind", "summary", "artifacts", "manifest", "assertion", "bounds", "non_claims",
+                 "identifier", "version", "locator", "translation", "hypothesis_check", "supersedes"},
+    "review": {"evidence", "outcome", "independent", "summary", "artifact"},
+    "retract": {"target", "reason"},
+    "route": {"id", "claim", "resolves", "mechanism", "question", "discriminator", "success", "failure",
+              "prerequisites", "gain", "cost", "reopens", "changed_input"},
+    "route-result": {"route", "outcome", "reason", "next_question"},
+    "program": {"id", "goal", "objective", "base_event", "base_revision"},
+    "program-observation": {"program", "state", "summary", "observed_revision"},
+    "program-result": {"program", "outcome", "reason", "next_action", "closed_revision"},
+    "route-run": {"id", "program", "route", "base_event", "base_revision", "executor", "work_scope"},
+    "run-observation": {"run", "state", "summary", "observed_revision"},
+    "run-result": {"run", "outcome", "reason", "next_question", "result_revision", "artifacts"},
+    "route-reconcile": {"route", "results", "base_event", "base_revision", "current_revision", "reason",
+                        "next_question", "conflicts", "decision"},
+}
+
 
 class LedgerError(ValueError):
     pass
@@ -618,6 +638,12 @@ class Ledger:
         event = json.loads(json.dumps(proposal))
         require(isinstance(event["payload"], dict), "payload must be an object")
         p = event["payload"]
+        kind = event["type"]
+        require(isinstance(kind, str) and kind in PAYLOAD_FIELDS, f"unknown event type: {kind}")
+        allowed = PAYLOAD_FIELDS[kind]
+        require(not (p.keys() - allowed),
+                f"unknown {kind} payload fields: {', '.join(sorted(p.keys() - allowed))}; "
+                f"allowed fields: {', '.join(sorted(allowed))}")
         if event["type"] == "claim" and "statement_artifact" in p:
             require(isinstance(p["statement_artifact"], dict),
                     "statement artifact must be an object")
@@ -1435,33 +1461,33 @@ def unverified_pins(packet):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path.cwd())
-    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--root", type=Path, default=Path.cwd(), help="initialized project root (default: current directory)")
+    parser.add_argument("--json", action="store_true", help="complete structured output; place before the subcommand")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init", help="initialize a new ledger")
     check = commands.add_parser("check", help="check freshness and integrity; brief by default")
-    check.add_argument("--summary", action="store_true")
-    check.add_argument("--full", action="store_true")
+    check.add_argument("--summary", action="store_true", help="counts and issues only")
+    check.add_argument("--full", action="store_true", help="show complete detail")
     status = commands.add_parser("status", help="show recorded claim state; brief by default")
-    status.add_argument("--full", action="store_true")
+    status.add_argument("--full", action="store_true", help="show complete detail")
     record = commands.add_parser("record", help="append one proposal and print a receipt")
     record.add_argument("proposal", type=Path)
     batch = commands.add_parser("record-batch", help="prevalidate and append distinct proposals in one pass")
     batch.add_argument("proposals", type=Path)
-    batch.add_argument("--dry-run", action="store_true")
-    ingest = commands.add_parser("ingest", help="validate and apply a deferred handoff packet")
+    batch.add_argument("--dry-run", action="store_true", help="validate all proposals without appending events")
+    ingest = commands.add_parser("ingest", help="validate and apply a deferred packet")
     ingest.add_argument("packet", help="JSON packet path, or - for stdin")
-    ingest.add_argument("--dry-run", action="store_true")
+    ingest.add_argument("--dry-run", action="store_true", help="validate the packet without writing files or events")
     for name in ("next", "handoff"):
-        sub = commands.add_parser(name, help="show goal routes or a brief goal handoff")
-        sub.add_argument("--goal")
+        sub = commands.add_parser(name, help="rank open recorded routes" if name == "next" else "show a dependency-aware goal handoff")
+        sub.add_argument("--goal", help="registered claim ID; omit for the whole project")
         if name == "handoff":
-            sub.add_argument("--full", action="store_true")
+            sub.add_argument("--full", action="store_true", help="show complete detail")
     sub = commands.add_parser("impact", help="list dependents of one claim")
     sub.add_argument("claim")
-    sub = commands.add_parser("pin-impact", help="show claim and evidence pins of one project file")
+    sub = commands.add_parser("pin-impact", help="show claim, evidence, review and run-result pins of one project file")
     sub.add_argument("path")
-    sub.add_argument("--full", action="store_true")
+    sub.add_argument("--full", action="store_true", help="show complete detail")
     args = parser.parse_args(argv)
     try:
         ledger = Ledger(args.root)

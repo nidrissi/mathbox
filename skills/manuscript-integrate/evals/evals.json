@@ -44,6 +44,36 @@
         "Distinguishes historical mentions from stale live instructions",
         "Does not use successful compilation as semantic validation"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Integrate the lemma: for every real x >= 0, x/x = 1. Status calls it proved; its proof only says cancel x. The manuscript is paper.tex.",
+      "expected_output": "Blocks established integration on the admitted x=0 boundary; returns correctness obligation.",
+      "assertions": [
+        "Reads raw evidence despite status",
+        "No new proof to repair the gap",
+        "No promotion or semantic manuscript edit"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Explicitly integrate this as a conditional proposition: P follows from the unverified cited theorem T, whose exact source is unavailable.",
+      "expected_output": "Carries T as an unverified dependency and conditional status in the text.",
+      "assertions": [
+        "Keeps missing bridge explicit",
+        "Does not claim verified source",
+        "Reports documented checks only"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Remove the unsupported universal claim from paper.tex as requested. The record documents the finite result only; no positive proof of the universal claim exists.",
+      "expected_output": "Uses support for the scope removal; no universal proof prerequisite.",
+      "assertions": [
+        "Updates authorized dependents",
+        "Does not require proof of a removed claim",
+        "Build success not mathematical validation"
+      ]
     }
   ]
 }

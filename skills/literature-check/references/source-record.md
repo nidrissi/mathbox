@@ -15,9 +15,12 @@
 - **Exact hypotheses:**
 - **Coefficient, grading, variance, action, completion:**
 - **Notation dictionary:**
-- **Implication check:**
+- **Checks performed:** source authenticated / theorem extracted / project application
+- **Implication check:** verified / conditional (missing bridge) / inapplicable / unverified
 - **Exceptions or caveats:**
-- **Overlap classification:**
+- **Overlap classification:** known verbatim / known after notation translation /
+  formal corollary not stated / new proof of known statement / partial or adjacent /
+  apparently new within stated scope / conjectural or open in checked source
 - **Search scope for novelty statement:** databases/indexes, exact queries,
   synonym or historical-vocabulary queries, date/language/field bounds
 - **Citation graph checked:** backward references, forward citations, related

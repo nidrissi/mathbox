@@ -1,0 +1,46 @@
+{
+  "format": "raw-text-artifacts-v1",
+  "original_root": "/tmp/mathbox-continuation-trials/case5-retrospective",
+  "files": {
+    ".mathbox/config.json": {
+      "sha256": "b0596362e66b69b4485c18fae00e4a036d8afc465370402761b92c98600eedb0",
+      "utf8": "{\n  \"schema_version\": 1,\n  \"projection\": {\n    \"semantics\": \"recorded-evidence-v1\"\n  }\n}\n"
+    },
+    ".mathbox/events/000001.json": {
+      "sha256": "9f7d15108532da36da253c2946d084b4222809af31360a33818d304111e9b8fb",
+      "utf8": "{\n  \"type\": \"claim\",\n  \"actor\": \"fixture-owner\",\n  \"payload\": {\n    \"id\": \"C_BASE\",\n    \"statement\": \"The target Cassini identity holds at n=1 for the stated Pell recurrence.\",\n    \"hypotheses\": [\n      \"integer n >= 1\"\n    ],\n    \"regime\": \"integer recurrences, exact symbolic arithmetic\",\n    \"level\": \"scalar identity\",\n    \"dependencies\": [],\n    \"statement_artifact\": {\n      \"path\": \"TARGET.md\",\n      \"locator\": \"Target\",\n      \"sha256\": \"cbad12c7c71ba584ca2b95db109a5be835a4be0c07d81080e1bbc147072b84ce\"\n    }\n  },\n  \"event_id\": \"E000001\",\n  \"created_at\": \"2026-10-02T12:41:09.728924+00:00\",\n  \"previous\": null,\n  \"sha256\": \"abf0790f1fbd167c8cb10cb1dc57022eb4c246ab5a568e7a14e4411e16a7aff2\"\n}\n"
+    },
+    ".mathbox/events/000002.json": {
+      "sha256": "3314a2ce0544c520a5bb907eb7677b620a3c30a0adb25f82c91d52fadfaf9618",
+      "utf8": "{\n  \"type\": \"claim\",\n  \"actor\": \"fixture-owner\",\n  \"payload\": {\n    \"id\": \"G\",\n    \"statement\": \"The target Cassini identity holds for every n>=1 for the stated Pell recurrence.\",\n    \"hypotheses\": [\n      \"integer n >= 1\"\n    ],\n    \"regime\": \"integer recurrences, exact symbolic arithmetic\",\n    \"level\": \"scalar identity\",\n    \"dependencies\": [],\n    \"statement_artifact\": {\n      \"path\": \"TARGET.md\",\n      \"locator\": \"Target\",\n      \"sha256\": \"cbad12c7c71ba584ca2b95db109a5be835a4be0c07d81080e1bbc147072b84ce\"\n    }\n  },\n  \"event_id\": \"E000002\",\n  \"created_at\": \"2026-10-02T12:41:09.729452+00:00\",\n  \"previous\": \"abf0790f1fbd167c8cb10cb1dc57022eb4c246ab5a568e7a14e4411e16a7aff2\",\n  \"sha256\": \"3356df576994a3863b4ab2da8f44e40002f099d48a38fe3bc4fbaf2b51b1a98e\"\n}\n"
+    },
+    ".mathbox/events/000003.json": {
+      "sha256": "19383f4a291fcdab66bf5ffdee64ee824ea039dd7d9105f59b8f9d47407d6ccc",
+      "utf8": "{\n  \"type\": \"route\",\n  \"actor\": \"fixture-owner\",\n  \"payload\": {\n    \"id\": \"R\",\n    \"claim\": \"G\",\n    \"mechanism\": \"Uniform Pell coefficient-product identity\",\n    \"question\": \"Can the consecutive-vector identity be proved uniformly?\",\n    \"discriminator\": \"Uniform coefficient-product simplification or determinant recurrence\",\n    \"success\": \"Exact proof for every stated n\",\n    \"failure\": \"Valid counterexample or exact no-go for all proposed continuations\",\n    \"prerequisites\": [],\n    \"gain\": 4,\n    \"cost\": 2\n  },\n  \"event_id\": \"E000003\",\n  \"created_at\": \"2026-10-02T12:41:09.729553+00:00\",\n  \"previous\": \"3356df576994a3863b4ab2da8f44e40002f099d48a38fe3bc4fbaf2b51b1a98e\",\n  \"sha256\": \"495020e5b46a35a54f83cb4826299daf336c30713c934b3df9c51477312047ab\"\n}\n"
+    },
+    ".mathbox/events/000004.json": {
+      "sha256": "5152c0773a89812fee812f1061feb0c38e5b4073aed8091284efa7758d45ad80",
+      "utf8": "{\n  \"type\": \"evidence\",\n  \"actor\": \"fixture-owner\",\n  \"payload\": {\n    \"claim\": \"C_BASE\",\n    \"kind\": \"proof\",\n    \"summary\": \"Direct substitution proves the n=1 restriction only\",\n    \"artifacts\": [\n      {\n        \"path\": \"proofs/base.md\",\n        \"sha256\": \"9d28451b6c27ad0d747208617c4cf6b068faa9cff65a97f260c1e61ee437ffe1\"\n      },\n      {\n        \"path\": \"RESEARCH_STATUS.md\",\n        \"locator\": \"2026-09-01 verification narrative\",\n        \"sha256\": \"273e9e8548348935ad8033e91b6afefeeed67106b6d577966ddd3482f2099c98\"\n      }\n    ],\n    \"snapshot\": {\n      \"C_BASE\": 1\n    }\n  },\n  \"event_id\": \"E000004\",\n  \"created_at\": \"2026-10-02T12:41:09.729992+00:00\",\n  \"previous\": \"495020e5b46a35a54f83cb4826299daf336c30713c934b3df9c51477312047ab\",\n  \"sha256\": \"20e9ebbdeaec9e2aed237f3322ee5469772540c5f0e84d88bce8c9697153f69a\"\n}\n"
+    },
+    "AGENTS.md": {
+      "sha256": "589b210771bb6896b94c786f4000dc23e98520aeaaedfddaa1711d4490a76db8",
+      "utf8": "# Trial authority\n\nMission: characterize a scalar recurrence identity. TARGET.md is the exact target, RESEARCH_STATUS.md is the sole live dashboard, RESEARCH_LOG.md is the history entry point and research/records/ is the immutable-record area. The ledger is bookkeeping authority. Durable proof details live in proofs/. Reconciliation of current facts is allowed, but do not change active pinned evidence or remove historical narratives without a durable indexed home and pin review. No source, network, Git, or manuscript action is authorized. No independent mathematical review is recorded.\n"
+    },
+    "RESEARCH_LOG.md": {
+      "sha256": "5cb8960c0a08f3ecd947e5ecb7a3f63309f5fadc9a9cf18cd7db829bac34dc78",
+      "utf8": "# Research history\n\nNo durable route record or closeout for the embedded 2026-09-01 narrative has been indexed.\n"
+    },
+    "RESEARCH_STATUS.md": {
+      "sha256": "273e9e8548348935ad8033e91b6afefeeed67106b6d577966ddd3482f2099c98",
+      "utf8": "# Current summary\n\nThe full Pell Cassini identity G remains conjectural and unreviewed. The first-index statement C_BASE is supported by the direct calculation below and the proof note, with no independent review. The coefficient-root approach R is open with uniform simplification unresolved. Next action: prove determinant evolution uniformly, in a separately authorized work package.\n\n## 2026-09-01 verification narrative\n\nThe first-index check uses $a_0=0$, $a_1=1$, $a_2=2$, so $a_2a_0-a_1^2=-1=(-1)^1$. The root calculation found $1+\\sqrt2$ and $1-\\sqrt2$, but did not complete the uniform product simplification. The recurrence-vector method remained untried. This narrative has no standalone durable route record or indexed closeout.\n"
+    },
+    "TARGET.md": {
+      "sha256": "cbad12c7c71ba584ca2b95db109a5be835a4be0c07d81080e1bbc147072b84ce",
+      "utf8": "# Target\n\nFor $a_0=0$, $a_1=1$, $a_{n+2}=2a_{n+1}+a_n$, determine whether $a_{n+1}a_{n-1}-a_n^2=(-1)^n$ for every integer $n\\geq1$.\n"
+    },
+    "proofs/base.md": {
+      "sha256": "9d28451b6c27ad0d747208617c4cf6b068faa9cff65a97f260c1e61ee437ffe1",
+      "utf8": "# First-index identity\n\nThe recurrence and initial conditions give $a_2=2$. Hence $a_2a_0-a_1^2=2\\cdot0-1^2=-1=(-1)^1$. This proves only the $n=1$ restriction; it does not prove the quantified target. The contemporaneous calculation and inputs are also pinned from [the dashboard](../RESEARCH_STATUS.md).\n"
+    }
+  }
+}

@@ -25,7 +25,7 @@
     },
     {
       "id": 3,
-      "prompt": "Attack the next implication in the proof. It depends on the exact integral statement of a cited theorem, but the literature ledger records only an abstract and the project permits caching public PDFs.",
+      "prompt": "Attack the next implication in the proof. It depends on the exact integral statement of a cited theorem, but the literature record records only an abstract and the project permits caching public PDFs.",
       "expected_output": "Routes the external-source question through the available literature-check skill, which checks the authorized local cache before fetching, and keeps the research implication conditional until the exact integral theorem is verified.",
       "assertions": [
         "Uses literature-check for the external theorem rather than reconstructing it from the abstract",
@@ -59,11 +59,12 @@
     {
       "id": 6,
       "prompt": "The user authorized a sustained three-route investigation. This skill is handling route one, which just failed at a named comparison map. What happens next?",
-      "expected_output": "Closes this route with its first obstruction, then continues the authorized program through distinct remaining routes without asking permission again.",
+      "expected_output": "Records the first failed implication; closes the route only if it obstructs the whole mechanism and no continuation remains. Otherwise returns continuations, then continues the authorized program without re-requesting permission.",
       "assertions": [
-        "Distinguishes a route boundary from the user goal",
-        "Does not claim the conjecture is false from failure of one method",
-        "Requires a mathematical change before repeating this mechanism"
+        "Separates attempt outcome, route disposition and original goal",
+        "Records the obstruction scope and all continuations",
+        "Does not refute the target from failure of one method",
+        "Requires changed input only to address an established obstruction"
       ]
     },
     {
@@ -129,6 +130,43 @@
         "Places the complete record under research/records/ and appends only to research/index.md with its exact current tail",
         "Uses batch aliases for new event references and invents no generated fields",
         "States that the packet has not been applied"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "As a delegated work package for program P, route R, base checkpoint B, write only research/records/worker.md. Derive a bounded result and return updates for the coordinator.",
+      "expected_output": "Returns record/proposed status/index/events and actual base/inputs/hashes within assigned scope.",
+      "assertions": [
+        "No shared dashboard or index mutation",
+        "No worker deferred packet"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Attempt a construction for independently proved A. The candidate map has incompatible domain and codomain, but the proof of A is unchanged.",
+      "expected_output": "Rejects construction while keeping independently supported target label.",
+      "assertions": [
+        "No false refutation",
+        "Separates attempt and target evidence"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "The target labelled proved is itself ill-typed: its asserted linear map has no defined codomain. Audit and correct authorized durable status.",
+      "expected_output": "Reports target defect, affected support/dependents and no reliable old proved label.",
+      "assertions": [
+        "Uses focused correctness audit",
+        "No unsupported retention of proved status"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "An inconclusive attempt leaves route R open with a recurrence deferred to the next session. Program P began at event E000010; the execution began at E000020. Persist in the authorized ledger.",
+      "expected_output": "Reuses P and records missing run/result/continue reconciliation from execution base.",
+      "assertions": [
+        "No new base fields on run-result",
+        "No duplicate program",
+        "Continuation visible in next and handoff"
       ]
     }
   ]

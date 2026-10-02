@@ -1,13 +1,18 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "claim_id": "",
   "repository": {
     "commit": "",
     "dirty": true
   },
-  "command": "",
+  "command": [],
   "environment": {
-    "software": [],
+    "software": [
+      {
+        "name": "",
+        "version": ""
+      }
+    ],
     "hardware": ""
   },
   "mathematics": {
@@ -26,15 +31,31 @@
   "run": {
     "started_at": "",
     "runtime_seconds": null,
-    "exit_status": null
+    "exit_status": null,
+    "status": "",
+    "resource_limits": {
+      "memory_bytes": null,
+      "cpu_seconds": null,
+      "max_cores": null,
+      "max_threads": null
+    }
   },
   "outputs": [
     {
       "path": "",
-      "sha256": ""
+      "sha256": "",
+      "kind": "result"
     }
   ],
   "checks": [],
   "result": "",
-  "residual_risks": []
+  "residual_risks": [],
+  "input_artifacts": [
+    {
+      "path": "",
+      "sha256": "",
+      "sha256_after": ""
+    }
+  ],
+  "declared_results": []
 }

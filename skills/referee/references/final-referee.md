@@ -1,6 +1,6 @@
 # Final reconciliation
 
-Read the shared protocol, full manuscript, coverage inventory, raw findings,
+Read the [shared protocol](review-protocol.md), full manuscript, coverage inventory, raw findings,
 and the specialist evidence bearing on important concerns. These are evidence,
 not verdicts. Final synthesis must inspect the manuscript itself.
 
@@ -28,7 +28,7 @@ not verdicts. Final synthesis must inspect the manuscript itself.
 7. Record retained/dismissed/merged/conditional/stale dispositions, checked
    locations and reasons using [output-contract.md](output-contract.md).
    Preserve raw returns. Do not change them to match the final report.
-8. Synthesize the report. Confirmed correctness concerns of critical/major
+8. Synthesize the report. Confirmed mathematical concerns from any lane of critical/major
    severity lead the mathematical concerns; local mathematical defects go in
    other mathematical concerns. Exposition always stays in exposition;
    claim calibration in claim/scope assessment, cross-linked to mathematical

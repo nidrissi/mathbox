@@ -14,6 +14,38 @@ from inspect_repo import brief_markdown, classify_research_log, git_state, inspe
 
 
 class InspectorTests(unittest.TestCase):
+    def test_brief_declared_paths_remain_bounded_with_explicit_overflow(self):
+        self.write("AGENTS.md", "\n".join(f"- **Claims:** `claims/c{i}.md`" for i in range(30)))
+        result = inspect(self.root, 5)
+        brief = brief_markdown(result)
+        self.assertIn("Declared paths: 30.", brief)
+        self.assertIn("22 more; inspect --full", brief)
+        self.assertNotIn("`claims/c29.md`", brief)
+        self.assertIn("claims/c29.md", markdown(result))
+
+    def test_filled_template_declares_every_live_role_and_fences_are_not_history(self):
+        assets = Path(__file__).resolve().parents[1] / "assets"
+        template = (assets / "AGENTS.template.md").read_text()
+        paths = {"CHARTER_FILE": "PROJECT_CHARTER.md", "STATUS_FILE": "RESEARCH_STATUS.md",
+                 "CLAIMS_FILE": "CLAIMS.md", "CONVENTIONS_FILE": "CONVENTIONS.md",
+                 "LITERATURE_FILE": "LITERATURE.md", "RESEARCH_LOG": "RESEARCH_LOG.md",
+                 "RESEARCH_RECORDS": "research/records", "VERIFICATION_FILE": "VERIFICATION.md",
+                 "ROUTE_INDEX_LOCATION": "research/routes.md"}
+        for key, value in paths.items():
+            template = template.replace("{{" + key + "}}", value)
+            if key != "RESEARCH_RECORDS":
+                self.write(value)
+        self.write("AGENTS.md", template)
+        result = inspect(self.root, 5)
+        roles = {entry["role"] for entry in result["declared_paths"]}
+        self.assertTrue({"charter", "status", "claims", "verification", "route_index"} <= roles)
+        self.assertIn("declared_paths", markdown(result))
+        self.assertIn("research/routes.md", brief_markdown(result))
+        log = self.write("log.md", (assets / "RESEARCH_LOG.template.md").read_text())
+        classification = classify_research_log(log)
+        self.assertEqual(classification["linked_entries"], 0)
+        self.assertEqual(classification["route_markers"], 0)
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
@@ -104,6 +136,19 @@ class InspectorTests(unittest.TestCase):
         self.assertIn("`skills/foo/SKILL.md`", brief)
         self.assertIn("## Project skill files (1)", brief)
         self.assertIn("## Build/verification manifests (1)", brief)
+
+    def test_brief_report_bounds_manifests_and_keeps_full_semantic_details_optional(self):
+        for number in range(30):
+            self.write(f"research/manifests/run-{number:02d}.json", "{}")
+            self.write(f"research/records/claim-{number:02d}.md", "# Claim\n")
+        result = inspect(self.root, 5)
+        brief = brief_markdown(result)
+        self.assertIn("## Computation manifests (30)", brief)
+        self.assertIn("22 more; use --full or --format json", brief)
+        self.assertNotIn("run-29.json", brief)
+        self.assertNotIn('"semantic_roles"', brief)
+        self.assertIn("run-29.json", markdown(result))
+        self.assertIn('"semantic_roles"', markdown(result))
 
     def test_local_copy_of_every_canonical_skill_is_an_override(self):
         for name in ("referee", "research-state"):
