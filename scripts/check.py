@@ -9,7 +9,6 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-import textwrap
 
 
 @contextmanager
@@ -19,6 +18,47 @@ def guard(errors, label):
         yield
     except (OSError, ValueError, KeyError, SyntaxError, subprocess.CalledProcessError) as exc:
         errors.append(f"{label}: {exc}")
+
+
+def folded_lines(lines):
+    """Fold ordinary lines, retaining paragraph breaks and extra indentation."""
+    nonempty = [index for index, line in enumerate(lines) if line]
+    if not nonempty:
+        return ""
+    result = "\n" * nonempty[0] + lines[nonempty[0]]
+    for previous, current in zip(nonempty, nonempty[1:]):
+        breaks = current - previous
+        if lines[previous][0] in " \t" or lines[current][0] in " \t":
+            separator = "\n" * breaks
+        else:
+            separator = " " if breaks == 1 else "\n" * (breaks - 1)
+        result += separator + lines[current]
+    return result
+
+
+def block_description(style, continuation):
+    """Decode the supported auto-indented YAML block scalars without dependencies."""
+    lines = continuation.split("\n")[:-1]
+    first = next((line for line in lines if line.strip()), "")
+    indent = len(first) - len(first.lstrip(" "))
+    if not first or not indent:
+        raise ValueError("description must be an indented YAML string scalar")
+    content = []
+    leading = True
+    for line in lines:
+        if line.strip():
+            if not line.startswith(" " * indent):
+                raise ValueError("inconsistent description indentation")
+            leading = False
+        elif leading and len(line) > indent:
+            raise ValueError("leading blank line exceeds description indentation")
+        if "\t" in line[:indent]:
+            raise ValueError("tabs are not supported in description indentation")
+        content.append(line[indent:])
+    description = folded_lines(content) if style.startswith(">") else "\n".join(content).rstrip("\n")
+    if not style.endswith("-"):
+        description += "\n"
+    return description
 
 
 def skill_frontmatter(body, name):
@@ -38,11 +78,7 @@ def skill_frontmatter(body, name):
     initial, continuation = match.groups()
     initial = initial.strip()
     if initial in {">", ">-", "|", "|-"}:
-        description = textwrap.dedent(continuation).rstrip("\n")
-        if initial.startswith(">"):
-            description = description.replace("\n", " ")
-        if not initial.endswith("-"):
-            description += "\n"
+        description = block_description(initial, continuation)
     elif initial.startswith(('"', "'")):
         if continuation.strip():
             raise ValueError("quoted descriptions must use one line")
@@ -56,13 +92,15 @@ def skill_frontmatter(body, name):
         else:
             raise ValueError("invalid quoted description")
     else:
-        plain = [initial, *textwrap.dedent(continuation).splitlines()]
-        if (not initial or initial[0] in "[{&*!#>|"
+        plain = [initial, *continuation.splitlines()]
+        if (not initial or initial[0] in "[]{},&*!#>|%@`"
+                or re.match(r"^[-?:](?:[ \t]|$)", initial)
                 or initial.lower() in {"true", "false", "yes", "no", "on", "off", "null", "~"}
                 or re.fullmatch(r"[-+]?\d+(?:\.\d+)?", initial)
-                or any(re.search(r":[ \t]|[ \t]#", line) for line in plain)):
+                or any(re.search(r":(?:[ \t]|$)|[ \t]#", line) for line in plain)
+                or any("\t" in line[:len(line) - len(line.lstrip())] for line in plain)):
             raise ValueError("description must be a supported YAML string scalar")
-        description = " ".join(line.strip() for line in plain if line.strip())
+        description = folded_lines([line.strip() for line in plain])
     if not description.strip() or len(description) > 1024:
         raise ValueError("description must contain 1..1024 characters")
     other = header[:match.start()] + header[match.end():]

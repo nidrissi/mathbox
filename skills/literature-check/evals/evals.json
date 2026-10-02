@@ -102,6 +102,18 @@
         "No silent conflicting metadata overwrite",
         "Does not equate ingest date with theorem verification"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "Correct the metadata for this authorized cached public PDF. I authenticated it as arXiv:2401.00001v3, but the identical-content record incorrectly says v2 and also has a DOI. Use --replace-metadata and preserve the DOI. For a second authorized PDF, retain arXiv:2401.00002v2 with revision date 2024-01-15 as its version field; I have not verified either paper's theorems.",
+      "expected_output": "Reads source-cache, corrects the first record's versioned arXiv ID and numeric version through the helper while retaining the DOI, accepts the second record's revision-date metadata, and leaves theorem verification unperformed.",
+      "assertions": [
+        "Uses explicit metadata replacement only for the authorized identical-content correction",
+        "The corrected record has v3 without a conflicting v2 ID and retains its DOI",
+        "Does not reject the revision date merely because it is not a vN label",
+        "A lookup for the superseded v2 returns a candidate rather than an exact version hit",
+        "Does not treat either metadata update as theorem verification"
+      ]
     }
   ]
 }

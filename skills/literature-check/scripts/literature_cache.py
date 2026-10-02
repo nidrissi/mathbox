@@ -267,6 +267,20 @@ def arxiv_base(identifier: str) -> str | None:
     return match.group(1).lower() if match else None
 
 
+def arxiv_version(identifier: str) -> str | None:
+    """Return the normalized version suffix of an arXiv identifier, if present."""
+    if not identifier.startswith("arxiv:"):
+        return None
+    match = ARXIV_VERSION_RE.fullmatch(identifier.removeprefix("arxiv:"))
+    return match.group(2).lower() if match and match.group(2) else None
+
+
+def metadata_arxiv_version(value: str | None) -> str | None:
+    """Compare numeric version labels; revision dates and other labels remain free text."""
+    match = re.fullmatch(r"v?(\d+)", value, re.I) if value else None
+    return f"v{match[1]}" if match else None
+
+
 def read_record(path: Path) -> dict:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -402,9 +416,9 @@ def ingest(args: argparse.Namespace) -> dict:
             raise CacheError("--date-checked must be an ISO date YYYY-MM-DD") from None
         if parsed_date.isoformat() != args.date_checked:
             raise CacheError("--date-checked must be an ISO date YYYY-MM-DD")
-    versions = {match.group(1).lower() for item in identifiers if item.startswith("arxiv:")
-                and (match := re.search(r"(v\d+)$", item, re.I))}
-    if len(versions) > 1 or (versions and args.version and args.version.lower() not in versions):
+    versions = {version for item in identifiers if (version := arxiv_version(item))}
+    supplied_version = metadata_arxiv_version(args.version)
+    if len(versions) > 1 or (versions and supplied_version and supplied_version not in versions):
         raise CacheError("conflicting arXiv identifier and --version")
 
     root = Path(args.root)
@@ -432,16 +446,27 @@ def ingest(args: argparse.Namespace) -> dict:
             "created_at": utc_now(),
         }
 
-    record["identifiers"] = sorted(set(record.get("identifiers", [])) | set(identifiers))
+    stored_identifiers = set(record.get("identifiers", []))
+    if args.replace_metadata:
+        replacements = {arxiv_base(item): arxiv_version(item) for item in identifiers
+                        if arxiv_version(item)}
+        stored_identifiers = {item for item in stored_identifiers
+                              if not arxiv_version(item) or arxiv_base(item) not in replacements
+                              or arxiv_version(item) == replacements[arxiv_base(item)]}
+        # Correct a numeric version field along with an explicitly corrected ID.
+        if (versions and not args.version
+                and metadata_arxiv_version(record.get("version"))):
+            record["version"] = next(iter(versions))
+    record["identifiers"] = sorted(stored_identifiers | set(identifiers))
     record["authors"] = list(dict.fromkeys(record.get("authors", []) + (args.author or [])))
     record["locators"] = list(dict.fromkeys(record.get("locators", []) + (args.source_url or [])))
     merge_scalar(record, "title", args.title, args.replace_metadata)
-    combined_versions = {match.group(1).lower() for item in record["identifiers"]
-                         if item.startswith("arxiv:") and (match := re.search(r"(v\d+)$", item, re.I))}
-    effective_version = args.version or record.get("version")
+    combined_versions = {version for item in record["identifiers"] if (version := arxiv_version(item))}
+    effective_version = metadata_arxiv_version(args.version or record.get("version"))
     if len(combined_versions) > 1 or (combined_versions and effective_version
-                                     and effective_version.lower() not in combined_versions):
-        raise CacheError("conflicting cached arXiv identifiers and version")
+                                     and effective_version not in combined_versions):
+        raise CacheError("conflicting cached arXiv identifiers and version; "
+                         "pass the corrected --id and --replace-metadata to replace a stored version")
     merge_scalar(record, "version", args.version, args.replace_metadata)
     prior_bases = record.pop("retention_basis", None)
     bases = record.get("retention_bases", [])
@@ -529,16 +554,14 @@ def record_summary(record: dict, cache: Path, match: str | None = None, snippet:
 
 
 def bounded_snippet(text: str, query: str, width: int = 240) -> str | None:
-    """Return a bounded window that always shows the match, eliding a long one."""
-    text = " ".join(text.split())
-    query = " ".join(query.split())
+    """Window whitespace-normalized text/query, showing the match and eliding a long one."""
     position = text.casefold().find(query.casefold())
     if position < 0:
         return None
     context = width // 3
     start = max(0, position - context)
     end = min(len(text), position + len(query) + context)
-    snippet = " ".join(text[start:end].split())
+    snippet = text[start:end].strip()
     if len(snippet) > width:
         head = width // 2
         snippet = f"{snippet[:head].rstrip()} … {snippet[-(width - head - 3):].lstrip()}"
@@ -571,7 +594,7 @@ def find_records(args: argparse.Namespace) -> dict:
             if not isinstance(identifiers, list):
                 continue
             if wanted in identifiers:
-                label = "arxiv-version-candidate" if wanted_base and not re.search(r"v\d+$", wanted) else "exact-identifier"
+                label = "arxiv-version-candidate" if wanted_base and not arxiv_version(wanted) else "exact-identifier"
                 matches.append(record_summary(record, cache, label))
             elif wanted_base and any(
                 arxiv_base(item) == wanted_base for item in identifiers if isinstance(item, str)
@@ -596,6 +619,7 @@ def find_records(args: argparse.Namespace) -> dict:
                 except (OSError, CacheError):
                     text_value = None
                 if text_value is not None:
+                    text_value = " ".join(text_value.split())
                     snippet = bounded_snippet(text_value, query)
                     match = "text" if snippet else None
             if match:
@@ -755,7 +779,7 @@ def parser() -> argparse.ArgumentParser:
     add.add_argument("--id", dest="identifier", action="append", required=True, help="repeatable scheme:value identifier (at least one required)")
     add.add_argument("--title")
     add.add_argument("--author", action="append")
-    add.add_argument("--version")
+    add.add_argument("--version", help="version label or revision date; numeric arXiv labels must agree with --id")
     add.add_argument("--source-url", action="append")
     add.add_argument("--date-checked", help="ingest date YYYY-MM-DD (default: current UTC date; refreshed on re-ingest)")
     add.add_argument("--retention-basis", required=True, help="why local retention is authorized")

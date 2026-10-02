@@ -1,6 +1,7 @@
 """Direct preparation regressions; no credentials, network or behavior keyword grading."""
 from contextlib import redirect_stderr, redirect_stdout
 import io
+import hashlib
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -15,6 +16,18 @@ def paper(body, preamble=""):
 
 
 class PreparationTests(unittest.TestCase):
+    def test_contract_hashes_use_the_same_inventory_and_keep_digest_format(self):
+        skill = Path(prep.__file__).resolve().parent.parent
+        paths = prep.contract_paths()
+        expected = hashlib.sha256()
+        for path in paths:
+            expected.update(path.relative_to(skill).as_posix().encode("utf-8") + b"\0")
+            expected.update(path.read_bytes() + b"\0")
+        self.assertEqual(prep.contract_digest(), expected.hexdigest())
+        with patch.object(prep, "contract_paths", return_value=paths[:1]):
+            self.assertEqual(set(prep.contract_files()), {"SKILL.md"})
+            self.assertNotEqual(prep.contract_digest(), expected.hexdigest())
+
     def test_contract_file_revisions_are_portable_and_compare_individually(self):
         text = paper("\\section{Main}\nbody\n")
         old, previous = self.snapshot("old", text)

@@ -56,8 +56,9 @@ python3 <literature-check-directory>/scripts/literature_cache.py add \
   --source-url <stable-url> --retention-basis <authorization>
 ```
 
-`add` requires at least one identifier, rejects conflicts between versioned
-arXiv IDs and `--version`, and accepts only ISO `YYYY-MM-DD` dates.
+`add` requires at least one identifier. `--version` accepts a version label or
+revision date; numeric arXiv labels such as `2` and `v2` must agree with versioned
+arXiv IDs. `--date-checked` accepts only ISO `YYYY-MM-DD` dates.
 `date_checked` is the ingest date, refreshed on every re-ingest; it does not
 record mathematical verification.
 
@@ -68,6 +69,12 @@ another tool, with `--text-tool <name>` to record its provenance, or
 compatible identifiers and locators. A differing title or version is reported
 as a conflict rather than merged silently; resolve it deliberately, and pass
 `--replace-metadata` only when the new value is the correct one.
+With a corrected versioned arXiv ID, `--replace-metadata` removes superseded
+versioned IDs for that same preprint while retaining other identifiers. It also
+corrects a stored numeric version label when `--version` is omitted. This is a
+metadata correction for identical content; distinct PDF content retains its
+own record. Conflicting IDs or numeric versions supplied in one command are
+still rejected.
 
 Use `show <sha256-or-prefix>` to inspect one record and `verify` to recompute
 artifact hashes and detect missing or orphaned files. A record the helper

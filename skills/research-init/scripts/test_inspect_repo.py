@@ -10,7 +10,7 @@ import subprocess
 import tempfile
 import unittest
 
-from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown
+from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown, unfenced_lines
 
 
 class InspectorTests(unittest.TestCase):
@@ -104,6 +104,47 @@ class InspectorTests(unittest.TestCase):
             ("markdown-link", "missing.md"),
             ("backtick-path", "proof/missing.tex"),
         })
+
+    def test_verification_commands_are_not_declared_paths(self):
+        self.write("AGENTS.md", "- **Verification:** `python3 scripts/check.py`\n"
+                   "- **Verification commands:** `pytest`\n"
+                   "- **Verification:** `make`\n"
+                   "- **Verification:** `scripts/check.py; exit`\n"
+                   "- **Verification:** `VERIFICATION.md`\n"
+                   "- **Claims:** `claims/current.md`\n"
+                   "```markdown\n- **Status:** `example/STATUS.md`\n```\n")
+        result = inspect(self.root, 5)
+        self.assertEqual({(entry["role"], entry["path"]) for entry in result["declared_paths"]},
+                         {("verification", "VERIFICATION.md"), ("claims", "claims/current.md")})
+        self.assertNotIn("python3 scripts/check.py", brief_markdown(result))
+
+    def test_nested_fence_examples_do_not_hide_real_history_or_links(self):
+        for marker in ("`", "~"):
+            for length in (3, 4):
+                with self.subTest(marker=marker, length=length):
+                    opener = marker * length
+                    other = "~" if marker == "`" else "`"
+                    text = (f"{opener}markdown\n{marker * 3}python\n"
+                            "[fake](fake.md)\n- **Route**: example\n"
+                            f"{opener}still-content\n{other * 3}\n"
+                            + ("```\n[fake too](fake-too.md)\n" if length == 4 else "")
+                            + f"{opener}  \n"
+                            "## 2030-01-02\n- **Route**: Real route\n"
+                            "- [Record](records/real.md)\n")
+                    path = self.write("RESEARCH_LOG.md", text)
+                    result = inspect(self.root, 5)
+                    classified = classify_research_log(path)
+                    self.assertEqual(classified["classification"], "mixed")
+                    self.assertEqual(classified["linked_entries"], 1)
+                    self.assertEqual(classified["route_markers"], 2)
+                    findings = result["broken_path_references"]
+                    self.assertEqual([entry["reference"] for entry in findings], ["records/real.md"])
+                    self.assertEqual(findings[0]["line"], len(text.splitlines()))
+
+    def test_unfenced_lines_handles_fence_lengths_kinds_and_unclosed_blocks(self):
+        text = ("before\n````markdown\n```python\ninside\n```\n~~~~\n"
+                "````comment\n`````\nafter\n~~~text\n```\nunclosed\n")
+        self.assertEqual(list(unfenced_lines(text)), [(1, "before"), (9, "after")])
 
     def test_brief_report_counts_historical_candidates_without_dumping_them(self):
         self.write("docs/live.md", "\n".join(f"[missing](missing-{i}.md)" for i in range(12)))

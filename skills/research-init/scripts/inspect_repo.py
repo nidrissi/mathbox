@@ -145,7 +145,7 @@ def declared_paths(root: Path) -> list[dict]:
             text = source.read_text(encoding="utf-8")
         except (OSError, UnicodeError):
             continue
-        for number, line in enumerate(text.splitlines(), 1):
+        for number, line in unfenced_lines(text):
             match = re.match(
                 r"^\s*[-*]?\s*(?:\*\*)?([^:*`]+?)(?::(?:\*\*)?|\*\*:)\s*`([^`]+)`",
                 line,
@@ -154,8 +154,15 @@ def declared_paths(root: Path) -> list[dict]:
                 continue
             label = re.sub(r"\s+", " ", match.group(1).strip()).casefold()
             role = labels.get(label)
-            target = match.group(2).strip().rstrip("/")
-            if role and safe_relative(root, target) is not None:
+            target = clean_reference(match.group(2))
+            if target is None:
+                continue
+            target = target.rstrip("/")
+            destination = safe_relative(root, target)
+            if (role == "verification" and Path(target).suffix.casefold() not in KNOWN_PATH_SUFFIXES
+                    and (destination is None or not destination.is_dir())):
+                continue
+            if role and destination is not None:
                 found.append({
                     "role": role, "path": target, "source": source.name,
                     "line": number,
@@ -298,25 +305,27 @@ def semantic_roles(path: Path) -> list[str]:
     return roles
 
 
+def unfenced_lines(text: str):
+    """Yield original line numbers and prose outside Markdown code fences."""
+    fence = None
+    for number, line in enumerate(text.splitlines(), 1):
+        marker = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line)
+        if fence is not None:
+            if (marker and marker[1][0] == fence[0] and len(marker[1]) >= len(fence)
+                    and not marker[2].strip()):
+                fence = None
+        elif marker and (marker[1][0] != "`" or "`" not in marker[2]):
+            fence = marker[1]
+        else:
+            yield number, line
+
+
 def classify_research_log(path: Path) -> dict:
     try:
         text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError):
         return {"classification": "unreadable", "linked_entries": 0, "route_markers": 0}
-    prose = []
-    fence = None
-    for line in text.splitlines():
-        marker = re.match(r"^\s*(`{3,}|~{3,})", line)
-        if marker:
-            token = marker.group(1)
-            if fence is None:
-                fence = token
-            elif token[0] == fence[0] and len(token) >= len(fence):
-                fence = None
-            continue
-        if fence is None:
-            prose.append(line)
-    text = "\n".join(prose)
+    text = "\n".join(line for _, line in unfenced_lines(text))
     linked = len(re.findall(r"(?m)^\s*[-*]\s+.*\[[^]]+\]\([^)]+\)", text))
     dated_headings = len(re.findall(r"(?m)^#{1,4}\s+(?:\d{4}-\d{2}-\d{2}\b|(?:19|20)\d{2}\b)", text))
     fields = len(re.findall(
@@ -444,18 +453,10 @@ def broken_references(root: Path, files: list[Path]) -> list[dict]:
         if path.suffix.casefold() not in TEXT_ROLE_SUFFIXES:
             continue
         try:
-            lines = path.read_text(encoding="utf-8").splitlines()
+            text = path.read_text(encoding="utf-8")
         except (OSError, UnicodeError):
             continue
-        fence = None
-        for number, line in enumerate(lines, 1):
-            marker = re.match(r"^\s*(```+|~~~+)", line)
-            if marker:
-                token = marker.group(1)[:3]
-                fence = None if fence == token else token if fence is None else fence
-                continue
-            if fence is not None:
-                continue
+        for number, line in unfenced_lines(text):
             occupied = []
             for match in link_pattern.finditer(line):
                 occupied.append(match.span())
@@ -804,13 +805,13 @@ def brief_markdown(obj: dict) -> str:
                   "Use --full or --format json for the complete read-only inventory."])
     for key, title in (("declared_paths", "Declared paths"),
                        ("source_cache_conventions", "Source-cache conventions")):
-        items = obj[key]
-        lines += ["", f"{title}: {len(items)}."]
-        for item in items[:8]:
+        entries = obj[key]
+        lines += ["", f"{title}: {len(entries)}."]
+        for item in entries[:8]:
             label = item.get("role", item.get("basis", "candidate"))
             lines.append(f"- {label}: `{item['path']}`")
-        if len(items) > 8:
-            lines.append(f"- … {len(items) - 8} more; inspect --full or --format json before decisions.")
+        if len(entries) > 8:
+            lines.append(f"- … {len(entries) - 8} more; inspect --full or --format json before decisions.")
     return "\n".join(lines)
 
 

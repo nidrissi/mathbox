@@ -50,5 +50,9 @@
   {
     "query": "Audit the proof of Lemma 4 for gaps.",
     "should_trigger": false
+  },
+  {
+    "query": "Use literature-check to correct the cached arXiv version for an authorized PDF while preserving its DOI and revision metadata.",
+    "should_trigger": true
   }
 ]

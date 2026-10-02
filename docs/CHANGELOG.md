@@ -9,6 +9,21 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+### Fixed
+
+- Package checks reject unsupported plain YAML description syntax and decode
+  folded descriptions with their paragraph breaks and extra indentation before
+  enforcing the host's character limit.
+- Literature-cache ingestion accepts revision dates and numeric arXiv version
+  labels. `--replace-metadata` can correct a stored arXiv version without leaving
+  conflicting identifiers; unrelated identifiers remain available. Text searches
+  normalize whitespace once before producing bounded snippets.
+- Repository inspection distinguishes verification commands from declared paths
+  and uses consistent fence handling for declarations, research-log structure
+  and broken references, preserving findings after nested fence examples.
+- Referee snapshot comparisons use one contract-file inventory for aggregate
+  and individual revisions, preserving the existing digest format.
+
 ### Added
 
 - `referee`: whole-manuscript assessment across correctness, adversarial cases,

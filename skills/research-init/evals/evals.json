@@ -156,6 +156,18 @@
         "Requires fresh adversarial review before promoting a material new claim",
         "Replaces every template placeholder"
       ]
+    },
+    {
+      "id": 14,
+      "prompt": "Use research-init to inspect and plan a retrofit, without editing. AGENTS.md declares **Verification:** `python3 scripts/check.py` and **Status:** `STATUS.md`. RESEARCH_LOG.md starts with a ```markdown fenced example containing a ```python line and a fake route link; its true closing fence is followed by a dated route heading, a route field and a link to records/route.md. Do not invent a missing verification file from the command.",
+      "expected_output": "The read-only inspector reports STATUS.md as a declared path, excludes the verification command and fenced example from path/history findings, and retains the real dated route and record link after the closing fence for migration planning.",
+      "assertions": [
+        "Does not list a shell command under declared file paths",
+        "Does not treat a language-bearing fence inside an open code block as a closing fence",
+        "Classifies the real linked and dated route content as mixed history",
+        "Keeps line locators for prose references after the example",
+        "Does not edit during a plan-only request"
+      ]
     }
   ]
 }

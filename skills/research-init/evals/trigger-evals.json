@@ -70,5 +70,9 @@
   {
     "query": "What should I work on next in this project?",
     "should_trigger": false
+  },
+  {
+    "query": "Use research-init to inspect and plan a repository retrofit, distinguishing verification commands from paths and fenced examples from real research history.",
+    "should_trigger": true
   }
 ]

@@ -538,22 +538,26 @@ def extract(tex: str, spans: list):
     return units, context
 
 
+def contract_paths() -> list[Path]:
+    """Canonical ordered inventory shared by aggregate and per-file revisions."""
+    skill = Path(__file__).resolve().parent.parent
+    files = [skill / "SKILL.md", Path(__file__).resolve(), *sorted((skill / "references").rglob("*.md"))]
+    return [path for path in files if path.is_file()]
+
+
 def contract_files() -> dict:
     """Portable per-file revisions for checking local lane reuse."""
     skill = Path(__file__).resolve().parent.parent
-    files = [skill / "SKILL.md", Path(__file__).resolve(), *sorted((skill / "references").rglob("*.md"))]
     return {path.relative_to(skill).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in files if path.is_file()}
+            for path in contract_paths()}
 
 
 def contract_digest() -> str:
     skill = Path(__file__).resolve().parent.parent
-    files = [skill / "SKILL.md", Path(__file__).resolve(), *sorted((skill / "references").rglob("*.md"))]
     hasher = hashlib.sha256()
-    for path in files:
-        if path.is_file():
-            hasher.update(path.relative_to(skill).as_posix().encode("utf-8") + b"\0")
-            hasher.update(path.read_bytes() + b"\0")
+    for path in contract_paths():
+        hasher.update(path.relative_to(skill).as_posix().encode("utf-8") + b"\0")
+        hasher.update(path.read_bytes() + b"\0")
     return hasher.hexdigest()
 
 

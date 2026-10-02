@@ -51,6 +51,71 @@ class LiteratureCacheTests(unittest.TestCase):
         second = self.run_cache(*base, "2026-01-03")
         self.assertEqual(second["record"]["date_checked"], "2026-01-03")
 
+    def test_arxiv_version_accepts_numeric_labels_and_revision_dates(self):
+        base = ["add", "--root", str(self.repo), "--pdf", str(self.pdf),
+                "--id", "arxiv:2401.00001v2", "--retention-basis", "fixture", "--no-extract"]
+        for value in ("2", "V2", "2024-01-15", "revision A"):
+            with self.subTest(value=value):
+                result = self.run_cache(*base, "--version", value, "--replace-metadata")
+                self.assertEqual(result["record"]["version"], value)
+        before = next(self.records_dir().glob("*.json")).read_bytes()
+        for value in ("3", "v3"):
+            with self.subTest(value=value):
+                self.run_cache(*base, "--version", value, "--replace-metadata", expected=2)
+                self.assertEqual(next(self.records_dir().glob("*.json")).read_bytes(), before)
+
+    def test_replace_metadata_corrects_arxiv_id_and_preserves_other_identifiers(self):
+        self.add_fixture(no_extract=True)
+        base = ["add", "--root", str(self.repo), "--pdf", str(self.pdf),
+                "--retention-basis", "fixture", "--no-extract"]
+        self.run_cache(*base, "--id", "arxiv:2401.00001")
+        correction = [*base, "--id", "arxiv:2401.00001v3", "--version", "v3"]
+        before = next(self.records_dir().glob("*.json")).read_bytes()
+        self.run_cache(*correction, expected=2)
+        self.assertEqual(next(self.records_dir().glob("*.json")).read_bytes(), before)
+        result = self.run_cache(*correction, "--replace-metadata")
+        self.assertEqual(result["record"]["identifiers"],
+                         ["arxiv:2401.00001", "arxiv:2401.00001v3", "doi:10.1000/abc"])
+        self.assertEqual(result["record"]["version"], "v3")
+        for version, expected in (("v2", "arxiv-version-candidate"), ("v3", "exact-identifier")):
+            found = self.run_cache("find", "--root", str(self.repo), "--id", "arxiv:2401.00001" + version)
+            self.assertEqual(found["matches"][0]["match"], expected)
+        self.assertTrue(self.run_cache("verify", "--root", str(self.repo))["valid"])
+
+    def test_replace_metadata_corrects_id_without_repeating_numeric_version(self):
+        self.add_fixture(no_extract=True)
+        result = self.run_cache("add", "--root", str(self.repo), "--pdf", str(self.pdf),
+                                "--id", "arxiv:2401.00001v3", "--retention-basis", "fixture",
+                                "--no-extract", "--replace-metadata")
+        self.assertEqual(result["record"]["version"], "v3")
+        self.assertNotIn("arxiv:2401.00001v2", result["record"]["identifiers"])
+
+    def test_replace_metadata_does_not_override_contradictory_input_or_other_arxiv_ids(self):
+        self.add_fixture(no_extract=True)
+        before = next(self.records_dir().glob("*.json")).read_bytes()
+        base = ["add", "--root", str(self.repo), "--pdf", str(self.pdf),
+                "--retention-basis", "fixture", "--no-extract", "--replace-metadata"]
+        for identifiers in (("arxiv:2401.00001v2", "arxiv:2401.00001v3"),
+                            ("arxiv:2401.99999v3",)):
+            arguments = [arg for identifier in identifiers for arg in ("--id", identifier)]
+            self.run_cache(*base, *arguments, expected=2)
+            self.assertEqual(next(self.records_dir().glob("*.json")).read_bytes(), before)
+
+    def test_arxiv_version_helper_ignores_other_schemes(self):
+        for identifier, expected in (("arxiv:2401.00001v2", "v2"), ("arxiv:math/0301001V3", "v3"),
+                                     ("arxiv:2401.00001", None), ("doi:10.1000/v2", None)):
+            self.assertEqual(CACHE.arxiv_version(identifier), expected)
+
+    def test_snippet_does_not_renormalize_whole_text(self):
+        class NormalizedText(str):
+            def split(self, *args, **kwargs):
+                raise AssertionError("already normalized text must not be split again")
+
+        text = NormalizedText("lead " * 100000 + "spectral sequence" + " trail" * 100000)
+        snippet = CACHE.bounded_snippet(text, NormalizedText("spectral sequence"))
+        self.assertIn("spectral sequence", snippet)
+        self.assertLessEqual(len(snippet), 260)
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="mathbox-literature-cache-")
         self.base = Path(self.temporary.name)
@@ -285,7 +350,7 @@ class LiteratureCacheTests(unittest.TestCase):
     def test_snippet_stays_bounded_and_shows_a_long_match(self) -> None:
         query = "the composite of two left exact functors between abelian categories " * 3
         text = f"{'lead ' * 40}{query}{' trail' * 40}"
-        snippet = CACHE.bounded_snippet(text, query)
+        snippet = CACHE.bounded_snippet(" ".join(text.split()), " ".join(query.split()))
         self.assertIsNotNone(snippet)
         self.assertLessEqual(len(snippet), 260)
         self.assertIn("the composite of two left exact", snippet)
