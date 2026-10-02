@@ -22,6 +22,9 @@ convert during submission. Keep the skills portable across both hosts.
   conversion path.
 - `.claude-plugin/marketplace.json` is the public Claude marketplace catalog;
   keep its root-source entry aligned with the plugin manifest.
+- `.agents/plugins/marketplace.json` is the Codex marketplace catalog; keep its
+  plugin name aligned with the manifests and its local source at `./` so both
+  hosts install the canonical repository-root plugin.
 - `skills/<name>/evals/evals.json` checks behavior and
   `skills/<name>/evals/trigger-evals.json` checks
   routing. Treat both as part of the skill contract.
@@ -87,6 +90,7 @@ Run checks proportionate to the files changed. At minimum, run:
 
 ```bash
 for file in \
+  .agents/plugins/marketplace.json \
   .codex-plugin/*.json \
   .claude-plugin/*.json \
   skills/*/evals/*.json \

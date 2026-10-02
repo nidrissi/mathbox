@@ -124,6 +124,26 @@ def trigger_contract(cases):
         seen.add(case["query"])
 
 
+def codex_marketplace_contract(marketplace, manifest, marketplace_name):
+    """Keep the Codex catalog installable from the canonical repository root."""
+    if marketplace.get("name") != marketplace_name:
+        raise ValueError("Codex and Claude marketplace names disagree")
+    if marketplace.get("interface", {}).get("displayName") != manifest["interface"]["displayName"]:
+        raise ValueError("Codex marketplace display name differs from manifest")
+    plugins = marketplace.get("plugins")
+    if not isinstance(plugins, list) or len(plugins) != 1 or not isinstance(plugins[0], dict):
+        raise ValueError("Codex marketplace must expose exactly the repository-root plugin")
+    plugin = plugins[0]
+    if plugin.get("name") != manifest["name"]:
+        raise ValueError("Codex marketplace plugin identity differs from manifest")
+    if plugin.get("source") != {"source": "local", "path": "./"}:
+        raise ValueError("Codex marketplace source must be local at ./")
+    if plugin.get("policy") != {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}:
+        raise ValueError("Codex marketplace install policies disagree")
+    if plugin.get("category") != manifest["interface"]["category"]:
+        raise ValueError("Codex marketplace category differs from manifest")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--static", action="store_true", help="skip executable regression suites")
@@ -144,6 +164,10 @@ def main():
             errors.append("manifest inventory differs from canonical skills")
         if codex["description"] != claude["description"] or market["plugins"][0]["description"] != claude["description"]:
             errors.append("package descriptions disagree")
+        codex_marketplace_contract(
+            json.loads((root / ".agents/plugins/marketplace.json").read_text(encoding="utf-8")),
+            codex, market["name"],
+        )
         releases = re.findall(r"^## \[([0-9]+\.[0-9]+\.[0-9]+)\] — \d{4}-\d{2}-\d{2} — .+$",
                               (root / "docs/CHANGELOG.md").read_text(encoding="utf-8"), re.M)
         if not releases or releases[0] != claude["version"]:

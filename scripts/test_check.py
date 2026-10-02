@@ -1,10 +1,48 @@
 """Mechanical contract checks, independent of model behavior and math grading."""
+import copy
 import unittest
 
-from check import skill_frontmatter, trigger_contract
+from check import codex_marketplace_contract, skill_frontmatter, trigger_contract
 
 
 class PackageContractTests(unittest.TestCase):
+    def test_codex_marketplace_preserves_install_source_and_manifest_identity(self):
+        manifest = {"name": "sample", "interface": {
+            "displayName": "Sample", "category": "Education & Research",
+        }}
+        marketplace = {
+            "name": "sample-market",
+            "interface": {"displayName": "Sample"},
+            "plugins": [{
+                "name": "sample",
+                "source": {"source": "local", "path": "./"},
+                "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                "category": "Education & Research",
+            }],
+        }
+        codex_marketplace_contract(marketplace, manifest, "sample-market")
+        mutations = (
+            ((), "name", "other-market"),
+            (("interface",), "displayName", "Other"),
+            ((), "plugins", []),
+            ((), "plugins", marketplace["plugins"] * 2),
+            (("plugins", 0), "name", "other-plugin"),
+            (("plugins", 0), "source", "."),
+            (("plugins", 0, "source"), "path", "./skills/"),
+            (("plugins", 0, "source"), "path", "./../other-plugin"),
+            (("plugins", 0), "policy", {}),
+            (("plugins", 0, "policy"), "installation", "NOT_AVAILABLE"),
+            (("plugins", 0), "category", "Other"),
+        )
+        for path, key, value in mutations:
+            bad = copy.deepcopy(marketplace)
+            target = bad
+            for part in path:
+                target = target[part]
+            target[key] = value
+            with self.subTest(path=path, key=key, value=value), self.assertRaises(ValueError):
+                codex_marketplace_contract(bad, manifest, "sample-market")
+
     def test_frontmatter_allows_only_portable_fields_once(self):
         valid = "---\nname: sample\ndescription: >-\n  A bounded task.\n---\n"
         self.assertEqual(skill_frontmatter(valid, "sample"), "A bounded task.")
