@@ -9,6 +9,15 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+## [4.0.2] — 2026-10-02 — Codex repository marketplace
+
+### Added
+
+- A Codex repository marketplace exposing the complete Mathbox plugin before
+  publication in the public directory, with CLI and desktop installation,
+  marketplace refresh and Git-ref pinning instructions. Package checks verify
+  the catalog's identity, root source and install policies. ([#19])
+
 ## [4.0.1] — 2026-10-02 — Privacy policy and support links
 
 ### Added
@@ -367,7 +376,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.0.1...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.0.2...HEAD
+[4.0.2]: https://github.com/nidrissi/mathbox/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/nidrissi/mathbox/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/nidrissi/mathbox/compare/v3.2.0...v4.0.0
 [3.2.0]: https://github.com/nidrissi/mathbox/compare/v3.1.0...v3.2.0
@@ -391,3 +401,4 @@ This history predates versioned releases; the project was first called
 [#13]: https://github.com/nidrissi/mathbox/pull/13
 [#15]: https://github.com/nidrissi/mathbox/pull/15
 [#18]: https://github.com/nidrissi/mathbox/pull/18
+[#19]: https://github.com/nidrissi/mathbox/pull/19

@@ -48,7 +48,25 @@ claude --plugin-dir ./mathbox
 
 ### Codex
 
-Install `mathbox` from Codex's plugin directory, start a new session, and try:
+Add this repository as a marketplace and install the plugin with a current
+Codex CLI:
+
+```bash
+codex plugin marketplace add nidrissi/mathbox
+codex plugin add mathbox@mathbox
+```
+
+This works before Mathbox is published in the public plugin directory. The
+catalog at [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json)
+points to the repository root, which contains the Codex manifest and all eleven
+skills. No separate plugin copy is needed.
+
+For a local checkout, run `codex plugin marketplace add ./mathbox` from its
+parent directory instead. To install through the ChatGPT desktop app, restart
+the app after adding the marketplace, open the Plugins Directory, select
+**Mathbox** as the source, and install **Mathbox**.
+
+Start a new session and try:
 
 ```text
 $mathbox:proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
@@ -97,8 +115,16 @@ native Windows, use WSL or copy the directories instead of linking them.
 
 ### Updating and pinning
 
-Update the plugin through the host's plugin manager. To update a standalone
-checkout, run `git -C "$HOME/.local/share/mathbox" pull --ff-only`. For a
+Update the plugin through the host's plugin manager. To refresh the Codex Git
+marketplace, run `codex plugin marketplace upgrade mathbox`, then install the
+updated entry with `codex plugin add mathbox@mathbox`. You can inspect the
+marketplace with `codex plugin marketplace list`. To pin its Git source, use
+`codex plugin marketplace add nidrissi/mathbox --ref <ref>` with a branch,
+release tag, or commit containing the Codex catalog; older releases without
+`.agents/plugins/marketplace.json` do not expose this catalog.
+
+To update a standalone checkout, run
+`git -C "$HOME/.local/share/mathbox" pull --ff-only`. For a
 reproducible setup, check out a [release tag](docs/CHANGELOG.md) before
 linking.
 
@@ -170,6 +196,7 @@ them.
 
 ```text
 mathbox/
+├── .agents/plugins/marketplace.json  # Codex marketplace (repository-root plugin)
 ├── .claude-plugin/       # Claude plugin manifest (explicit skill list) and marketplace
 ├── .codex-plugin/        # Codex package and presentation metadata
 ├── .github/workflows/    # CI: scripts/check.py on Python 3.10 and 3.13
@@ -216,6 +243,7 @@ Upstream references:
 [Agent Skills specification](https://agentskills.io/specification) ·
 [Claude Code plugins](https://code.claude.com/docs/en/plugins) ·
 [ChatGPT and Codex plugins](https://learn.chatgpt.com/docs/build-plugins) ·
+[Plugin packaging and marketplaces](https://developers.openai.com/plugins/build/plugins#package-and-distribute-plugins) ·
 [Submitting a Claude plugin to OpenAI](https://developers.openai.com/plugins/guides/submit-claude-plugin)
 
 ## License
