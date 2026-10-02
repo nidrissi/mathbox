@@ -392,6 +392,9 @@ accept, and the helpers reject malformed records.
 - `validate_manifest.py … --template` when CA-1 changes the manifest;
 - the `inspect_repo.py` smoke test when the inspector changes;
 - regression tests for RS-2, CA-3, LC-10, and RF-8 if it changes the script;
+- a referee trial on a host requiring explicit user delegation: a referee
+  request alone causes no subagent launch and uses disclosed sequential
+  self-review; existing delegation authorization is honored without re-asking;
 - changelog entries for each helper or schema change.
 
 ## Batch 2: Put the missing safeguards into the skill bodies
@@ -408,20 +411,29 @@ behavioral eval.
     `proved` label does not validate a proof, but not what to do next.
     `README.md:147-148` promises the skill "does not make conjectural work
     ready for publication".
-  - **Fix:** "Proceed only if current durable evidence, with no active failed
-    review, supports the exact statement being integrated (proved, externally
-    proved, or computationally verified within the stated range). Otherwise
-    stop; route correctness questions to `proof-audit` and new arguments to
-    `research-attempt`; do not repair the proof here."
-  - **Eval:** a lemma marked proved in the ledger whose proof skips a boundary
-    case.
+  - **Fix:** "To integrate a result as established, require current durable
+    evidence supporting its exact statement and scope (proved, externally
+    proved, or computationally verified within the stated range), with no
+    active failed review against it. Otherwise block that promotion; route
+    correctness questions to `proof-audit` and new arguments to
+    `research-attempt`; do not repair the proof here. On explicit request, a
+    conditional statement may be integrated under MI-3 with its unresolved
+    dependency and evidence status intact. Validated citation changes and
+    corrections or removals need support for the change, not positive proof
+    evidence for a claim no longer asserted."
+  - **Evals:** a lemma marked proved in the ledger whose proof skips a boundary
+    case; an explicitly requested conditional statement with an unverified
+    source; an authorized scope removal or validated citation correction that
+    asserts no new mathematical result.
 - [ ] **MI-3** · medium · `SKILL.md:29-31`
   - **Problem:** "keep that result conditional rather than supplying validation
     here" can be read as "integrate it as a conditional statement". Eval 2
     (`evals/evals.json:24`) expects integration to be blocked.
-  - **Fix:** "Do not integrate that result (not even as a conditional
-    statement unless the user asks for one); report it as blocked with its
-    status unchanged." Step 5 can also shrink from about 95 to 55 words.
+  - **Fix:** "Do not integrate that result unless the user explicitly asks for
+    a conditional statement. In that case, carry the missing hypothesis or
+    unverified dependency and conditional status into the text; do not promote
+    its evidence status. Otherwise report integration as blocked with its
+    status unchanged." This is MI-1's explicit conditional-integration exception.
 - [ ] **MI-16** · low · `SKILL.md:84-85,95-97`
   - **Problem:** the verifier and build steps lack "when documented; otherwise
     report not run". The Report section never says that a clean build or
@@ -489,9 +501,17 @@ behavioral eval.
     runner always writes a run directory and the Persist step stores scripts.
     "Do not invent a build…procedure" has no stopping action.
   - **Fix:** "Read-only means no project edits or run directories. Execute
-    existing code only when the user or project instructions authorize it;
-    otherwise report the command you would run. If no documented command
-    exists, stop and report 'not reproducible in the available environment'."
+    only within the scope authorized by the user or project instructions;
+    otherwise report the proposed command. When reproducing an existing
+    computation, stop that reproduction if no documented command is available
+    and report 'reproduction command unavailable'; do not guess. For authorized
+    design or new experiments, establish and document the contract, code and
+    command before execution; execute only if running the experiment is also
+    within scope."
+  - **Evals:** reproduction of an existing computation with no documented
+    command stops without guessing; authorized design and execution of a new
+    finite-field rank experiment establishes its command and runs it;
+    design-only authorization returns the design without executing it.
 - [ ] **CA-9** · medium · `SKILL.md:112-115`
   - **Problem:** the universal-promotion rule sits inside the `.mathbox`
     conditional, but eval 4 asserts it in general.
@@ -699,8 +719,19 @@ names, and never drop an open continuation.
     passive and sits in Persist.
   - **Fix:** move the pointer into Classify: "Read evidence-model.md before
     assigning a label or promoting a claim. The outcome describes this
-    attempt; the label describes the strongest surviving statement. An
-    inconclusive or ill-typed attempt leaves the target's label unchanged."
+    attempt; the label describes the strongest surviving statement. Leave the
+    target's label unchanged only when the unsuccessful attempt adds no evidence
+    against the target or its existing support, such as an ill-typed attempted
+    construction. If the target itself is ill-typed or its support is
+    invalidated, report the exact defect and affected evidence and dependents,
+    route the correctness question through `proof-audit`, and correct durable
+    status under the project's authorized edit rules. Do not continue to present
+    the old label as reliable or infer refutation merely from a failed
+    construction."
+  - **Evals:** an ill-typed attempted construction leaves an independently
+    supported target's label intact; discovering that a target labelled proved
+    is itself ill-typed reports the defect and affected support, and updates
+    authorized status without treating the old label as reliable.
 - [ ] **X-7** · medium · `research-attempt/SKILL.md:101-110` vs
   `proof-audit/SKILL.md:92,96,98`
   - **Problem:**
@@ -816,8 +847,13 @@ names, and never drop an open continuation.
 
 **Acceptance:**
 
-- a two-attempt program trial, run with delegation and then deferred, with
-  each attempt's continuation surviving a closeout;
+- a two-attempt program trial, run with authorized delegation and then in
+  deferred mode, with each attempt's continuation surviving a closeout;
+- a continuation trial reuses an open program registered at an earlier
+  checkpoint, with the execution and reconciliation based on a later checkpoint;
+  its `continue` reconciliation remains visible in `next` and `handoff`, without
+  duplicating the program or inventing base fields on the run result (RA-3,
+  RS-9);
 - the updated research-attempt eval 6 and research-program evals 6 and 14
   pass;
 - `scripts/check.py`;
@@ -1144,10 +1180,18 @@ Goal: smaller mandatory loads, with no rule lost. Each item names what stays.
 
     This saves about 180 words.
 - [ ] **RS-9** · medium · `SKILL.md:144-147`
-  - **Problem:** continuation through a run hides that it takes four events:
-    an open program covering the route, a route-run, a run-result and a
-    route-reconcile, all sharing one base.
-  - **Fix:** add that requirement in parentheses.
+  - **Problem:** continuation through a run leaves its prerequisites and
+    checkpoint relationships implicit: an open program covering the route,
+    a registered execution, its result and a `continue` reconciliation.
+  - **Fix:** "Use an existing open program whose goal covers the route, or
+    register one if absent. Record the missing `route-run`, `run-result` and
+    `route-reconcile` events, using `decision: continue`; reuse applicable
+    existing records. The cited runs and their reconciliation must share a
+    `base_event` and `base_revision`. A run result inherits its base through its
+    run and has no base fields. The program retains its own starting checkpoint,
+    which may differ from a later execution's base."
+  - **Eval:** the continuation trial in Batch 3 uses different program and
+    execution checkpoints without re-registering the program.
 - [ ] **RS-10** · medium · `SKILL.md:53-70`
   - **Problem:** `:53-65` (~130 words) restate
     `references/deferred-handoff.md`. Lines `:67-70` apply to every session
@@ -1587,7 +1631,7 @@ These items can ride along with whichever batch touches the same file.
 | D1 | Ship a version-2 hand-fillable manifest template, or limit the template to version-1 records of runs made outside the runner? | CA-1, RS-18 | First check whether a hand-filled version-2 record can pass `validate_manifest.py` without fields only the runner produces. If it can, ship it; otherwise limit the template's scope. |
 | D2 | When research-state rejects unknown payload keys, must existing ledgers still replay? | RS-2 | Validate only when recording new events. Leave replay of existing events unchanged, with no ledger schema bump. |
 | D3 | Split the executions section of `ledger.md` into its own reference? | RS-12 | Yes, if RS-8 and RS-10 do not already bring the research-state load within budget. |
-| D4 | Referee delegation where the host lets an agent spawn subagents only on explicit user request (RF-3). Does invoking `referee` count as that request? | RF-1, RF-2, RF-4 | Treat an explicit referee request as authorization for the skill's documented passes. Otherwise ask once while confirming scope, and fall back to disclosed sequential self-review. |
+| D4 | How should referee invocation respect the host's delegation authorization rules (RF-3)? | RF-1, RF-2, RF-4 | Follow the actual host rules. A skill invocation authorizes delegation only if those rules permit it. Where explicit user delegation is required, obtain it before spawning or use disclosed sequential self-review. Do not ask again when applicable delegation authorization already exists. |
 | D5 | Should research-retrospective keep an edit mode for compaction, or always hand off to a research-program closeout or a research-init migration? | RR-1, trigger cases | Keep a narrow reconcile-only edit mode with the RR-1 guard, and route compaction elsewhere. |
 | D6 | For an unversioned arXiv match, change the helper's output or only the documentation? | LC-5 | Change the output label. The ledger safeguard depends on it. |
 | D7 | Can research-program invoke the explicit-only research-attempt on Codex? | RP-8, X-5 | Needs a check on a real host. Add RP-8's fallback either way. |

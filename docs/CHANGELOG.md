@@ -56,6 +56,10 @@ manifests have their own schema versions, independent of the plugin version.
 
 ### Fixed
 
+- Corrected the suite review plan recommendations for
+  delegation authorization, manuscript validation, ill-typed target status,
+  continuation checkpoints and new computation commands, with acceptance cases
+  for each boundary.
 - `referee`: preparation stops lexical scanning when TeX stops reading, so
   unfinished draft literals or arguments after `\endinput` or
   `\end{document}` cannot reject a valid manuscript. A document-ending input
