@@ -18,6 +18,9 @@ a replacement for mathematical review.
 [Referee validation](docs/referee-validation.md) ·
 [Evaluation protocol](evals/README.md)
 
+[Support](https://github.com/nidrissi/mathbox/issues) ·
+[Privacy policy](PRIVACY.md) · [Terms of use (MIT License)](LICENSE)
+
 ## Installation
 
 ### Claude Code

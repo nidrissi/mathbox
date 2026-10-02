@@ -1,6 +1,6 @@
 {
   "name": "mathbox",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Sustained mathematical research with auditable claims, dependencies and reproducible experiments",
   "author": {
     "name": "Najib Idrissi-Kaïtouni",
@@ -30,6 +30,9 @@
       "Write"
     ],
     "websiteURL": "https://github.com/nidrissi/mathbox",
+    "supportURL": "https://github.com/nidrissi/mathbox/issues",
+    "privacyPolicyURL": "https://github.com/nidrissi/mathbox/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/nidrissi/mathbox/blob/main/LICENSE",
     "brandColor": "#0F172A",
     "composerIcon": "./assets/mathbox.svg",
     "logo": "./assets/mathbox.svg",
