@@ -9,6 +9,17 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+## [4.0.1] — 2026-10-02 — Privacy policy and support links
+
+### Added
+
+- A privacy policy covering plugin use, local artifacts, host and external
+  services, and public GitHub support requests, including retention and user
+  controls. ([#18])
+- OpenAI plugin listing links to the privacy policy, GitHub issues for support,
+  and the MIT License for terms of use. The README exposes the same links.
+  ([#18])
+
 ## [4.0.0] — 2026-10-02 — Whole-manuscript refereeing and suite safeguards
 
 ### Fixed
@@ -356,7 +367,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.0.1...HEAD
+[4.0.1]: https://github.com/nidrissi/mathbox/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/nidrissi/mathbox/compare/v3.2.0...v4.0.0
 [3.2.0]: https://github.com/nidrissi/mathbox/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/nidrissi/mathbox/compare/v3.0.1...v3.1.0
@@ -378,3 +390,4 @@ This history predates versioned releases; the project was first called
 [#12]: https://github.com/nidrissi/mathbox/pull/12
 [#13]: https://github.com/nidrissi/mathbox/pull/13
 [#15]: https://github.com/nidrissi/mathbox/pull/15
+[#18]: https://github.com/nidrissi/mathbox/pull/18
