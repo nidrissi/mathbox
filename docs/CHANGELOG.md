@@ -15,9 +15,10 @@ manifests have their own schema versions, independent of the plugin version.
 
 - A privacy policy covering plugin use, local artifacts, host and external
   services, and public GitHub support requests, including retention and user
-  controls.
+  controls. ([#18])
 - OpenAI plugin listing links to the privacy policy, GitHub issues for support,
   and the MIT License for terms of use. The README exposes the same links.
+  ([#18])
 
 ## [4.0.0] — 2026-10-02 — Whole-manuscript refereeing and suite safeguards
 
@@ -389,3 +390,4 @@ This history predates versioned releases; the project was first called
 [#12]: https://github.com/nidrissi/mathbox/pull/12
 [#13]: https://github.com/nidrissi/mathbox/pull/13
 [#15]: https://github.com/nidrissi/mathbox/pull/15
+[#18]: https://github.com/nidrissi/mathbox/pull/18
