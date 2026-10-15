@@ -205,6 +205,19 @@
         "No repeated permission request",
         "Children return specialist obligations"
       ]
+    },
+    {
+      "id": 18,
+      "prompt": "Referee a LaTeX paper whose 30-page Section 3 has a heading-only opening followed by independent subsections 3.1-3.4. Afterwards the authors fix a typo in Section 3.2 only; review the revision.",
+      "expected_output": "Prepares both snapshots with --split-level subsection, keeps the heading-only Section 3 lead-in out of proof coverage with disclosure, and groups coupled subsections by dependency. The revision comparison reuses no subsection automatically: untouched subsections remain only candidates checked against context and prior artifacts, Section 3.2 is reviewed afresh, and whole-paper passes and final reconciliation are rerun.",
+      "assertions": [
+        "Uses the same subsection split level for the original and revised snapshots",
+        "Discloses the unreviewable heading-only lead-in rather than counting it as reviewed",
+        "Cites manifest unit IDs for subsection coverage",
+        "Treats candidate_unchanged subsections as reuse candidates, not reviewed or correct",
+        "Re-reviews the edited subsection",
+        "Reruns whole-paper notation and claims passes and final reconciliation after the source change"
+      ]
     }
   ]
 }

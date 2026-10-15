@@ -9,6 +9,19 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+### Added
+
+- `referee`: `--split-level subsection` makes manuscript preparation cut units
+  at subsections as well as sections, so long sections get finer coverage IDs,
+  smaller reviewer files and reuse candidates that survive edits elsewhere in
+  the same section. A section's text before its first subsection becomes a
+  lead-in unit, marked unreviewable when it holds only the heading and labels.
+  Sections without subsections keep their section-level identity. Manifests
+  record `split_level`, and comparisons report `split_level_changed`. The
+  default remains section-level units. Updating the preparation script changes
+  the referee contract hash, so comparisons against earlier snapshots list it
+  under `contract_files_changed`.
+
 ## [4.1.0] — 2026-10-28 — Hash-verified artifact relocation
 
 ### Added

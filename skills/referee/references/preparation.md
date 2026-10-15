@@ -7,6 +7,7 @@ network requests and emits no review verdict.
 ```bash
 python3 <skill-directory>/scripts/prepare_manuscript.py paper.tex --root PROJECT --output RUN
 python3 <skill-directory>/scripts/prepare_manuscript.py paper.tex --root PROJECT --output NEW_RUN --previous RUN/manifest.json
+python3 <skill-directory>/scripts/prepare_manuscript.py paper.tex --root PROJECT --output RUN --split-level subsection
 ```
 
 `--root` is the authorized input boundary, defaulting to the main file's directory.
@@ -30,10 +31,18 @@ snapshot files or overwrite old runs.
 
 ## Inventory and limitations
 
-The schema-1 manifest carries `main`, hashed `sources`, `source_files_sha256`,
-expanded `source_sha256`, `global_context_sha256`, `source_map`, `units`,
-`limitations`, `comparison`, global `contract_sha256` and a portable
-`contract_files` map of relative skill paths to SHA-256 values.
+Units start at sections by default. Use `--split-level subsection` when sections
+are too long for one focused pass or revisions are expected to stay local: each
+subsection becomes a unit, and a section's text before its first subsection is a
+lead-in unit. A heading-only lead-in (heading, labels, whitespace) is marked
+unreviewable; its content lies in its subsections. A section without subsections
+keeps its section-level unit and `id`. Group coupled units into one pass by
+dependency; finer units do not make subsections independent.
+
+The schema-1 manifest carries `main`, `split_level`, hashed `sources`,
+`source_files_sha256`, expanded `source_sha256`, `global_context_sha256`,
+`source_map`, `units`, `limitations`, `comparison`, global `contract_sha256` and
+a portable `contract_files` map of relative skill paths to SHA-256 values.
 
 Unit keys used for review are `id`, `sha256`, `identity_sha256`, `file`,
 `reviewable`, `skip_reason` and `location`, plus title/kind and expanded spans.
@@ -51,9 +60,12 @@ Disclose affected coverage; the script docstring explains internals.
 
 `--previous` validates metadata only and never reads paths named in it. It reports
 candidate unchanged/added/removed/ambiguous units, main/context/contract changes,
-`contract_files_changed` (null for old manifests lacking per-file hashes), and
-`whole_paper_invalidated`. Any source/inventory/main/context/contract change
+`contract_files_changed` (null for old manifests lacking per-file hashes),
+`previous_split_level`/`split_level_changed` (old manifests count as `section`)
+and `whole_paper_invalidated`. Any source/inventory/main/context/contract change
 requires fresh whole-paper notation/claims passes and final reconciliation.
+Prepare a revision at the previous run's split level; after a level change only
+sections without subsections can remain candidates.
 
 Local reuse requires actual prior artifacts, matching unit text and checked
 definitions, conventions, dependencies and source/computation leaves. Refresh

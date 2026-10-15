@@ -60,13 +60,13 @@ class PreparationTests(unittest.TestCase):
         path.write_bytes(text.encode("utf-8"))
         return path
 
-    def prepare(self, text=None, previous=None):
+    def prepare(self, text=None, previous=None, split_level="section"):
         if text is not None:
             self.put("paper.tex", text)
-        return prep.prepare(self.main, self.root, previous)
+        return prep.prepare(self.main, self.root, previous, split_level)
 
-    def snapshot(self, name, text, previous=None):
-        result = self.prepare(text, previous)
+    def snapshot(self, name, text, previous=None, split_level="section"):
+        result = self.prepare(text, previous, split_level)
         out = self.root / name
         prep.write_snapshot(out, *result)
         return result[0], out / "manifest.json"
@@ -434,6 +434,68 @@ class PreparationTests(unittest.TestCase):
                                            "reference\n\\end{thebibliography}\n"))
         self.assertEqual([u["reviewable"] for u in manifest["units"]], [True, False])
 
+    def test_default_split_level_ignores_subsections(self):
+        manifest, _, _ = self.prepare(paper("\\section{Main}\nlead\n\\subsection{Part}\nbody\n"
+                                            "\\subsection\\custom\n"))
+        self.assertEqual(manifest["split_level"], "section")
+        self.assertEqual([(u["kind"], u["title"]) for u in manifest["units"]], [("section", "Main")])
+        with self.assertRaisesRegex(prep.PreparationError, "Unsupported subsection title"):
+            self.prepare(split_level="subsection")
+        with self.assertRaisesRegex(prep.PreparationError, "split level"):
+            self.prepare(split_level="chapter")
+
+    def test_subsection_level_cuts_lead_ins_and_subsections_and_tiles_body(self):
+        text = paper("Intro text.\n"
+                     "\\section{Main}\\label{s:main}\nlead\n"
+                     "\\subsection*[Short]{Long \\emph{part}}\nbody\n"
+                     "% \\subsection{Comment}\n\\begin{verbatim}\n\\subsection{Fake}\n\\end{verbatim}\n"
+                     "\\subsubsection{Deep}\nstays\n"
+                     "\\section{Empty}\n\\label{s:empty} % note\n\n\\subsection{First}\nx\n"
+                     "\\subsection{Acknowledgments}\nthanks\n"
+                     "\\section{Flat}\nflat\n")
+        manifest, tex, _ = self.prepare(text, split_level="subsection")
+        units = manifest["units"]
+        self.assertEqual(manifest["split_level"], "subsection")
+        self.assertEqual([(u["kind"], u["title"], u["reviewable"]) for u in units], [
+            ("front-matter", "Front matter", True), ("section", "Main", True),
+            ("subsection", "Long \\emph{part}", True), ("section", "Empty", False),
+            ("subsection", "First", True), ("subsection", "Acknowledgments", False),
+            ("section", "Flat", True)])
+        self.assertEqual(units[3]["skip_reason"], "Section heading only; content is in its subsections")
+        self.assertIn("\\subsubsection{Deep}\nstays\n", tex[units[2]["expanded_start"]:units[2]["expanded_end"]])
+        self.assertEqual(units[0]["expanded_start"], len("\\begin{document}"))
+        self.assertEqual(units[-1]["expanded_end"], tex.rindex("\\end{document}"))
+        for before, after in zip(units, units[1:]):
+            self.assertEqual(before["expanded_end"], after["expanded_start"])
+
+    def test_split_levels_compare_by_identity_and_report_changes(self):
+        text = paper("\\section{Flat}\nflat\n\\section{Split}\nlead\n"
+                     "\\subsection{A}\na\n\\subsection{B}\nb\n")
+        sections, by_section = self.snapshot("sections", text)
+        current, by_subsection = self.snapshot("subsections", text, by_section, "subsection")
+        comparison = current["comparison"]
+        self.assertEqual(comparison["previous_split_level"], "section")
+        self.assertTrue(comparison["split_level_changed"])
+        self.assertEqual(comparison["candidate_unchanged"], [sections["units"][0]["id"]])
+        self.assertEqual(comparison["removed"], [sections["units"][1]["id"]])
+        self.assertEqual(len(comparison["added"]), 3)
+        self.assertFalse(comparison["whole_paper_invalidated"])
+        ids = [u["id"] for u in current["units"]]
+        revised, _, _ = self.prepare(text.replace("\na\n", "\na fixed\n"), by_subsection, "subsection")
+        self.assertFalse(revised["comparison"]["split_level_changed"])
+        self.assertEqual(revised["comparison"]["candidate_unchanged"], sorted(ids[:2] + ids[3:]))
+        self.assertEqual(revised["comparison"]["removed"], [ids[2]])
+        self.assertTrue(revised["comparison"]["whole_paper_invalidated"])
+        legacy = json.loads(by_section.read_text())
+        legacy.pop("split_level")
+        by_section.write_text(json.dumps(legacy))
+        old, _, _ = self.prepare(text, by_section, "subsection")
+        self.assertEqual(old["comparison"]["previous_split_level"], "section")
+        legacy["split_level"] = "chapter"
+        by_section.write_text(json.dumps(legacy))
+        with self.assertRaisesRegex(prep.PreparationError, "split_level"):
+            self.prepare(text, by_section)
+
     def test_context_ignores_fake_title_and_finds_labels_and_custom_statements(self):
         text = paper("\\begin{abstract}Real abstract\\end{abstract}\n"
                      "\\section{Main}\n\\begin{prop}\\label{p:real}Statement\\end{prop}\n"
@@ -581,6 +643,20 @@ class PreparationTests(unittest.TestCase):
         manifest = json.loads((out / "manifest.json").read_text())
         self.assertEqual(manifest["schema_version"], 1)
         self.assertEqual(prep.digest((out / "full-source.tex").read_text()), manifest["source_sha256"])
+
+    def test_cli_split_level_writes_subsection_units_and_rejects_unknown_levels(self):
+        self.put("paper.tex", paper("\\section{Main}\nlead\n\\subsection{Part}\nbody\n"))
+        out = self.root / "out"
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(prep.main([str(self.main), "--output", str(out),
+                                        "--split-level", "subsection"]), 0)
+        manifest = json.loads((out / "manifest.json").read_text())
+        self.assertEqual(manifest["split_level"], "subsection")
+        self.assertEqual([u["kind"] for u in manifest["units"]], ["section", "subsection"])
+        self.assertTrue(all((out / u["file"]).is_file() for u in manifest["units"]))
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            prep.main([str(self.main), "--output", str(self.root / "bad"), "--split-level", "chapter"])
+        self.assertFalse((self.root / "bad").exists())
 
 
 if __name__ == "__main__":

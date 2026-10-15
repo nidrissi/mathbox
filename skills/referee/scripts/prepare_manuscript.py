@@ -23,6 +23,11 @@ expanded file without a terminal newline, so its final comment or control word
 cannot consume the caller's next command. The source map marks that newline
 as synthetic, with null original locators.
 
+Units start at sections and bibliography material. With `--split-level
+subsection`, subsections start units too; a section's text before its first
+subsection is its own lead-in unit, unreviewable when only the heading and
+labels remain. A section without subsections keeps its section-level identity.
+
 Missing files, cycles, unsupported dynamic filenames, invalid UTF-8, unclosed
 literal environments/arguments and exceeded limits fail with exit code 2,
 before snapshot creation. Limits are 32 levels, 512 unique files, 4096 input
@@ -52,12 +57,14 @@ MAX_EXPANDED_CHARS = 16 * 1024 * 1024
 MAX_SOURCE_FILES = 512
 LITERAL_ENVS = {"verbatim", "Verbatim", "lstlisting", "minted", "comment"}
 SKIP_TITLES = {"references", "bibliography", "acknowledgments", "acknowledgements"}
+SPLIT_LEVELS = ("section", "subsection")
 STATEMENT_ENVS = {"theorem", "lemma", "proposition", "corollary", "definition",
                   "assumption", "conjecture", "remark"}
 COMMAND_RE = re.compile(r"\\([A-Za-z@]+|[^\n])")
 # TeX ends a line at CR, LF or CRLF; a bare CR must not extend a comment.
 LINE_END_RE = re.compile(r"[\r\n]")
 LABEL_SCAN_RE = re.compile(r"\\(begin|end)\s*\{[^{}]*\}|\\label\s*\{([^{}]+)\}")
+LABEL_RE = re.compile(r"\\label\s*\{[^{}]*\}")
 HASH_RE = re.compile(r"[0-9a-f]{64}")
 UNIT_ID_RE = re.compile(r"sha256:[0-9a-f]{64}:[1-9][0-9]*")
 LIMITATIONS = [
@@ -463,7 +470,7 @@ def environment_bounds(masked: str, name: str):
                 yield begin.start(), begin.end(), match.start(), match.end()
 
 
-def extract(tex: str, spans: list):
+def extract(tex: str, spans: list, split_level: str = "section"):
     masked = mask_non_content(tex)
     begin = top_level(masked, r"\\begin\s*\{document\}")
     end = top_level(masked, r"\\end\s*\{document\}")
@@ -498,28 +505,30 @@ def extract(tex: str, spans: list):
                 "expanded_start": start, "location": locate(spans, tex, start)})
     context["statements"].sort(key=lambda entry: entry["expanded_start"])
 
+    headings = SPLIT_LEVELS[:SPLIT_LEVELS.index(split_level) + 1]
+    # Each boundary is (start, title, kind, end of heading or None).
     boundaries = []
     for match in COMMAND_RE.finditer(masked):
         if not body_start <= match.start() < body_end:
             continue
-        if match[1] == "section":
+        if match[1] in headings:
             group = argument(masked, match.end(), optional=True)
             if group is None:
-                raise PreparationError("Unsupported section title; inspect original source")
-            boundaries.append((match.start(), tex[group[0]:group[1]], "section"))
+                raise PreparationError(f"Unsupported {match[1]} title; inspect original source")
+            boundaries.append((match.start(), tex[group[0]:group[1]], match[1], group[2]))
         elif match[1] in {"bibliography", "printbibliography"}:
-            boundaries.append((match.start(), "Bibliography", "bibliography"))
+            boundaries.append((match.start(), "Bibliography", "bibliography", None))
         elif match[1] == "begin":
             group = argument(masked, match.end())
             if group and masked[group[0]:group[1]] == "thebibliography":
-                boundaries.append((match.start(), "Bibliography", "bibliography"))
+                boundaries.append((match.start(), "Bibliography", "bibliography", None))
     if not boundaries:
-        boundaries = [(body_start, "Manuscript body", "body")]
+        boundaries = [(body_start, "Manuscript body", "body", None)]
     elif masked[body_start:boundaries[0][0]].strip():
-        boundaries.insert(0, (body_start, "Front matter", "front-matter"))
+        boundaries.insert(0, (body_start, "Front matter", "front-matter", None))
     units, occurrences = [], Counter()
     width = max(3, len(str(len(boundaries))))
-    for index, (start, title, kind) in enumerate(boundaries, 1):
+    for index, (start, title, kind, heading_end) in enumerate(boundaries, 1):
         finish = boundaries[index][0] if index < len(boundaries) else body_end
         content = tex[start:finish]
         identity = digest(kind + "\0" + title + "\0" + content)
@@ -528,6 +537,9 @@ def extract(tex: str, spans: list):
         reason = "Obvious non-mathematical section title" if plain.casefold() in SKIP_TITLES else None
         if kind == "bibliography":
             reason = "Bibliography material"
+        elif (kind == "section" and index < len(boundaries) and boundaries[index][2] == "subsection"
+                and not LABEL_RE.sub("", masked[heading_end:finish]).strip()):
+            reason = "Section heading only; content is in its subsections"
         slug = re.sub(r"[^a-z0-9]+", "-", plain.lower()).strip("-")[:64] or "unit"
         units.append({"id": f"sha256:{identity}:{occurrences[identity]}",
                       "sha256": digest(content), "identity_sha256": identity,
@@ -599,8 +611,14 @@ def compare_previous(current: dict, path: Path) -> dict:
                  if old_counts[unit["identity_sha256"]] > 1 or new_counts[unit["identity_sha256"]] > 1]
     contract_changed = (previous["contract_sha256"] != current["contract_sha256"]
                         or previous.get("preparation_version") != PREPARATION_VERSION)
+    # Manifests predating split levels were cut at sections.
+    previous_level = previous.get("split_level", "section")
+    if previous_level not in SPLIT_LEVELS:
+        raise PreparationError("Invalid previous manifest split_level")
     return {"previous_source_sha256": previous["source_sha256"],
             "previous_main": previous["main"], "main_changed": main_changed,
+            "previous_split_level": previous_level,
+            "split_level_changed": previous_level != current["split_level"],
             "candidate_unchanged": sorted((new & old) - set(ambiguous)),
             "added": sorted(new - old), "removed": sorted(old - new),
             "ambiguous": sorted(ambiguous), "contract_changed": contract_changed,
@@ -616,7 +634,10 @@ def compare_previous(current: dict, path: Path) -> dict:
             "reuse_requires_context_check": True}
 
 
-def prepare(main: Path, root: Path | None = None, previous: Path | None = None):
+def prepare(main: Path, root: Path | None = None, previous: Path | None = None,
+            split_level: str = "section"):
+    if split_level not in SPLIT_LEVELS:
+        raise PreparationError(f"Unsupported split level: {split_level!r}")
     main = Path(main)
     if root is not None and not main.is_absolute():
         main = Path(root) / main
@@ -626,10 +647,11 @@ def prepare(main: Path, root: Path | None = None, previous: Path | None = None):
     loader.base = main.parent
     main = loader.confined(main)
     tex, spans, _ = loader.expand(main)
-    units, context = extract(tex, spans)
+    units, context = extract(tex, spans, split_level)
     context_text = json.dumps(context, ensure_ascii=False, indent=2) + "\n"
     sources = sorted(loader.sources.values(), key=lambda item: item["path"])
     manifest = {"schema_version": SCHEMA_VERSION, "preparation_version": PREPARATION_VERSION,
+                "split_level": split_level,
                 "main": main.relative_to(loader.root).as_posix(), "source_sha256": digest(tex),
                 "global_context_sha256": digest(context_identity(context)),
                 "contract_sha256": contract_digest(), "contract_files": contract_files(),
@@ -675,9 +697,12 @@ def main(argv=None):
     parser.add_argument("--root", type=Path, help="authorized input boundary (default: main file directory); rebases relative manuscript paths")
     parser.add_argument("--output", required=True, type=Path, help="new snapshot directory, relative to current directory")
     parser.add_argument("--previous", type=Path, help="earlier manifest, relative to current directory; candidate comparison only")
+    parser.add_argument("--split-level", choices=SPLIT_LEVELS, default="section",
+                        help="finest heading that starts a unit (default: section)")
     args = parser.parse_args(argv)
     try:
-        manifest, tex, context_text = prepare(args.manuscript, args.root, args.previous)
+        manifest, tex, context_text = prepare(args.manuscript, args.root, args.previous,
+                                              args.split_level)
         write_snapshot(args.output, manifest, tex, context_text)
     except (OSError, ValueError) as exc:
         print(f"Preparation failed: {exc}", file=sys.stderr)

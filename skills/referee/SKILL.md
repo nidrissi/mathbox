@@ -29,7 +29,8 @@ artifacts, not rewriting proofs, contacting authors or submitting a report.
    python3 <skill-directory>/scripts/prepare_manuscript.py paper.tex --root PROJECT --output RUN
    ```
 
-   Use a new review directory in the project's designated review area, or
+   Add `--split-level subsection` when sections are too long for one focused
+   pass. Use a new review directory in the project's designated review area, or
    `referee/<run>/` at the project root if none is designated. Never write
    review artifacts under `.mathbox/`: that directory belongs to a
    research-state ledger, which pins evidence only from outside it. Creating a
@@ -48,10 +49,11 @@ its load-bearing proofs and sections. Read abstract/introduction together with
 actual theorem statements. Extracted context is an index, not proof evidence;
 read referenced definitions and arguments in full.
 
-Choose review units by dependency structure: one section, a theorem and proof,
-several tightly coupled sections, or one whole-paper question. Include
-substantive front matter and appendices. Check units marked non-mathematical
-before skipping them; bibliography remains available to whole-paper passes.
+Choose review units by dependency structure: one section or subsection, a
+theorem and proof, several tightly coupled sections, or one whole-paper
+question. Include substantive front matter and appendices. Check units marked
+unreviewable before skipping them; bibliography remains available to
+whole-paper passes.
 
 ## Cover five dimensions
 
