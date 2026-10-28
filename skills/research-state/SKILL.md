@@ -88,6 +88,16 @@ actually revalidated replacement evidence, never a silent hash refresh.
 
 Whole-file pins stale on any byte change, including typography. Prefer faithful,
 stable claim-scoped artifacts where available; inspect fanout with `pin-impact`.
+For an unchanged archived original, register an `artifact-relocation` against
+the exact historical event, slot, path and hash; follow the schema in
+[ledger.md](references/ledger.md#artifact-relocations) and the map-driven example
+in [migration.md](references/migration.md#register-archived-originals).
+Use local `record-batch --dry-run` before registration; deferred ingest rejects
+relocation proposals. This verifies byte identity and location only. It never
+revalidates a proof, changes a snapshot, resolves a review, or revives inactive
+evidence. A changed original or broken active destination remains an issue.
+Inspect `relocations` separately from unresolved issues and count references,
+not files. Do not recreate old paths or edit pinned manifests to silence warnings.
 Revise a claim with a new revision and reason. After real revalidation, record new
 evidence with `supersedes: [old IDs]`; retract only erroneous evidence or review
 records. Keep proof details outside the ledger. Never edit/delete numbered events,

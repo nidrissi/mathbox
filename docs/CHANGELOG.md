@@ -9,6 +9,20 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+### Added
+
+- Research-state helper 1.1 records append-only, hash-verified artifact relocations
+  for exact historical statement, evidence, computation manifest/input/output,
+  review and completed-run pins. Explicit per-pin replacements preserve history;
+  changed originals and broken destinations remain freshness failures. Native
+  projections report relocation provenance and reference counts, and `pin-impact`
+  covers both original and effective locations without adding theorem dependencies.
+- A map-driven archive migration workflow, synthetic migration fixture and
+  regressions cover relocation safety, inactive evidence, reviews, run reconciliation,
+  batch previews and deferred overlays. Deferred ingest rejects relocation writes
+  and protects registered destinations from index appends. `next --full` exposes
+  state diagnostics while the default route-array output remains compatible.
+
 ## [4.0.2] — 2026-10-02 — Codex repository marketplace
 
 ### Added

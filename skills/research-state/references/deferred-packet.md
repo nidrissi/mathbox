@@ -82,6 +82,16 @@ pins the local copy, which may differ from the inspected one, and lists it under
 `unverified_existing_pins`. A packet does not certify the mathematics in any
 artifact.
 
+`artifact-relocation` proposals are explicitly **local-only** and rejected by
+`ingest`, including dry-run and proposals-only packets. Use local
+`record-batch relocations.json --dry-run`, then `record-batch relocations.json`
+under project authority as described in [migration.md](migration.md#register-archived-originals).
+Existing registered relocations are honored when validating prerequisites for
+new evidence/reviews, including staged overlays. An index append cannot alter
+the pinned bytes at either an original path or its registered destination.
+This adds no deferred write locations or permissions, and a packet cannot
+create an archive and register its relocation in the same ingest.
+
 This version does not accept arbitrary file replacements, deletes, binary data,
 commands, or patches. A workflow that needs edits to existing live files must
 handle those edits separately under the project's normal authority rules.

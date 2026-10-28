@@ -21,6 +21,7 @@ import tempfile
 
 
 SUPPORTING_STATUSES = {"proof-recorded", "source-recorded"}
+HELPER_VERSION = "1.1"  # First helper supporting artifact-relocation-v1; journal schema stays 1.
 RUN_OUTCOMES = {"succeeded", "failed", "blocked", "inconclusive", "abandoned"}
 RECONCILIATION_DECISIONS = {
     "continue",
@@ -48,6 +49,7 @@ INSTRUCTION_FILES = {"agents.md", "agents.override.md", "claude.md", "claude.loc
 
 # Validate new proposals only: historical journals retain their replay semantics.
 PAYLOAD_FIELDS = {
+    "artifact-relocation": {"pins", "destination", "reason"},
     "claim": {"id", "statement", "hypotheses", "regime", "level", "dependencies", "reason", "statement_artifact"},
     "evidence": {"claim", "kind", "summary", "artifacts", "manifest", "assertion", "bounds", "non_claims",
                  "identifier", "version", "locator", "translation", "hypothesis_check", "supersedes"},
@@ -190,6 +192,81 @@ def artifact_record(artifact, label="artifact", locator=False):
         text_field(artifact, "locator")
 
 
+def artifact_name(name):
+    """Validate relocation path syntax without consulting the current filesystem."""
+    require(isinstance(name, str) and name.strip(), "path must be nonempty text")
+    path = Path(name)
+    require(not path.is_absolute() and ".." not in path.parts and "\x00" not in name,
+            "path must be project-relative")
+    require(path.parts and path.parts[0] != ".mathbox",
+            "evidence must be outside the ledger itself")
+    return path.as_posix()
+
+
+def event_pin_slots(event):
+    """Exact payload slots; duplicate path/hash occurrences remain distinct references."""
+    p, kind = event["payload"], event["type"]
+    if kind == "claim" and "statement_artifact" in p:
+        yield "statement_artifact", p["statement_artifact"]
+    elif kind in {"evidence", "run-result"}:
+        for index, artifact in enumerate(p.get("artifacts", [])):
+            yield f"artifacts/{index}", artifact
+        if kind == "evidence" and p.get("kind") == "computation" and "manifest" in p:
+            yield "manifest", p["manifest"]
+            for field in ("manifest_inputs", "manifest_outputs"):
+                for index, artifact in enumerate(p[field]):
+                    yield f"{field}/{index}", artifact
+    elif kind == "review":
+        yield "artifact", p["artifact"]
+
+
+def pin_references(event):
+    for slot, artifact in event_pin_slots(event):
+        yield {"event": event["event_id"], "slot": slot,
+               "path": artifact["path"], "sha256": artifact["sha256"]}
+
+
+def relocation_pins(state, payload):
+    """Validate exact prior pins and explicit per-pin replacements, without file I/O."""
+    require(set(payload) == PAYLOAD_FIELDS["artifact-relocation"],
+            "artifact-relocation needs pins, destination, reason")
+    text_field(payload, "reason")
+    destination = payload["destination"]
+    require(isinstance(destination, dict) and set(destination) == {"path", "sha256"},
+            "relocation destination needs path and sha256")
+    artifact_record(destination, "relocation destination")
+    name = artifact_name(destination["path"])
+    pins = payload["pins"]
+    require(isinstance(pins, list) and pins, "relocation needs nonempty pins")
+    seen = set()
+    for pin in pins:
+        require(isinstance(pin, dict) and
+                {"event", "slot", "path", "sha256"} <= set(pin) <=
+                {"event", "slot", "path", "sha256", "replaces"},
+                "relocation pin needs event, slot, path, sha256 and optional replaces")
+        eid, slot = text_field(pin, "event"), text_field(pin, "slot")
+        require(eid in state["events"], f"unknown relocation pin event: {eid}")
+        actual = dict(event_pin_slots(state["events"][eid])).get(slot)
+        require(actual is not None, f"nonexistent relocation pin: {eid} {slot}")
+        artifact_record(pin, "relocation pin")
+        require(artifact_name(pin["path"]) == artifact_name(actual["path"])
+                and pin["sha256"] == actual["sha256"],
+                f"relocation pin differs from recorded event: {eid} {slot}")
+        require(pin["sha256"] == destination["sha256"],
+                "relocation destination hash differs from original pin")
+        require(name != artifact_name(actual["path"]), "self-relocation is not allowed")
+        identity = (eid, slot)
+        require(identity not in seen, "duplicate relocation pin")
+        seen.add(identity)
+        prior = state["relocations"].get(identity)
+        if prior is None:
+            require("replaces" not in pin, "relocation pin has no active declaration to replace")
+        else:
+            require(pin.get("replaces") == prior,
+                    f"conflicting relocation: {eid} {slot} requires replaces: {prior}")
+    return [(pin["event"], pin["slot"]) for pin in pins]
+
+
 def base_pointer(state, payload):
     base = text_field(payload, "base_event")
     require(base in state["events"], "base_event must name an existing ledger event")
@@ -262,7 +339,7 @@ def empty_state():
         "programs": {}, "program_observations": {}, "program_results": {},
         "runs": {}, "run_observations": {}, "run_results": {},
         "reconciliations": {}, "reconciled_results": set(), "route_closures": {},
-        "retracted": set(), "superseded": set(), "events": {},
+        "retracted": set(), "superseded": set(), "events": {}, "relocations": {},
     }
 
 
@@ -275,7 +352,10 @@ def apply(state, event):
     p, kind, claims = payload, event.get("type"), state["claims"]
     key = event["event_id"]
     require(key not in state["events"], "duplicate event ID")
-    if kind == "claim":
+    if kind == "artifact-relocation":
+        identities = relocation_pins(state, p)
+        state["relocations"].update({identity: key for identity in identities})
+    elif kind == "claim":
         cid = identifier(p)
         for field in ("statement", "regime", "level"):
             text_field(p, field)
@@ -644,14 +724,26 @@ class Ledger:
         require(not (p.keys() - allowed),
                 f"unknown {kind} payload fields: {', '.join(sorted(p.keys() - allowed))}; "
                 f"allowed fields: {', '.join(sorted(allowed))}")
-        if event["type"] == "claim" and "statement_artifact" in p:
+        if kind == "artifact-relocation":
+            destination = p.get("destination")
+            require(isinstance(destination, dict) and {"path"} <= set(destination) <= {"path", "sha256"},
+                    "relocation destination needs path and optional sha256")
+            artifact_name(text_field(destination, "path"))
+            p["destination"] = self.pin(destination, overlays)
+            relocation_pins(state, p)
+            # Verify originals too: a changed or unsafe original cannot be hidden by an archive.
+            for pin in p["pins"]:
+                issues = resolve_pin(self.root, state, pin, overlays,
+                                     destination=p["destination"])["issues"]
+                require(not issues, "; ".join(issues))
+        elif event["type"] == "claim" and "statement_artifact" in p:
             require(isinstance(p["statement_artifact"], dict),
                     "statement artifact must be an object")
             text_field(p["statement_artifact"], "locator")
             p["statement_artifact"] = self.pin(p["statement_artifact"], overlays)
         elif event["type"] == "evidence":
             require(p.get("claim") in state["claims"], "unknown evidence claim")
-            require(not claim_contract_issues(self.root, state["claims"], p["claim"], overlays),
+            require(not claim_contract_issues(self.root, state, p["claim"], overlays),
                     "claim statement contract changed; record a claim revision before new evidence")
             require(isinstance(p.get("artifacts", []), list), "artifacts must be a list")
             p["artifacts"] = [self.pin(a, overlays) for a in p.get("artifacts", [])]
@@ -809,8 +901,8 @@ class Ledger:
                 "index content must be one nonempty newline-terminated entry")
         new = old + (line + ("\r\n" if current.endswith("\r\n") else "\n")).encode("utf-8")
         fresh = hashlib.sha256(old).hexdigest()
-        pinned = sorted({eid for eid, artifact in active_pins(state)
-                         if pinned_path(artifact["path"]) == name and artifact["sha256"] == fresh})
+        pinned = sorted({pin["event"] for pin in active_pin_references(state)
+                         if name in pin_locations(state, pin) and pin["sha256"] == fresh})
         require(not pinned, f"index_append would stale current pins of {name} "
                 f"({', '.join(pinned[:8])}); bind claims to a claim-scoped artifact instead")
         return artifacts, (path, name, old, new)
@@ -883,6 +975,10 @@ class Ledger:
         require(index is None or isinstance(index, dict) and
                 set(index) == {"path", "expected_tail", "content"},
                 "index_append must be null or have path, expected_tail, content")
+        require(isinstance(packet["proposals"], list), "proposals must be a list")
+        require(not any(isinstance(p, dict) and p.get("type") == "artifact-relocation"
+                        for p in packet["proposals"]),
+                "artifact-relocation is local-only; use record or record-batch, not deferred ingest")
 
         def check_generated(value):
             if isinstance(value, dict):
@@ -919,58 +1015,130 @@ class Ledger:
         return self.record_many([proposal])[0]
 
 
-def artifact_issues(root, artifacts, overlays=None):
+def pin_location(state, pin):
+    """Location and declaration provenance, independent of freshness or evidence activity."""
+    eid = state["relocations"].get((pin["event"], pin["slot"]))
+    event = state["events"][eid] if eid else None
+    return dict(pin, effective_path=(event["payload"]["destination"]["path"] if event else pin["path"]),
+                relocation=({"event": eid, "actor": event["actor"],
+                             "created_at": event["created_at"], "reason": event["payload"]["reason"]}
+                            if event else None))
+
+
+def pin_locations(state, pin):
+    location = pin_location(state, pin)
+    return {pinned_path(pin["path"]), pinned_path(location["effective_path"])}
+
+
+def resolve_pin(root, state, pin, overlays=None, *, destination=None):
+    """Check a logical pin against its direct registered location, never alias chains.
+
+    destination is used only while validating a new declaration, before it exists.
+    Structural replay never calls this filesystem-dependent function.
+    """
+    result = pin_location(state, pin)
+    relocated = destination is not None or result["relocation"] is not None
+    if destination is not None:
+        result["effective_path"] = destination["path"]
     issues = []
-    for artifact in artifacts:
+    expected = pin["sha256"]
+    try:
+        if relocated:
+            artifact_name(pin["path"])
+        path, _, actual = current_hash(root, pin["path"], overlays)
+        missing = False
+        if actual is None:
+            if relocated:
+                # Path.exists/is_file may suppress permission errors on newer Python.
+                # Only genuine absence allows an archive to satisfy the original pin.
+                try:
+                    path.stat()
+                except FileNotFoundError:
+                    missing = True
+            else:
+                missing = not path.exists()
+        if actual != expected:
+            if not relocated:
+                issues.append(f"missing or changed artifact: {pin['path']}")
+            elif not missing:
+                issues.append(f"relocation original conflict: {pin['path']}")
+        result["original_status"] = "matching" if actual == expected else (
+            "missing" if missing else "changed")
+    except (OSError, LedgerError) as exc:
+        result["original_status"] = "unsafe-or-unreadable"
+        issues.append(str(exc))
+    if relocated:
+        name = result["effective_path"]
         try:
-            if current_hash(root, artifact["path"], overlays)[2] != artifact["sha256"]:
-                issues.append(f"missing or changed artifact: {artifact['path']}")
+            artifact_name(name)
+            if current_hash(root, name, overlays)[2] != expected:
+                issues.append(f"missing or changed relocation destination: {name}")
         except (OSError, LedgerError) as exc:
-            issues.append(str(exc))
-    return issues
+            issues.append(f"relocation destination {name}: {exc}")
+    result.update(verification="failed" if issues else "verified", issues=issues)
+    return result
 
 
-def claim_contract_issues(root, claims, claim, overlays=None):
+def artifact_issues(root, state, event, overlays=None):
+    return [issue for pin in pin_references(event)
+            for issue in resolve_pin(root, state, pin, overlays)["issues"]]
+
+
+def claim_contract_issues(root, state, claim, overlays=None):
     issues = []
+    claims = state["claims"]
     for key in sorted(closure(claims, claim)):
-        artifact = claims[key].get("statement_artifact")
-        if artifact:
-            issues.extend(f"claim {key} statement contract: {issue}"
-                          for issue in artifact_issues(root, [artifact], overlays))
+        event = state["events"][claims[key]["event_id"]]
+        issues.extend(f"claim {key} statement contract: {issue}"
+                      for issue in artifact_issues(root, state, event, overlays))
     return issues
 
 
 def evidence_artifacts(payload):
-    artifacts = list(payload["artifacts"])
-    if payload.get("kind") == "computation" and "manifest" in payload:
-        artifacts.append(payload["manifest"])
-        artifacts.extend(payload["manifest_inputs"])
-        artifacts.extend(payload["manifest_outputs"])
-    return artifacts
+    return [artifact for _, artifact in event_pin_slots({"type": "evidence", "payload": payload})]
+
+
+def active_pin_references(state):
+    """One record per active reference, including duplicate slots of the same file."""
+    inactive = state["retracted"] | state["superseded"]
+    events = [claim["event_id"] for claim in state["claims"].values()]
+    events += [eid for eid in state["evidence"] if eid not in inactive]
+    events += [eid for eid, event in state["reviews"].items()
+               if eid not in state["retracted"] and event["payload"]["evidence"] not in inactive]
+    events += list(state["run_results"])
+    for eid in events:
+        yield from pin_references(state["events"][eid])
 
 
 def active_pins(state):
-    """(event ID, artifact) for every pin a current claim, evidence, review or run result uses."""
-    inactive = state["retracted"] | state["superseded"]
-    for claim in state["claims"].values():
-        if "statement_artifact" in claim:
-            yield claim["event_id"], claim["statement_artifact"]
-    for eid, event in state["evidence"].items():
-        if eid not in inactive:
-            for artifact in evidence_artifacts(event["payload"]):
-                yield eid, artifact
-    for rid, event in state["reviews"].items():
-        if rid not in state["retracted"] and event["payload"]["evidence"] not in inactive:
-            yield rid, event["payload"]["artifact"]
-    for eid, event in state["run_results"].items():
-        for artifact in event["payload"].get("artifacts", []):
-            yield eid, artifact
+    """Compatibility iterator: (event ID, artifact) for each active logical pin."""
+    for pin in active_pin_references(state):
+        yield pin["event"], dict(event_pin_slots(state["events"][pin["event"]]))[pin["slot"]]
+
+
+def relocation_projection(root, state):
+    active = {(pin["event"], pin["slot"]) for pin in active_pin_references(state)}
+    result = []
+    for identity in state["relocations"]:
+        eid, slot = identity
+        pin = next(p for p in pin_references(state["events"][eid]) if p["slot"] == slot)
+        result.append(dict(resolve_pin(root, state, pin), active_pin=identity in active))
+    return result
+
+
+def relocation_counts(relocations):
+    active = [r for r in relocations if r["active_pin"]]
+    verified = [r for r in active if r["verification"] == "verified"]
+    return {"active_references": len(active), "verified_references": len(verified),
+            "failed_references": len(active) - len(verified),
+            "inactive_references": len(relocations) - len(active),
+            "verified_destinations": len({r["effective_path"] for r in verified})}
 
 
 def evidence_issues(root, state, event, overlays=None):
     p = event["payload"]
-    issues = artifact_issues(root, evidence_artifacts(p), overlays)
-    issues.extend(claim_contract_issues(root, state["claims"], p["claim"], overlays))
+    issues = artifact_issues(root, state, event, overlays)
+    issues.extend(claim_contract_issues(root, state, p["claim"], overlays))
     if p["snapshot"] != snapshot(state["claims"], p["claim"]):
         issues.append("claim or transitive dependency revision changed")
     return issues
@@ -1006,7 +1174,7 @@ def execution_projection(root, state):
         result_issues = []
         if terminals:
             last_id, last = terminals[-1]
-            result_issues = artifact_issues(root, last["payload"].get("artifacts", []))
+            result_issues = artifact_issues(root, state, last)
             outcome = last["payload"]["outcome"]
             status = "stale-result" if result_issues else outcome
             terminal = dict(last["payload"], event_id=last_id,
@@ -1042,7 +1210,7 @@ def project(root, state):
         if key not in state["retracted"] and event["payload"]["evidence"] in evidence:
             reviews[key] = dict(event["payload"], event_id=key, actor=event["actor"],
                                 created_at=event["created_at"],
-                                issues=artifact_issues(root, [event["payload"]["artifact"]]))
+                                issues=artifact_issues(root, state, event))
     resolved = SUPPORTING_STATUSES
     # Losing a negative report cannot silently rehabilitate the challenged proof.
     failed = {r["evidence"] for r in reviews.values() if r["outcome"] == "fail"}
@@ -1102,11 +1270,12 @@ def project(root, state):
     for claim in claims.values():
         if "statement_artifact" in claim:
             issues += [{"event": claim["event_id"], "issue": issue}
-                       for issue in artifact_issues(root, [claim["statement_artifact"]])]
+                       for issue in artifact_issues(root, state, state["events"][claim["event_id"]])]
     executions = execution_projection(root, state)
     issues += executions.pop("issues")
     return {"claims": result, "route_context": {}, "issues": issues,
             "events": len(state["events"]),
+            "relocations": relocation_projection(root, state),
             **executions}
 
 
@@ -1195,6 +1364,8 @@ def restrict(projection, state, selected):
     return dict(projection, claims=claims, route_context=route_context,
                 programs=programs, runs=runs,
                 reconciliations=reconciliations,
+                relocations=[r for r in projection["relocations"]
+                             if r["event"] in events | lifecycle_events],
                 issues=[i for i in projection["issues"]
                         if i["event"] in events | lifecycle_events])
 
@@ -1243,6 +1414,13 @@ def markdown(projection, routes=None, closed=None):
                   "Claims needed to interpret relevant routes; these are not theorem dependencies of the goal."]
         for key, c in sorted(projection["route_context"].items()):
             append_claim(key, c, "###")
+    if projection.get("relocations"):
+        lines += ["", "## Artifact relocations", ""]
+        for item in projection["relocations"]:
+            activity = "active pin" if item["active_pin"] else "inactive pin"
+            lines.append(f"- {item['event']} {item['slot']}: {item['path']} -> "
+                         f"{item['effective_path']}; {item['verification']} ({activity}); "
+                         f"declaration {item['relocation']['event']}")
     if projection["issues"]:
         lines += ["", "## Stale records", ""] + [f"- {i['event']}: {i['issue']}" for i in projection["issues"]]
     if projection["programs"]:
@@ -1293,6 +1471,14 @@ def brief_markdown(projection, routes=None, closed=None):
              f"Events: {projection['events']}; selected claims: {len(claims)}; "
              f"integrity/freshness issues: {len(issues)}.",
              "Evidence states: " + (", ".join(f"{key} {count}" for key, count in sorted(statuses.items())) or "none") + "."]
+    if projection.get("relocations"):
+        counts = relocation_counts(projection["relocations"])
+        lines.append(f"{counts['verified_references']} artifact references verified at registered "
+                     f"archive locations ({counts['verified_destinations']} destinations); "
+                     f"{counts['failed_references']} unresolved relocated references; "
+                     f"{counts['inactive_references']} inactive references.")
+        if not issues:
+            lines.append("No integrity or freshness issues.")
     candidates = sorted(claims.items(), key=lambda item: (item[1]["status"] in SUPPORTING_STATUSES, item[0]))
     if candidates:
         lines += ["", "## Claim sample", ""]
@@ -1381,9 +1567,12 @@ def brief_markdown(projection, routes=None, closed=None):
 def pin_impact(state, path):
     """Active pins of one normalized path, found lexically without hashing artifacts."""
     direct, evidence_ids, review_ids, result_ids = set(), set(), set(), set()
-    for eid, artifact in active_pins(state):
-        if pinned_path(artifact["path"]) != path:
+    references = []
+    for pin in active_pin_references(state):
+        if path not in pin_locations(state, pin):
             continue
+        references.append(pin_location(state, pin))
+        eid = pin["event"]
         kind, p = state["events"][eid]["type"], state["events"][eid]["payload"]
         if kind == "claim":
             direct.add(p["id"])
@@ -1399,7 +1588,7 @@ def pin_impact(state, path):
     dependencies = dependency_map(state["claims"])
     dependents = {key for key, closure_ids in dependencies.items()
                   if key not in direct and closure_ids & direct}
-    return {"path": path, "direct_claims": sorted(direct),
+    return {"path": path, "references": references, "direct_claims": sorted(direct),
             "dependent_claims": sorted(dependents),
             "evidence_events": sorted(evidence_ids), "review_events": sorted(review_ids),
             "run_result_events": sorted(result_ids),
@@ -1408,16 +1597,7 @@ def pin_impact(state, path):
 
 def event_pins(event):
     """Artifacts an event pins, so a receipt can show what a dry-run would bind."""
-    p, kind = event["payload"], event["type"]
-    if kind == "claim":
-        return [p["statement_artifact"]] if "statement_artifact" in p else []
-    if kind == "evidence":
-        return evidence_artifacts(p)
-    if kind == "review":
-        return [p["artifact"]]
-    if kind == "run-result":
-        return p.get("artifacts", [])
-    return []
+    return [artifact for _, artifact in event_pin_slots(event)]
 
 
 def receipt(event):
@@ -1427,6 +1607,9 @@ def receipt(event):
                      if key in payload), None)
     result = {"event_id": event["event_id"], "type": event["type"],
               "subject": identity, "sha256": event["sha256"]}
+    if event["type"] == "artifact-relocation":
+        result.update(destination=payload["destination"], relocated_references=payload["pins"][:8],
+                      references_omitted=max(0, len(payload["pins"]) - 8))
     pins = [{"path": item["path"], "sha256": item["sha256"]} for item in event_pins(event)]
     if pins:
         result["pins"] = pins[:8]
@@ -1461,6 +1644,8 @@ def unverified_pins(packet):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--version", action="version",
+                        version=f"research-state {HELPER_VERSION} (artifact-relocation-v1)")
     parser.add_argument("--root", type=Path, default=Path.cwd(), help="initialized project root (default: current directory)")
     parser.add_argument("--json", action="store_true", help="complete structured output; place before the subcommand")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -1481,8 +1666,7 @@ def main(argv=None):
     for name in ("next", "handoff"):
         sub = commands.add_parser(name, help="rank open recorded routes" if name == "next" else "show a dependency-aware goal handoff")
         sub.add_argument("--goal", help="registered claim ID; omit for the whole project")
-        if name == "handoff":
-            sub.add_argument("--full", action="store_true", help="show complete detail")
+        sub.add_argument("--full", action="store_true", help="show complete detail (next: include state)")
     sub = commands.add_parser("impact", help="list dependents of one claim")
     sub.add_argument("claim")
     sub = commands.add_parser("pin-impact", help="show claim, evidence, review and run-result pins of one project file")
@@ -1552,7 +1736,7 @@ def main(argv=None):
                 closed = closed_routes(state, args.goal)
                 output = {"state": projection, "routes": routes, "closed_routes": closed}
             else:
-                output = routes
+                output = {"state": projection, "routes": routes} if args.full else routes
         elif args.command == "check" and (args.summary or not (args.json or args.full)):
             statuses = {}
             reviews = {}
@@ -1567,6 +1751,8 @@ def main(argv=None):
                       "issue_count": len(issues), "issues": shown,
                       "issues_omitted": len(issues) - len(shown),
                       "detail_command": "--json check" if not args.full else None}
+            if projection["relocations"]:
+                output["relocation_counts"] = relocation_counts(projection["relocations"])
         else:
             output = projection
         if args.json or args.command in {"next", "check"}:

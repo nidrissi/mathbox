@@ -208,6 +208,30 @@
         "next and handoff expose continuation",
         "Separate program start retained"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "In an authorized temporary project, use evals/fixtures/artifact-relocation.json to record the supplied synthetic history. Archive the listed files, inspect the missing-pin failures, and register the exact archive locations using a dry-run and batch. Check the resulting claims, runs, handoff and pin-impact. Do not recreate the old files.",
+      "expected_output": "Appends exact event/slot/path/hash relocation declarations, validates archive bytes and preserves every historical event and completed-run reconciliation. Counts five references across three destinations and obtains a clean native check without claiming mathematical revalidation.",
+      "assertions": [
+        "Runs the helper against the synthetic fixture and compares old event bytes before and after",
+        "Uses explicit slots to count duplicate references separately",
+        "Restores run freshness without changing its outcome or opening the closed route",
+        "Reports relocation provenance separately from issues in check/status/handoff/next --full",
+        "Checks original and destination pin impact without adding theorem dependencies"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "In an authorized temporary ledger, evidence has a conditional review and an unchanged archived source; its original path is absent. Register the relocation, then change the original path and later move the archive again. Also prepare a deferred packet proposing the relocation. Explain the validity of each operation and preserve the review condition.",
+      "expected_output": "A matching registered archive restores only mechanical freshness. A changed original still fails; a later move needs an explicit per-pin replaces declaration. Deferred ingest rejects relocation registration and the local record-batch workflow is used instead. Conditional review remains active.",
+      "assertions": [
+        "Does not refresh evidence hashes or supersede evidence merely for a move",
+        "Rejects unknown pins, conflicting declarations and changed archive bytes",
+        "Preserves conditional/failed reviews, snapshots and inactive evidence",
+        "Does not broaden deferred write policy",
+        "Explains that consumer validators requiring historical missing-file failures need a successor policy and matching outputs must be preserved"
+      ]
     }
   ]
 }
