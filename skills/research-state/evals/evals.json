@@ -208,6 +208,54 @@
         "next and handoff expose continuation",
         "Separate program start retained"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "In an authorized temporary project, use evals/fixtures/artifact-relocation.json to record the supplied synthetic history. Archive the listed files, inspect the missing-pin failures, and register the exact archive locations using a dry-run and batch. Check the resulting claims, runs, handoff and pin-impact. Do not recreate the old files.",
+      "expected_output": "Appends exact event/slot/path/hash relocation declarations, validates archive bytes and preserves every historical event and completed-run reconciliation. Counts five references across three destinations and obtains a clean native check without claiming mathematical revalidation.",
+      "assertions": [
+        "Runs the helper against the synthetic fixture and compares old event bytes before and after",
+        "Uses explicit slots to count duplicate references separately",
+        "Restores run freshness without changing its outcome or opening the closed route",
+        "Reports relocation provenance separately from issues in check/status/handoff/next --full",
+        "Checks original and destination pin impact without adding theorem dependencies"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "In an authorized temporary ledger, evidence has a conditional review and an unchanged archived source; its original path is absent. Register the relocation, then change the original path and later move the archive again. Also prepare a deferred packet proposing the relocation. Explain the validity of each operation and preserve the review condition.",
+      "expected_output": "A matching registered archive restores only mechanical freshness. A changed original still fails unless a declaration explicitly releases that pin's original path; a later move needs an explicit per-pin replaces declaration. Deferred ingest rejects relocation registration and the local record-batch workflow is used instead. Conditional review remains active.",
+      "assertions": [
+        "Does not refresh evidence hashes or supersede evidence merely for a move",
+        "Rejects unknown pins, conflicting declarations and changed archive bytes",
+        "Preserves conditional/failed reviews, snapshots and inactive evidence",
+        "Does not broaden deferred write policy",
+        "Treats the changed original as a conflict and does not release it without establishing that the path was deliberately reused"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "In an authorized temporary ledger, proofs/a.md and proofs/b.md are evidence files already registered at archive locations. A collaborator's deferred packet stages new content at proofs/a.md. Afterwards the user wants to keep the archived bytes of a.md as the evidence record while writing a new version at proofs/a.md, and has moved the archived b.md back to proofs/b.md. Handle each request without rewriting history.",
+      "expected_output": "Ingest rejects the packet because proofs/a.md is a path an active pin depends on. A replacing declaration with release_original on the a.md pin lets the live path hold new content while the archive still gates freshness; the new version is not evidence until separately recorded. A replacing declaration whose destination is proofs/b.md returns that pin to ordinary semantics. No evidence is superseded or rehashed.",
+      "assertions": [
+        "Inspects the active declarations and uses each one's ID in replaces",
+        "Does not ingest or hand-apply the deferred file at the protected path",
+        "Releases only the a.md pin and does not present the new version as evidence",
+        "Returns b.md with a declaration naming the original path instead of keeping a duplicate archive copy",
+        "Leaves earlier events byte-identical and confirms a clean check without claiming revalidation"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "In an authorized temporary ledger, record proof bytes 'Pinned entry\\nRestored line\\n' and register their unchanged archive at research/index.md, a permitted deferred index. Truncate the archive to 'Pinned entry\\n'. Preview and try a deferred packet that appends 'Restored line\\n' alongside an unrelated claim proposal. Repeat with a truncated, unreleased original path configured as an index while its archive is intact. Also try an unrelated appended line at each protected path. Check the files, historical events and claim status after each attempt, and explain how a released original or inactive evidence differs.",
+      "expected_output": "Dry-run and real ingest reject appends to both stale relocated locations, including byte-identical restoration. No artifact, index or event changes, and the existing claim stays stale. Explains that release frees only the original while an active archive remains protected; inactive references do not reserve paths and restoring their bytes does not reactivate evidence.",
+      "assertions": [
+        "Runs actual dry-run and real ingest attempts against the synthetic truncated files",
+        "Rejects both restoring and further changing active relocated originals and destinations regardless of their current hashes",
+        "Compares file and event bytes and confirms the stale evidence was not silently restored",
+        "Does not hand-apply a rejected packet or refresh historical hashes",
+        "Distinguishes released originals from still-protected archives and inactive evidence"
+      ]
     }
   ]
 }

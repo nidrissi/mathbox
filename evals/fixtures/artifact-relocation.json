@@ -1,0 +1,168 @@
+{
+  "files": {
+    "old/statement.txt": "Synthetic claim: 1+1=2.\n",
+    "old/proof.txt": "Synthetic arithmetic record: add two units.\n",
+    "old/report.txt": "Synthetic report: arithmetic checked.\n"
+  },
+  "proposals": [
+    {
+      "type": "claim",
+      "actor": "fixture-author",
+      "payload": {
+        "id": "A",
+        "statement": "1+1=2",
+        "hypotheses": [],
+        "regime": "integers",
+        "level": "arithmetic",
+        "dependencies": [],
+        "statement_artifact": {
+          "path": "old/statement.txt",
+          "locator": "claim"
+        }
+      }
+    },
+    {
+      "type": "evidence",
+      "actor": "fixture-author",
+      "payload": {
+        "claim": "A",
+        "kind": "proof",
+        "summary": "Two units",
+        "artifacts": [
+          {
+            "path": "old/proof.txt"
+          },
+          {
+            "path": "old/proof.txt"
+          }
+        ]
+      },
+      "alias": "proof"
+    },
+    {
+      "type": "review",
+      "actor": "fixture-reviewer",
+      "payload": {
+        "evidence": {
+          "$event": "proof"
+        },
+        "outcome": "pass",
+        "independent": true,
+        "summary": "Checked arithmetic",
+        "artifact": {
+          "path": "old/report.txt"
+        }
+      }
+    },
+    {
+      "type": "route",
+      "actor": "fixture-author",
+      "payload": {
+        "id": "R",
+        "claim": "A",
+        "mechanism": "count",
+        "question": "How many?",
+        "discriminator": "Count units",
+        "success": "Two",
+        "failure": "Other",
+        "prerequisites": [],
+        "gain": 1,
+        "cost": 1
+      },
+      "alias": "route"
+    },
+    {
+      "type": "program",
+      "actor": "fixture-author",
+      "payload": {
+        "id": "P",
+        "goal": "A",
+        "objective": "Count",
+        "base_event": {
+          "$event": "route"
+        },
+        "base_revision": "fixture-v1"
+      },
+      "alias": "base"
+    },
+    {
+      "type": "route-run",
+      "actor": "fixture-author",
+      "payload": {
+        "id": "RUN",
+        "program": "P",
+        "route": "R",
+        "base_event": {
+          "$event": "base"
+        },
+        "base_revision": "fixture-v1",
+        "executor": "fixture-worker",
+        "work_scope": [
+          "arithmetic"
+        ]
+      }
+    },
+    {
+      "type": "run-observation",
+      "actor": "fixture-author",
+      "payload": {
+        "run": "RUN",
+        "state": "active",
+        "summary": "Counting",
+        "observed_revision": "fixture-v1"
+      }
+    },
+    {
+      "type": "run-result",
+      "actor": "fixture-author",
+      "payload": {
+        "run": "RUN",
+        "outcome": "succeeded",
+        "reason": "Counted",
+        "next_question": "None in scope",
+        "result_revision": "fixture-v2",
+        "artifacts": [
+          {
+            "path": "old/proof.txt"
+          }
+        ]
+      },
+      "alias": "result"
+    },
+    {
+      "type": "route-reconcile",
+      "actor": "fixture-author",
+      "payload": {
+        "route": "R",
+        "results": [
+          {
+            "$event": "result"
+          }
+        ],
+        "base_event": {
+          "$event": "base"
+        },
+        "base_revision": "fixture-v1",
+        "current_revision": "fixture-v2",
+        "reason": "Accepted the count",
+        "next_question": "None in scope",
+        "conflicts": [],
+        "decision": "succeeded"
+      }
+    }
+  ],
+  "archives": [
+    {
+      "path": "old/statement.txt",
+      "destination": "archive/statement.txt"
+    },
+    {
+      "path": "old/proof.txt",
+      "destination": "archive/proof.txt"
+    },
+    {
+      "path": "old/report.txt",
+      "destination": "archive/report.txt"
+    }
+  ]
+}

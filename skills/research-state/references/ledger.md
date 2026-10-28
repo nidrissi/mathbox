@@ -99,6 +99,159 @@ Its brief view shows counts and samples; `--json pin-impact PATH` gives every
 ID. It is a diagnostic, not permission to treat byte changes as mathematically
 harmless.
 
+## Artifact relocations
+
+Requires **research-state helper 1.1** or later (`python3 "$TOOL" --version`
+prints `artifact-relocation-v1`). This is a helper capability version, separate
+from the plugin release and journal schema. Schema version 1 and `recorded-evidence-v1` remain unchanged: existing
+journals require no migration. Helpers in Mathbox 4.0.2 and earlier reject the
+new event with `unknown event type: artifact-relocation`; they cannot silently
+project a journal containing it. Do not downgrade a writer/reader after adoption.
+
+A relocation says that the exact bytes of explicitly named historical pins are
+available elsewhere. It does not revise a claim, revalidate a proof, rerun a
+computation, establish independence, discharge dependencies, or supersede evidence.
+Use evidence `supersedes` only after actual revalidation; content changes require
+new evidence or claim revisions under the usual policy. Registration changes no
+artifact files and preserves every earlier event, path, hash, timestamp, snapshot,
+terminal outcome and reconciliation.
+
+An ordinary proposal is:
+
+```json
+{
+  "type": "artifact-relocation",
+  "actor": "researcher",
+  "payload": {
+    "pins": [{
+      "event": "E000014",
+      "slot": "manifest_inputs/0",
+      "path": "proofs/lemma-2.tex",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }],
+    "destination": {
+      "path": "archive/2026-01/proofs/lemma-2.tex"
+    },
+    "reason": "Original source moved unchanged into the immutable proof archive."
+  }
+}
+```
+
+The event, slot and all-zero hash above are illustrative: inspect the actual
+event or `--json pin-impact` before choosing them. Required payload fields are
+exactly `pins`, `destination`, and a nonempty `reason`. Each pin requires `event`,
+`slot`, `path`, `sha256` and permits only the optional fields `replaces` and
+`release_original` described below. Slots are zero-based payload paths:
+
+| Original event | Slot |
+|---|---|
+| Claim | `statement_artifact` |
+| Evidence or run result | `artifacts/0`, `artifacts/1`, … |
+| Linked computation evidence | `manifest`, `manifest_inputs/0`, `manifest_outputs/0`, … |
+| Review | `artifact` |
+
+The helper validates the slot in the named **prior** event and compares the
+original path (after lexical normalization) and recorded SHA-256. A supplied
+hash alone cannot establish a pin. Repeated file references in different slots
+are distinct pins: list each explicitly. Duplicate event/slot entries in one
+proposal are rejected. One declaration may cover several pins only when they
+all have the same recorded hash. It never covers future events or a directory.
+Batch references may name an earlier event in the same validated batch.
+
+`destination` accepts `path` and optional `sha256`. The helper hashes the actual
+file, checks any supplied hash, and requires equality with **every** cited pin.
+The recorded destination always includes the helper-verified hash. Both paths
+must stay outside `.mathbox/` (including its case and trailing-dot spellings),
+within the project, without `..` or symlink traversal. A destination that equals
+its original after lexical normalization is a return (below); one differing only
+by case or Unicode normalization, or naming the same file through a hard link,
+is rejected because some filesystems would make the "archive" the original
+itself. The operation neither moves nor copies files. New evidence, reports and manifests still pin their explicitly
+supplied paths; no archive lookup is used to discover new evidence.
+
+Resolution is direct from the original event/slot to its current destination:
+
+- Missing original (including a missing parent directory) and verified
+  destination: the reference passes.
+- Both locations contain the pinned bytes: it passes and remains visibly relocated.
+- Changed, unreadable or unsafe original: conflict/failure, even with a valid
+  archive, unless that pin's original is explicitly released.
+- Released original and verified destination: the reference passes whatever the
+  original path now holds.
+- Missing, changed, unreadable or unsafe destination: failure, even with a matching original.
+
+Registration rejects these failures too. Replay checks structural history without
+consulting artifact files; later destination damage yields freshness issues and
+`check` exit 1, not an unreplayable journal. Other checks retain their semantics:
+changed snapshots and statement contracts remain stale, unresolved dependencies
+remain blockers, negative/conditional reviews remain challenges, and inactive
+evidence stays inactive. Closed executions/routes stay closed. Relocation can
+restore a `stale-result` run to its original terminal outcome without another result.
+
+For a later move, append another declaration with the **same original pin** and
+put `"replaces": "E000250"` in that pin, where `E000250` is its currently active
+relocation event. Each listed pin replaces only its own declaration; unlisted
+pins in an earlier group retain their previous destination. A missing or wrong
+`replaces` fails, even if both declarations would have identical destinations.
+The old declaration remains in the journal. There is no alias-chain traversal
+and no last-event-wins conflict rule. A relocation event's destination cannot
+itself be cited as an original pin.
+
+Two explicit, append-only declarations end a relocation's hold on the original path:
+
+- **Return.** When the file moves back, a replacing declaration whose
+  `destination` is the pin's original path ends that pin's relocation. The
+  helper verifies the original holds the pinned bytes; afterwards the pin
+  resolves and stales like any unrelocated pin, and a later move starts a fresh
+  declaration without `replaces`. Without an active declaration, naming the
+  original path is a rejected self-relocation.
+- **Release.** `"release_original": true` on a pin states that its original path
+  was deliberately reused, for example to archive an old version while revising
+  the live file in place. The original path is then neither checked nor listed
+  by `pin-impact`; the destination alone carries the pinned bytes and still gates
+  freshness. A release may accompany a first declaration or a replacement, applies
+  only to the listed pin, and must be repeated in any later replacement that still
+  needs it. It cannot accompany a return. Use it only when the original was
+  intentionally reused: new content at that path is not evidence until recorded,
+  and a release never revalidates or supersedes anything.
+
+`--json check`, `--json status`, handoff's `state`, and `next --full`'s `state`
+expose `relocations` separately from `issues`. Each entry has the original
+`event`, `slot`, `path`, `sha256`, `effective_path`, declaration `relocation`
+(`event`, `actor`, `created_at`, `reason`, `original_released`),
+`original_status` (`matching`, `missing`, `changed`, `unsafe-or-unreadable` or
+`released`), `verification` (`verified` or `failed`), diagnostic `issues`, and
+`active_pin`. Current declarations on inactive evidence, retracted reviews or old
+claim revisions keep their provenance but are not hashed: their `original_status`
+and `verification` are `not-checked`, and they do not enter the freshness gate or
+verified-active counts. Prior replaced and returned declarations remain in event
+history. Goal views keep the relocations of every revision, evidence and review
+of their reported claims, active or not, and of their reported runs. `next` retains its default route array for
+compatibility; `next --full` returns `{state, routes}` for complete diagnostics.
+
+`check --summary` adds `relocation_counts`: active, verified, failed and inactive
+**reference** counts and the number of verified destinations. Human brief views
+also distinguish successful relocations from unresolved issues. Fully verified
+relocations are not issues and do not make `check` fail. Failed/conditional reviews
+continue to affect claim status as before; a clean freshness check is not a pass
+on the mathematics. Existing issue wording and exit codes for unrelocated pins
+are retained.
+
+`pin-impact` matches both the original (unless released) and effective path and
+adds `references` with event/slot identity, expected hash, effective path and
+declaration provenance.
+It remains a lexical inventory without byte verification; use `check` for that.
+Direct claims/dependents and run-result references stay separate: a run artifact
+does not become a theorem dependency. Inactive pins and replaced destinations
+do not appear in active impact results.
+
+Use local `record` or `record-batch` (including `--dry-run`) to register, replace,
+return or release locations. Deferred `ingest` deliberately rejects relocation
+proposals; it still validates existing prerequisites through registered
+relocations, and a packet can neither stage a file at nor append an index to a
+location an active pin depends on. See the concrete map-driven workflow in
+[migration.md](migration.md#register-archived-originals).
+
 ## Claim and evidence proposals
 
 ```json

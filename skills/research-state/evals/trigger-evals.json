@@ -74,5 +74,21 @@
   {
     "query": "Validate this computation manifest.",
     "should_trigger": false
+  },
+  {
+    "query": "Register these byte-identical archive locations for historical .mathbox pins without rewriting events or reopening completed runs.",
+    "should_trigger": true
+  },
+  {
+    "query": "The proof file moved unchanged; prepare exact artifact-relocation proposals for its research-state ledger references.",
+    "should_trigger": true
+  },
+  {
+    "query": "Move these ordinary project documents into an archive folder; no ledger work is requested.",
+    "should_trigger": false
+  },
+  {
+    "query": "Check this .mathbox deferred packet: its index append would restore a truncated registered archive to the pinned bytes.",
+    "should_trigger": true
   }
 ]

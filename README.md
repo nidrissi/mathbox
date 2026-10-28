@@ -186,7 +186,7 @@ These tools are Python helpers bundled with the skills and use only the
 standard library. Projects that keep plain Markdown status files work without
 them.
 
-- [Research ledger](skills/research-state/references/ledger.md): append-only claim/evidence tracking, brief views and [deferred packets](skills/research-state/references/deferred-packet.md).
+- [Research ledger](skills/research-state/references/ledger.md): append-only claim/evidence tracking, brief views, [verified archive relocations](skills/research-state/references/migration.md#register-archived-originals) and [deferred packets](skills/research-state/references/deferred-packet.md).
 - [Experiment runner](skills/computation-audit/references/runner.md): bounded execution and v2 provenance records, including observed status.
 - [Literature cache](skills/literature-check/references/source-cache.md): authorized, ignored local PDFs/text with metadata and hash checks.
 - [Repository inspector](skills/research-init/SKILL.md): read-only inventory before setup or migration.

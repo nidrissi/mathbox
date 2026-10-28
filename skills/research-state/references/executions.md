@@ -113,3 +113,14 @@ JSON status and handoff output include active review objects, `programs`, `runs`
 generated `last_observed` event and timestamp. Changed terminal run artifacts
 produce `stale-result` plus a ledger issue; they do not silently change the
 recorded terminal outcome.
+
+An unchanged archived run artifact can be registered by an
+[`artifact-relocation`](ledger.md#artifact-relocations) naming its run-result
+event and exact `artifacts/N` slot. If missing original paths were the only issue,
+the run recovers its recorded terminal status. No replacement terminal result,
+new reconciliation, route reopening, claim promotion or proof revalidation occurs.
+`pin-impact` on either the original path or archive lists the same run-result
+references; the structured `relocations` view identifies their effective storage
+and declaration provenance. A broken destination, or a changed original that was
+not explicitly released, still makes the run `stale-result`; a later run result
+is never the remedy for a closed run.
