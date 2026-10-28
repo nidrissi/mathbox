@@ -17,11 +17,13 @@ manifests have their own schema versions, independent of the plugin version.
   changed originals and broken destinations remain freshness failures. Native
   projections report relocation provenance and reference counts, and `pin-impact`
   covers both original and effective locations without adding theorem dependencies.
+  ([#20](https://github.com/nidrissi/mathbox/pull/20))
 - A map-driven archive migration workflow, synthetic migration fixture and
   regressions cover relocation safety, inactive evidence, reviews, run reconciliation,
   batch previews and deferred overlays. Deferred ingest rejects relocation writes
   and protects registered destinations from index appends. `next --full` exposes
   state diagnostics while the default route-array output remains compatible.
+  ([#20](https://github.com/nidrissi/mathbox/pull/20))
 
 ## [4.0.2] — 2026-10-02 — Codex repository marketplace
 
