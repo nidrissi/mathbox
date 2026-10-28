@@ -9,6 +9,8 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+## [4.1.0] — 2026-10-28 — Hash-verified artifact relocation
+
 ### Added
 
 - Research-state helper 1.1 records append-only, hash-verified artifact relocations
@@ -411,7 +413,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.0.2...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/nidrissi/mathbox/compare/v4.0.2...v4.1.0
 [4.0.2]: https://github.com/nidrissi/mathbox/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/nidrissi/mathbox/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/nidrissi/mathbox/compare/v3.2.0...v4.0.0
