@@ -14,15 +14,31 @@ manifests have their own schema versions, independent of the plugin version.
 - Research-state helper 1.1 records append-only, hash-verified artifact relocations
   for exact historical statement, evidence, computation manifest/input/output,
   review and completed-run pins. Explicit per-pin replacements preserve history;
-  changed originals and broken destinations remain freshness failures. Native
-  projections report relocation provenance and reference counts, and `pin-impact`
-  covers both original and effective locations without adding theorem dependencies.
-  ([#20](https://github.com/nidrissi/mathbox/pull/20))
-- A map-driven archive migration workflow, synthetic migration fixture and
+  changed originals and broken destinations remain freshness failures. A replacing
+  declaration can return a pin to its original path, and `release_original` lets a
+  deliberately reused original path hold new content while the archive still gates
+  freshness. Destinations that alias their original through case, Unicode form or
+  a hard link are rejected. Native projections report relocation provenance and
+  reference counts; inactive references keep provenance without being rehashed,
+  and `pin-impact` covers both original and effective locations without adding
+  theorem dependencies. ([#20](https://github.com/nidrissi/mathbox/pull/20))
+- A map-driven archive migration workflow, a synthetic migration eval fixture and
   regressions cover relocation safety, inactive evidence, reviews, run reconciliation,
-  batch previews and deferred overlays. Deferred ingest rejects relocation writes
-  and protects registered destinations from index appends. `next --full` exposes
-  state diagnostics while the default route-array output remains compatible.
+  batch previews and deferred packets. Deferred ingest rejects relocation writes.
+  `next --full` exposes state diagnostics while the default route-array output
+  remains compatible. ([#20](https://github.com/nidrissi/mathbox/pull/20))
+
+### Changed
+
+- Deferred ingest refuses to stage an artifact at any path an active pin depends
+  on, including a missing pinned file, so a packet can neither stale nor silently
+  restore existing evidence. Index appends are guarded the same way for relocated
+  originals and destinations. ([#20](https://github.com/nidrissi/mathbox/pull/20))
+
+### Fixed
+
+- New research-state pins reject case and trailing-dot spellings of `.mathbox/`,
+  and paths containing NUL fail with a ledger error instead of an internal one.
   ([#20](https://github.com/nidrissi/mathbox/pull/20))
 
 ## [4.0.2] — 2026-10-02 — Codex repository marketplace

@@ -96,6 +96,8 @@ Use local `record-batch --dry-run` before registration; deferred ingest rejects
 relocation proposals. This verifies byte identity and location only. It never
 revalidates a proof, changes a snapshot, resolves a review, or revives inactive
 evidence. A changed original or broken active destination remains an issue.
+When a file returns to its original path, register a return; when the original
+path was deliberately reused, mark only the affected pins `release_original`.
 Inspect `relocations` separately from unresolved issues and count references,
 not files. Do not recreate old paths or edit pinned manifests to silence warnings.
 Revise a claim with a new revision and reason. After real revalidation, record new

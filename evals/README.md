@@ -57,6 +57,7 @@ of tool calls or reproducing a preferred proof.
 | `fixtures/novelty-vocabulary.md` | Recheck novelty using historical terminology and citation chains. |
 | `fixtures/parallel-reconciliation.md` | Reconcile conflicting parallel returns from a common checkpoint. |
 | `fixtures/inconclusive-continuation.md` | Resume a recurrence program after one inconclusive attempt with another continuation untried. |
+| `fixtures/artifact-relocation.json` | Register unchanged archive locations for a synthetic ledger history without rewriting it. |
 | `fixtures/referee-core.tex` | Referee a whole manuscript across correctness, edge cases, notation, exposition and claim calibration. |
 | `fixtures/referee-context.tex` | Reconcile a local undefined-notation suspicion against an earlier definition. |
 | `fixtures/referee-exposition.tex` | Assess a correct telescoping proof with little strategic signposting. |

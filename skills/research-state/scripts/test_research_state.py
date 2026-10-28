@@ -1,4 +1,5 @@
 """Executable evidence-boundary regressions; no model-output keyword grading."""
+from collections import Counter
 import hashlib
 import json
 from contextlib import redirect_stdout
@@ -1765,12 +1766,20 @@ class ResearchStateTests(unittest.TestCase):
         self.ledger.ingest(packet)
         self.assertEqual(self.view()["issues"], [])
 
-    def test_relocation_migration_fixture_and_completed_run(self):
-        fixture = json.loads((Path(__file__).parents[1] / "evals/fixtures/artifact-relocation.json").read_text())
+    def relocation_fixture(self):
+        """Write the files of the repository's synthetic eval fixture, which skills do not ship."""
+        repo = Path(__file__).resolve().parents[3]
+        if not (repo / "evals/cases.json").is_file():
+            self.skipTest("repository eval fixtures are not installed with the skill")
+        fixture = json.loads((repo / "evals/fixtures/artifact-relocation.json").read_text())
         for name, content in fixture["files"].items():
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
+        return fixture
+
+    def test_relocation_migration_fixture_and_completed_run(self):
+        fixture = self.relocation_fixture()
         self.ledger.record_many(fixture["proposals"])
         prior = self.ledger.read()
         before = {p.name: p.read_bytes() for p in self.ledger.events.iterdir()}
@@ -1851,29 +1860,227 @@ class ResearchStateTests(unittest.TestCase):
         with self.assertRaisesRegex(LedgerError, "nonexistent relocation pin"):
             self.ledger.record(bad_slot)  # A declaration is not an alias-chain pin source.
 
-    def test_relocation_overlays_preserve_prerequisite_checks(self):
+    def test_relocation_deferred_artifacts_cannot_land_on_pinned_paths(self):
         (self.root / "proofs").mkdir()
         (self.root / "proofs/a.md").write_text("Original proof\n")
         self.claim()
         eid = self.record("evidence", dict(claim="A", kind="proof", summary="Proof",
                           artifacts=[{"path": "proofs/a.md"}]))
-        self.archive("proofs/a.md", "archive/proof.md")
-        self.ledger.record(self.relocation(eid))
+        self.archive("proofs/a.md", "proofs/archive/a.md")
+        first = self.ledger.record(self.relocation(eid, destination="proofs/archive/a.md"))["event_id"]
         self.allow_deferred()
-        packet = self.deferred_packet()
-        packet.update(index_append=None,
-                      artifacts=[{"path": "proofs/a.md", "content": "Changed original\n"},
-                                 {"path": "reviews/new.md", "content": "Review\n"}],
-                      proposals=[{"type": "review", "actor": "reviewer", "payload": {
-                          "evidence": eid, "outcome": "pass", "independent": True,
-                          "summary": "Report", "artifact": {"path": "reviews/new.md"}}}])
-        with self.assertRaisesRegex(LedgerError, "stale evidence"):
-            self.ledger.ingest(packet)
-        self.assertFalse((self.root / "proofs/a.md").exists())
-        self.assertFalse((self.root / "reviews/new.md").exists())
-        packet["artifacts"][0]["content"] = "Original proof\n"
-        self.ledger.ingest(packet, dry_run=True)
-        self.assertFalse((self.root / "proofs/a.md").exists())
+        archived = (self.root / "proofs/archive/a.md").read_text()
+
+        def stage(path, content="Changed original\n"):
+            packet = self.deferred_packet()
+            packet.update(index_append=None, artifacts=[{"path": path, "content": content}],
+                          proposals=[{"type": "claim", "actor": "author", "payload": {
+                              "id": "U", "statement": "Unrelated", "hypotheses": [], "regime": "Z",
+                              "level": "chain", "dependencies": []}}])
+            return packet
+
+        # Neither changed nor identical bytes, nor a case alias, may land on a relocated original.
+        for path, content in (("proofs/a.md", "Changed original\n"), ("proofs/a.md", archived),
+                              ("proofs/A.md", "Case alias\n")):
+            with self.subTest(path=path, content=content):
+                with self.assertRaisesRegex(LedgerError, "current pins depend on"):
+                    self.ledger.ingest(stage(path, content))
+                self.assertFalse((self.root / path).exists())
+        (self.root / "proofs/archive/a.md").unlink()
+        with self.assertRaisesRegex(LedgerError, "current pins depend on"):
+            self.ledger.ingest(stage("proofs/archive/a.md", archived))
+        (self.root / "proofs/archive/a.md").write_text(archived)
+        self.assertEqual(self.view()["issues"], [])
+        # A packet cannot silently restore a missing unrelocated pin either.
+        (self.root / "proofs/b.md").write_text("Other proof\n")
+        other = self.record("evidence", dict(claim="A", kind="proof", summary="Other",
+                            artifacts=[{"path": "proofs/b.md"}]))
+        (self.root / "proofs/b.md").unlink()
+        with self.assertRaisesRegex(LedgerError, other):
+            self.ledger.ingest(stage("proofs/b.md", "Other proof\n"))
+        self.assertNotIn("U", self.ledger.read()["claims"])
+        # A locally released original path is free for new content.
+        self.ledger.record(self.relocation(eid, destination="proofs/archive/a.md",
+                                           replaces=first, release_original=True))
+        self.ledger.ingest(stage("proofs/a.md"))
+        self.assertIn("U", self.ledger.read()["claims"])
+        self.assertEqual([issue["event"] for issue in self.view()["issues"]], [other])
+
+    def test_relocation_release_lets_original_path_hold_new_content(self):
+        self.claim()
+        eid = self.evidence()
+        self.archive()
+        first = self.ledger.record(self.relocation(eid))["event_id"]
+        (self.root / "proof.md").write_text("A new version kept at the live path")
+        self.assertIn("original conflict", self.view()["issues"][0]["issue"])
+        with self.assertRaisesRegex(LedgerError, "original conflict"):
+            self.ledger.record(self.relocation(eid, replaces=first))
+        for flag in (False, "yes"):
+            with self.subTest(release_original=flag), self.assertRaisesRegex(LedgerError, "release_original"):
+                self.ledger.record(self.relocation(eid, replaces=first, release_original=flag))
+        self.ledger.record(self.relocation(eid, replaces=first, release_original=True))
+        view = self.view()
+        self.assertEqual(view["issues"], [])
+        self.assertEqual(view["claims"]["A"]["status"], "proof-recorded")
+        info = view["relocations"][0]
+        self.assertEqual((info["original_status"], info["verification"]), ("released", "verified"))
+        self.assertTrue(info["relocation"]["original_released"])
+        # The released path no longer pins anything; the archive still gates freshness.
+        self.assertEqual(self.pins("proof.md")["references"], [])
+        self.assertEqual(len(self.pins("archive/proof.md")["references"]), 1)
+        (self.root / "archive/proof.md").write_text("damaged")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "stale")
+
+    def test_relocation_release_recovers_completed_run_without_new_result(self):
+        fixture = self.relocation_fixture()
+        self.ledger.record_many(fixture["proposals"])
+        events = {p.name: p.read_bytes() for p in self.ledger.events.iterdir()}
+        pins = [{k: ref[k] for k in ("event", "slot", "path", "sha256")}
+                for ref in self.pins("old/proof.txt")["references"]]
+        # Archive the old version, then revise the live path in place.
+        (self.root / "archive").mkdir()
+        (self.root / "archive/proof.txt").write_bytes((self.root / "old/proof.txt").read_bytes())
+        (self.root / "old/proof.txt").write_text("Next version kept at the live path\n")
+        self.assertEqual(self.view()["runs"]["RUN"]["status"], "stale-result")
+        proposal = {"type": "artifact-relocation", "actor": "archivist", "payload": {
+            "pins": pins, "destination": {"path": "archive/proof.txt"},
+            "reason": "Archived the old version before revising the live file"}}
+        with self.assertRaisesRegex(LedgerError, "original conflict"):
+            self.ledger.record(proposal)
+        for pin in pins:
+            pin["release_original"] = True
+        self.ledger.record(proposal)
+        check = self.json_command("check")
+        self.assertEqual(check["issues"], [])
+        self.assertEqual(check["runs"]["RUN"]["status"], "succeeded")
+        self.assertEqual(len(self.ledger.read()["run_results"]), 1)
+        for name, data in events.items():
+            self.assertEqual((self.ledger.events / name).read_bytes(), data)
+
+    def test_relocation_return_to_original_path_ends_it(self):
+        self.claim()
+        eid = self.evidence()
+        with self.assertRaisesRegex(LedgerError, "self-relocation"):
+            self.ledger.record(self.relocation(eid, destination="proof.md"))
+        self.archive()
+        first = self.ledger.record(self.relocation(eid))["event_id"]
+        self.archive("archive/proof.md", "proof.md")
+        self.assertIn("relocation destination", self.view()["issues"][0]["issue"])
+        with self.assertRaisesRegex(LedgerError, "conflicting relocation"):
+            self.ledger.record(self.relocation(eid, destination="proof.md"))
+        with self.assertRaisesRegex(LedgerError, "cannot release"):
+            self.ledger.record(self.relocation(eid, destination="proof.md", replaces=first,
+                                              release_original=True))
+        self.ledger.record(self.relocation(eid, destination="./proof.md", replaces=first))
+        self.assertNotIn((eid, "artifacts/0"), self.ledger.read()["relocations"])
+        view = self.view()
+        self.assertEqual((view["issues"], view["relocations"]), ([], []))
+        self.assertIsNone(self.pins("proof.md")["references"][0]["relocation"])
+        # Ordinary pin semantics again: a later move stales it and starts a fresh declaration.
+        self.archive()
+        self.assertIn("missing or changed artifact", self.view()["issues"][0]["issue"])
+        self.ledger.record(self.relocation(eid))
+        self.assertEqual(self.view()["issues"], [])
+
+    def test_relocation_original_below_replaced_directory_is_missing(self):
+        (self.root / "proofs").mkdir()
+        (self.root / "proofs/a.md").write_text("Original proof\n")
+        self.claim()
+        eid = self.record("evidence", dict(claim="A", kind="proof", summary="Proof",
+                          artifacts=[{"path": "proofs/a.md"}]))
+        self.archive("proofs/a.md")
+        (self.root / "proofs").rmdir()
+        (self.root / "proofs").write_text("A file where the directory was")
+        self.ledger.record(self.relocation(eid))
+        info = self.view()["relocations"][0]
+        self.assertEqual((info["original_status"], info["verification"]), ("missing", "verified"))
+
+    def test_relocation_rejects_case_unicode_link_and_ledger_aliases(self):
+        (self.root / "café.md").write_text("Accented proof")
+        self.claim()
+        eid = self.evidence()
+        accented = self.record("evidence", dict(claim="A", kind="proof", summary="Accented",
+                               artifacts=[{"path": "café.md"}]))
+        for event, original, alias in ((eid, "proof.md", "Proof.md"), (eid, "proof.md", "PROOF.MD"),
+                                       (accented, "café.md", "café.md")):
+            target = self.root / alias
+            # On a case- or normalization-insensitive volume the alias already is the original.
+            created = not target.exists()
+            if created:
+                target.write_bytes((self.root / original).read_bytes())
+            with self.subTest(alias=alias), self.assertRaisesRegex(LedgerError, "only by case or Unicode"):
+                self.ledger.record(self.relocation(event, destination=alias))
+            if created:
+                target.unlink()
+        (self.root / "archive").mkdir()
+        os.link(self.root / "proof.md", self.root / "archive/proof.md")
+        with self.assertRaisesRegex(LedgerError, "same file"):
+            self.ledger.record(self.relocation(eid))
+        for path in (".MATHBOX/config.json", ".mathbox./config.json", ".Mathbox /x.md"):
+            with self.subTest(path=path):
+                with self.assertRaisesRegex(LedgerError, "outside the ledger"):
+                    self.ledger.record(self.relocation(eid, destination=path))
+                with self.assertRaisesRegex(LedgerError, "outside the ledger"):
+                    self.record("evidence", dict(claim="A", kind="proof", summary="Ledger file",
+                                artifacts=[{"path": path}]))
+        self.assertEqual(len(self.ledger.read()["events"]), 3)
+
+    def test_relocation_goal_view_keeps_inactive_records_alike(self):
+        old_claim = self.claim(statement_artifact={"path": "proof.md", "locator": "old"})
+        self.claim(reason="Revised", statement_artifact={"path": "review.md", "locator": "new"})
+        old = self.evidence()
+        review = self.review(old)
+        current = self.evidence(supersedes=[old])
+        self.record("retract", {"target": review, "reason": "Report withdrawn"})
+        self.claim("B")
+        self.record("evidence", dict(claim="B", kind="proof", summary="B", artifacts=[{"path": "review.md"}]))
+        self.archive()
+        (self.root / "archive/review.md").write_bytes((self.root / "review.md").read_bytes())
+        for event, slot, destination in ((old_claim, "statement_artifact", "archive/proof.md"),
+                                         (old, "artifacts/0", "archive/proof.md"),
+                                         (current, "artifacts/0", "archive/proof.md"),
+                                         (review, "artifact", "archive/review.md")):
+            self.ledger.record(self.relocation(event, slot, destination))
+        relocations = self.json_command("handoff", "--goal", "A")["state"]["relocations"]
+        self.assertEqual({(r["event"], r["slot"]) for r in relocations},
+                         {(old_claim, "statement_artifact"), (old, "artifacts/0"),
+                          (current, "artifacts/0"), (review, "artifact")})
+        inactive = [r for r in relocations if not r["active_pin"]]
+        self.assertEqual(len(inactive), 3)
+        self.assertEqual({r["verification"] for r in inactive}, {"not-checked"})
+        self.assertEqual(self.json_command("handoff", "--goal", "B")["state"]["relocations"], [])
+
+    def test_relocation_hashes_each_location_once(self):
+        self.claim(statement_artifact={"path": "review.md", "locator": "statement"})
+        old = self.evidence()
+        current = self.evidence(supersedes=[old])
+        extra = self.evidence()
+        self.archive()
+        hashed = Counter()
+
+        def counting_hash(path):
+            hashed[Path(path)] += 1
+            return file_hash(path)
+
+        proposal = self.relocation(old)
+        for event in (current, extra):
+            proposal["payload"]["pins"] += self.relocation(event)["payload"]["pins"]
+        with patch("research_state.file_hash", side_effect=counting_hash):
+            self.ledger.record(proposal)
+        self.assertEqual(hashed[self.ledger.root / "archive/proof.md"], 1)
+        resolved = Counter()
+        real = research_state.resolve_pin
+
+        def counting_resolve(root, state, pin, overlays=None):
+            resolved[(pin["event"], pin["slot"])] += 1
+            return real(root, state, pin, overlays)
+
+        with patch("research_state.resolve_pin", side_effect=counting_resolve):
+            view = self.view()
+        self.assertEqual(view["issues"], [])
+        # The statement contract recurs per evidence and relocations reuse issue checks.
+        self.assertEqual(resolved, Counter({("E000001", "statement_artifact"): 1,
+                                            (current, "artifacts/0"): 1, (extra, "artifacts/0"): 1}))
 
     def test_relocation_scope_and_historical_claim_remain_inactive(self):
         old = self.claim(statement_artifact={"path": "proof.md", "locator": "old"})

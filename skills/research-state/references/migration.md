@@ -45,19 +45,20 @@ and the consumer's state without modifying that consumer:
 ```bash
 python3 "$TOOL" --version
 python3 "$TOOL" --root PROJECT --json check
-python3 "$TOOL" --root PROJECT --json pin-impact proof/ls-malin-comparison/25-sl2-equivariant-ambiguity.tex
+python3 "$TOOL" --root PROJECT --json pin-impact proofs/lemma-2.tex
 ```
 
 Only helper 1.1 or later with `artifact-relocation-v1` supports this workflow;
-Mathbox 4.0.2 does not. Start from a reviewed `archive-map.json` of exact original
-paths, archive locations and hashes, for example:
+the helpers in Mathbox 4.0.2 and earlier do not. Start from a reviewed
+`archive-map.json` of exact original paths, archive locations and recorded
+hashes; the all-zero hash below is illustrative:
 
 ```json
 [
   {
-    "path": "proof/ls-malin-comparison/25-sl2-equivariant-ambiguity.tex",
-    "destination": "archive/proof/2026-10-07/ls-malin-comparison/25-sl2-equivariant-ambiguity.tex",
-    "sha256": "8e773356f5a51e088f23851b04bbb79547a855c2e56fb8c017e527e94d8f9f4c"
+    "path": "proofs/lemma-2.tex",
+    "destination": "archive/2026-01/proofs/lemma-2.tex",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
   }
 ]
 ```
@@ -118,27 +119,25 @@ python3 "$TOOL" --root PROJECT check --summary
 python3 "$TOOL" --root PROJECT status
 python3 "$TOOL" --root PROJECT handoff --goal CLAIM
 python3 "$TOOL" --root PROJECT next --full --goal CLAIM
-python3 "$TOOL" --root PROJECT --json pin-impact archive/proof/2026-10-07/ls-malin-comparison/25-sl2-equivariant-ambiguity.tex
+python3 "$TOOL" --root PROJECT --json pin-impact archive/2026-01/proofs/lemma-2.tex
 ```
 
-Count references separately from files. In a migration with 18 artifact references
-on 17 completed runs and one computation-manifest input, all 19 exact pins need
-coverage even when only 17 original files moved. Check that each run recovers its
-original outcome and that any remaining snapshot, dependency or review conditions
-remain visible. If a batch append is interrupted, inspect the committed prefix and
-prepare only the remaining declarations; replaying already recorded declarations
-is a conflict, not an idempotent update. The small
-[synthetic fixture](../evals/fixtures/artifact-relocation.json) exercises three missing
-originals and five references, including duplicate proof slots, a review and a
-completed reconciled run, without real research proofs.
+Count references separately from files: one moved file may back several pins,
+such as two artifact slots of one evidence event, a completed run's result and a
+manifest input, and every exact pin needs its own entry. Check that each run
+recovers its original outcome and that any remaining snapshot, dependency or
+review conditions remain visible. If a batch append is interrupted, inspect the
+committed prefix and prepare only the remaining declarations; replaying already
+recorded declarations is a conflict, not an idempotent update.
 
-Consumer validators that deliberately assert historical missing-file failures
-need an explicit successor policy. Native relocation support cannot repair a
-validator that requires old failures to persist. In the motivating migration,
-three previously missing computation outputs now exist and match their recorded
-hashes: that is a separate validator-policy discrepancy. Preserve those outputs
-and their hash checks; do not delete them to reproduce an obsolete failure count.
-Review the consumer validator to accept verified archive references and currently
-valid outputs while continuing to reject genuine integrity/freshness problems.
-Implementing this Mathbox feature does not authorize applying that migration or
-changing the consumer's policy.
+To archive an old version while revising the live file in place, copy the old
+bytes to the archive first, then register the relocation with
+`"release_original": true` on each affected pin; register it before the edit
+when possible, so the record precedes the change. If an archived file later
+returns to its original path, register a return as described in
+[ledger.md](ledger.md#artifact-relocations) instead of keeping a duplicate copy.
+
+Project scripts or validators that read pinned paths directly may still expect
+the original locations. Update them under the project's own authority to accept
+verified relocation references, keep rejecting genuine integrity or freshness
+problems, and never delete valid files to reproduce an earlier failure count.

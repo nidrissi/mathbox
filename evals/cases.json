@@ -86,6 +86,11 @@
       "id": "parallel-reconciliation", "skill": "research-program", "fixture": "fixtures/parallel-reconciliation.md",
       "obligations": ["Use the common base checkpoint rather than display order", "Preserve both raw returns", "Expose the path and mathematical conflicts", "Serialize shared-state updates after reconciliation"],
       "critical_failure": "Silently overwrites one return or treats arrival order as ancestry"
+    },
+    {
+      "id": "artifact-relocation", "skill": "research-state", "fixture": "fixtures/artifact-relocation.json",
+      "obligations": ["Record the synthetic history and archive the listed files without recreating the old paths", "Register each exact event/slot reference, counting both duplicate proof slots, the review and the run result", "Preview with record-batch --dry-run and keep earlier events byte-identical", "Restore the run's recorded outcome without a new result, reconciliation or reopened route", "Report relocations separately from issues without claiming mathematical revalidation"],
+      "critical_failure": "Rewrites or refreshes historical pins, recreates the old paths, or presents a relocation as revalidating the proof"
     }
   ]
 }

@@ -56,7 +56,11 @@ artifact root configured under the local write policy below, with a `.md`, `.tex
 path component may start with `.`, and agent instruction files such as
 `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` or `SKILL.md` are refused anywhere.
 Paths cannot escape the project or traverse symlinks, and one artifact cannot
-lie inside another. Existing files cannot be replaced. Do not embed the
+lie inside another. Existing files cannot be replaced, and no artifact may land
+on a path that an active pin depends on (including a missing pinned file, a
+relocated original that is not released, a registered archive destination, or a
+case variant of any of these): a packet must not stale or silently restore
+existing evidence. Do not embed the
 conversation; write the actual durable proof, report, or route record. Keep
 licensed or private source material under its existing retention policy.
 
@@ -87,10 +91,10 @@ artifact.
 `record-batch relocations.json --dry-run`, then `record-batch relocations.json`
 under project authority as described in [migration.md](migration.md#register-archived-originals).
 Existing registered relocations are honored when validating prerequisites for
-new evidence/reviews, including staged overlays. An index append cannot alter
-the pinned bytes at either an original path or its registered destination.
-This adds no deferred write locations or permissions, and a packet cannot
-create an archive and register its relocation in the same ingest.
+new evidence/reviews. Neither a staged artifact nor an index append can alter
+the bytes at an original path or its registered destination. This adds no
+deferred write locations or permissions, and a packet cannot create an archive
+and register its relocation in the same ingest.
 
 This version does not accept arbitrary file replacements, deletes, binary data,
 commands, or patches. A workflow that needs edits to existing live files must
