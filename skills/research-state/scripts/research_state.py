@@ -940,8 +940,10 @@ class Ledger:
                 "index content must be one nonempty newline-terminated entry")
         new = old + (line + ("\r\n" if current.endswith("\r\n") else "\n")).encode("utf-8")
         fresh = hashlib.sha256(old).hexdigest()
+        # Active relocations reserve their dependent paths even while the bytes are stale.
         pinned = sorted({pin["event"] for pin in protected.get(path_alias(name), ())
-                         if pin["sha256"] == fresh})
+                         if (pin["event"], pin["slot"]) in state["relocations"]
+                         or pin["sha256"] == fresh})
         require(not pinned, f"index_append would stale current pins of {name} "
                 f"({', '.join(pinned[:8])}); bind claims to a claim-scoped artifact instead")
         return artifacts, (path, name, old, new)

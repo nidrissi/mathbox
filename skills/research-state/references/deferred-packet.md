@@ -69,10 +69,11 @@ file listed in `index_files`. `expected_tail` is the exact last line, including
 its newline; use `""` only for an empty index. LF and CRLF terminators compare
 equal, and the entry is written with the index's own terminator. `content` is
 one complete, nonempty line ending in a newline. The index guard rejects a
-changed tail. Ingest also refuses an append that would change bytes a current
-claim, evidence, review, or run-result record pins; bind such records to a
-stable claim-scoped artifact rather than to the index. Use the project's
-designated route index and follow its immutable-entry convention.
+changed tail. Ingest also refuses an append that would stale a current claim,
+evidence, review, or run-result pin. Already-stale pins without a relocation do
+not block index appends. Bind such records to a stable claim-scoped artifact
+rather than to the index. Use the project's designated route index and follow
+its immutable-entry convention.
 
 `proposals` is a nonempty `record-batch` proposal list in dependency order.
 The same `alias` and `{"$event":"alias"}` references work within the packet.
@@ -92,9 +93,11 @@ artifact.
 under project authority as described in [migration.md](migration.md#register-archived-originals).
 Existing registered relocations are honored when validating prerequisites for
 new evidence/reviews. Neither a staged artifact nor an index append can alter
-the bytes at an original path or its registered destination. This adds no
-deferred write locations or permissions, and a packet cannot create an archive
-and register its relocation in the same ingest.
+an active relocated pin's unreleased original or registered destination, even
+when the current bytes no longer match the pinned hash. A packet cannot repair
+those stale bytes either. Released originals and inactive references do not
+reserve paths. This adds no deferred write locations or permissions, and a
+packet cannot create an archive and register its relocation in the same ingest.
 
 This version does not accept arbitrary file replacements, deletes, binary data,
 commands, or patches. A workflow that needs edits to existing live files must

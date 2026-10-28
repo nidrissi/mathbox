@@ -86,5 +86,9 @@
   {
     "query": "Move these ordinary project documents into an archive folder; no ledger work is requested.",
     "should_trigger": false
+  },
+  {
+    "query": "Check this .mathbox deferred packet: its index append would restore a truncated registered archive to the pinned bytes.",
+    "should_trigger": true
   }
 ]

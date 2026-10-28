@@ -244,6 +244,18 @@
         "Returns b.md with a declaration naming the original path instead of keeping a duplicate archive copy",
         "Leaves earlier events byte-identical and confirms a clean check without claiming revalidation"
       ]
+    },
+    {
+      "id": 23,
+      "prompt": "In an authorized temporary ledger, record proof bytes 'Pinned entry\\nRestored line\\n' and register their unchanged archive at research/index.md, a permitted deferred index. Truncate the archive to 'Pinned entry\\n'. Preview and try a deferred packet that appends 'Restored line\\n' alongside an unrelated claim proposal. Repeat with a truncated, unreleased original path configured as an index while its archive is intact. Also try an unrelated appended line at each protected path. Check the files, historical events and claim status after each attempt, and explain how a released original or inactive evidence differs.",
+      "expected_output": "Dry-run and real ingest reject appends to both stale relocated locations, including byte-identical restoration. No artifact, index or event changes, and the existing claim stays stale. Explains that release frees only the original while an active archive remains protected; inactive references do not reserve paths and restoring their bytes does not reactivate evidence.",
+      "assertions": [
+        "Runs actual dry-run and real ingest attempts against the synthetic truncated files",
+        "Rejects both restoring and further changing active relocated originals and destinations regardless of their current hashes",
+        "Compares file and event bytes and confirms the stale evidence was not silently restored",
+        "Does not hand-apply a rejected packet or refresh historical hashes",
+        "Distinguishes released originals from still-protected archives and inactive evidence"
+      ]
     }
   ]
 }

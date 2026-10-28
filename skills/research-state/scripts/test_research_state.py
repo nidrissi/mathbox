@@ -1766,6 +1766,78 @@ class ResearchStateTests(unittest.TestCase):
         self.ledger.ingest(packet)
         self.assertEqual(self.view()["issues"], [])
 
+    def test_relocation_deferred_index_rejects_stale_original_and_destination(self):
+        pinned = b"Pinned entry\nRestored line\n"
+        (self.root / "proof.md").write_bytes(pinned)
+        self.claim()
+        eid = self.evidence()
+        self.archive(destination="research/index.md")
+        self.ledger.record(self.relocation(eid, destination="research/index.md"))
+        self.allow_deferred(indexes=("proof.md", "research/index.md"))
+        before = {p.name: p.read_bytes() for p in self.ledger.events.iterdir()}
+        for name in ("proof.md", "research/index.md"):
+            (self.root / "proof.md").unlink(missing_ok=True)
+            (self.root / "research/index.md").write_bytes(pinned)
+            path = self.root / name
+            path.write_bytes(b"Pinned entry\n")
+            packet = self.deferred_packet()
+            packet["proposals"] = [{"type": "claim", "actor": "author", "payload": {
+                "id": "B", "statement": "Unrelated", "hypotheses": [], "regime": "Z",
+                "level": "chain", "dependencies": []}}]
+            self.assertEqual(self.view()["claims"]["A"]["status"], "stale")
+            for content in ("Restored line\n", "Unrelated line\n"):
+                with self.subTest(path=name, content=content):
+                    packet["index_append"] = {"path": name, "expected_tail": "Pinned entry\n",
+                                              "content": content}
+                    for dry_run in (True, False):
+                        with self.assertRaisesRegex(LedgerError, "would stale current pins"):
+                            self.ledger.ingest(packet, dry_run=dry_run)
+                        self.assertEqual(path.read_bytes(), b"Pinned entry\n")
+                        self.assertEqual({p.name: p.read_bytes() for p in self.ledger.events.iterdir()}, before)
+                        self.assertEqual(self.view()["claims"]["A"]["status"], "stale")
+                        for directory in ("proofs", "reviews", "research/records"):
+                            self.assertFalse((self.root / directory).exists())
+
+    def test_relocation_deferred_index_allows_released_original_and_inactive_archive(self):
+        (self.root / "proof.md").write_text("Pinned entry\nRestored line\n")
+        self.claim()
+        eid = self.evidence()
+        self.archive(destination="research/index.md")
+        (self.root / "proof.md").write_text("New live version\n")
+        self.ledger.record(self.relocation(eid, destination="research/index.md", release_original=True))
+        self.allow_deferred(indexes=("proof.md", "research/index.md"))
+        packet = self.deferred_packet()
+        packet.update(artifacts=[], proposals=[{"type": "claim", "actor": "author", "payload": {
+            "id": "B", "statement": "Unrelated", "hypotheses": [], "regime": "Z",
+            "level": "chain", "dependencies": []}}], index_append={
+                "path": "proof.md", "expected_tail": "New live version\n", "content": "Another line\n"})
+        self.ledger.ingest(packet)
+        self.assertEqual((self.root / "proof.md").read_text(), "New live version\nAnother line\n")
+        self.assertEqual(self.view()["issues"], [])
+
+        # Release frees only the original; a damaged archive remains protected.
+        archive = self.root / "research/index.md"
+        archive.write_text("Pinned entry\n")
+        packet["base"] = self.deferred_packet()["base"]
+        packet["proposals"][0]["payload"]["id"] = "C"
+        packet["index_append"] = {"path": "research/index.md", "expected_tail": "Pinned entry\n",
+                                  "content": "Restored line\n"}
+        for dry_run in (True, False):
+            with self.assertRaisesRegex(LedgerError, "would stale current pins"):
+                self.ledger.ingest(packet, dry_run=dry_run)
+        self.assertEqual(archive.read_text(), "Pinned entry\n")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "stale")
+
+        # Inactive references do not reserve index paths or revive when bytes return.
+        self.record("retract", {"target": eid, "reason": "Argument withdrawn"})
+        packet["base"] = self.deferred_packet()["base"]
+        self.ledger.ingest(packet, dry_run=True)
+        self.assertEqual(archive.read_text(), "Pinned entry\n")
+        self.ledger.ingest(packet)
+        self.assertEqual(archive.read_text(), "Pinned entry\nRestored line\n")
+        self.assertEqual(self.view()["claims"]["A"]["status"], "conjectural")
+        self.assertEqual(self.view()["issues"], [])
+
     def relocation_fixture(self):
         """Write the files of the repository's synthetic eval fixture, which skills do not ship."""
         repo = Path(__file__).resolve().parents[3]

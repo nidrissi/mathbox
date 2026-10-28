@@ -37,6 +37,9 @@ manifests have their own schema versions, independent of the plugin version.
 
 ### Fixed
 
+- Deferred index appends protect active relocated originals and destinations
+  even when their bytes are already stale, preventing packets from editing or
+  silently restoring archived evidence. ([#20](https://github.com/nidrissi/mathbox/pull/20))
 - New research-state pins reject case and trailing-dot spellings of `.mathbox/`,
   and paths containing NUL fail with a ledger error instead of an internal one.
   ([#20](https://github.com/nidrissi/mathbox/pull/20))
