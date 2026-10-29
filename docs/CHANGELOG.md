@@ -22,6 +22,13 @@ manifests have their own schema versions, independent of the plugin version.
   the referee contract hash, so comparisons against earlier snapshots list it
   under `contract_files_changed`.
 
+### Fixed
+
+- The Claude marketplace now lists the plugin with the root source `./`
+  instead of `.`, so adding the marketplace from claude.ai's Customize >
+  Plugins page offers the plugin for installation. Claude Code accepted both
+  spellings.
+
 ## [4.1.0] — 2026-10-28 — Hash-verified artifact relocation
 
 ### Added

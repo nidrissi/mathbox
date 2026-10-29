@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "mathbox",
-      "source": ".",
+      "source": "./",
       "description": "Sustained mathematical research with auditable claims, dependencies and reproducible experiments",
       "version": "4.1.0",
       "author": {

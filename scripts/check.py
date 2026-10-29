@@ -164,6 +164,8 @@ def main():
             errors.append("manifest inventory differs from canonical skills")
         if codex["description"] != claude["description"] or market["plugins"][0]["description"] != claude["description"]:
             errors.append("package descriptions disagree")
+        if market["plugins"][0].get("source") != "./":
+            errors.append("Claude marketplace source must be ./ (claude.ai rejects \".\")")
         codex_marketplace_contract(
             json.loads((root / ".agents/plugins/marketplace.json").read_text(encoding="utf-8")),
             codex, market["name"],
