@@ -19,6 +19,7 @@ manifests have their own schema versions, independent of the plugin version.
   retains `actual_model`. Templates and behavioral evals cover these rules;
   routing, historical artifacts, imported source material, deterministic helper
   output and ledger event schemas remain unchanged.
+  ([#21](https://github.com/nidrissi/mathbox/pull/21))
 
 ## [4.2.0] — 2026-10-29 — Subsection referee coverage
 
