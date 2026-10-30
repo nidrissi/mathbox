@@ -6,6 +6,7 @@ Write each durable route as a standalone Markdown file:
 # <Short title>
 
 - **Date:** <YYYY-MM-DD>
+- **Model ID:** <exact execution ID, or unknown>
 - **Kind:** <attempt, finding, counterexample, decision, correction, or project kind>
 - **Corrects:** <relative link, only for a correction>
 - **Program/route/claim IDs:** <existing IDs, or not registered>
@@ -55,9 +56,14 @@ The path below illustrates a root-level `RESEARCH_LOG.md`; adjust its relative
 path for a nested index:
 
 ```markdown
-- YYYY-MM-DD — [Short title](research/records/YYYY-MM-DD-normalized-title.md) — **evidence label** — One-sentence strongest result or blocker.
+- YYYY-MM-DD — [Short title](research/records/YYYY-MM-DD-normalized-title.md) — **evidence label** — One-sentence strongest result or blocker. **Model ID:** <exact execution ID, or unknown>
 ```
 
 Do not copy a detailed proof, computation manifest, or literature record into
 the route record. Link the authoritative artifact under `Artifacts and
 commands` and state only what it establishes.
+
+Copy the producing agent's exact ID from exposed execution metadata; a requested
+model or nickname is not execution evidence. Use `unknown` when unavailable.
+Keep each contributor's attribution on linked artifacts and reused text; a new
+route synthesis carries its own author's ID. Do not retrofit historical entries.

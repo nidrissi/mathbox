@@ -19,17 +19,17 @@ Return one complete JSON object with exactly these top-level fields:
   "artifacts": [
     {
       "path": "research/records/2026-09-24-obstruction.md",
-      "content": "# Obstruction\n\nThe complete durable route record.\n"
+      "content": "# Obstruction\n\n**Model ID:** unknown\n\nThe complete durable route record.\n"
     },
     {
       "path": "proofs/obstruction-lemma.md",
-      "content": "# Obstruction lemma\n\nThe complete argument.\n"
+      "content": "# Obstruction lemma\n\n**Model ID:** unknown\n\nThe complete argument.\n"
     }
   ],
   "index_append": {
     "path": "research/index.md",
     "expected_tail": "- 2026-09-20 — Earlier route\n",
-    "content": "- 2026-09-24 — [Obstruction](records/2026-09-24-obstruction.md) — conditional\n"
+    "content": "- 2026-09-24 — [Obstruction](records/2026-09-24-obstruction.md) — conditional. **Model ID:** unknown\n"
   },
   "proposals": [
     {
@@ -50,6 +50,13 @@ The all-zero hash is illustrative. Copy `event_id` and `sha256` from the
 highest-numbered `.mathbox/events/NNNNNN.json` into the base; never hash the
 file bytes or infer the digest. For initialized state without events use `null`
 for both. Ingest rejects either value differing from the current ledger head.
+
+Put each producing agent's exact Model ID from exposed execution metadata in
+its authored artifact content (`unknown` when unavailable); a synthesis uses its
+own author's ID and preserves attribution on reused contributions. Do not add
+`model_id` to the packet envelope, proposals or ledger events. The `unknown`
+values above illustrate unavailable execution identity, not a default to use
+when the exact ID is exposed. Imported source text remains unchanged.
 
 `artifacts` contains complete UTF-8 text for **new** files strictly inside an
 artifact root configured under the local write policy below, with a `.md`, `.tex`, `.txt` or `.bib` suffix. No

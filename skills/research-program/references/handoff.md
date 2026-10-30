@@ -9,6 +9,9 @@ and relevant conditions into the handoff; do not paste its route history.
 
 For continuation:
 
+- When saved as a durable handoff, its author's Model ID from exposed execution
+  metadata (`unknown` in Markdown or `null` in JSON if unavailable), preserving
+  the original IDs on linked contributions.
 - Checkpoint identifier and base Git revision or ledger event.
 - Goal and definition of done; current strongest result.
 - Exact missing implication and dependency status.

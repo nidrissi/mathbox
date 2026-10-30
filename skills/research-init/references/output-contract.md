@@ -31,6 +31,15 @@
 
 ## Research records
 
+- Newly authored records and assessments carry `**Model ID:** <exact ID>` in
+  Markdown or `"model_id": "<exact ID>"` in JSON. Resolve `{{MODEL_ID}}` from
+  execution metadata exposed to the producing agent, never from a requested
+  model, nickname or presumed default; use `unknown` / `null` when unavailable.
+  New entries in shared files retain their own attribution; synthesis identifies
+  its author, while reused contributions keep theirs. Historical/imported text
+  is preserved without backfilling. Instruction files need no authorship field.
+  Deterministic inspector/cache outputs retain software provenance, and ledger
+  events, proposals and fixed transport envelopes keep their existing schemas.
 - Exactly one live dashboard is designated.
 - The dashboard states current evidence, blocker, and next action. Older
   checkpoint narratives are linked from the compact history index and durable

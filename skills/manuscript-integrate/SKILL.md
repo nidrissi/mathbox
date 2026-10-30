@@ -76,6 +76,20 @@ load-bearing theorem changes.
 
 ## Synchronize durable state
 
+For newly authored durable records, proofs and reports, add
+`**Model ID:** <exact ID>` in Markdown or `"model_id": "<exact ID>"` in
+agent-authored JSON; use `unknown` or `null`, respectively, when unavailable.
+For other proof/report formats, put attribution in an accompanying Markdown
+or JSON record.
+Copy only execution metadata exposed to the producing agent; never infer an ID
+from a requested model, display nickname or presumed default. Each delegated
+contributor retains its own ID; a synthesis records its author's ID. Attribute
+new sections or entries without relabelling reused work. Preserve historical
+artifacts and imported source material. Ordinary manuscript edits and chat
+replies need no field. Deterministic helper outputs retain software provenance;
+attribute the accompanying assessment. Keep ledger events, proposals and fixed
+transport envelopes unchanged; put attribution in their authored artifacts.
+
 When integration changes a claim's statement, scope or status (not its prose),
 and the project keeps research records, update its durable proof, claims/status,
 one standalone record and compact route-index entry together. Use designated

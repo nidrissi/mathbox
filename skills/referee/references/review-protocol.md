@@ -91,6 +91,12 @@ comparison, an unchanged dashboard or an agent's confidence is not verification.
 
 Return `passes/<pass_id>.json` with `pass_id`, `issues` and `checks` (actual
 commands/derivations, inputs, reviewed units/context and partial/unreviewed scopes).
+Include `model_assignment` as specified in
+[output-contract.md](output-contract.md): its `actual_model` is the producing
+agent's exact ID from exposed execution metadata, or `null` if unavailable.
+Never infer it from a requested model, nickname or presumed default, and do not
+add a duplicate `model_id`. Preserve a reused pass's original attribution;
+the current executor's ID belongs only to its new assessment or synthesis.
 Use the assigned ID prefix for each issue; empty `issues` is valid.
 Each issue requires:
 

@@ -7,10 +7,22 @@ are immutable inside `referee/<run>/`. Add `passes/<pass_id>.json`,
 `prior-leads.md`, `findings.json`, `reconciliation.json` and `report.md` beside
 them. Raw returns and prior leads remain separate from final conclusions.
 
+Attribute newly authored Markdown reports and assessments with
+`**Model ID:** <exact ID>`, or `unknown` if unavailable. For referee JSON, use
+`model_assignment.actual_model` with the author's exact ID or `null`, rather
+than adding `model_id`. Copy only exposed execution metadata; requested models,
+display nicknames and presumed defaults do not establish execution identity.
+Every pass retains its producing agent's ID. New findings synthesis,
+reconciliation and report identify their own authors, without relabelling
+contributors or historical/imported leads. Deterministic preparation snapshots
+retain software provenance and are not given model fields.
+
 ## Structured raw findings
 
 `findings.json` has `schema_version: 1`, `manuscript_sha256`,
-`source_files_sha256`, `contract_sha256`, `coverage` and `issues`.
+`source_files_sha256`, `contract_sha256`, `model_assignment`, `coverage` and `issues`.
+The top-level assignment identifies the author who assembled the findings;
+each coverage entry keeps the original pass's assignment separately.
 Copy `manuscript_sha256` from manifest `source_sha256`, plus its
 `source_files_sha256` and `contract_sha256`; use null with an explanation if
 unavailable. Include all five dimensions, skipped scopes/reasons and failed
@@ -112,6 +124,9 @@ requires a different report format:
 
 ```markdown
 # Summary
+
+**Model ID:** <exact ID of the report author, or unknown>
+
 # Main mathematical concerns
 # Other mathematical concerns
 # Exposition and organization

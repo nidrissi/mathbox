@@ -86,6 +86,20 @@ correction and propagate it; preserve the earlier scoped search.
 
 ## Record and report
 
+For newly authored durable records, proofs and reports, add
+`**Model ID:** <exact ID>` in Markdown or `"model_id": "<exact ID>"` in
+agent-authored JSON; use `unknown` or `null`, respectively, when unavailable.
+For other proof/report formats, put attribution in an accompanying Markdown
+or JSON record.
+Copy only execution metadata exposed to the producing agent; never infer an ID
+from a requested model, display nickname or presumed default. Each delegated
+contributor retains its own ID; a synthesis records its author's ID. Attribute
+new sections or entries without relabelling reused work. Preserve historical
+artifacts and imported source material. Ordinary manuscript edits and chat
+replies need no field. Deterministic helper outputs retain software provenance;
+attribute the accompanying assessment. Keep ledger events, proposals and fixed
+transport envelopes unchanged; put attribution in their authored artifacts.
+
 Update literature records only when authorized and the check changes a dependency
 or attribution; update status/history only for changed live research state.
 Preserve old checks when versions or interpretations change and inspect dependents.

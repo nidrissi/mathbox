@@ -9,6 +9,17 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+### Added
+
+- Newly authored durable research records, proofs, source checks, audit reports
+  and closeouts record the author's exact model ID from exposed execution
+  metadata, or `unknown` in Markdown / `null` in JSON when unavailable. Requested
+  models and nicknames are not execution evidence. Delegated and reused work
+  keeps its own attribution; new syntheses identify their authors. Referee JSON
+  retains `actual_model`. Templates and behavioral evals cover these rules;
+  routing, historical artifacts, imported source material, deterministic helper
+  output and ledger event schemas remain unchanged.
+
 ## [4.2.0] — 2026-10-29 — Subsection referee coverage
 
 ### Added

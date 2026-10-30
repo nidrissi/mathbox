@@ -133,7 +133,8 @@
         "Final reconciliation actually reads the full source, coverage, raw findings and relevant specialist artifacts",
         "Records final-referee execution settings in reconciliation and checks the delegated report before delivery",
         "Retains native request and return evidence alongside raw passes",
-        "Checks the triangular identity and n=0 without reporting tau as undefined"
+        "Checks the triangular identity and n=0 without reporting tau as undefined",
+        "Each raw pass preserves its producer actual_model, and findings synthesis, final reconciliation and report identify their respective authors without duplicate model_id fields"
       ]
     },
     {
@@ -217,6 +218,34 @@
         "Treats candidate_unchanged subsections as reuse candidates, not reviewed or correct",
         "Re-reviews the edited subsection",
         "Reruns whole-paper notation and claims passes and final reconciliation after the source change"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Referee evals/fixtures/referee-context.tex and retain raw passes, findings synthesis, reconciliation and report. Delegation is unavailable; use sequential self-review. A historical source check with confirmed ID fixture-contributor-v2 and a prior pass without model metadata are available as leads; preserve both. The test host exposes producing-agent execution metadata with exact ID fixture-observed-v1. Its requested model is fixture-requested, and its display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "expected_output": "Each newly authored referee JSON artifact records its author through model_assignment.actual_model; the Markdown report identifies its author. Current execution identity is fixture-observed-v1. Reused work keeps its original attribution or unknown provenance; deterministic snapshots keep software provenance.",
+      "assertions": [
+        "Uses model_assignment.actual_model on new raw passes, findings synthesis and reconciliation, without duplicate model_id fields",
+        "Uses **Model ID:** fixture-observed-v1 on report.md and new Markdown assessments",
+        "Does not infer actual execution from fixture-requested or Research",
+        "Preserves contributor IDs and missing historical provenance without rewriting earlier artifacts",
+        "Does not add model fields to deterministic preparation outputs",
+        "Works as a standalone referee with honest self-review and source-reconciled conclusions",
+        "Reviews actual generated artifacts rather than only packaging or keyword matches"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Referee evals/fixtures/referee-context.tex and retain raw passes, findings synthesis, reconciliation and report. Delegation is unavailable; use sequential self-review. A historical source check with confirmed ID fixture-contributor-v2 and a prior pass without model metadata are available as leads; preserve both. Only this standalone skill is installed. The test host exposes no actual model identity; it shows only requested model fixture-requested and display nickname Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "expected_output": "Each newly authored referee JSON artifact records its author through model_assignment.actual_model; the Markdown report identifies its author. Current execution identity is unavailable, so actual_model is null and Model ID is unknown. Reused work keeps its original attribution or unknown provenance; deterministic snapshots keep software provenance.",
+      "assertions": [
+        "Uses model_assignment.actual_model on new raw passes, findings synthesis and reconciliation, without duplicate model_id fields",
+        "Uses **Model ID:** unknown on report.md and new Markdown assessments",
+        "Does not infer actual execution from fixture-requested or Research",
+        "Preserves contributor IDs and missing historical provenance without rewriting earlier artifacts",
+        "Does not add model fields to deterministic preparation outputs",
+        "Works as a standalone referee with honest self-review and source-reconciled conclusions",
+        "Reviews actual generated artifacts rather than only packaging or keyword matches"
       ]
     }
   ]

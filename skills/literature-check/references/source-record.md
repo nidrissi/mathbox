@@ -3,6 +3,7 @@
 ```markdown
 ### <Source ID>: <short result name>
 
+- **Model ID:** <exact execution ID, or unknown>
 - **Bibliographic record:**
 - **Stable locator / DOI / arXiv ID:**
 - **Version or revision date:**
@@ -28,3 +29,8 @@
 - **Second search pass:** method/reviewer, date, and independence limitation
 - **Coverage gaps:**
 ```
+
+The Model ID identifies the author of this source assessment, copied from
+exposed execution metadata; it does not identify the paper's author or the
+cache software. Keep previous checks and contributor IDs unchanged. A new
+assessment or correction uses its own author's ID, or `unknown` if unavailable.

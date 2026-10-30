@@ -32,6 +32,9 @@ program/phase identifier and link the exact authoritative artifacts. Use the
 [small closeout template](../assets/program-closeout.template.md) when it helps;
 remove empty fields rather than filling them with speculation. State:
 
+- assessment author's exact Model ID from exposed execution metadata, or
+  `unknown`; preserve contributor attribution on reused records and do not
+  assign the assessment author's ID to historical work;
 - original target and whether it was reached, partially advanced, refuted, or
   remained open at the cutoff, with exact hypotheses, range and then-known
   evidence/review conditions;

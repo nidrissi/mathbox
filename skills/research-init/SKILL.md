@@ -98,6 +98,20 @@ prose records and report the limitation. Never import confident prose as proof.
 
 ## Phase 4 — write the authorized project layer
 
+For newly authored durable records, proofs and reports, add
+`**Model ID:** <exact ID>` in Markdown or `"model_id": "<exact ID>"` in
+agent-authored JSON; use `unknown` or `null`, respectively, when unavailable.
+For other proof/report formats, put attribution in an accompanying Markdown
+or JSON record.
+Copy only execution metadata exposed to the producing agent; never infer an ID
+from a requested model, display nickname or presumed default. Each delegated
+contributor retains its own ID; a synthesis records its author's ID. Attribute
+new sections or entries without relabelling reused work. Preserve historical
+artifacts and imported source material. Ordinary manuscript edits and chat
+replies need no field. Deterministic helper outputs retain software provenance;
+attribute the accompanying assessment. Keep ledger events, proposals and fixed
+transport envelopes unchanged; put attribution in their authored artifacts.
+
 Read [output-contract.md](references/output-contract.md) **before writing**.
 Use assets selectively, delete unused sections and replace scaffolding values:
 

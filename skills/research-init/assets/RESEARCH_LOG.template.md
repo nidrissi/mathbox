@@ -12,7 +12,7 @@ instead.
 ## Program/phase entry format
 
 ```markdown
-- YYYY-MM-DD — [Program closeout]({{RESEARCH_RECORDS}}/program-closeout.md) — **goal status** — Strongest result or blocker; [route index]({{RESEARCH_RECORDS}}/program-routes.md).
+- YYYY-MM-DD — [Program closeout]({{RESEARCH_RECORDS}}/program-closeout.md) — **goal status** — Strongest result or blocker; [route index]({{RESEARCH_RECORDS}}/program-routes.md). **Model ID:** {{MODEL_ID}}
 ```
 
 A program route index contains one linked outcome line per durable route. For
@@ -20,5 +20,5 @@ a small flat history, use that same route-line format directly here. Adjust
 relative links when the route index lives in a subdirectory:
 
 ```markdown
-- YYYY-MM-DD — [Route title]({{RESEARCH_RECORDS}}/YYYY-MM-DD-normalized-title.md) — **evidence label** — One-sentence strongest result or blocker.
+- YYYY-MM-DD — [Route title]({{RESEARCH_RECORDS}}/YYYY-MM-DD-normalized-title.md) — **evidence label** — One-sentence strongest result or blocker. **Model ID:** {{MODEL_ID}}
 ```

@@ -79,6 +79,27 @@ Keep expected outcomes out of the fresh solver context. If a trial simulates
 a host limitation, label it explicitly; it is not evidence that a different
 harness was actually exercised.
 
+### Durable model attribution
+
+Each skill's behavioral evals include known and unavailable execution identities.
+Exercise them with that skill alone installed. Supply identity through the
+test host's exposed execution metadata, separately from requested settings and
+display names. If the host cannot supply controlled metadata, run a clearly
+labelled simulation; it does not authenticate a real execution under the fixture
+ID. Use an isolated temporary project and review the actual authored Markdown
+and JSON, not merely a checklist or field-name search.
+
+Check that requested-versus-observed mismatches use the observed ID, missing
+identity uses `unknown` / `null`, each delegated or reused contribution retains
+its attribution, and a new synthesis identifies its own author. Referee JSON
+uses `model_assignment.actual_model` without a duplicate `model_id`. Compare
+historical/imported artifacts and deterministic helper outputs byte-for-byte;
+exercise deferred artifact content without adding fields to packet envelopes,
+proposals or events. Check mathematical conclusions and edit scope too.
+Record the actual host, available metadata, simulation limits, artifacts and
+reviewer. Disclose self-review; it is not an independent behavioral audit.
+Routing is unchanged, so retain existing trigger probes and invocation policies.
+
 These cases test specific failure mechanisms using synthetic, publishable
 artifacts. They contain no project-derived names, paths, statements, outputs or
 provenance. They are not a validated measure of frontier research success. Keep

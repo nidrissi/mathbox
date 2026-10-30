@@ -1,5 +1,7 @@
 # Convention registry
 
+**Model ID:** {{MODEL_ID}}
+
 Version: {{VERSION}}
 
 For each fragile convention, give its identifier, exact rule, source, affected

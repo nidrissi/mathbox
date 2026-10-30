@@ -18,6 +18,12 @@ The JSON records are the index. They contain schema version, identifiers,
 bibliographic metadata, local relative paths, content hashes, date checked,
 retention basis and extraction provenance.
 
+These deterministic cache records retain software provenance; do not add a
+model attribution field to them or to cached source text. The accompanying
+model-authored source assessment carries its author's exact Model ID from
+exposed execution metadata, or `unknown` / `null` when unavailable, following
+[source-record.md](source-record.md).
+
 `find`, `show`, and `verify` never create or modify the cache. Only `init` and
 `add` write to it, so a lookup in a project that has not opted into local
 retention leaves nothing behind.

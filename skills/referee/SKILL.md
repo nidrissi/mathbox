@@ -132,6 +132,18 @@ leave anything not settled conditional.
 
 ## Reconcile and report
 
+For newly authored durable Markdown reports, add `**Model ID:** <exact ID>`
+(`unknown` if unavailable). In referee JSON, use the existing
+`model_assignment.actual_model` field (`null` if unavailable), not a duplicate
+`model_id`. Copy only execution metadata exposed to the producing agent;
+never infer an ID from a requested model, display nickname or presumed default.
+Each delegated pass retains its own ID; findings synthesis, final reconciliation
+and report record their respective authors' IDs. Attribute new sections without
+relabelling reused work; preserve historical artifacts and imported leads.
+Ordinary manuscript edits and chat replies need no field. Deterministic snapshots
+retain software provenance; ledger events, proposals and fixed transport envelopes
+keep their schemas. Attribute their accompanying authored assessments instead.
+
 Follow [final-referee.md](references/final-referee.md) and
 [output-contract.md](references/output-contract.md) for dispositions, concerns
 and the ordered report. Recheck raw findings against full source and specialist

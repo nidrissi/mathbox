@@ -9,6 +9,7 @@ Create a contract JSON with these fields (this is a concrete small example):
 
 ```json
 {
+  "model_id": null,
   "claim_id": "C_PARITY",
   "mathematics": {
     "assertion_tested": "n(n+1) is even for each tested n",
@@ -29,6 +30,13 @@ each entry needs a name and a version. The runner records its own interpreter
 separately and cannot infer the version of the program it launches. State a
 seed and generator when random sampling is used; the runner records them but
 does not configure the child program's RNG.
+
+For an agent-authored contract or hand-filled manifest, set `model_id` to the
+author's exact ID from exposed execution metadata, or `null` when unavailable.
+This attributes authorship, not the computation's software. The runner does not
+collect or propagate model identity: its deterministic manifests, results and
+logs retain their existing software provenance. Attribute the accompanying
+model-authored assessment separately; do not patch runner output to add an ID.
 
 `mathematics.inputs` describes mathematical inputs and may include objects or
 families that are not files. The optional top-level `execution_artifacts` is a

@@ -256,6 +256,30 @@
         "Does not hand-apply a rejected packet or refresh historical hashes",
         "Distinguishes released originals from still-protected archives and inactive evidence"
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "In an authorized temporary initialized ledger, register an existing proof artifact and save a new authored Markdown state assessment and JSON assessment. Keep helper-generated check/handoff output separate. Also prepare a deferred packet for a permitted new Markdown assessment artifact using the inspected ledger head. A historical pinned artifact lacks a model ID; leave it byte-identical. For the deferred packet, keep the envelope and proposals exactly within their existing schema and put attribution inside the new artifact content. The test host exposes producing-agent execution metadata with exact ID fixture-observed-v1. Its requested model is fixture-requested, and its display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into new authored Markdown and JSON artifacts, rather than fixture-requested or Research; preserves attribution boundaries.",
+      "assertions": [
+        "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
+        "Puts author identity in authored assessments and deferred artifact content",
+        "Adds no model fields to ledger events, proposals, deferred envelopes or deterministic check/handoff output",
+        "Preserves historical pins and passes actual helper validation without a schema change",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "In an authorized temporary initialized ledger, register an existing proof artifact and save a new authored Markdown state assessment and JSON assessment. Keep helper-generated check/handoff output separate. Also prepare a deferred packet for a permitted new Markdown assessment artifact using the inspected ledger head. A historical pinned artifact lacks a model ID; leave it byte-identical. For the deferred packet, keep the envelope and proposals exactly within their existing schema and put attribution inside the new artifact content. Only this standalone skill is installed. The test host exposes no actual model identity; it shows only requested model fixture-requested and display nickname Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "expected_output": "Uses unknown in new Markdown attribution and null in agent-authored JSON, without inferring a model from the request, nickname or a presumed default; completes the bounded task as a standalone skill.",
+      "assertions": [
+        "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",
+        "Puts author identity in authored assessments and deferred artifact content",
+        "Adds no model fields to ledger events, proposals, deferred envelopes or deterministic check/handoff output",
+        "Preserves historical pins and passes actual helper validation without a schema change",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
     }
   ]
 }
