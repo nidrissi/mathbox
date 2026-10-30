@@ -32,13 +32,21 @@ class ExperimentTests(unittest.TestCase):
         result = self.root / "result.txt"
         result.write_text("21 cases checked\n")
         manifest.update(claim_id="A", command=[sys.executable, "run.py"], result="21 cases passed",
-                        declared_results=["result.txt"])
+                        declared_results=["result.txt"], model_id="fixture-observed-v1")
         manifest["repository"].update(commit="unavailable", dirty=True)
         manifest["environment"]["software"] = [{"name": "Python", "version": sys.version.split()[0]}]
         manifest["mathematics"] = json.loads(self.contract.read_text())["mathematics"]
         manifest["run"].update(started_at="2026-10-02T00:00:00Z", runtime_seconds=0.1, exit_status=0, status="completed")
         manifest["input_artifacts"] = [{"path": "run.py", "sha256": sha(self.code), "sha256_after": sha(self.code)}]
         manifest["outputs"] = [{"path": "result.txt", "sha256": sha(result), "kind": "result"}]
+        self.assertEqual(validate(manifest, root=self.root), [])
+        for model_id in ("", "unknown", 42):
+            manifest["model_id"] = model_id
+            self.assertIn("model_id must be an exact model ID or null", validate(manifest, root=self.root))
+        for model_id in (None, "fixture-observed-v1"):
+            manifest["model_id"] = model_id
+            self.assertEqual(validate(manifest, root=self.root), [])
+        del manifest["model_id"]
         self.assertEqual(validate(manifest, root=self.root), [])
 
     def setUp(self):

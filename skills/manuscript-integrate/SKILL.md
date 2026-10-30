@@ -76,6 +76,9 @@ load-bearing theorem changes.
 
 ## Synchronize durable state
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 When integration changes a claim's statement, scope or status (not its prose),
 and the project keeps research records, update its durable proof, claims/status,
 one standalone record and compact route-index entry together. Use designated

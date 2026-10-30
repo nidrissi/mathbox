@@ -114,6 +114,36 @@
         "A lookup for the superseded v2 returns a candidate rather than an exact version hit",
         "Does not treat either metadata update as theorem verification"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "Write an authorized Markdown source check and JSON assessment for an unavailable synthetic source cited for an integral comparison. The exact source text is unavailable. A local deterministic cache record already exists; do not fetch or invent the theorem. A reused source check has Model ID fixture-old-v1 and a cached extraction has software provenance. Retain them while writing the current conditional assessment. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
+      "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into new authored Markdown and JSON artifacts, rather than fixture-requested or Research; preserves attribution boundaries.",
+      "assertions": [
+        "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
+        "Attributes the new source assessment, not the source author or cache helper",
+        "Preserves cache metadata, extracted text and old check without adding attribution fields",
+        "Leaves authentication/extraction unverified and the application conditional",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Write an authorized Markdown source check and JSON assessment for an unavailable synthetic source cited for an integral comparison. The exact source text is unavailable. A local deterministic cache record already exists; do not fetch or invent the theorem. A reused source check has Model ID fixture-old-v1 and a cached extraction has software provenance. Retain them while writing the current conditional assessment. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
+      "expected_output": "Uses unknown in new Markdown attribution and null in agent-authored JSON, without inferring a model from the request, nickname or a presumed default; completes the bounded task as a standalone skill.",
+      "assertions": [
+        "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",
+        "Attributes the new source assessment, not the source author or cache helper",
+        "Preserves cache metadata, extracted text and old check without adding attribution fields",
+        "Leaves authentication/extraction unverified and the application conditional",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
     }
   ]
 }

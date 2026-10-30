@@ -223,6 +223,7 @@ def main():
     for path in [*root.glob("skills/**/*.py"), *root.glob("scripts/*.py"), *root.glob("evals/**/*.py")]:
         with guard(errors, path.relative_to(root)):
             ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    canonical_attribution = (root / "skills/proof-audit/references/attribution.md").read_bytes()
     for skill in skills:
         with guard(errors, skill.parent.name):
             body = skill.read_text(encoding="utf-8")
@@ -242,6 +243,19 @@ def main():
             ids = [case.get("id") for case in cases if isinstance(case, dict)]
             if len(ids) != len(set(ids)):
                 errors.append(f"duplicate eval IDs: {skill.parent.name}")
+            for case in cases:
+                if not isinstance(case, dict) or "host_metadata" not in case:
+                    continue
+                metadata = case["host_metadata"]
+                model_id = metadata.get("model_id") if isinstance(metadata, dict) else None
+                if (not isinstance(metadata, dict) or list(metadata) != ["model_id"]
+                        or not (model_id is None or (isinstance(model_id, str) and model_id.strip()))):
+                    errors.append(f"invalid host_metadata in eval {case.get('id')}: {skill.parent.name}")
+            attribution = skill.parent / "references/attribution.md"
+            if not attribution.is_file() or attribution.read_bytes() != canonical_attribution:
+                errors.append(f"attribution rule differs from proof-audit's: {skill.parent.name}")
+            if "](references/attribution.md)" not in body:
+                errors.append(f"SKILL.md does not link the attribution rule: {skill.parent.name}")
             for path in [skill, *skill.parent.glob("references/**/*.md")]:
                 prose = re.sub(r"^```[^\n]*\n.*?^```[^\n]*$", "", path.read_text(encoding="utf-8"), flags=re.M | re.S)
                 for link in re.findall(r"\]\(([^)\s]+)\)", prose):

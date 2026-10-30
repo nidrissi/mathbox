@@ -109,6 +109,9 @@ A restriction or finite range does not pass evidence asserting the full claim.
 
 ## Output
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Lead with the normalized claim and verdict. Then give:
 
 1. dependency graph;

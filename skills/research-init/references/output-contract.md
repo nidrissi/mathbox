@@ -31,6 +31,9 @@
 
 ## Research records
 
+- Attribution follows [attribution.md](attribution.md): new immutable records,
+  migration assessments and the setup report carry a Model ID; the dashboard,
+  registries, charter, history indexes and instruction files do not.
 - Exactly one live dashboard is designated.
 - The dashboard states current evidence, blocker, and next action. Older
   checkpoint narratives are linked from the compact history index and durable

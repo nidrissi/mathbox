@@ -75,6 +75,9 @@ them.
 
 ## Output
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 For edited repository files, report:
 
 ```text

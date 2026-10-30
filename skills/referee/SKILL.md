@@ -81,7 +81,8 @@ For each pass assign a unique `pass_id` and issue prefix, e.g. `corr-s3` and
 `corr-s3-F`. A child writes only `passes/<pass_id>.json`. Give it resolved paths
 for [review-protocol.md](references/review-protocol.md), its lane file and snapshot
 unit files (paste text only if it cannot read files), exact source revision,
-necessary dependencies and its disjoint scope. Withhold prior findings from
+necessary dependencies, its disjoint scope and its resolved `model_assignment`
+request fields. Withhold prior findings from
 correctness/adversarial passes; whole-paper lanes may receive unverified leads.
 Children return exact specialist obligations; the coordinator arranges fresh
 confirmation. They do not launch specialists unless explicitly assigned.
@@ -131,6 +132,9 @@ leave anything not settled conditional.
   database merely for refereeing.
 
 ## Reconcile and report
+
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
 
 Follow [final-referee.md](references/final-referee.md) and
 [output-contract.md](references/output-contract.md) for dispositions, concerns

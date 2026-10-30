@@ -138,6 +138,9 @@ or promote a claim.
 
 ## Report and persist
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Commit events with their artifacts only under project Git authorization. Preserve
 source-cache retention policy. Use one designated live view, preferably a generated
 brief view when migration is authorized; do not create a parallel manual dashboard.

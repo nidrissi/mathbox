@@ -90,3 +90,31 @@ current implementation's bounded trials and remaining acceptance coverage,
 scope of the v3 redesign and
 [`docs/referee-validation.md`](../docs/referee-validation.md) for the referee
 integration, raw trial records and API-free Math Scout comparison.
+
+### Durable model attribution
+
+Each skill's behavioral evals include known and unavailable execution identities.
+A case's `host_metadata.model_id` is the identity the test host exposes, kept out
+of the prompt because the skills ignore identity claims in requests. Exercise
+each case with that skill alone installed, and make `host_metadata.model_id` the
+solver's only model identity in system context, for example by replacing the
+host's system prompt; for `null`, leave none there. If the host cannot override
+its own identity line, label the trial a simulation and grade against what the
+solver actually saw. A simulation does not authenticate a real execution under
+the fixture ID. Requested models and nicknames in the prompt are distractors.
+Use an isolated temporary project and review the actual authored Markdown and
+JSON, not merely a checklist or field-name search.
+
+Check that requested-versus-observed mismatches use the observed ID, missing
+identity uses `unknown` / `null`, each delegated or reused contribution retains
+its attribution, and a new synthesis identifies its own author. Live files
+(status, registries, history and route indexes) and instruction files carry no
+Model ID. Referee JSON uses `model_assignment.actual_model` without a duplicate
+`model_id`; coverage keeps launch-confirmed identity apart from pass-reported
+identity. Compare historical/imported artifacts and deterministic helper outputs
+byte-for-byte; exercise deferred artifact content without adding fields to packet
+envelopes, index entries, proposals or events. Check mathematical conclusions and
+edit scope too. Record the actual host, available metadata, simulation limits,
+artifacts and reviewer. Disclose self-review; it is not an independent
+behavioral audit. Routing is unchanged, so retain existing trigger probes and
+invocation policies.

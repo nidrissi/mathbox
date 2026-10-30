@@ -7,10 +7,19 @@ are immutable inside `referee/<run>/`. Add `passes/<pass_id>.json`,
 `prior-leads.md`, `findings.json`, `reconciliation.json` and `report.md` beside
 them. Raw returns and prior leads remain separate from final conclusions.
 
+Attribute authored artifacts as in [attribution.md](attribution.md). Pass files,
+`findings.json` and `reconciliation.json` record their author in
+`model_assignment.actual_model` rather than adding `model_id`; `report.md`
+uses `**Model ID:**`. In `prior-leads.md`, each verbatim lead keeps its
+original Model ID or `unknown`, and the collecting agent records itself as
+`**Extracted by:**`. Deterministic preparation snapshots get no model fields.
+
 ## Structured raw findings
 
 `findings.json` has `schema_version: 1`, `manuscript_sha256`,
-`source_files_sha256`, `contract_sha256`, `coverage` and `issues`.
+`source_files_sha256`, `contract_sha256`, `model_assignment`, `coverage` and `issues`.
+The top-level assignment identifies the author who assembled the findings;
+each coverage entry keeps the original pass's assignment separately.
 Copy `manuscript_sha256` from manifest `source_sha256`, plus its
 `source_files_sha256` and `contract_sha256`; use null with an explanation if
 unavailable. Include all five dimensions, skipped scopes/reasons and failed
@@ -48,14 +57,23 @@ For prescribed settings, fill this object, also used for final reconciliation:
 
 The placeholder strings are illustrative. Requested fields record the
 resolved preference, or `null` when none was prescribed. Actual fields record
-only what the host confirms, or `null` when unavailable. `assignment_source`
+only what the host confirms to the agent writing the object, or `null` when
+unavailable. In a pass file, the child copies the requested fields,
+`assignment_source` and `fallback_reason` from its briefing and takes actual
+fields from execution metadata exposed in its own context. In coverage, actual
+fields record what the launch tool or session confirms to the coordinator; if
+it confirms nothing, copy the pass's actual fields and note in coverage that
+they are pass-reported. If launch evidence and a pass disagree, keep the launch
+evidence in coverage, disclose the conflict in coverage and the report, and
+rewrite neither artifact. `assignment_source`
 names the user/project instruction and role, or is `null` for host defaults.
 `fallback_reason` is `null` when no deviation is known; otherwise name the
 unsupported setting, unavailable model or delegation limitation and what was
 used instead. Preserve the native launch request/return or session evidence
 alongside raw passes to distinguish the preference from the controls actually
 requested. Explain unknown actual settings in the coverage notes; do not
-invent them from a request, reviewer name or self-identification. See
+invent them from a request, reviewer name or an agent's unsupported
+self-description. See
 [model-assignments.md](model-assignments.md).
 
 These provenance fields are additive within schema version 1. Historical
@@ -112,6 +130,9 @@ requires a different report format:
 
 ```markdown
 # Summary
+
+**Model ID:** <exact ID of the report author, or unknown>
+
 # Main mathematical concerns
 # Other mathematical concerns
 # Exposition and organization

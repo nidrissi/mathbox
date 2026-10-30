@@ -3,6 +3,7 @@
 ```markdown
 ### <Source ID>: <short result name>
 
+- **Model ID:** <exact execution ID, or unknown>
 - **Bibliographic record:**
 - **Stable locator / DOI / arXiv ID:**
 - **Version or revision date:**
@@ -28,3 +29,9 @@
 - **Second search pass:** method/reviewer, date, and independence limitation
 - **Coverage gaps:**
 ```
+
+The Model ID names the author of this source assessment, not the paper's author
+or the cache software; see [attribution.md](attribution.md). Each source record
+is an immutable entry even inside a shared literature file: a new assessment or
+correction is a new record with its own author's ID, and the registry table
+carries none.

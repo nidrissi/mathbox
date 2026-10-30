@@ -1,5 +1,6 @@
 # <Program or phase> closeout
 
+- **Model ID:** <exact execution ID of the assessment author, or unknown>
 - **Program/phase ID:**
 - **Historical cutoff:** <date and Git revision or ledger event, or unknown>
 - **Cutoff provenance:** <recorded, Git-inferred, or unavailable>

@@ -133,6 +133,9 @@ the underlying mathematics.
 
 ## Persist and report
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
 When persistence is authorized but this host cannot execute or write, use the

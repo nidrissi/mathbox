@@ -6,6 +6,7 @@ Write each durable route as a standalone Markdown file:
 # <Short title>
 
 - **Date:** <YYYY-MM-DD>
+- **Model ID:** <exact execution ID, or unknown>
 - **Kind:** <attempt, finding, counterexample, decision, correction, or project kind>
 - **Corrects:** <relative link, only for a correction>
 - **Program/route/claim IDs:** <existing IDs, or not registered>
@@ -61,3 +62,6 @@ path for a nested index:
 Do not copy a detailed proof, computation manifest, or literature record into
 the route record. Link the authoritative artifact under `Artifacts and
 commands` and state only what it establishes.
+
+Fill the record's Model ID with its author's ID as in
+[attribution.md](attribution.md); the index line carries none.

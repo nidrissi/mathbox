@@ -256,6 +256,68 @@
         "Does not hand-apply a rejected packet or refresh historical hashes",
         "Distinguishes released originals from still-protected archives and inactive evidence"
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "In an authorized temporary initialized ledger, register an existing proof artifact and save a new authored Markdown state assessment and JSON assessment. Keep helper-generated check/handoff output separate. A historical pinned artifact lacks a model ID; leave it byte-identical. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
+      "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into new authored Markdown and JSON artifacts, rather than fixture-requested or Research; preserves attribution boundaries.",
+      "assertions": [
+        "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
+        "Puts author identity in the authored assessments",
+        "Adds no model fields to ledger events or deterministic check/handoff output",
+        "Preserves historical pins and passes actual helper validation without a schema change",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "In an authorized temporary initialized ledger, register an existing proof artifact and save a new authored Markdown state assessment and JSON assessment. Keep helper-generated check/handoff output separate. A historical pinned artifact lacks a model ID; leave it byte-identical. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
+      "expected_output": "Uses unknown in new Markdown attribution and null in agent-authored JSON, without inferring a model from the request, nickname or a presumed default; completes the bounded task as a standalone skill.",
+      "assertions": [
+        "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",
+        "Puts author identity in the authored assessments",
+        "Adds no model fields to ledger events or deterministic check/handoff output",
+        "Preserves historical pins and passes actual helper validation without a schema change",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "You are in a web host with GitHub read access and the research-state skill, but no filesystem or script execution. The project has an initialized .mathbox ledger whose config opens proofs/ and research/records/ to deferred files and research/index.md to deferred index entries; the exact current head event and index tail are visible. Prove that the sum of the first n odd positive integers is n squared for every n>=0, and persist a new Markdown route record, the proof as proofs/odd-sum.tex, one index entry and the ledger proposals. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated packet.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
+      "expected_output": "Gives the proof and a complete mathbox-deferred-v1 packet pinned to the inspected head. The route record content carries **Model ID:** fixture-observed-v1, a companion .md artifact attributes the .tex proof, and the envelope, index entry and proposals carry no model field. Says the packet has not been applied.",
+      "assertions": [
+        "Puts **Model ID:** fixture-observed-v1 inside the new Markdown artifact content",
+        "Attributes the .tex proof through a companion .md artifact in the same packet, not inside the TeX",
+        "Adds no model field to the packet envelope, index_append or proposals",
+        "Pins the packet to the inspected head and does not claim that it was applied",
+        "Does not infer identity from fixture-requested or Research",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "You are in a web host with GitHub read access and the research-state skill, but no filesystem or script execution. The project has an initialized .mathbox ledger whose config opens proofs/ and research/records/ to deferred files and research/index.md to deferred index entries; the exact current head event and index tail are visible. Prove that the sum of the first n odd positive integers is n squared for every n>=0, and persist a new Markdown route record, the proof as proofs/odd-sum.tex, one index entry and the ledger proposals. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
+      "expected_output": "Gives the proof and a complete mathbox-deferred-v1 packet pinned to the inspected head. The route record content carries **Model ID:** unknown, a companion .md artifact attributes the .tex proof as unknown, and the envelope, index entry and proposals carry no model field. Says the packet has not been applied.",
+      "assertions": [
+        "Puts **Model ID:** unknown inside the new Markdown artifact content, with no guessed execution identity",
+        "Attributes the .tex proof through a companion .md artifact in the same packet, not inside the TeX",
+        "Adds no model field to the packet envelope, index_append or proposals",
+        "Pins the packet to the inspected head and does not claim that it was applied",
+        "Does not infer identity from fixture-requested or Research",
+        "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
     }
   ]
 }

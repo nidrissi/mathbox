@@ -168,6 +168,21 @@ authorization. See the [routing evaluation protocol](evals/README.md#routing-pro
 - [Integration](skills/manuscript-integrate/SKILL.md) requires current support for established claims.
 - [Literature checks](skills/literature-check/SKILL.md) verify exact implications and bound novelty reports.
 
+### Model attribution
+
+New immutable model-authored artifacts (route records, proofs, source checks,
+audit and referee reports, closeouts and authored JSON) carry
+`**Model ID:** <exact ID>` in Markdown or `"model_id": "<exact ID>"` in JSON
+(`unknown` / `null` if unavailable). The ID comes from execution metadata the
+host exposes to the authoring agent, never from a requested model, display
+nickname or presumed default. Live files such as status dashboards, registries
+and history indexes carry none. Delegated and reused work keeps its own
+attribution; a synthesis records its author. Referee JSON uses
+`model_assignment.actual_model`. Historical artifacts, imported sources,
+deterministic helper output and ledger schemas are unchanged, and no model
+collector or hook is added. Each skill carries the identical rule in
+`references/attribution.md`.
+
 ### Example prompts
 
 Each line below is a separate Codex prompt. In Claude Code, write

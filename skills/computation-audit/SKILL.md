@@ -94,6 +94,9 @@ audit implementation or reach a new regime.
 
 ## Persist and report
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 When authorized, store reusable scripts in the designated computation area and
 update status only for material changes. Keep justified raw outputs or hashes
 and regeneration commands. If an initialized `.mathbox/` ledger is in use,

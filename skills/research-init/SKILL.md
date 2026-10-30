@@ -98,6 +98,9 @@ prose records and report the limitation. Never import confident prose as proof.
 
 ## Phase 4 — write the authorized project layer
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Read [output-contract.md](references/output-contract.md) **before writing**.
 Use assets selectively, delete unused sections and replace scaffolding values:
 

@@ -19,11 +19,11 @@ Return one complete JSON object with exactly these top-level fields:
   "artifacts": [
     {
       "path": "research/records/2026-09-24-obstruction.md",
-      "content": "# Obstruction\n\nThe complete durable route record.\n"
+      "content": "# Obstruction\n\n**Model ID:** unknown\n\nThe complete durable route record.\n"
     },
     {
       "path": "proofs/obstruction-lemma.md",
-      "content": "# Obstruction lemma\n\nThe complete argument.\n"
+      "content": "# Obstruction lemma\n\n**Model ID:** unknown\n\nThe complete argument.\n"
     }
   ],
   "index_append": {
@@ -50,6 +50,12 @@ The all-zero hash is illustrative. Copy `event_id` and `sha256` from the
 highest-numbered `.mathbox/events/NNNNNN.json` into the base; never hash the
 file bytes or infer the digest. For initialized state without events use `null`
 for both. Ingest rejects either value differing from the current ledger head.
+
+Attribute each new Markdown artifact inside its content, following
+[attribution.md](attribution.md). A `.tex`, `.txt` or `.bib` artifact gets a
+companion `.md` artifact in the same packet carrying its Model ID. The packet
+envelope, `index_append` and proposals carry none. The `unknown` values above
+illustrate unavailable identity, not a default when the exact ID is exposed.
 
 `artifacts` contains complete UTF-8 text for **new** files strictly inside an
 artifact root configured under the local write policy below, with a `.md`, `.tex`, `.txt` or `.bib` suffix. No

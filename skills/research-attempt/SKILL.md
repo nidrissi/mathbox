@@ -119,6 +119,9 @@ known continuation remains executable within its stated scope.
 
 ## Persist at natural checkpoints
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Exploration may remain scratch work. Create durable records when the route
 produces reusable mathematics, a counterexample, a corrected dependency, a
 material blocker, a convention decision, or a claim-supporting computation.

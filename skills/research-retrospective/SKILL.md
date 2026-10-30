@@ -115,6 +115,9 @@ minimal reconciliation set.
 
 ## Output
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Lead with a concise project verdict. Then provide:
 
 1. claim/work-package table;

@@ -86,6 +86,9 @@ correction and propagate it; preserve the earlier scoped search.
 
 ## Record and report
 
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
+
 Update literature records only when authorized and the check changes a dependency
 or attribution; update status/history only for changed live research state.
 Preserve old checks when versions or interpretations change and inspect dependents.

@@ -91,6 +91,11 @@ comparison, an unchanged dashboard or an agent's confidence is not verification.
 
 Return `passes/<pass_id>.json` with `pass_id`, `issues` and `checks` (actual
 commands/derivations, inputs, reviewed units/context and partial/unreviewed scopes).
+Include `model_assignment` as specified for pass files in
+[output-contract.md](output-contract.md): copy the request fields from your
+briefing and take `actual_model` from execution metadata exposed in your own
+context, or `null`, following [attribution.md](attribution.md). Do not add a
+duplicate `model_id`.
 Use the assigned ID prefix for each issue; empty `issues` is valid.
 Each issue requires:
 
