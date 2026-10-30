@@ -29,7 +29,7 @@ Return one complete JSON object with exactly these top-level fields:
   "index_append": {
     "path": "research/index.md",
     "expected_tail": "- 2026-09-20 — Earlier route\n",
-    "content": "- 2026-09-24 — [Obstruction](records/2026-09-24-obstruction.md) — conditional. **Model ID:** unknown\n"
+    "content": "- 2026-09-24 — [Obstruction](records/2026-09-24-obstruction.md) — conditional\n"
   },
   "proposals": [
     {
@@ -51,12 +51,11 @@ highest-numbered `.mathbox/events/NNNNNN.json` into the base; never hash the
 file bytes or infer the digest. For initialized state without events use `null`
 for both. Ingest rejects either value differing from the current ledger head.
 
-Put each producing agent's exact Model ID from exposed execution metadata in
-its authored artifact content (`unknown` when unavailable); a synthesis uses its
-own author's ID and preserves attribution on reused contributions. Do not add
-`model_id` to the packet envelope, proposals or ledger events. The `unknown`
-values above illustrate unavailable execution identity, not a default to use
-when the exact ID is exposed. Imported source text remains unchanged.
+Attribute each new Markdown artifact inside its content, following
+[attribution.md](attribution.md). A `.tex`, `.txt` or `.bib` artifact gets a
+companion `.md` artifact in the same packet carrying its Model ID. The packet
+envelope, `index_append` and proposals carry none. The `unknown` values above
+illustrate unavailable identity, not a default when the exact ID is exposed.
 
 `artifacts` contains complete UTF-8 text for **new** files strictly inside an
 artifact root configured under the local write policy below, with a `.md`, `.tex`, `.txt` or `.bib` suffix. No

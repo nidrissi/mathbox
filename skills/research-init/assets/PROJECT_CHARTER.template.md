@@ -1,7 +1,5 @@
 # Project charter
 
-**Model ID:** {{MODEL_ID}}
-
 ## Main question
 
 {{MAIN_QUESTION}}

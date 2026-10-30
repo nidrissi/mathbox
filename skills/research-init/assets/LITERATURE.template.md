@@ -1,7 +1,5 @@
 # Literature record
 
-**Model ID:** {{MODEL_ID}}
-
 Record only external results actually used or load-bearing novelty checks.
 
 | ID | Source/version | Cache SHA-256 / extraction | Exact result | Project implication | Translation/caveats | Source status | Checks performed / implication verdict | Search scope and blind spots | Date checked |

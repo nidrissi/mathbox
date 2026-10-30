@@ -171,25 +171,29 @@
     },
     {
       "id": 15,
-      "prompt": "Initialize an authorized temporary mathematical project using the relevant record templates. Create a charter, current status, claims, conventions, literature and verification records, a compact history entry and a setup report. The user has approved the concrete file plan. An existing imported legacy proof has no model metadata and an older source record has Model ID fixture-old-v1. Preserve their bytes; attribute any new migration assessment separately. The deterministic inspector output is already available. The test host exposes producing-agent execution metadata with exact ID fixture-observed-v1. Its requested model is fixture-requested, and its display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
-      "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into new authored Markdown and JSON artifacts, rather than fixture-requested or Research; preserves attribution boundaries.",
+      "prompt": "Initialize an authorized temporary mathematical project using the relevant record templates. Create a charter, current status, claims, conventions, literature and verification records, a compact history entry and a setup report. The user has approved the concrete file plan. An existing imported legacy proof has no model metadata and an older source record has Model ID fixture-old-v1. Preserve their bytes; attribute any new migration assessment separately. The deterministic inspector output is already available. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
+      "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into the setup report and any new migration assessment, rather than fixture-requested or Research. Live files and instruction files carry no Model ID; legacy attribution is preserved.",
       "assertions": [
-        "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
-        "Resolves MODEL_ID placeholders in authored record templates with an exact ID or unknown",
+        "Uses **Model ID:** fixture-observed-v1 on the setup report and any new migration assessment",
         "Preserves legacy attribution and does not backfill history or deterministic inspector output",
-        "Keeps generated AGENTS.md and optional CLAUDE.md free of authorship fields",
+        "Leaves the charter, status, claims, conventions, literature and verification records, history entry, AGENTS.md and any CLAUDE.md without Model ID fields",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
       ]
     },
     {
       "id": 16,
-      "prompt": "Initialize an authorized temporary mathematical project using the relevant record templates. Create a charter, current status, claims, conventions, literature and verification records, a compact history entry and a setup report. The user has approved the concrete file plan. An existing imported legacy proof has no model metadata and an older source record has Model ID fixture-old-v1. Preserve their bytes; attribute any new migration assessment separately. The deterministic inspector output is already available. Only this standalone skill is installed. The test host exposes no actual model identity; it shows only requested model fixture-requested and display nickname Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
-      "expected_output": "Uses unknown in new Markdown attribution and null in agent-authored JSON, without inferring a model from the request, nickname or a presumed default; completes the bounded task as a standalone skill.",
+      "prompt": "Initialize an authorized temporary mathematical project using the relevant record templates. Create a charter, current status, claims, conventions, literature and verification records, a compact history entry and a setup report. The user has approved the concrete file plan. An existing imported legacy proof has no model metadata and an older source record has Model ID fixture-old-v1. Preserve their bytes; attribute any new migration assessment separately. The deterministic inspector output is already available. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
+      "expected_output": "Uses unknown on the setup report and any new migration assessment, without inferring a model from the request, nickname or a presumed default. Live files and instruction files carry no Model ID; legacy attribution is preserved.",
       "assertions": [
-        "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",
-        "Resolves MODEL_ID placeholders in authored record templates with an exact ID or unknown",
+        "Uses **Model ID:** unknown on the setup report and any new migration assessment, with no guessed execution identity",
         "Preserves legacy attribution and does not backfill history or deterministic inspector output",
-        "Keeps generated AGENTS.md and optional CLAUDE.md free of authorship fields",
+        "Leaves the charter, status, claims, conventions, literature and verification records, history entry, AGENTS.md and any CLAUDE.md without Model ID fields",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
       ]
     }

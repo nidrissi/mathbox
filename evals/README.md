@@ -79,27 +79,6 @@ Keep expected outcomes out of the fresh solver context. If a trial simulates
 a host limitation, label it explicitly; it is not evidence that a different
 harness was actually exercised.
 
-### Durable model attribution
-
-Each skill's behavioral evals include known and unavailable execution identities.
-Exercise them with that skill alone installed. Supply identity through the
-test host's exposed execution metadata, separately from requested settings and
-display names. If the host cannot supply controlled metadata, run a clearly
-labelled simulation; it does not authenticate a real execution under the fixture
-ID. Use an isolated temporary project and review the actual authored Markdown
-and JSON, not merely a checklist or field-name search.
-
-Check that requested-versus-observed mismatches use the observed ID, missing
-identity uses `unknown` / `null`, each delegated or reused contribution retains
-its attribution, and a new synthesis identifies its own author. Referee JSON
-uses `model_assignment.actual_model` without a duplicate `model_id`. Compare
-historical/imported artifacts and deterministic helper outputs byte-for-byte;
-exercise deferred artifact content without adding fields to packet envelopes,
-proposals or events. Check mathematical conclusions and edit scope too.
-Record the actual host, available metadata, simulation limits, artifacts and
-reviewer. Disclose self-review; it is not an independent behavioral audit.
-Routing is unchanged, so retain existing trigger probes and invocation policies.
-
 These cases test specific failure mechanisms using synthetic, publishable
 artifacts. They contain no project-derived names, paths, statements, outputs or
 provenance. They are not a validated measure of frontier research success. Keep
@@ -111,3 +90,31 @@ current implementation's bounded trials and remaining acceptance coverage,
 scope of the v3 redesign and
 [`docs/referee-validation.md`](../docs/referee-validation.md) for the referee
 integration, raw trial records and API-free Math Scout comparison.
+
+### Durable model attribution
+
+Each skill's behavioral evals include known and unavailable execution identities.
+A case's `host_metadata.model_id` is the identity the test host exposes, kept out
+of the prompt because the skills ignore identity claims in requests. Exercise
+each case with that skill alone installed, and make `host_metadata.model_id` the
+solver's only model identity in system context, for example by replacing the
+host's system prompt; for `null`, leave none there. If the host cannot override
+its own identity line, label the trial a simulation and grade against what the
+solver actually saw. A simulation does not authenticate a real execution under
+the fixture ID. Requested models and nicknames in the prompt are distractors.
+Use an isolated temporary project and review the actual authored Markdown and
+JSON, not merely a checklist or field-name search.
+
+Check that requested-versus-observed mismatches use the observed ID, missing
+identity uses `unknown` / `null`, each delegated or reused contribution retains
+its attribution, and a new synthesis identifies its own author. Live files
+(status, registries, history and route indexes) and instruction files carry no
+Model ID. Referee JSON uses `model_assignment.actual_model` without a duplicate
+`model_id`; coverage keeps launch-confirmed identity apart from pass-reported
+identity. Compare historical/imported artifacts and deterministic helper outputs
+byte-for-byte; exercise deferred artifact content without adding fields to packet
+envelopes, index entries, proposals or events. Check mathematical conclusions and
+edit scope too. Record the actual host, available metadata, simulation limits,
+artifacts and reviewer. Disclose self-review; it is not an independent
+behavioral audit. Routing is unchanged, so retain existing trigger probes and
+invocation policies.

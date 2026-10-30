@@ -1,7 +1,5 @@
 # Research status
 
-**Model ID:** {{MODEL_ID}}
-
 Last reconciled: {{DATE}} at {{GIT_REVISION_OR_LEDGER_HEAD}}
 
 This file describes current state. Find earlier checkpoints through the

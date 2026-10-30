@@ -87,11 +87,10 @@ trigger migration.
 7. Keep records and historical entries immutable; corrections append linked
    records. Historical closeouts separate cutoff from later assessment.
 
-Keep original model attribution, including its absence, on extracted historical
-text. Attribute only a newly authored migration assessment or wrapper with
-`**Model ID:** <exact ID>` from its author's exposed execution metadata
-(`unknown` if unavailable); do not backfill historical authorship from the
-migrating agent or a current model preference.
+Follow [attribution.md](attribution.md). An extracted historical record keeps
+its original Model ID, or `**Model ID:** unknown` when it had none; the
+migrating agent records itself only as `**Extracted by:** <exact ID>`. A newly
+authored migration assessment carries its author's own Model ID.
 
 ## Migrate a long flat history index
 

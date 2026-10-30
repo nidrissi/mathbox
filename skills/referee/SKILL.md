@@ -81,7 +81,8 @@ For each pass assign a unique `pass_id` and issue prefix, e.g. `corr-s3` and
 `corr-s3-F`. A child writes only `passes/<pass_id>.json`. Give it resolved paths
 for [review-protocol.md](references/review-protocol.md), its lane file and snapshot
 unit files (paste text only if it cannot read files), exact source revision,
-necessary dependencies and its disjoint scope. Withhold prior findings from
+necessary dependencies, its disjoint scope and its resolved `model_assignment`
+request fields. Withhold prior findings from
 correctness/adversarial passes; whole-paper lanes may receive unverified leads.
 Children return exact specialist obligations; the coordinator arranges fresh
 confirmation. They do not launch specialists unless explicitly assigned.
@@ -132,17 +133,8 @@ leave anything not settled conditional.
 
 ## Reconcile and report
 
-For newly authored durable Markdown reports, add `**Model ID:** <exact ID>`
-(`unknown` if unavailable). In referee JSON, use the existing
-`model_assignment.actual_model` field (`null` if unavailable), not a duplicate
-`model_id`. Copy only execution metadata exposed to the producing agent;
-never infer an ID from a requested model, display nickname or presumed default.
-Each delegated pass retains its own ID; findings synthesis, final reconciliation
-and report record their respective authors' IDs. Attribute new sections without
-relabelling reused work; preserve historical artifacts and imported leads.
-Ordinary manuscript edits and chat replies need no field. Deterministic snapshots
-retain software provenance; ledger events, proposals and fixed transport envelopes
-keep their schemas. Attribute their accompanying authored assessments instead.
+Before saving a durable record, proof, report or authored JSON, follow
+[attribution.md](references/attribution.md).
 
 Follow [final-referee.md](references/final-referee.md) and
 [output-contract.md](references/output-contract.md) for dispositions, concerns

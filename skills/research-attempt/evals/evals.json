@@ -134,12 +134,16 @@
     },
     {
       "id": 13,
-      "prompt": "As a delegated work package for program P, route R, base checkpoint B, write only research/records/worker.md. Derive a bounded result and return updates for the coordinator. In this synthetic host trial, your execution metadata exposes exact ID fixture-worker-v2, while the coordinator provenance records fixture-coordinator-v1.",
+      "prompt": "As a delegated work package for program P, route R, base checkpoint B, write only research/records/worker.md. Derive a bounded result and return updates for the coordinator. The coordinator's briefing records its own ID fixture-coordinator-v1.",
+      "host_metadata": {
+        "model_id": "fixture-worker-v2"
+      },
       "expected_output": "Returns record/proposed status/index/events and actual base/inputs/hashes within assigned scope.",
       "assertions": [
         "No shared dashboard or index mutation",
         "No worker deferred packet",
-        "The worker record uses **Model ID:** fixture-worker-v2 from its own metadata, never the coordinator ID"
+        "The worker record uses **Model ID:** fixture-worker-v2 from its own metadata, never the coordinator ID",
+        "The proposed index line carries no Model ID"
       ]
     },
     {
@@ -172,22 +176,28 @@
     },
     {
       "id": 17,
-      "prompt": "Use one bounded algebraic route to prove that the sum of the first n odd positive integers is n squared for every n>=0. Persist an authorized Markdown proof, route record, compact index entry and JSON assessment in a temporary project. A linked earlier record has Model ID fixture-old-v1. Keep it immutable, with any correction in a separate record. The test host exposes producing-agent execution metadata with exact ID fixture-observed-v1. Its requested model is fixture-requested, and its display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "prompt": "Use one bounded algebraic route to prove that the sum of the first n odd positive integers is n squared for every n>=0. Persist an authorized Markdown proof, route record, compact index entry and JSON assessment in a temporary project. A linked earlier record has Model ID fixture-old-v1. Keep it immutable, with any correction in a separate record. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
       "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into new authored Markdown and JSON artifacts, rather than fixture-requested or Research; preserves attribution boundaries.",
       "assertions": [
         "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
-        "Attributes each new authored proof, route record, index entry and JSON assessment",
+        "Attributes the new proof, route record and JSON assessment; the compact index line carries no Model ID",
         "Preserves the prior record and its contributor ID rather than substituting the current author",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
       ]
     },
     {
       "id": 18,
-      "prompt": "Use one bounded algebraic route to prove that the sum of the first n odd positive integers is n squared for every n>=0. Persist an authorized Markdown proof, route record, compact index entry and JSON assessment in a temporary project. A linked earlier record has Model ID fixture-old-v1. Keep it immutable, with any correction in a separate record. Only this standalone skill is installed. The test host exposes no actual model identity; it shows only requested model fixture-requested and display nickname Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "prompt": "Use one bounded algebraic route to prove that the sum of the first n odd positive integers is n squared for every n>=0. Persist an authorized Markdown proof, route record, compact index entry and JSON assessment in a temporary project. A linked earlier record has Model ID fixture-old-v1. Keep it immutable, with any correction in a separate record. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
       "expected_output": "Uses unknown in new Markdown attribution and null in agent-authored JSON, without inferring a model from the request, nickname or a presumed default; completes the bounded task as a standalone skill.",
       "assertions": [
         "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",
-        "Attributes each new authored proof, route record, index entry and JSON assessment",
+        "Attributes the new proof, route record and JSON assessment; the compact index line carries no Model ID",
         "Preserves the prior record and its contributor ID rather than substituting the current author",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
       ]

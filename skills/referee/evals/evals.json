@@ -134,7 +134,7 @@
         "Records final-referee execution settings in reconciliation and checks the delegated report before delivery",
         "Retains native request and return evidence alongside raw passes",
         "Checks the triangular identity and n=0 without reporting tau as undefined",
-        "Each raw pass preserves its producer actual_model, and findings synthesis, final reconciliation and report identify their respective authors without duplicate model_id fields"
+        "Each raw pass records actual_model from its own exposed metadata; coverage uses the interface-confirmed values, labels any pass-reported value and discloses conflicts; findings synthesis, final reconciliation and report identify their respective authors without duplicate model_id fields"
       ]
     },
     {
@@ -222,7 +222,10 @@
     },
     {
       "id": 19,
-      "prompt": "Referee evals/fixtures/referee-context.tex and retain raw passes, findings synthesis, reconciliation and report. Delegation is unavailable; use sequential self-review. A historical source check with confirmed ID fixture-contributor-v2 and a prior pass without model metadata are available as leads; preserve both. The test host exposes producing-agent execution metadata with exact ID fixture-observed-v1. Its requested model is fixture-requested, and its display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "prompt": "Referee evals/fixtures/referee-context.tex and retain raw passes, findings synthesis, reconciliation and report. Delegation is unavailable; use sequential self-review. A historical source check with confirmed ID fixture-contributor-v2 and a prior pass without model metadata are available as leads; preserve both. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
       "expected_output": "Each newly authored referee JSON artifact records its author through model_assignment.actual_model; the Markdown report identifies its author. Current execution identity is fixture-observed-v1. Reused work keeps its original attribution or unknown provenance; deterministic snapshots keep software provenance.",
       "assertions": [
         "Uses model_assignment.actual_model on new raw passes, findings synthesis and reconciliation, without duplicate model_id fields",
@@ -236,7 +239,10 @@
     },
     {
       "id": 20,
-      "prompt": "Referee evals/fixtures/referee-context.tex and retain raw passes, findings synthesis, reconciliation and report. Delegation is unavailable; use sequential self-review. A historical source check with confirmed ID fixture-contributor-v2 and a prior pass without model metadata are available as leads; preserve both. Only this standalone skill is installed. The test host exposes no actual model identity; it shows only requested model fixture-requested and display nickname Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "prompt": "Referee evals/fixtures/referee-context.tex and retain raw passes, findings synthesis, reconciliation and report. Delegation is unavailable; use sequential self-review. A historical source check with confirmed ID fixture-contributor-v2 and a prior pass without model metadata are available as leads; preserve both. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
       "expected_output": "Each newly authored referee JSON artifact records its author through model_assignment.actual_model; the Markdown report identifies its author. Current execution identity is unavailable, so actual_model is null and Model ID is unknown. Reused work keeps its original attribution or unknown provenance; deterministic snapshots keep software provenance.",
       "assertions": [
         "Uses model_assignment.actual_model on new raw passes, findings synthesis and reconciliation, without duplicate model_id fields",

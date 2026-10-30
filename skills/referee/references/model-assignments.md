@@ -91,8 +91,11 @@ reconciliation. Distinguish the prescribed model/setting, the requested native
 controls, and what the host actually confirms. A successful launch or echoed
 request alone does not authenticate the model that ran. Use `null` for an
 unexposed actual model or reasoning setting, and retain the available tool or
-session evidence. Record model and reasoning substitutions separately in the
-fallback explanation. Unknown identity alone does not imply a substitution.
+session evidence. A pass may report execution metadata exposed in its own
+context; [output-contract.md](output-contract.md) keeps that separate from
+launch confirmation in coverage. Record model and reasoning substitutions
+separately in the fallback explanation. Unknown identity alone does not imply a
+substitution.
 
 When reusing a prior pass, preserve its original execution provenance; a new
 preference does not relabel historical work. Check whether that evidence

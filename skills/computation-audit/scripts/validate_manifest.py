@@ -151,6 +151,11 @@ def validate(obj, template=False, root=None, manifest_path=None):
 
     for key in ("claim_id", "result"):
         check(nonempty(obj.get(key)), f"{key} must be nonempty")
+    # Runner manifests omit model_id; a hand-filled one must name the author or be null.
+    if "model_id" in obj:
+        model_id = obj["model_id"]
+        check(model_id is None or (nonempty(model_id) and model_id.strip().lower() != "unknown"),
+              "model_id must be an exact model ID or null")
     command = obj.get("command")
     check(nonempty(command) or (isinstance(command, list) and bool(command) and all(nonempty(x) for x in command)),
           "command must be nonempty text or an argv array")

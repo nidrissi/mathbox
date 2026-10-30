@@ -170,18 +170,18 @@ authorization. See the [routing evaluation protocol](evals/README.md#routing-pro
 
 ### Model attribution
 
-New model-authored durable research records, proofs, source checks, audit
-reports and closeouts carry `**Model ID:** <exact ID>` in Markdown or
-`"model_id": "<exact ID>"` in JSON (`unknown` / `null` if unavailable).
-The author copies the ID from exposed execution metadata, never from a requested
-model, display nickname or presumed default. Each delegated contribution keeps
-its own ID; a synthesis records its author's ID, and reused work keeps its
-original attribution. Referee JSON retains `model_assignment.actual_model`
-instead of duplicating it. Historical artifacts and imported source material
-are preserved; ordinary manuscript edits and chat replies need no field.
-Deterministic helper outputs retain software provenance, with model attribution
-on their accompanying assessments. Ledger events, proposals and fixed transport
-envelopes keep their existing schemas; no model collector or hook is added.
+New immutable model-authored artifacts (route records, proofs, source checks,
+audit and referee reports, closeouts and authored JSON) carry
+`**Model ID:** <exact ID>` in Markdown or `"model_id": "<exact ID>"` in JSON
+(`unknown` / `null` if unavailable). The ID comes from execution metadata the
+host exposes to the authoring agent, never from a requested model, display
+nickname or presumed default. Live files such as status dashboards, registries
+and history indexes carry none. Delegated and reused work keeps its own
+attribution; a synthesis records its author. Referee JSON uses
+`model_assignment.actual_model`. Historical artifacts, imported sources,
+deterministic helper output and ledger schemas are unchanged, and no model
+collector or hook is added. Each skill carries the identical rule in
+`references/attribution.md`.
 
 ### Example prompts
 

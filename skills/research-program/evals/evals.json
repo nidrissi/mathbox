@@ -25,7 +25,10 @@
     },
     {
       "id": 3,
-      "prompt": "Two delegated routes return in an unreliable display order. Both started from checkpoint P17 and both propose a different replacement for notes/result.md. Reconcile them and continue the program. In this synthetic attribution trial, one returned record has host-confirmed producer ID fixture-worker-a-v1, the other has no exposed producer identity, and the coordinator metadata exposes fixture-coordinator-v3. Save the new reconciliation assessment without rewriting either return.",
+      "prompt": "Two delegated routes return in an unreliable display order. Both started from checkpoint P17 and both propose a different replacement for notes/result.md. Reconcile them and continue the program. One returned record carries Model ID fixture-worker-a-v1; the other carries none. Save the new reconciliation assessment without rewriting either return.",
+      "host_metadata": {
+        "model_id": "fixture-coordinator-v3"
+      },
       "expected_output": "Uses the declared common base rather than arrival order, preserves both results, exposes the output collision, and serializes any shared-state update only after comparing the actual artifacts. Preserves each returned record’s original model attribution or unknown provenance, and attributes the new reconciliation to fixture-coordinator-v3.",
       "assertions": [
         "Does not infer chronology from response order",
@@ -188,7 +191,10 @@
     },
     {
       "id": 18,
-      "prompt": "Close out an authorized synthetic program for the triangular-sum identity using two already recorded algebraic proofs. Persist a Markdown closeout and JSON synthesis. Reconcile recorded results only; do not launch new routes. One contribution has exposed producer ID fixture-contributor-v2, and another historical proof has no model provenance. Preserve both source artifacts and their attribution or absence of it. The test host exposes producing-agent execution metadata with exact ID fixture-observed-v1. Its requested model is fixture-requested, and its display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "prompt": "Close out an authorized synthetic program for the triangular-sum identity using two already recorded algebraic proofs. Persist a Markdown closeout and JSON synthesis. Reconcile recorded results only; do not launch new routes. One contribution has exposed producer ID fixture-contributor-v2, and another historical proof has no model provenance. Preserve both source artifacts and their attribution or absence of it. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "host_metadata": {
+        "model_id": "fixture-observed-v1"
+      },
       "expected_output": "Copies fixture-observed-v1 from exposed execution metadata into new authored Markdown and JSON artifacts, rather than fixture-requested or Research; preserves attribution boundaries.",
       "assertions": [
         "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
@@ -200,7 +206,10 @@
     },
     {
       "id": 19,
-      "prompt": "Close out an authorized synthetic program for the triangular-sum identity using two already recorded algebraic proofs. Persist a Markdown closeout and JSON synthesis. Reconcile recorded results only; do not launch new routes. One contribution has exposed producer ID fixture-contributor-v2, and another historical proof has no model provenance. Preserve both source artifacts and their attribution or absence of it. Only this standalone skill is installed. The test host exposes no actual model identity; it shows only requested model fixture-requested and display nickname Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "prompt": "Close out an authorized synthetic program for the triangular-sum identity using two already recorded algebraic proofs. Persist a Markdown closeout and JSON synthesis. Reconcile recorded results only; do not launch new routes. One contribution has exposed producer ID fixture-contributor-v2, and another historical proof has no model provenance. Preserve both source artifacts and their attribution or absence of it. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "host_metadata": {
+        "model_id": null
+      },
       "expected_output": "Uses unknown in new Markdown attribution and null in agent-authored JSON, without inferring a model from the request, nickname or a presumed default; completes the bounded task as a standalone skill.",
       "assertions": [
         "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",

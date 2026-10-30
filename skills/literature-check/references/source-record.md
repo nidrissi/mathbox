@@ -30,7 +30,8 @@
 - **Coverage gaps:**
 ```
 
-The Model ID identifies the author of this source assessment, copied from
-exposed execution metadata; it does not identify the paper's author or the
-cache software. Keep previous checks and contributor IDs unchanged. A new
-assessment or correction uses its own author's ID, or `unknown` if unavailable.
+The Model ID names the author of this source assessment, not the paper's author
+or the cache software; see [attribution.md](attribution.md). Each source record
+is an immutable entry even inside a shared literature file: a new assessment or
+correction is a new record with its own author's ID, and the registry table
+carries none.

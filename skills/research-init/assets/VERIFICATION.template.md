@@ -1,7 +1,5 @@
 # Verification
 
-**Model ID:** {{MODEL_ID}}
-
 ## Fast checks
 
 ```bash

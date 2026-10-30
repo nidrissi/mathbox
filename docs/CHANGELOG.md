@@ -11,14 +11,27 @@ manifests have their own schema versions, independent of the plugin version.
 
 ### Added
 
-- Newly authored durable research records, proofs, source checks, audit reports
-  and closeouts record the author's exact model ID from exposed execution
-  metadata, or `unknown` in Markdown / `null` in JSON when unavailable. Requested
-  models and nicknames are not execution evidence. Delegated and reused work
-  keeps its own attribution; new syntheses identify their authors. Referee JSON
-  retains `actual_model`. Templates and behavioral evals cover these rules;
-  routing, historical artifacts, imported source material, deterministic helper
-  output and ledger event schemas remain unchanged.
+- Newly authored immutable research records, proofs, source checks, audit and
+  referee reports, closeouts and authored JSON record the author's exact model
+  ID from execution metadata the host exposes, or `unknown` in Markdown / `null`
+  in JSON when unavailable. Requested models and nicknames are not execution
+  evidence. Live files (status dashboards, registries, charters, history and
+  route indexes) carry no ID. Delegated and reused work keeps its own
+  attribution, new syntheses identify their authors, and agents that only
+  extract historical text record themselves as `Extracted by`. Every skill ships
+  the same rule in `references/attribution.md`, and the package check keeps
+  the copies identical. Routing, historical artifacts, imported source
+  material, deterministic helper output and ledger event schemas are unchanged.
+  ([#21](https://github.com/nidrissi/mathbox/pull/21))
+- Referee pass files record the child's own exposed model ID, and coverage
+  keeps launch-confirmed identity separate from pass-reported identity, with
+  conflicts disclosed. Children now receive their resolved model assignment.
+  ([#21](https://github.com/nidrissi/mathbox/pull/21))
+- Hand-filled computation manifests must replace the scaffold's empty
+  `model_id` with an exact ID or `null` before full validation succeeds.
+  ([#21](https://github.com/nidrissi/mathbox/pull/21))
+- Behavioral eval cases can declare `host_metadata.model_id`, the identity the
+  test host should expose to the solver outside the prompt.
   ([#21](https://github.com/nidrissi/mathbox/pull/21))
 
 ## [4.2.0] — 2026-10-29 — Subsection referee coverage

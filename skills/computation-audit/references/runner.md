@@ -31,12 +31,11 @@ separately and cannot infer the version of the program it launches. State a
 seed and generator when random sampling is used; the runner records them but
 does not configure the child program's RNG.
 
-For an agent-authored contract or hand-filled manifest, set `model_id` to the
-author's exact ID from exposed execution metadata, or `null` when unavailable.
-This attributes authorship, not the computation's software. The runner does not
-collect or propagate model identity: its deterministic manifests, results and
-logs retain their existing software provenance. Attribute the accompanying
-model-authored assessment separately; do not patch runner output to add an ID.
+For an agent-authored contract or hand-filled manifest, set `model_id` as in
+[attribution.md](attribution.md). The manifest asset's empty `model_id` fails
+full validation until it is replaced by the exact ID or `null`. The runner does
+not collect or propagate model identity; do not patch its manifests, results or
+logs to add one.
 
 `mathematics.inputs` describes mathematical inputs and may include objects or
 families that are not files. The optional top-level `execution_artifacts` is a

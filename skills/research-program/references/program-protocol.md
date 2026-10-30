@@ -52,10 +52,8 @@ verified in a stated range, conditional, heuristic, conjectural, refuted and
 superseded; separate review provenance and freshness. A minimal route record
 has target and IDs, base checkpoint/inputs, hypotheses/conventions, mechanism,
 criteria and discriminator, derivation/artifacts/commands, attempt outcome,
-evidence label, route disposition/scope, continuations and next action. Include
-`**Model ID:** <exact ID>` from the author's exposed execution metadata, or
-`unknown`; for authored JSON use `model_id` with that ID or `null`. Preserve
-each contributor's original attribution on reuse; a synthesis uses its author's ID.
+evidence label, route disposition/scope, continuations and next action.
+Attribute it as in [attribution.md](attribution.md).
 A resource limit or inconclusive attempt cannot alone close its route.
 
 Do not require a new permission at each cycle when the user has already asked
