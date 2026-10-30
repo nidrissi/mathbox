@@ -9,6 +9,8 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+## [4.3.0] — 2026-10-30 — Research artifact model attribution
+
 ### Added
 
 - Newly authored immutable research records, proofs, source checks, audit and
@@ -460,7 +462,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.2.0...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.3.0...HEAD
+[4.3.0]: https://github.com/nidrissi/mathbox/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/nidrissi/mathbox/compare/v4.1.0...v4.2.0
 [4.1.0]: https://github.com/nidrissi/mathbox/compare/v4.0.2...v4.1.0
 [4.0.2]: https://github.com/nidrissi/mathbox/compare/v4.0.1...v4.0.2
