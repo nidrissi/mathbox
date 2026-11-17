@@ -43,9 +43,13 @@ including when reading applicable ancestor instructions and declared paths.
 Record the initial in-scope Git status or, if unavailable, the initial file
 inventory. Both `--full` and `--format json` expand the output at the selected
 scan depth (default five). Inspect declared paths and instructions governing
-proposed edits even beyond that depth. Resolve omitted current-path findings
+proposed edits even beyond that depth. Before proposing a new live dashboard,
+search eligible filenames throughout the authorized tree with the same
+exclusions. Keep authority unresolved if necessary coverage is unavailable.
+Resolve omitted current-path findings
 before authority/edit decisions; historical link overflow alone need not be
-loaded. Do not read cached source content.
+loaded. Keep caches outside Git content comparisons as well as file reads.
+The inspector's Git status covers paths outside its cache exclusions.
 
 The inspector finds instructions, role aliases, declared paths, cache conventions,
 manifest/log classifications, skills, broken references and dashboard/handoff
@@ -181,6 +185,8 @@ fix is rechecked.
 Run the cheapest verified project check when authorized. Reconcile the plan
 and baseline with the final in-scope paths. In Git, inspect staged and unstaged
 diffs and run `git diff --cached --check` and `git diff --check` within scope.
+Restrict these commands to the affected paths or apply literal cache exclusions
+to each comparison, including status refreshes.
 List untracked files individually and inspect newly created deliverables directly,
 without staging them. Without Git, compare file inventories, review the actual
 new and edited files, and report the unavailable Git checks.

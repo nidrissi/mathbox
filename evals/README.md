@@ -65,6 +65,7 @@ of tool calls or reproducing a preferred proof.
 | `fixtures/referee-source.tex` | Review a coefficient extension with an unavailable synthetic source. |
 | `fixtures/referee-enumeration.tex` | Review a theorem supported by a filtered binary enumeration. |
 | `fixtures/proofread-fragment.tex` | Review a writable copy as a recently edited hunk without rewriting it. |
+| `fixtures/research-init-deep.json` | Materialize the file map in a temporary Git repository, then plan a read-only retrofit that preserves the existing dashboard. |
 
 For `referee-context`, a reconciliation trial may supply the user-visible prior
 local finding "tau is undefined in the Identity section" together with the raw

@@ -3,10 +3,13 @@
 
 from __future__ import annotations
 
+import ctypes
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -274,7 +277,10 @@ class InspectorTests(unittest.TestCase):
         cache = self.root / "papers/local"
         self.write("papers/local/STATUS.md")
         self.write("papers/local/map.json", "{}")
-        self.write("AGENTS.md", "- **Project map:** `papers/local/map.json`\n")
+        declared_cache = self.root / "Local Papers"
+        self.write("Local Papers/Extract.txt", "[private](some-source.md)")
+        self.write("AGENTS.md", "- **Project map:** `papers/local/map.json`\n"
+                   "- **Local literature cache:** `Local Papers/`\n")
         (self.root / "CLAUDE.md").symlink_to(private)
         (self.root / ".mathbox").symlink_to(outside, target_is_directory=True)
 
@@ -282,17 +288,23 @@ class InspectorTests(unittest.TestCase):
         def guarded_open(path, *args, **kwargs):
             self.assertFalse(path.resolve().is_relative_to(cache), path)
             self.assertFalse(path.resolve().is_relative_to(outside), path)
+            self.assertFalse(path.resolve().is_relative_to(declared_cache), path)
             return real_open(path, *args, **kwargs)
 
         with patch.object(Path, "open", guarded_open):
             result = inspect(self.root, 5, ("papers/local",))
             self.assertEqual(result["skipped_direct_paths"], [".mathbox/config.json", "CLAUDE.md"])
+            self.assertIsNone(result["research_ledger"]["exists"])
+            self.assertEqual(result["research_ledger"]["status"], "unverified")
+            self.assertIn("Research ledger: unverified", brief_markdown(result))
+            self.assertIn("unverified; metadata inspection skipped", markdown(result))
+            self.assertIn("Local Papers", [item["path"] for item in result["source_cache_conventions"]])
             self.assertEqual(result["project_maps"], [])
             self.assertFalse(result["live_state_candidates"]["dashboard_candidates"])
             self.assertIn("CLAUDE.md", brief_markdown(result))
             (self.root / "AGENTS.md").unlink()
             (self.root / "AGENTS.md").symlink_to(private)
-            result = inspect(self.root, 5, ("papers/local",))
+            result = inspect(self.root, 5, ("papers/local", "Local Papers"))
             self.assertIn("AGENTS.md", result["skipped_direct_paths"])
             self.assertFalse(result["declared_paths"])
 
@@ -308,6 +320,10 @@ class InspectorTests(unittest.TestCase):
         git("init", "-q")
         rules = self.write("global-ignore", "*.pdf\n")
         git("config", "core.excludesFile", str(rules))
+        self.write(".gitignore", "/papers/local/\n")
+        self.assertIsNone(alternate()["git_ignored"])
+        self.write(".gitignore", "")
+        (self.root / "papers/local").mkdir(parents=True)
         self.assertFalse(alternate()["git_ignored"])
         rules.write_text("papers/local/\n")
         self.assertTrue(alternate()["git_ignored"])
@@ -316,8 +332,45 @@ class InspectorTests(unittest.TestCase):
         self.assertFalse(alternate()["repository_ignore_rule"])
         git("add", "--", ".gitignore")
         self.assertTrue(alternate()["repository_ignore_rule"])
+        self.write(".gitignore", "/papers/local/*\n!/papers/local/keep.txt\n")
+        rules.write_text("")
+        git("add", "--", ".gitignore")
+        git("check-ignore", "--", "papers/local/new.pdf")
+        keep_check = subprocess.run(["git", "-C", str(self.root), "check-ignore", "-q",
+                                     "--", "papers/local/keep.txt"])
+        self.assertEqual(keep_check.returncode, 1)
+        self.assertFalse(alternate()["repository_ignore_rule"])
         self.write(".gitignore", "/papers/local/\n!/papers/local/\n")
         self.assertFalse(alternate()["repository_ignore_rule"])
+
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
+    def test_git_status_does_not_open_tracked_cache_file(self):
+        def git(*args):
+            return subprocess.check_output(["git", "-C", str(self.root), *args], text=True)
+
+        cache_dir = "papers/[private]"
+        cached = self.write(f"{cache_dir}/paper.pdf", "synthetic cached content")
+        self.write("STATUS.md")
+        git("init", "-q")
+        git("add", "--", ".")
+        os.utime(cached, (946684800, 946684800))  # Force a content comparison on an unscoped refresh.
+        libc = ctypes.CDLL(None, use_errno=True)
+        watcher = libc.inotify_init1(os.O_NONBLOCK | os.O_CLOEXEC)
+        self.assertGreaterEqual(watcher, 0)
+        self.addCleanup(os.close, watcher)
+        self.assertGreaterEqual(libc.inotify_add_watch(watcher, os.fsencode(cached), 0x20), 0)  # IN_OPEN
+        git("--no-optional-locks", "status", "--short")
+        self.assertTrue(os.read(watcher, 4096))
+        with patch.dict(os.environ, GIT_LITERAL_PATHSPECS="1"):
+            result = inspect(self.root, 5, (cache_dir,))
+        self.assertIn("STATUS.md", result["git_status"])
+        self.assertNotIn("paper.pdf", result["git_status"])
+        self.assertIn(cache_dir, result["git"]["status_excludes"])
+        cache = next(item for item in result["source_cache_conventions"] if item["path"] == cache_dir)
+        self.assertEqual(cache["tracked_entries"], 1)
+        self.assertIn("already tracked index entries: 1", brief_markdown(result))
+        with self.assertRaises(BlockingIOError):
+            os.read(watcher, 4096)
 
     def test_depth_and_non_git_coverage_remain_explicit(self):
         self.write("a/b/c/d/e/f/STATUS.md")

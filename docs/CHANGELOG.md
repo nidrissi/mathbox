@@ -36,8 +36,10 @@ manifests have their own schema versions, independent of the plugin version.
   explicit authorization.
 - Repository setup respects subproject boundaries and verifies newly created
   files, designated cache paths, and authorized vendored skills. The inspector
-  accepts repeatable `--cache-dir` exclusions before scanning and skips
-  symlinked instruction and ledger-config reads.
+  accepts repeatable `--cache-dir` exclusions for content scans and Git status.
+  It recognizes declared cache paths with spaces and verifies directory-level
+  ignore coverage. It skips symlinked instruction and ledger-config reads
+  and reports skipped ledger metadata as unverified.
 - Ledger workflows distinguish stale revisions from unsupported dependencies,
   preserve statement pins during revisions, and recover interrupted appends
   without rebinding evidence to changed contracts. Unchecked witnesses stay

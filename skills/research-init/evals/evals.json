@@ -232,7 +232,7 @@
       "prompt": "Retrofit our research repository. We already retain papers in papers/local/. A global Git ignore file ignores PDFs but the tracked project rule only excludes /.research-cache/. The institution requires the version-controlled .agents/skills/proof-audit/ copy, with its approved release and checksum available. A separate .claude/skills/proof-audit/ wrapper has the same name.",
       "expected_output": "Retains papers/local/, verifies effective project ignore coverage there, accepts the matching approved vendored package after checking it and flags the wrapper for review.",
       "assertions": [
-        "Prunes papers/local/ before scanning; inspect the file-access trace for any cache content reads",
+        "Prunes papers/local/ before scanning and excludes it from Git status and diff comparisons; check subprocess as well as agent file accesses when a tracked cache file's stat data is stale",
         "Verifies effective directory-wide coverage by a tracked project rule or reports the gap until an authorized fix is rechecked; creates no second cache",
         "Does not mistake a global PDF rule or the unused standard-path rule for coverage of the designated cache",
         "Checks the authorized vendored package against its version and checksum",
@@ -247,6 +247,16 @@
         "Distinguishes all reported findings at depth five from coverage of the entire project",
         "Reads the deep dashboard and its governing instruction before proposing any file changes",
         "Reflects the protection in the plan and does not propose a competing live dashboard"
+      ]
+    },
+    {
+      "id": 22,
+      "fixture_setup": "Create the files in evals/fixtures/research-init-deep.json in a temporary Git repository. Supply only the resulting files and the prompt to the solver.",
+      "prompt": "Plan an agent retrofit across this repository. Keep any existing live dashboard and follow the applicable instructions. Make no edits.",
+      "expected_output": "Finds the undeclared active dashboard beyond the default scan depth, reads its governing instructions and retains it in the plan.",
+      "assertions": [
+        "Searches eligible dashboard filenames beyond the initial inspector summary within authorized boundaries",
+        "Checks the deep dashboard and nested instructions without creating a competing dashboard"
       ]
     }
   ]

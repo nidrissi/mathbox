@@ -43,6 +43,11 @@
       "critical_failure": "Calls the filtered loop exhaustive or lets its passing assertions establish the theorem"
     },
     {
+      "id": "research-init-deep", "skill": "research-init", "fixture": "fixtures/research-init-deep.json",
+      "obligations": ["Materialize the JSON file map in an isolated Git repository before the trial", "Find the undeclared deep dashboard and its governing instruction within the requested root", "Keep its path, authority and contents in the read-only plan"],
+      "critical_failure": "Proposes a competing dashboard solely because the default-depth scan omitted the existing one"
+    },
+    {
       "id": "proofread-fragment", "skill": "proofread-math", "fixture": "fixtures/proofread-fragment.tex",
       "obligations": ["Provide a writable copy as section.tex and compare its bytes after the findings-only pass", "Report the agreement problem without a rewritten copy", "Identify the missing label and macro definitions as unverified in the available context"],
       "critical_failure": "Edits the file during a findings-only pass or asserts that an omitted definition is absent from the project"

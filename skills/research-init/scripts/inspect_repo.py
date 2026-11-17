@@ -65,7 +65,7 @@ def git(root: Path, *args: str, stdin: str | None = None) -> str | None:
     return process.stdout.strip() if process.returncode == 0 else None
 
 
-def git_state(root: Path) -> dict:
+def git_state(root: Path, cache_paths: tuple[str, ...] = ()) -> dict:
     """Distinguish a clean worktree from unavailable or failed Git metadata."""
     if shutil.which("git") is None:
         return {
@@ -89,8 +89,10 @@ def git_state(root: Path) -> dict:
             "toplevel": None, "reason": "not a Git worktree",
         }
     try:
+        exclusions = [f":(exclude,literal){path}" for path in cache_paths]
         status = subprocess.run(
-            ["git", "-C", str(root), "status", "--short"],
+            ["git", "-C", str(root), "--no-optional-locks", "--no-literal-pathspecs",
+             "status", "--short", "--", ".", *exclusions],
             text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             timeout=10, check=False,
         )
@@ -113,9 +115,13 @@ def git_state(root: Path) -> dict:
 
 def cache_ignore_coverage(root: Path, path: str, git_available: bool) -> dict:
     """Check directory-wide coverage and identify the effective tracked rule."""
-    source, ignored, tracked = None, None, None
+    source, ignored, tracked, tracked_entries = None, None, None, None
     if git_available:
-        out = git(root, "check-ignore", "-v", "-z", "--stdin", stdin=path + "/\0")
+        index = git(root, "--literal-pathspecs", "ls-files", "--cached", "-z", "--", path)
+        tracked_entries = index.count("\0") if index is not None else None
+        # A trailing slash can match an empty child in "dir/*", which still
+        # permits exceptions among the children. Query the directory itself.
+        out = git(root, "check-ignore", "-v", "-z", "--stdin", stdin=path + "\0")
         fields = out.split("\0") if out else []
         ignored = len(fields) >= 4 and not fields[2].startswith("!")
         source = fields[0] if ignored else None
@@ -123,7 +129,10 @@ def cache_ignore_coverage(root: Path, path: str, git_available: bool) -> dict:
                        and safe_relative(root, source) is not None
                        and git(root, "--literal-pathspecs", "ls-files", "--error-unmatch",
                                "--", source) is not None)
-    return {"git_ignored": ignored, "ignore_rule_source": source, "repository_ignore_rule": tracked}
+        if not ignored and not (root / path).is_dir():
+            ignored, tracked = None, None
+    return {"git_ignored": ignored, "ignore_rule_source": source,
+            "repository_ignore_rule": tracked, "tracked_entries": tracked_entries}
 
 
 def root_of(path: Path) -> Path:
@@ -169,7 +178,8 @@ def declared_paths(root: Path, skipped: set[str]) -> list[dict]:
                 continue
             label = re.sub(r"\s+", " ", match.group(1).strip()).casefold()
             role = labels.get(label)
-            target = clean_reference(match.group(2))
+            value = match.group(2)
+            target = value if role == "source_cache" else clean_reference(value)
             if target is None:
                 continue
             target = target.rstrip("/")
@@ -550,7 +560,7 @@ def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
     caches = source_cache_conventions(root, declarations, requested)
     cache_exclusions = {
         path for item in caches
-        if item["exists"] and (item["declared"] or item["confidence"] == "high")
+        if item["declared"] or item["confidence"] == "high"
         for path in [safe_relative(root, item["path"])] if path is not None
     }
     files = list(walk(root, depth, cache_exclusions))
@@ -630,7 +640,9 @@ def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
                                checkpoint_markers=checkpoint_markers(root / path))
                           for path in sorted(set(dashboard + handoff))],
     }
-    git_info = git_state(root)
+    cache_paths = tuple(sorted(path.relative_to(root).as_posix() for path in cache_exclusions))
+    git_info = git_state(root, cache_paths)
+    git_info["status_excludes"] = list(cache_paths)
     standard = ".research-cache/literature"
     literature_cache = {"path": standard, "exists": False, **cache_ignore_coverage(root, standard, False)}
     for cache in caches:
@@ -639,6 +651,8 @@ def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
             cache.update(coverage)
             if cache["path"] == standard:
                 literature_cache = {"path": standard, "exists": cache["exists"], **coverage}
+    config_skipped = ".mathbox/config.json" in skipped
+    ledger_exists = None if config_skipped else (root / ".mathbox/config.json").is_file()
     return {
         "root": str(root),
         "max_depth": depth,
@@ -662,31 +676,37 @@ def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
         "build_manifests": build_manifests,
         "literature_cache": literature_cache,
         "source_cache_conventions": caches,
-        "research_ledger": {"path": ".mathbox", "exists": ".mathbox/config.json" not in skipped
-                            and (root / ".mathbox/config.json").is_file()},
+        "research_ledger": {"path": ".mathbox", "exists": ledger_exists,
+                            "status": "unverified" if config_skipped else "present" if ledger_exists else "absent"},
     }
 
 
 def cache_status(cache: dict) -> str:
     if cache["repository_ignore_rule"]:
-        return f"directory covered by tracked rule in `{cache['ignore_rule_source']}`"
-    if cache["git_ignored"] is None:
-        return "Git ignore coverage unverified"
-    if cache["git_ignored"]:
-        return f"directory ignored by `{cache['ignore_rule_source']}`; tracked project coverage unverified"
-    return "no directory-wide Git ignore coverage verified"
+        status = f"directory covered by tracked rule in `{cache['ignore_rule_source']}`"
+    elif cache["git_ignored"] is None:
+        status = "Git ignore coverage unverified"
+    elif cache["git_ignored"]:
+        status = f"directory ignored by `{cache['ignore_rule_source']}`; tracked project coverage unverified"
+    else:
+        status = "no directory-wide Git ignore coverage verified"
+    if cache["tracked_entries"]:
+        status += f"; already tracked index entries: {cache['tracked_entries']}"
+    return status
 
 
 def markdown(obj: dict) -> str:
     lines = [f"# Repository inspection: `{obj['root']}`", ""]
     git_info = obj["git"]
     if git_info["state"] == "clean":
-        display = "(clean Git worktree)"
+        display = "(clean within inspected paths)"
     elif git_info["state"] == "dirty":
         display = git_info["porcelain"]
     else:
         display = f"({git_info['state']}: {git_info['reason']})"
     lines += ["## Git status", "", "```text", display, "```", ""]
+    if git_info["repository"] and git_info["status_excludes"]:
+        lines.append("Git status excludes source caches: " + ", ".join(git_info["status_excludes"]))
     if obj["skipped_direct_paths"]:
         lines.append("Skipped symlinked or excluded paths: " + ", ".join(obj["skipped_direct_paths"]))
     for key, title in [
@@ -755,8 +775,9 @@ def markdown(obj: dict) -> str:
         lines.append(f"`{item['path']}` — {item['basis']}; {coverage}")
     lines.append("")
     ledger = obj["research_ledger"]
-    lines += ["## Research ledger", "",
-              f"`{ledger['path']}` — {'present; use research-state for integrity and freshness checks' if ledger['exists'] else 'not found; optional'}", ""]
+    ledger_detail = {"present": "present; use research-state for integrity and freshness checks",
+                     "absent": "not found; optional", "unverified": "unverified; metadata inspection skipped"}
+    lines += ["## Research ledger", "", f"`{ledger['path']}` — {ledger_detail[ledger['status']]}", ""]
     lines += ["", "Declared paths and source-cache conventions:",
               "```json", json.dumps({"declared_paths": obj["declared_paths"],
                                       "source_cache_conventions": obj["source_cache_conventions"]}, indent=2),
@@ -769,6 +790,8 @@ def brief_markdown(obj: dict) -> str:
     lines = [f"# Repository inspection: `{obj['root']}`", ""]
     git_info = obj["git"]
     lines.append(f"Git: {git_info['state']}.")
+    if git_info["repository"] and git_info["status_excludes"]:
+        lines.append("Git status excludes source caches (see source-cache conventions).")
     if git_info["state"] == "dirty":
         changed = git_info["porcelain"].splitlines()
         lines.extend(f"- {entry}" for entry in changed[:8])
@@ -841,7 +864,7 @@ def brief_markdown(obj: dict) -> str:
     lines.extend(["", f"Literature cache: `{cache['path']}`; "
                   f"{'present' if cache['exists'] else 'absent'}; "
                   f"{cache_status(cache)}.",
-                  f"Research ledger: {'present' if obj['research_ledger']['exists'] else 'absent'}.",
+                  f"Research ledger: {obj['research_ledger']['status']}.",
                   f"Use --full or --format json for all findings at scan depth {obj['max_depth']}."])
     for key, title in (("declared_paths", "Declared paths"),
                        ("source_cache_conventions", "Source-cache conventions")):
