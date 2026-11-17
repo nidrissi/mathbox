@@ -43,6 +43,8 @@ manifests have their own schema versions, independent of the plugin version.
   without rebinding evidence to changed contracts. Unchecked witnesses stay
   outside counterexample events.
 
+[Pull request #23](https://github.com/nidrissi/mathbox/pull/23)
+
 ## [4.3.0] — 2026-10-30 — Research artifact model attribution
 
 ### Added
