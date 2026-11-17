@@ -3,13 +3,14 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Integrate a validated theorem into the paper. The durable proof assumes characteristic zero, but the old introduction says arbitrary coefficients.",
-      "expected_output": "Carries the characteristic-zero hypothesis into the theorem, corrects downstream prose rather than preserving the stronger old claim, and synchronizes the durable state through a standalone research record and compact index entry.",
+      "prompt": "Integrate a validated theorem into the paper. Proof revision r4 and the theorem inventory specify characteristic zero. The introduction and claim registry still say arbitrary coefficients. The project keeps standalone integration records and a route index, and this correction has not yet been recorded.",
+      "expected_output": "Restricts the theorem, introduction and stale claim entry to characteristic zero. Records the correction once and links proof revision r4.",
       "assertions": [
         "Reads the durable proof before editing",
         "Preserves the characteristic-zero restriction",
         "Updates affected introduction/comparison claims",
         "Keeps human review status explicit",
+        "Links r4 without rewriting or duplicating the proof, and leaves the current theorem inventory intact",
         "Records the substantive state change in a standalone record with only a compact linked history-index entry"
       ]
     },
@@ -26,11 +27,11 @@
     },
     {
       "id": 3,
-      "prompt": "Integrate two validated lemmas. One has current proof evidence, while the other depends on an unavailable external theorem and has stale ledger artifacts.",
-      "expected_output": "Integrates the independently validated material within scope and leaves the unsupported lemma conditional, with explicit remaining checks.",
+      "prompt": "Integrate Lemmas A and B and Corollary C into the paper. A has an independent, current proof. B is marked pending, has stale ledger artifacts, and relies on an unavailable external theorem. C is marked conjectural and its only argument uses B.",
+      "expected_output": "Integrates A, blocks B and C, and reports the stale evidence and missing external input. B retains pending status and C retains conjectural status.",
       "assertions": [
         "Checks freshness and raw proof",
-        "Does not promote the blocked lemma",
+        "Leaves B and C out of the integration and preserves each existing status, including in durable records",
         "Continues independent authorized integration work"
       ]
     },
@@ -57,10 +58,11 @@
     },
     {
       "id": 6,
-      "prompt": "Explicitly integrate this as a conditional proposition: P follows from the unverified cited theorem T, whose exact source is unavailable.",
-      "expected_output": "Carries T as an unverified dependency and conditional status in the text.",
+      "prompt": "Integrate a conditional proposition that our square integer matrix A is invertible over the rationals assuming det(A) is nonzero. The cited source for nonvanishing is unavailable. Audited proof revision r7 derives the rational inverse as adj(A)/det(A) under precisely that assumption.",
+      "expected_output": "Links r7 for the implication and integrates rational invertibility conditional on the unverified nonvanishing premise.",
       "assertions": [
-        "Keeps missing bridge explicit",
+        "Reads r7 and checks its assumption, conclusion and coefficient field against the requested implication",
+        "States nonvanishing as a hypothesis and marks the result conditional",
         "Does not claim verified source",
         "Reports documented checks only"
       ]
@@ -103,6 +105,34 @@
         "Preserves source contributor identity and does not relabel historical work",
         "Keeps the characteristic-zero restriction and does not treat integration as mathematical certification",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Integrate the pending proposition that our square integer matrix A is invertible over the integers, explicitly conditional on det(A) being nonzero. The cited nonvanishing theorem is unavailable. The only audited proof, r7, obtains an inverse over the rationals by dividing the adjugate by det(A).",
+      "expected_output": "Blocks the requested conditional proposition. Even granting nonvanishing, r7 only supports a rational inverse. Reports the missing implication to integral invertibility.",
+      "assertions": [
+        "Checks the conclusion of r7 under the stated premise",
+        "Preserves pending status and makes no theorem edit",
+        "Does not silently substitute a different premise or conclusion"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Integrate a conditional proposition that a square integer matrix A is invertible over the rationals assuming det(A) is nonzero. The proposed proposition is pending. The cited source for nonvanishing is unavailable, and the only recorded proof of the implication, r7, is missing from the project.",
+      "expected_output": "Leaves the proposition pending and identifies the missing durable support for the implication. Does not add a fresh proof as part of integration.",
+      "assertions": [
+        "Checks the recorded implication artifact and reports its absence",
+        "Makes no theorem or promotion edit even though a proof of the conditional implication is possible"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Finish integrating the characteristic-zero theorem into paper.tex. The body, claim registry, theorem inventory, standalone integration record and route-index entry already point to the current verified proof r4 and state characteristic zero. Only the introduction of paper.tex still says arbitrary coefficients. The project authorizes correction of the manuscript and dependent live records.",
+      "expected_output": "Corrects the introduction and reuses the existing mathematical and integration records.",
+      "assertions": [
+        "Reads the proof and checks that the current integration record captures the restriction",
+        "Changes only the introduction of paper.tex and creates no duplicate standalone record or index entry"
       ]
     }
   ]

@@ -2,9 +2,9 @@
 
 - **Model ID:** <exact execution ID of the assessment author, or unknown>
 - **Program/phase ID:**
-- **Historical cutoff:** <date and Git revision or ledger event, or unknown>
+- **Historical cutoff:** <date and Git revision, ledger event, or named input snapshot, if known>
 - **Cutoff provenance:** <recorded, Git-inferred, or unavailable>
-- **Assessment checkpoint:** <date and current Git revision or ledger head>
+- **Assessment checkpoint:** <date and current Git revision, ledger head, or named input snapshot>
 - **Original target and exact scope:**
 - **Outcome at cutoff:** <supported status and conditions, or indeterminate>
 - **Route index:** <relative link>
@@ -40,5 +40,5 @@
 
 ## Verification boundary
 
-- **Checked scope and artifact links:**
+- **Checked scope and artifact links:** <include paths and hashes or preserved copies of dirty, untracked, or snapshot inputs used at each checkpoint>
 - **Checks not run or unresolved sources:**

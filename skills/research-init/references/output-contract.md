@@ -15,8 +15,11 @@
 - Protected, read-only, and routine paths are explicit.
 - Commands are verified and concrete.
 - Git, network, confidentiality, and handoff policies are explicit.
-- Any authorized local literature cache has an explicit retention policy and a
-  verified `/.research-cache/` Git ignore rule.
+- Any authorized local literature cache has a retention policy and a project
+  ignore rule covering its designated path. For the standard location use
+  `/.research-cache/`. In Git, verify the effective rule on the cache directory
+  itself and check that its source is a tracked project ignore file. Report a newly created,
+  untracked ignore file as pending tracking.
 - No unexplained residue from another repository remains.
 - Root instructions are concise; detailed procedures are not copied into them.
 - A long status or history file is searchable by relevant section; instructions
@@ -110,8 +113,9 @@
 ## Skills
 
 - The `mathbox` plugin was detected or its absence reported.
-- No `mathbox` plugin workflow was recreated locally.
+- Any authorized vendored Mathbox package matches its recorded release and
+  checksum. Flag wrappers, modified copies and unapproved duplicates for review.
 - No skill exists under root `skills/`.
-- Any project skill has a distinct name, justification, correct tool path, and
+- Any newly authored project skill has a distinct name, justification, correct tool path, and
   evals.
 - Duplicate or stale project skills are archived only with approval.

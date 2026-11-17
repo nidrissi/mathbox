@@ -17,14 +17,16 @@
     },
     {
       "id": 2,
-      "prompt": "Referee evals/fixtures/referee-context.tex. A prior local review of the Identity section says tau is undefined. Reconcile that suspicion against the manuscript and preserve its disposition.",
+      "prompt": "Referee evals/fixtures/referee-context.tex using native reviewers with the same default settings. Children can inherit this conversation or start fresh. A prior local review of the Identity section says tau is undefined. Give that lead to the notation reviewer. Delegate final reconciliation and have the coordinator write the report.",
       "expected_output": "Checks the earlier definition, dismisses the false positive in reconciliation, verifies the elementary identity including n=0, and does not retain the unsupported objection as an author question.",
       "assertions": [
         "Locates the exact earlier definition",
         "Dismisses rather than hedges the undefined-symbol allegation",
         "Records why it was discarded",
         "Preserves an unstructured prior suspicion without inventing historical confidence or source hashes",
-        "Allows an empty final concerns list"
+        "Allows an empty final concerns list",
+        "Launches correctness and adversarial reviewers without inherited history or lead-bearing inputs and keeps the lead-informed notation lane out of their passes",
+        "The final referee receives the prior lead and raw findings, owns reconciliation.json and records its checked disposition; the coordinator checks reconciliation and authors report.md with its own attribution"
       ]
     },
     {
@@ -123,7 +125,7 @@
     },
     {
       "id": 11,
-      "prompt": "Referee evals/fixtures/referee-context.tex with native subagents. The project prefers its host's model-A for all roles. The user instead assigns correctness and adversarial to the host's available model-B with reasoning setting high, and final-referee to available model-C. The delegation interface supports all these selections and confirms the actual model and reasoning setting in its returns. Preserve native execution evidence.",
+      "prompt": "Referee evals/fixtures/referee-context.tex with native subagents. The project prefers its host's model-A for all roles. The user instead assigns correctness and adversarial to the host's available model-B with reasoning setting high, and final-referee to available model-C for reconciliation and report writing. The delegation interface supports all these selections and confirms the actual model and reasoning setting in its returns. Preserve native execution evidence.",
       "expected_output": "Resolves user preferences over project defaults, sends settings through native launch controls, uses compatible groups for all five lanes, and applies model-C to the actual full-source reconciliation executor. Records prescribed and host-confirmed settings without claiming that model diversity proves correctness.",
       "assertions": [
         "Uses native model selection rather than a prompt impersonating model-B",
@@ -131,7 +133,7 @@
         "Uses model-A for otherwise unspecified lanes",
         "Does not combine passes with different resolved models",
         "Final reconciliation actually reads the full source, coverage, raw findings and relevant specialist artifacts",
-        "Records final-referee execution settings in reconciliation and checks the delegated report before delivery",
+        "Assigns reconciliation.json and report.md to the delegated final referee, records its execution settings in reconciliation, attributes both artifacts to their author and checks them before delivery",
         "Retains native request and return evidence alongside raw passes",
         "Checks the triangular identity and n=0 without reporting tau as undefined",
         "Each raw pass records actual_model from its own exposed metadata; coverage uses the interface-confirmed values, labels any pass-reported value and discloses conflicts; findings synthesis, final reconciliation and report identify their respective authors without duplicate model_id fields"
@@ -189,11 +191,11 @@
     },
     {
       "id": 16,
-      "prompt": "Referee a manuscript on a host requiring explicit user permission for subagents. The user has requested only refereeing.",
+      "prompt": "Referee evals/fixtures/referee-context.tex on a host requiring explicit user permission for subagents. A previous reviewer says tau is undefined in the Identity section. The user has requested only refereeing.",
       "expected_output": "Uses disclosed sequential self-review without spawning, or waits for required authority while doing independent sequential work.",
       "assertions": [
         "No unauthorized launch",
-        "Records self-review"
+        "Records self-review and the visible prior lead in coverage and Summary for any sequential correctness or adversarial pass, without claiming it was blind"
       ]
     },
     {
@@ -252,6 +254,26 @@
         "Does not add model fields to deterministic preparation outputs",
         "Works as a standalone referee with honest self-review and source-reconciled conclusions",
         "Reviews actual generated artifacts rather than only packaging or keyword matches"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Referee the one-page manuscript evals/fixtures/referee-figure-map.pdf, including its figure. This PDF is the only source. You can inspect the rendered page and extract text. Preserve raw findings and final reconciliation.",
+      "expected_output": "Checks the proof using the singleton domain. Identifies the disagreement between Figure 1 and the definition of f from the rendered arrowhead, rechecks it in final reconciliation and gives a localized figure correction.",
+      "assertions": [
+        "Locates Figure 1 on page 1 and observes that the arrowhead is at A, while the definition gives f domain A and codomain B",
+        "Uses only exact manuscript text in quote, or an empty string for visual evidence alone, and describes the checked geometry in analysis",
+        "Reinspects the rendered figure in reconciliation and retains its locator and visual evidence in the final concern and report",
+        "Recommends reversing the arrow in Figure 1 and distinguishes this presentation defect from the valid injectivity proof"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Referee evals/fixtures/referee-figure-map.pdf using only the text extracted from the page. The host cannot render or otherwise inspect the page geometry.",
+      "expected_output": "Checks the textual definition and proof. Reports that the figure direction cannot be verified from extraction and leaves that visual check pending.",
+      "assertions": [
+        "Does not claim the arrow points in either direction based on the order of extracted labels",
+        "Reports the missing rendering as a coverage limit in the final reconciliation"
       ]
     }
   ]

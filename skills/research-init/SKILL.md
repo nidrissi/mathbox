@@ -25,17 +25,27 @@ in skills, mutable facts in records and deterministic enforcement in code.
 
 ## Phase 1 — inspect read-only
 
-Determine root and inspect Git state; unavailable metadata is different from a
-clean worktree. Run the installed [inspect_repo.py](scripts/inspect_repo.py) first:
+Identify the requested project directory and compare it with the enclosing Git
+top level, if any. The installed [inspect_repo.py](scripts/inspect_repo.py)
+resolves its scan root to that top level. For a whole-repository setup or a
+standalone directory outside Git, pass every request-designated cache as a
+repeatable project-relative `--cache-dir` before scanning (omit it if none):
 
 ```bash
-python3 <skill-directory>/scripts/inspect_repo.py --root PROJECT
+python3 <skill-directory>/scripts/inspect_repo.py --root PROJECT --cache-dir CACHE_PATH
 ```
 
 Resolve this skill's actual location rather than guessing a project path.
-Use `--full` for full Markdown inventory or `--format json` for complete data.
-Inspect omitted current-path findings before authority/edit decisions; historical
-link overflow alone need not be loaded. Do not read cached source content.
+For a nested project without authorization to scan the enclosing repository,
+or if the helper cannot express all exclusions, inventory the requested subtree
+directly. Prune caches before opening files and respect symlink boundaries,
+including when reading applicable ancestor instructions and declared paths.
+Record the initial in-scope Git status or, if unavailable, the initial file
+inventory. Both `--full` and `--format json` expand the output at the selected
+scan depth (default five). Inspect declared paths and instructions governing
+proposed edits even beyond that depth. Resolve omitted current-path findings
+before authority/edit decisions; historical link overflow alone need not be
+loaded. Do not read cached source content.
 
 The inspector finds instructions, role aliases, declared paths, cache conventions,
 manifest/log classifications, skills, broken references and dashboard/handoff
@@ -102,6 +112,11 @@ Before saving a durable record, proof, report or authored JSON, follow
 [attribution.md](references/attribution.md).
 
 Read [output-contract.md](references/output-contract.md) **before writing**.
+Before editing, capture the initial contents or hashes of affected and explicitly
+preserved files, including untracked files. In Git, also record their index modes
+and blob IDs. Retain enough original content to distinguish existing work from
+the intended edits. Record absent paths and compare preserved files and index
+entries with this baseline after writing.
 Use assets selectively, delete unused sections and replace scaffolding values:
 
 | Asset | Default destination |
@@ -145,8 +160,8 @@ workflow into root instructions.
 
 Default to **no project skills**. Never synthesize local copies of canonical
 Mathbox skills or write skills under root `skills/`. The inspector's `CANONICAL`
-set defines the catalog; read the skill-layer reference for approved project
-skills and exact versioned vendoring when the host cannot load plugins.
+set defines the catalog; consult the skill-layer reference for approved project
+skills and authorized exact versioned vendoring.
 
 ## Phase 5 — validate and report
 
@@ -157,9 +172,18 @@ Review all live-view candidates and broken paths without silently choosing
 an authority. Keep instructions limited to stable rules and pointers; detailed
 procedures and repeated mutable facts signal excess load.
 
-Confirm no duplicated canonical or root skills, and caches are excluded from
-inspection and ignored by a tracked project rule. Run the cheapest verified
-project check when authorized, then inspect the full diff and `git diff --check`.
+Flag misplaced root skills, same-name wrappers and unapproved or altered canonical
+copies. Verify authorized vendored copies against their recorded version and
+checksum. Verify directory-wide coverage of the designated cache by a tracked
+project ignore file. Report missing or unverified coverage until an authorized
+fix is rechecked.
+
+Run the cheapest verified project check when authorized. Reconcile the plan
+and baseline with the final in-scope paths. In Git, inspect staged and unstaged
+diffs and run `git diff --cached --check` and `git diff --check` within scope.
+List untracked files individually and inspect newly created deliverables directly,
+without staging them. Without Git, compare file inventories, review the actual
+new and edited files, and report the unavailable Git checks.
 For migrations compare the complete crosswalk, pins, issues, claims, protected
 rules and links with baseline; distinguish old issues from introduced ones.
 

@@ -52,11 +52,11 @@ DECLARED_PATH_LABELS = {
 }
 
 
-def git(root: Path, *args: str) -> str | None:
+def git(root: Path, *args: str, stdin: str | None = None) -> str | None:
     """Return stdout for a successful Git invocation, otherwise None."""
     try:
         process = subprocess.run(
-            ["git", "-C", str(root), *args], text=True,
+            ["git", "-C", str(root), *args], text=True, input=stdin,
             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
             timeout=10, check=False,
         )
@@ -111,13 +111,19 @@ def git_state(root: Path) -> dict:
     }
 
 
-def ignore_rule_source(root: Path, path: Path) -> str | None:
-    """Return the ignore-rule file excluding path, or None if Git does not ignore it."""
-    out = git(root, "check-ignore", "-v", "--", str(path))
-    if out is None:
-        return None
-    lines = out.splitlines()
-    return lines[0].split(":", 1)[0] if lines else ""
+def cache_ignore_coverage(root: Path, path: str, git_available: bool) -> dict:
+    """Check directory-wide coverage and identify the effective tracked rule."""
+    source, ignored, tracked = None, None, None
+    if git_available:
+        out = git(root, "check-ignore", "-v", "-z", "--stdin", stdin=path + "/\0")
+        fields = out.split("\0") if out else []
+        ignored = len(fields) >= 4 and not fields[2].startswith("!")
+        source = fields[0] if ignored else None
+        tracked = bool(source and Path(source).name == ".gitignore"
+                       and safe_relative(root, source) is not None
+                       and git(root, "--literal-pathspecs", "ls-files", "--error-unmatch",
+                               "--", source) is not None)
+    return {"git_ignored": ignored, "ignore_rule_source": source, "repository_ignore_rule": tracked}
 
 
 def root_of(path: Path) -> Path:
@@ -130,16 +136,25 @@ def safe_relative(root: Path, value: str) -> Path | None:
     """Resolve a declared project-relative path without allowing path escape."""
     if not value or value.startswith(("/", "~")) or "://" in value:
         return None
-    candidate = (root / value).resolve()
+    try:
+        candidate = (root / value).resolve()
+    except (OSError, RuntimeError):
+        return None
     return candidate if candidate.is_relative_to(root.resolve()) else None
 
 
-def declared_paths(root: Path) -> list[dict]:
+def direct_read_allowed(root: Path, path: Path, excluded: set[Path]) -> bool:
+    """Use the walker's no-symlinks policy for direct reads, including parents."""
+    resolved = safe_relative(root, path.relative_to(root).as_posix())
+    return resolved == path and not any(path.is_relative_to(cache) for cache in excluded)
+
+
+def declared_paths(root: Path, skipped: set[str]) -> list[dict]:
     """Read only explicit, labeled path declarations from root instructions/config."""
     found: list[dict] = []
     labels = {alias.casefold(): role for role, aliases in DECLARED_PATH_LABELS.items() for alias in aliases}
     for source in (root / "AGENTS.md", root / "CLAUDE.md"):
-        if not source.is_file():
+        if source.name in skipped or not source.is_file():
             continue
         try:
             text = source.read_text(encoding="utf-8")
@@ -168,7 +183,10 @@ def declared_paths(root: Path) -> list[dict]:
                     "line": number,
                 })
     config = root / ".mathbox" / "config.json"
-    if config.is_file():
+    declared_caches = {safe_relative(root, item["path"]) for item in found if item["role"] == "source_cache"}
+    if any(cache is not None and config.is_relative_to(cache) for cache in declared_caches):
+        skipped.add(".mathbox/config.json")
+    if ".mathbox/config.json" not in skipped and config.is_file():
         try:
             data = json.loads(config.read_text(encoding="utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError):
@@ -190,7 +208,7 @@ def declared_paths(root: Path) -> list[dict]:
     return sorted(unique.values(), key=lambda item: (item["role"], item["path"], item["source"]))
 
 
-def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]:
+def source_cache_conventions(root: Path, declarations: list[dict], requested: set[Path]) -> list[dict]:
     """Report standard, explicit, and unmistakably named cache conventions."""
     records: dict[str, dict] = {}
 
@@ -211,6 +229,8 @@ def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]
     for item in declarations:
         if item["role"] == "source_cache":
             add(item["path"], f"declared in {item['source']}", "high", True)
+    for path in requested:
+        add(path.relative_to(root).as_posix(), "designated in request", "high", True)
     for name in (".literature-cache", "literature-cache", ".source-cache", "source-cache", ".paper-cache", "paper-cache"):
         if (root / name).is_dir():
             add(name, "cache-specific directory name", "high")
@@ -218,7 +238,7 @@ def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]
     # no source bytes are opened.
     for name in ("papers", "refs", "references", "sources"):
         path = root / name
-        if not path.is_dir() or name in records:
+        if path.is_symlink() or not path.is_dir() or name in records:
             continue
         try:
             has_sources = any(child.is_file() and child.suffix.casefold() in {".pdf", ".djvu", ".epub"}
@@ -232,14 +252,15 @@ def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]
 
 def walk(root: Path, depth: int, excluded_paths: set[Path] | None = None):
     excluded_paths = {path.resolve() for path in (excluded_paths or set())}
+    if root in excluded_paths:
+        return
     for current, dirs, files in os.walk(root):
         path = Path(current)
         rel = path.relative_to(root)
         kept = []
         for name in sorted(dirs):
             unresolved_child = path / name
-            child = unresolved_child.resolve()
-            if unresolved_child.is_symlink() or name in EXCLUDE or child in excluded_paths:
+            if unresolved_child.is_symlink() or name in EXCLUDE or unresolved_child in excluded_paths:
                 continue
             kept.append(name)
         dirs[:] = kept
@@ -437,8 +458,8 @@ def path_exists(root: Path, source: Path, value: str, *, backtick: bool) -> bool
             base = base.parent
     else:
         bases = [source.parent]
-    candidates = [(base / cleaned).resolve() for base in bases]
-    inside = [candidate for candidate in candidates if candidate.is_relative_to(root.resolve())]
+    inside = [path for base in bases
+              if (path := safe_relative(root, (base / cleaned).relative_to(root).as_posix())) is not None]
     if not inside:
         return None
     return any(candidate.exists() for candidate in inside)
@@ -491,27 +512,42 @@ def broken_references(root: Path, files: list[Path]) -> list[dict]:
     return findings
 
 
-def claude_bridge(root: Path) -> dict:
+def claude_bridge(root: Path, skipped: set[str]) -> dict:
     agents = root / "AGENTS.md"
     claude = root / "CLAUDE.md"
     imports = False
-    if claude.is_file():
+    agents_exists = "AGENTS.md" not in skipped and agents.is_file()
+    claude_exists = "CLAUDE.md" not in skipped and claude.is_file()
+    if claude_exists:
         try:
             imports = bool(re.search(r"(?m)^\s*@AGENTS\.md\s*$", claude.read_text(encoding="utf-8")))
         except (OSError, UnicodeError):
             imports = False
     issue = None
-    if agents.is_file() and claude.is_file() and not imports:
+    if skipped.intersection({"AGENTS.md", "CLAUDE.md"}):
+        issue = "Root instruction outside the inspection boundary or symlinked; bridge unverified"
+    elif agents_exists and claude_exists and not imports:
         issue = "CLAUDE.md does not import @AGENTS.md"
     return {
-        "agents_exists": agents.is_file(), "claude_exists": claude.is_file(),
+        "agents_exists": agents_exists, "claude_exists": claude_exists,
         "imports_agents": imports, "issue": issue,
     }
 
 
-def inspect(root: Path, depth: int) -> dict:
-    declarations = declared_paths(root)
-    caches = source_cache_conventions(root, declarations)
+def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
+    root = root.resolve()
+    requested = set()
+    for value in cache_dirs:
+        path = safe_relative(root, value)
+        if path is None or path == root:
+            raise ValueError(f"Cache directory must resolve inside the scan root: {value}")
+        if path.exists() and not path.is_dir():
+            raise ValueError(f"Designated cache is not a directory: {value}")
+        requested.add(path)
+    direct_paths = ("AGENTS.md", "CLAUDE.md", ".mathbox/config.json")
+    skipped = {name for name in direct_paths if not direct_read_allowed(root, root / name, requested)}
+    declarations = declared_paths(root, skipped)
+    caches = source_cache_conventions(root, declarations, requested)
     cache_exclusions = {
         path for item in caches
         if item["exists"] and (item["declared"] or item["confidence"] == "high")
@@ -558,13 +594,14 @@ def inspect(root: Path, depth: int) -> dict:
     for declaration in declarations:
         if declaration["role"] != "project_map" or declaration["path"] in known_map_paths:
             continue
-        candidate = safe_relative(root, declaration["path"])
-        if candidate is not None:
-            project_maps.append(dict(info(root, candidate), basis=f"declared in {declaration['source']}")
-                                if candidate.is_file() else {
-                                    "path": declaration["path"], "bytes": -1, "lines": None,
-                                    "basis": f"declared in {declaration['source']}; missing",
-                                })
+        candidate = root / declaration["path"]
+        if EXCLUDE.intersection(candidate.relative_to(root).parts) or not direct_read_allowed(root, candidate, cache_exclusions):
+            continue
+        project_maps.append(dict(info(root, candidate), basis=f"declared in {declaration['source']}")
+                            if candidate.is_file() else {
+                                "path": declaration["path"], "bytes": -1, "lines": None,
+                                "basis": f"declared in {declaration['source']}; missing",
+                            })
     local_names = []
     for entry in skills:
         parts = Path(entry["path"]).parts
@@ -594,23 +631,23 @@ def inspect(root: Path, depth: int) -> dict:
                           for path in sorted(set(dashboard + handoff))],
     }
     git_info = git_state(root)
-    standard_cache = next(item for item in caches if item["path"] == ".research-cache/literature")
-    cache_root = Path(".research-cache")
-    cache_path = cache_root / "literature"
-    source = ignore_rule_source(root, cache_path / "pdf" / f"{'0' * 64}.pdf")
-    literature_cache = {
-        "path": str(cache_path), "exists": standard_cache["exists"],
-        "git_ignored": source is not None, "ignore_rule_source": source,
-        "repository_ignore_rule": bool(ignore_rule_source(root, cache_root))
-        or (source is not None and not source.startswith(f"{cache_root.as_posix()}/")),
-    }
+    standard = ".research-cache/literature"
+    literature_cache = {"path": standard, "exists": False, **cache_ignore_coverage(root, standard, False)}
+    for cache in caches:
+        if cache["confidence"] == "high":
+            coverage = cache_ignore_coverage(root, cache["path"], git_info["repository"])
+            cache.update(coverage)
+            if cache["path"] == standard:
+                literature_cache = {"path": standard, "exists": cache["exists"], **coverage}
     return {
         "root": str(root),
+        "max_depth": depth,
+        "skipped_direct_paths": sorted(skipped),
         "git": git_info,
         # Backward-compatible field: empty string means clean; None means unavailable.
         "git_status": git_info["porcelain"],
         "instructions": instructions,
-        "claude_bridge": claude_bridge(root),
+        "claude_bridge": claude_bridge(root, skipped),
         "research_role_files": role_entries,
         "semantic_roles": {key: sorted(value, key=lambda item: item["path"]) for key, value in sorted(role_map.items())},
         "live_state_candidates": live_state,
@@ -625,8 +662,19 @@ def inspect(root: Path, depth: int) -> dict:
         "build_manifests": build_manifests,
         "literature_cache": literature_cache,
         "source_cache_conventions": caches,
-        "research_ledger": {"path": ".mathbox", "exists": (root / ".mathbox/config.json").is_file()},
+        "research_ledger": {"path": ".mathbox", "exists": ".mathbox/config.json" not in skipped
+                            and (root / ".mathbox/config.json").is_file()},
     }
+
+
+def cache_status(cache: dict) -> str:
+    if cache["repository_ignore_rule"]:
+        return f"directory covered by tracked rule in `{cache['ignore_rule_source']}`"
+    if cache["git_ignored"] is None:
+        return "Git ignore coverage unverified"
+    if cache["git_ignored"]:
+        return f"directory ignored by `{cache['ignore_rule_source']}`; tracked project coverage unverified"
+    return "no directory-wide Git ignore coverage verified"
 
 
 def markdown(obj: dict) -> str:
@@ -639,6 +687,8 @@ def markdown(obj: dict) -> str:
     else:
         display = f"({git_info['state']}: {git_info['reason']})"
     lines += ["## Git status", "", "```text", display, "```", ""]
+    if obj["skipped_direct_paths"]:
+        lines.append("Skipped symlinked or excluded paths: " + ", ".join(obj["skipped_direct_paths"]))
     for key, title in [
         ("instructions", "Instruction files"),
         ("research_role_files", "Research role files and aliases"),
@@ -698,17 +748,11 @@ def markdown(obj: dict) -> str:
     lines.append("")
     cache = obj["literature_cache"]
     lines += ["## Local literature cache", ""]
-    if cache["git_ignored"] and not cache["repository_ignore_rule"]:
-        coverage = (f"ignored only by `{cache['ignore_rule_source']}` "
-                    "(the cache's own rule); add `/.research-cache/` to the project .gitignore")
-    elif cache["git_ignored"]:
-        coverage = f"ignored by a project rule in `{cache['ignore_rule_source']}`"
-    else:
-        coverage = "not ignored; add `/.research-cache/` to the project .gitignore"
-    lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {coverage}")
+    lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {cache_status(cache)}")
     alternates = [item for item in obj["source_cache_conventions"] if item["path"] != cache["path"]]
     for item in alternates:
-        lines.append(f"`{item['path']}` — alternate {item['confidence']} candidate ({item['basis']}); do not inspect contents during initialization")
+        coverage = cache_status(item) if "git_ignored" in item else "tentative candidate"
+        lines.append(f"`{item['path']}` — {item['basis']}; {coverage}")
     lines.append("")
     ledger = obj["research_ledger"]
     lines += ["## Research ledger", "",
@@ -732,6 +776,8 @@ def brief_markdown(obj: dict) -> str:
             lines.append(f"- … {len(changed) - 8} more worktree entries.")
     elif git_info["reason"]:
         lines.append(f"Git detail: {git_info['reason']}.")
+    if obj["skipped_direct_paths"]:
+        lines.append("Skipped symlinked or excluded paths: " + ", ".join(obj["skipped_direct_paths"]))
 
     absent = []
 
@@ -792,24 +838,19 @@ def brief_markdown(obj: dict) -> str:
     if historical:
         lines.append("Historical candidates are preserved in the full report; their location does not prove a live link is broken.")
     cache = obj["literature_cache"]
-    if cache["git_ignored"] and not cache["repository_ignore_rule"]:
-        cache_status = "ignored only by a cache-local rule; add a project ignore rule"
-    elif cache["git_ignored"]:
-        cache_status = "ignored by a project rule"
-    else:
-        cache_status = "not Git-ignored"
     lines.extend(["", f"Literature cache: `{cache['path']}`; "
                   f"{'present' if cache['exists'] else 'absent'}; "
-                  f"{cache_status}.",
+                  f"{cache_status(cache)}.",
                   f"Research ledger: {'present' if obj['research_ledger']['exists'] else 'absent'}.",
-                  "Use --full or --format json for the complete read-only inventory."])
+                  f"Use --full or --format json for all findings at scan depth {obj['max_depth']}."])
     for key, title in (("declared_paths", "Declared paths"),
                        ("source_cache_conventions", "Source-cache conventions")):
         entries = obj[key]
         lines += ["", f"{title}: {len(entries)}."]
         for item in entries[:8]:
             label = item.get("role", item.get("basis", "candidate"))
-            lines.append(f"- {label}: `{item['path']}`")
+            coverage = f" — {cache_status(item)}" if "git_ignored" in item else ""
+            lines.append(f"- {label}: `{item['path']}`{coverage}")
         if len(entries) > 8:
             lines.append(f"- … {len(entries) - 8} more; inspect --full or --format json before decisions.")
     return "\n".join(lines)
@@ -819,10 +860,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".", help="scan root; resolves to Git top level when available (default: current directory)")
     parser.add_argument("--max-depth", type=int, default=5, help="maximum directory scan depth (default: %(default)s)")
+    parser.add_argument("--cache-dir", action="append", default=[], help="exclude a designated cache relative to the scan root (repeatable)")
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
-    parser.add_argument("--full", action="store_true", help="complete Markdown inventory")
+    parser.add_argument("--full", action="store_true", help="all Markdown findings at the selected depth")
     arguments = parser.parse_args()
-    obj = inspect(root_of(Path(arguments.root)), arguments.max_depth)
+    try:
+        obj = inspect(root_of(Path(arguments.root)), arguments.max_depth, tuple(arguments.cache_dir))
+    except ValueError as error:
+        parser.error(str(error))
     print(json.dumps(obj, indent=2) if arguments.format == "json" else
           markdown(obj) if arguments.full else brief_markdown(obj))
     return 0

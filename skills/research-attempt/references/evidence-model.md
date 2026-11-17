@@ -17,6 +17,8 @@ An attempt outcome is not an evidence label. Proved as written maps to proved;
 externally proved maps to externally proved; a restricted proof supports only
 its restricted statement; finite verification supports only its assertion/range;
 conditional, heuristic and refuted outcomes support the corresponding statement.
+For a successful reduction, the proved statement is the implication from the
+remaining obligation to the target. Report the evidence for each separately.
 An incomplete/inconclusive or ill-typed construction supplies no promotion.
 If it reveals no defect in independently supported target evidence, leave that
 label intact. If the target or existing support is defective, report the affected

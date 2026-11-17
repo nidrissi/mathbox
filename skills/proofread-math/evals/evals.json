@@ -13,10 +13,10 @@
     },
     {
       "id": 2,
-      "prompt": "Review only: For every $i\\in I$, choose $x_i\\in X_i$. Then $x_j$ is nonzero. No $j$ is defined.",
+      "prompt": "Proofread this pasted paragraph, findings only: For every $i\\in I$, choose $x_i\\in X_i$. Then $x_j$ is nonzero. No $j$ is defined.",
       "expected_output": "Reports the unbound symbol without editing or asserting that i is certainly intended.",
       "assertions": [
-        "Produces findings rather than rewritten source",
+        "Returns findings without a corrected copy of the pasted paragraph",
         "Identifies the unbound j",
         "Does not guess a correction with certainty"
       ]
@@ -86,6 +86,36 @@
         "Puts attribution in the saved proofreading reports and no field or comment in the manuscript",
         "Keeps the grammar correction narrow and reports the unavailable build honestly",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Correct this excerpt. The formula lost one pair of parentheses in transcription. Flag any proposed copyedits that depend on the intended claim. ‘The score is twice the sum of $x$ and $y$, so its formula is $2x+y$. The scores which are positive are retained. A score is published if it is retained.’ The style reader suggests setting off ‘which are positive’ with commas and changing ‘if’ to ‘exactly when’.",
+      "expected_output": "Restores the grouping forced by the definition and reports the exact mathematical edit. Preserves the restrictive clause and the one-way implication, explaining what the suggested changes would assert.",
+      "assertions": [
+        "Returns corrected source with $2(x+y)$ and lists $2x+y$ to $2(x+y)$ among the mathematical-token changes",
+        "Leaves the positive-score restriction intact and explains that making the clause parenthetical would present positivity as applying to all the scores",
+        "Preserves 'if' and explains that the converse needed for 'exactly when' is unsupported"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "The theorem hunk just edited in section.tex is a writable temporary copy of evals/fixtures/proofread-fragment.tex. Give findings only for this final proofreading pass. The label file and the preamble that defines project commands are unavailable.",
+      "expected_output": "Reports the subject–verb disagreement without editing section.tex or returning replacement source. Identifies the reference target and the macro as unverified in the available context.",
+      "assertions": [
+        "Reports the agreement error and leaves section.tex byte-identical to the supplied fixture",
+        "Returns findings without a rewritten copy",
+        "Identifies lem:bound and \\localnorm separately and states what unavailable material would resolve each",
+        "Does not diagnose an undefined label or command from their absence in the hunk"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Correct the transcription error in the second sentence only. ‘A singleton is a set with exactly one element. Equivalently, a singleton is a set with at most one element.’",
+      "expected_output": "Changes ‘at most one’ to ‘exactly one’ in the second sentence and lists this wording change under mathematical-token changes.",
+      "assertions": [
+        "Uses the definition and the asserted equivalence to identify the uniquely forced local edit",
+        "Reports the exact before-and-after wording as a mathematical change"
       ]
     }
   ]

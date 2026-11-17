@@ -56,6 +56,18 @@
     "should_trigger": true
   },
   {
+    "query": "Continue the full research program in this read-only host. The project has no ledger, so hand off material findings in chat.",
+    "should_trigger": true
+  },
+  {
+    "query": "One of our three routes refuted its auxiliary lemma. Continue the investigation until the original conjecture is settled.",
+    "should_trigger": true
+  },
+  {
+    "query": "Check just this proposed counterexample against the stated conjecture and report whether it works.",
+    "should_trigger": false
+  },
+  {
     "query": "Make one bounded attempt at Lemma 3 via Mayer–Vietoris, then stop.",
     "should_trigger": false
   },

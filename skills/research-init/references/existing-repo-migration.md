@@ -10,8 +10,8 @@ second manually maintained claims dashboard.
 
 - Inspect Git state and the applicable instructions. Identify the charter,
   claims, conventions, live dashboard/handoff, history index, durable records,
-  proof artifacts, and exact edit/approval boundaries. Use the brief inspector
-  first; open only the full sections needed to resolve current-path findings.
+  proof artifacts, and exact edit/approval boundaries. Use the scoped inspection
+  from Phase 1; open only the sections needed to resolve current-path findings.
   File size and dated headings suggest review, not obsolescence.
 - Name the current authority for each role. Resolve competing live files and
   stale or contradictory instructions from evidence, not filename or timestamp.
@@ -152,7 +152,7 @@ project checks and ledger `check --summary --full` when present; compare the
 complete issue lists and counts with the baseline instead of demanding that
 pre-existing problems disappear. A sampled summary can hide a new issue behind
 old ones. Open full claim and review detail only for affected claims or
-issues. Inspect the full diff and `git diff --check`; use risk-based full
+issues. Review changed and newly created files as in Phase 5; use risk-based full
 checks for semantic-core or broad changes. Report skipped checks and remaining
 conflicts.
 Propose missing project-specific advisory size or repeated-checkpoint triggers for the

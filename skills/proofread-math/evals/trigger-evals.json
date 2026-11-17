@@ -20,6 +20,10 @@
     "should_trigger": true
   },
   {
+    "query": "Give me proofreading findings only on the lemma in the file you just edited. Flag punctuation that changes the scope of a hypothesis.",
+    "should_trigger": true
+  },
+  {
     "query": "Review this proof as a copyeditor; flag logical concerns instead of fixing them.",
     "should_trigger": true
   },

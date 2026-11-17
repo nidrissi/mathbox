@@ -60,9 +60,11 @@ of tool calls or reproducing a preferred proof.
 | `fixtures/artifact-relocation.json` | Register unchanged archive locations for a synthetic ledger history without rewriting it. |
 | `fixtures/referee-core.tex` | Referee a whole manuscript across correctness, edge cases, notation, exposition and claim calibration. |
 | `fixtures/referee-context.tex` | Reconcile a local undefined-notation suspicion against an earlier definition. |
+| `fixtures/referee-figure-map.pdf` | Check a figure against the definition using the rendered page, and repeat with extraction alone. |
 | `fixtures/referee-exposition.tex` | Assess a correct telescoping proof with little strategic signposting. |
 | `fixtures/referee-source.tex` | Review a coefficient extension with an unavailable synthetic source. |
 | `fixtures/referee-enumeration.tex` | Review a theorem supported by a filtered binary enumeration. |
+| `fixtures/proofread-fragment.tex` | Review a writable copy as a recently edited hunk without rewriting it. |
 
 For `referee-context`, a reconciliation trial may supply the user-visible prior
 local finding "tau is undefined in the Identity section" together with the raw

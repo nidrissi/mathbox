@@ -54,5 +54,13 @@
   {
     "query": "Audit the Sage enumeration supporting Claim C7.",
     "should_trigger": false
+  },
+  {
+    "query": "The result is already in our course notes. Does the proof pinned by E000012 actually establish it?",
+    "should_trigger": true
+  },
+  {
+    "query": "List the evidence pins that went stale after the proof file changed and the ledger claims affected downstream.",
+    "should_trigger": false
   }
 ]

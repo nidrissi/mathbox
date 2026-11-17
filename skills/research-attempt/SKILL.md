@@ -36,7 +36,9 @@ prose evidence directly. Clean bookkeeping is not mathematical verification.
    then open only the nearest relevant records needed to find the first failed
    or unproved implication.
 4. State falsifiable success and failure/no-go criteria, and the cheapest decisive
-   example, source check or computation.
+   example, source check or computation. Set a stopping point within the
+   authorized scope, such as one construction or a specified search range.
+   If it is reached with work open, hand off the first unresolved step.
 5. Choose one program route and compare mechanisms with prior failures.
    Retrying a mechanism with an established
    obstruction requires a new input, invariant, construction or hypothesis that
@@ -70,15 +72,16 @@ into a specific comparison, obstruction or discriminating invariant.
   exact-source or finite-evidence checks directly and disclose limits. Record
   computational domain, bounds, seed, versions, inputs, runtime and non-claims;
   leave unverified sources conditional.
-- Before calling a finite sweep exhaustive, compare the claimed population with
-  the actual iterator, filters and skipped cases. Sampling requires a proved
-  coverage reduction.
+- Report which cases were checked. To claim exhaustive coverage, compare the
+  population with the iterator, filters and skipped cases, and prove that any
+  omitted cases are covered by the checked ones. A sampled counterexample
+  refutes a universal claim once its hypotheses and violation are verified.
 - After bounded success, identify uniform structural features versus case-specific
   coincidences and formulate a uniform lemma or obstruction before extending
   the case ladder. Another finite case must discriminate named alternatives or
   reach a new regime.
-- A timeout, failed search, or bounded computation is not a universal negative
-  result.
+- If the search finds no witness, limit the absence claim to the cases
+  actually excluded unless a coverage proof extends it.
 - A change to a registered convention requires explicit owner approval unless
   the project instructions already authorize that exact correction.
 
@@ -87,7 +90,9 @@ into a specific comparison, obstruction or discriminating invariant.
 Use one of:
 
 - proved as written;
-- correct only after a stated restriction;
+- proved under a stated restriction (evidence of necessity is a separate result);
+- reduced to a named obligation, with a proof that the obligation implies the
+  target under the stated hypotheses and the remaining obligation identified;
 - externally proved in the exact required form;
 - conditional on a named unverified input;
 - computationally verified only in a stated range;
@@ -160,7 +165,7 @@ material blocker, a convention decision, or a claim-supporting computation.
 Run the narrowest relevant documented check, then broader checks only when their
 risk trigger applies. Report:
 
-1. target and route;
+1. target, route, planned stopping point and actual stopping reason;
 2. attempt outcome, evidence label, route disposition and continuations;
    base checkpoint and actual inputs when part of a program;
 3. decisive derivation, source, counterexample, or computation;

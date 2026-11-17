@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown, unfenced_lines
 
@@ -262,6 +263,73 @@ class InspectorTests(unittest.TestCase):
         self.write("CLAUDE.md", "# Separate duplicated instructions\n")
         result = inspect(self.root, 5)
         self.assertEqual(result["claude_bridge"]["issue"], "CLAUDE.md does not import @AGENTS.md")
+
+    def test_designated_cache_and_symlinked_direct_sources_never_open(self):
+        external = tempfile.TemporaryDirectory()
+        self.addCleanup(external.cleanup)
+        outside = Path(external.name)
+        (outside / "config.json").write_text("{}")
+        private = outside / "private.md"
+        private.write_text("- **Status:** `private.md`\n")
+        cache = self.root / "papers/local"
+        self.write("papers/local/STATUS.md")
+        self.write("papers/local/map.json", "{}")
+        self.write("AGENTS.md", "- **Project map:** `papers/local/map.json`\n")
+        (self.root / "CLAUDE.md").symlink_to(private)
+        (self.root / ".mathbox").symlink_to(outside, target_is_directory=True)
+
+        real_open = Path.open
+        def guarded_open(path, *args, **kwargs):
+            self.assertFalse(path.resolve().is_relative_to(cache), path)
+            self.assertFalse(path.resolve().is_relative_to(outside), path)
+            return real_open(path, *args, **kwargs)
+
+        with patch.object(Path, "open", guarded_open):
+            result = inspect(self.root, 5, ("papers/local",))
+            self.assertEqual(result["skipped_direct_paths"], [".mathbox/config.json", "CLAUDE.md"])
+            self.assertEqual(result["project_maps"], [])
+            self.assertFalse(result["live_state_candidates"]["dashboard_candidates"])
+            self.assertIn("CLAUDE.md", brief_markdown(result))
+            (self.root / "AGENTS.md").unlink()
+            (self.root / "AGENTS.md").symlink_to(private)
+            result = inspect(self.root, 5, ("papers/local",))
+            self.assertIn("AGENTS.md", result["skipped_direct_paths"])
+            self.assertFalse(result["declared_paths"])
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_cache_directory_requires_effective_tracked_project_rule(self):
+        def git(*args):
+            subprocess.run(["git", "-C", str(self.root), *args], check=True, capture_output=True)
+
+        def alternate():
+            result = inspect(self.root, 5, ("papers/local",))
+            return next(item for item in result["source_cache_conventions"] if item["path"] == "papers/local")
+
+        git("init", "-q")
+        rules = self.write("global-ignore", "*.pdf\n")
+        git("config", "core.excludesFile", str(rules))
+        self.assertFalse(alternate()["git_ignored"])
+        rules.write_text("papers/local/\n")
+        self.assertTrue(alternate()["git_ignored"])
+        self.assertFalse(alternate()["repository_ignore_rule"])
+        self.write(".gitignore", "/papers/local/\n")
+        self.assertFalse(alternate()["repository_ignore_rule"])
+        git("add", "--", ".gitignore")
+        self.assertTrue(alternate()["repository_ignore_rule"])
+        self.write(".gitignore", "/papers/local/\n!/papers/local/\n")
+        self.assertFalse(alternate()["repository_ignore_rule"])
+
+    def test_depth_and_non_git_coverage_remain_explicit(self):
+        self.write("a/b/c/d/e/f/STATUS.md")
+        self.write("AGENTS.md", "- **Status:** `a/b/c/d/e/f/STATUS.md`\n")
+        result = inspect(self.root, 5)
+        self.assertIsNone(result["literature_cache"]["git_ignored"])
+        self.assertIn("Git ignore coverage unverified", brief_markdown(result))
+        self.assertIn("scan depth 5", brief_markdown(result))
+        self.assertEqual(result["live_state_candidates"]["dashboard_candidates"], [])
+        self.assertEqual(result["declared_paths"][0]["path"], "a/b/c/d/e/f/STATUS.md")
+        self.assertEqual(inspect(self.root, 6)["live_state_candidates"]["dashboard_candidates"],
+                         ["a/b/c/d/e/f/STATUS.md"])
 
     def test_symlinked_files_are_not_read_or_classified(self):
         outside = tempfile.TemporaryDirectory()

@@ -11,15 +11,16 @@ a replacement for proofs, audits, computations, route records, or ledger events.
 Read the project authority and edit rules, current goal contract, and current
 summary. Search the designated history entry point for the program, then open
 its route index and only the records needed for decisive or conflicting
-outcomes. With a ledger, use a brief goal handoff and freshness check; inspect
-full contracts, active review reports, and artifacts for every status used in
-the synthesis. Record the assessment Git revision or ledger head and the
-complete pre-existing issue list from `check --summary --full`; the plain
-summary may omit issues. Do not infer proof from a generated label.
+outcomes. With a ledger, use a brief goal handoff and freshness check. Record
+the complete pre-existing issue list from `check --summary --full` because the
+plain summary may omit issues. Inspect full contracts, active review reports
+and artifacts for every status used in the synthesis. Record the assessment
+base and actual input identities as in [handoff.md](handoff.md). Do not infer
+proof from a generated label.
 
-For a historical closeout, record two distinct provenance points: the
-historical cutoff (date and exact Git revision or ledger event when available)
-and the migration-time assessment (date and current revision/head). Say whether
+For a historical closeout, record the historical cutoff and the migration-time
+assessment separately. Give the date and identify the evidence at each
+checkpoint using the same base convention. Say whether
 the cutoff date was recorded, inferred from Git, or unavailable. A first Git
 appearance is only a bound on when text was present, not proof of when the
 mathematics was established. If the cutoff cannot be identified, mark it
@@ -66,7 +67,9 @@ an index-migration state, not a mathematical evidence label.
 
 Do not add a claim/evidence/review ledger event solely for a closeout. Record
 one only when the mathematical state actually changed, under `research-state`
-rules. A closeout can be a checkpoint rather than a terminal verdict.
+rules. If the host cannot write and there is no ledger proposal, return the
+completed closeout in chat and identify the pending filing step. A closeout
+can be a checkpoint rather than a terminal verdict.
 
 ## Keep navigation and current state small
 

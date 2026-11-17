@@ -17,10 +17,11 @@ Read applicable instructions and locate authoritative code, data and outputs.
 State the claim, finite assertion, domain, conventions, inputs, bounds, exclusions,
 caps, each outcome's implications and non-claims.
 
-For reproduction, stop if no documented command exists and report
-**reproduction command unavailable**; do not guess. For authorized design or new
-experiments, establish the contract, code and command first. Design permission
-alone does not authorize execution.
+If reproduction is requested and no command is documented, report
+**reproduction command unavailable**. Ask for the command and continue any
+requested static audit without guessing how to run the code. For authorized
+design or new experiments, establish the contract, code and command first.
+Design permission alone does not authorize execution.
 
 Route external theorem questions through the available `literature-check` skill
 (`mathbox:literature-check` in plugin installations), or check the exact source
@@ -35,6 +36,9 @@ Use [checklist.md](references/checklist.md). Check:
 - chain condition, symmetry, dimension or other invariants;
 - hand-computable cases and known benchmarks;
 - seeds, input order, parser, serialization, cache and parallelism risks;
+- trace the entry point, local imports, configuration and data reads that affect
+  the result. Compare those dependencies with the manifest's pinned inputs.
+  Explain how missing, mismatched or unresolved pins limit reproducibility;
 - independent implementations or orthogonal invariants for load-bearing results;
 - coverage: compare claimed population and case counts with the actual iterator;
   inspect strides, filters, sampling, early exits and assertions restating the
@@ -62,28 +66,30 @@ and hashed outputs. Report missing observations; never invent them.
 python3 <skill-directory>/scripts/validate_manifest.py MANIFEST.json --root PROJECT
 ```
 
-`--root` verifies hashes and current inputs. `--template` checks only a scaffold,
+`--root` checks hashes against the listed artifacts. Dependency coverage still
+requires inspecting the implementation. `--template` checks only a scaffold,
 which is not evidence. A valid record may document a failed, timed-out or
 changed-input run; read `run.status` before interpreting it. See the runner
 reference for historical v1 limits.
 
 ## Interpret conservatively
 
-Choose an outcome:
+Report three judgments independently.
 
-- implementation and finite assertion verified in the stated range;
-- result reproduced but implementation not independently validated;
-- conditional on numerical tolerance, random sampling or an external library;
-- inconsistent with a benchmark or invariant;
-- not reproducible in the available environment;
-- inconclusive because of resource bounds;
-- counterexample found to the mathematical claim;
-- provenance invalid or stale: rerun required;
-- audited, not executed.
+- **Execution.** Give the recorded status when available and distinguish a new
+  run, a reproduction and a static audit of existing artifacts.
+- **Implementation confidence.** State which checks support the implementation,
+  which discrepancies remain and whether there was independent validation.
+- **Mathematical conclusion.** Give the strongest justified assertion over the
+  tested range, including conditions on tolerance, sampling or external libraries.
+  For a counterexample, exhibit a witness and use exact reasoning or a rigorous
+  certificate to verify every hypothesis and the violation. Until then, report
+  the discrepancy and the check still needed.
 
-Map `timeout`, `resource-limit` and `output-limit` to resource inconclusiveness;
-`launch-failed` to not reproducible; `inputs-changed`, `result-missing` and
-`result-invalid` to invalid/stale provenance. For `failed`, distinguish a checked
+Map `timeout`, `resource-limit` and `output-limit` to resource inconclusiveness
+for the unfinished search. Keep any independently verified witness.
+Map `launch-failed` to not reproducible and `inputs-changed`, `result-missing`
+and `result-invalid` to invalid/stale provenance. For `failed`, distinguish a checked
 mathematical counterexample, implementation bug, environment failure and
 insufficient resources. `completed` still requires assertion/implementation audit.
 
@@ -107,8 +113,12 @@ Report:
 
 1. contract and non-claims;
 2. code paths and command;
-3. provenance, manifest path and `run.status`;
+3. provenance, manifest path and recorded `run.status`, when available;
 4. checks performed;
-5. outcome label and exact result;
+5. execution, implementation confidence and mathematical conclusion;
 6. residual risks;
 7. structural features and a uniform argument or next discriminating check.
+
+For design-only work, report the proposed command, pins, bounds, checks and
+output paths. Identify the status, runtime, hashes and results to collect on
+execution. Leave those observations unset.

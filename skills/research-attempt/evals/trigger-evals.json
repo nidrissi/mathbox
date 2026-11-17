@@ -52,6 +52,14 @@
     "should_trigger": true
   },
   {
+    "query": "Try to reduce the conjecture to a descent lemma. Stop once you have proved the implication or located the gap.",
+    "should_trigger": true
+  },
+  {
+    "query": "Here is my reduction to a descent lemma. Check whether its implication goes in the right direction.",
+    "should_trigger": false
+  },
+  {
     "query": "Attack Lemma 5 by applying Theorem 2.1 of the cited paper after translating its notation, and record the route.",
     "should_trigger": true
   },

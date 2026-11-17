@@ -18,8 +18,10 @@ The JSON records are the index. They contain schema version, identifiers,
 bibliographic metadata, local relative paths, content hashes, date checked,
 retention basis and extraction provenance.
 
-These deterministic cache records and cached source text get no model field;
-the accompanying [source record](source-record.md) carries the attribution.
+These deterministic cache records and cached source text get no model field.
+For cache-only work, report the cache outcome and provenance in the reply.
+An accompanying [source record](source-record.md), when requested, carries its
+own attribution.
 
 `find`, `show`, and `verify` never create or modify the cache. Only `init` and
 `add` write to it, so a lookup in a project that has not opted into local
@@ -82,7 +84,10 @@ still rejected.
 Use `show <sha256-or-prefix>` to inspect one record and `verify` to recompute
 artifact hashes and detect missing or orphaned files. A record the helper
 cannot read is reported under `unreadable_records` and skipped; it never fails
-an otherwise usable lookup.
+an otherwise usable lookup. A path returned by lookup or show comes from
+metadata. Verify the requested files before reporting confirmed retention or
+usable extracted text. Report recorded hashes and extraction status as
+metadata when the corresponding files are unavailable.
 
 ## Git and rights invariants
 
@@ -102,5 +107,6 @@ an otherwise usable lookup.
 - Do not cache licensed, private, embargoed, or unpublished material unless the
   project's policy or the user explicitly authorizes local retention. Never
   upload cached material to an external service without separate authorization.
-- A cache lookup, extracted-text match, or hash establishes identity and local
-  availability only. It does not verify a theorem or support a novelty claim.
+- Report a metadata match, observed local files, verified bytes and authenticated
+  bibliographic identity as separate checks. Mathematical extraction and
+  novelty assessment require their own source checks.

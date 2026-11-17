@@ -81,7 +81,7 @@ artifacts need not be rewritten. Reused coverage keeps the original pass's
 settings, treats absent historical fields as unknown, and notes deviations
 from the current assignment without claiming a new execution.
 
-Children use the return schema in [review-protocol.md](review-protocol.md).
+Lane reviewers use the return schema in [review-protocol.md](review-protocol.md).
 The coordinator gathers every pass's issues without renumbering them; each
 issue's `reviewer` is its coverage `pass_id`.
 
@@ -117,6 +117,11 @@ For new reviews, `reconciliation.json` top-level `executor`, `method` and
 `model_assignment` describe the pass that actually performed final reconciliation, including self-review
 or a delegated final referee. Preserve its native execution evidence too.
 
+A delegated final referee owns `reconciliation.json` and, when assigned,
+`report.md`. The coordinator checks the returned artifacts and authors the
+report if it retained that task. Each artifact identifies its actual author.
+The lane reviewers' pass-file restriction applies only to their lane work.
+
 A dismissal reason identifies the actual earlier definition, excluded case,
 valid inference or unsupported objection. A merge reason identifies the shared
 defect. Specialist artifacts need exact checked obligations and versions,
@@ -146,7 +151,8 @@ Summary: central objects/results, principal technique, reviewed revision and
 exact coverage, including preparation limits and unfinished checks.
 Summarize model/delegation fallbacks and unexposed execution settings without
 turning them into manuscript concerns or claiming the requested models ran.
-Mathematical concerns: exact locators and searchable evidence, the defect or
+Mathematical concerns: exact locators and searchable quotations or checked
+PDF-only visual observations as in [review-protocol.md](review-protocol.md), the defect or
 gap, its dependency impact and calibrated status; prioritize critical/major
 confirmed concerns, then local mathematical concerns. Group minor notation
 issues by convention, without inflating them into invalidity.

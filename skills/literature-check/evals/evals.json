@@ -9,7 +9,7 @@
         "Distinguishes primary source from abstract",
         "Checks coefficient regime explicitly",
         "Does not invent the missing integral statement",
-        "Returns a conditional or inapplicable verdict if needed"
+        "Reports the source attribution as unverified if the exact theorem cannot be inspected; if inspected, distinguishes its coefficient regime from any checked conditional extension"
       ]
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "id": 5,
-      "prompt": "Assess whether a compactness theorem appears new. Searches for the draft's phrase find nothing, but an adjacent survey uses the older phrase 'precompact embedding' and cites a 1980s paper with a similar conclusion.",
-      "expected_output": "Treats the initial search as incomplete, follows the older terminology and citation chain to primary sources, and withholds any apparently-new classification until exact hypotheses and conclusion are compared.",
+      "prompt": "Assess whether a compactness theorem appears new. Searches for the draft's phrase find nothing, but an adjacent survey uses the older phrase 'precompact embedding' and cites a 1980s paper with a similar conclusion. The survey abstract is available locally. Searches under both phrases turn up no accessible text of the cited paper.",
+      "expected_output": "Reports overlap undetermined, identifies the cited 1980s theorem as the unresolved candidate, and explains which hypotheses and conclusion must be compared.",
       "assertions": [
         "Searches equivalent and historical terminology",
         "Follows backward citations from the adjacent source",
-        "Reads primary candidates rather than relying on titles or snippets",
+        "Does not classify the inaccessible primary result as adjacent, known or apparently new on the strength of the survey abstract",
         "Records databases, queries, date scope and blind spots"
       ]
     },
@@ -112,12 +112,12 @@
         "The corrected record has v3 without a conflicting v2 ID and retains its DOI",
         "Does not reject the revision date merely because it is not a vN label",
         "A lookup for the superseded v2 returns a candidate rather than an exact version hit",
-        "Does not treat either metadata update as theorem verification"
+        "Finishes with the cache outcomes, identifiers and versions, locators and retention basis as available, hashes and extraction status. Reports theorem verification as unperformed and stops without an implication verdict, novelty classification or source evidence"
       ]
     },
     {
       "id": 12,
-      "prompt": "Write an authorized Markdown source check and JSON assessment for an unavailable synthetic source cited for an integral comparison. The exact source text is unavailable. A local deterministic cache record already exists; do not fetch or invent the theorem. A reused source check has Model ID fixture-old-v1 and a cached extraction has software provenance. Retain them while writing the current conditional assessment. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
+      "prompt": "Write an authorized Markdown source check and JSON assessment for an unavailable synthetic source cited for an integral comparison. The exact source text is unavailable. A local deterministic cache record already exists; do not fetch or invent the theorem. A reused source check has Model ID fixture-old-v1 and a cached extraction has software provenance. Retain them while writing the current assessment. The draft paraphrases the cited theorem as saying f is an integral isomorphism. Our project needs injectivity over the integers. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation and inspect the generated artifacts.",
       "host_metadata": {
         "model_id": "fixture-observed-v1"
       },
@@ -126,13 +126,13 @@
         "Uses **Model ID:** fixture-observed-v1 in Markdown and model_id: fixture-observed-v1 in agent-authored JSON",
         "Attributes the new source assessment, not the source author or cache helper",
         "Preserves cache metadata, extracted text and old check without adding attribution fields",
-        "Leaves authentication/extraction unverified and the application conditional",
+        "Leaves the theorem attribution unverified. Checks that the assumed integral isomorphism implies injectivity, and assigns no source evidence to that deduction or its premise",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
       ]
     },
     {
       "id": 13,
-      "prompt": "Write an authorized Markdown source check and JSON assessment for an unavailable synthetic source cited for an integral comparison. The exact source text is unavailable. A local deterministic cache record already exists; do not fetch or invent the theorem. A reused source check has Model ID fixture-old-v1 and a cached extraction has software provenance. Retain them while writing the current conditional assessment. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
+      "prompt": "Write an authorized Markdown source check and JSON assessment for an unavailable synthetic source cited for an integral comparison. The exact source text is unavailable. A local deterministic cache record already exists; do not fetch or invent the theorem. A reused source check has Model ID fixture-old-v1 and a cached extraction has software provenance. Retain them while writing the current assessment. The draft paraphrases the cited theorem as saying f is an integral isomorphism. Our project needs injectivity over the integers. Only this standalone skill is installed. The user's requested model is fixture-requested, and the session's display nickname is Research. These are synthetic host conditions; label any simulation. Do not add a collector, hook or dependency to discover identity.",
       "host_metadata": {
         "model_id": null
       },
@@ -141,8 +141,28 @@
         "Uses **Model ID:** unknown and JSON model_id: null, with no guessed execution identity",
         "Attributes the new source assessment, not the source author or cache helper",
         "Preserves cache metadata, extracted text and old check without adding attribution fields",
-        "Leaves authentication/extraction unverified and the application conditional",
+        "Leaves the theorem attribution unverified. Checks that the assumed integral isomorphism implies injectivity, and assigns no source evidence to that deduction or its premise",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Record what our authenticated synthetic paper v2, Proposition 4, supports. The supplied passage reads: 'Let f be a homomorphism of abelian groups inducing an isomorphism over the rationals. Its kernel is torsion: for x in the kernel, x/1 vanishes after rationalization, so some positive integer kills x.' Our f satisfies the rationalization hypothesis. Draft argument E000007 in our authorized ledger claims f is injective and cites an unavailable appendix for torsion-freeness of its domain. The current evidence pin for E000007 matches the draft, and both the kernel claim and the injectivity claim are registered. What belongs on each?",
+      "expected_output": "Records source evidence pinned to Proposition 4 for its torsion-kernel conclusion. Checks that torsion-freeness of the domain would force this kernel to vanish, leaves the appendix attribution unverified and records a conditional review for injectivity.",
+      "assertions": [
+        "Matches the evidence target to the exact kernel claim proved by the inspected text",
+        "Explains why every torsion element of the kernel would vanish under the additional premise",
+        "Names torsion-freeness as outstanding, attaches the conditional review to E000007, and supplies no new source evidence for either torsion-freeness or injectivity"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Who first proved the integral theorem, and where was it first published? Use only this synthetic dossier. A 1975 journal note announces the exact result and promises a later proof. A bibliography lists a 1977 dissertation on the same problem, with no text available. The dated 1979 public preprint of A contains a checked proof under exactly our hypotheses and appeared in a journal in 1984. B's 1981 journal article independently gives a checked proof with the same hypotheses.",
+      "expected_output": "Identifies A (1979) as the earliest qualifying proof located in this dossier and B (1981) as the earliest journal publication of a proof located. Dates the published announcement separately, identifies the unresolved dissertation, and leaves unqualified historical priority open.",
+      "assertions": [
+        "Distinguishes announcing the statement from providing a proof",
+        "Separates preprint chronology from journal publication chronology without silently assuming a meaning of publication",
+        "Bounds both findings to the dossier and explains how the inaccessible 1977 dissertation limits the priority claim"
       ]
     }
   ]

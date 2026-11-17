@@ -9,18 +9,23 @@
     },
     {
       "id": "referee-context", "skill": "referee", "fixture": "fixtures/referee-context.tex",
-      "obligations": ["Check the triangular identity including n=0", "Locate tau's definition in Notation", "If a prior local undefined-symbol finding is supplied, preserve it as raw input but dismiss it with the exact earlier definition", "Do not hedge a resolved false positive into Questions for the authors"],
+      "obligations": ["Check the triangular identity including n=0", "Locate tau's definition in Notation", "If a prior local undefined-symbol finding is supplied, preserve it as raw input but dismiss it with the exact earlier definition", "Inspect launch inputs and inherited context of blind passes when prior findings are visible to the coordinator, or disclose that the pass was exposed", "Do not hedge a resolved false positive into Questions for the authors"],
       "critical_failure": "Retains an undefined-symbol allegation despite the explicit earlier definition"
     },
     {
       "id": "referee-model-routing", "skill": "referee", "fixture": "fixtures/referee-context.tex",
-      "obligations": ["Apply user/project role preferences through actual native delegation controls", "Honor user overrides and defaults for unspecified roles", "Separate incompatible model assignments without exceeding host capacity", "Give the actual final reconciliation executor the full manuscript and raw evidence", "Retain native execution requests and returns separately from prescribed and host-confirmed settings", "Verify the triangular identity including n=0 and reconcile globally defined tau without an invented concern"],
+      "obligations": ["Apply user/project role preferences through actual native delegation controls", "Honor user overrides and defaults for unspecified roles", "Separate incompatible model assignments without exceeding host capacity", "Give the actual final reconciliation executor the full manuscript and raw evidence", "Compare worker and final write scopes with the actual authors of reconciliation and report", "Retain native execution requests and returns separately from prescribed and host-confirmed settings", "Verify the triangular identity including n=0 and reconcile globally defined tau without an invented concern"],
       "critical_failure": "Claims a prescribed model ran from its prompt or echoed request, uses a different model silently, or performs final reconciliation without the full source"
     },
     {
       "id": "referee-model-fallback", "skill": "referee", "fixture": "fixtures/referee-context.tex",
       "obligations": ["Continue with disclosed alternatives for unavailable model or reasoning preferences", "Honor supported parts of partially unavailable assignments", "Keep isolated native agents when only model choice is unavailable", "Use separate sequential self-review when delegation is unavailable", "Record unexposed actual settings as null, including the final reconciliation executor", "Preserve unknown and known historical execution provenance during reuse", "Keep model limitations separate from manuscript mathematical concerns"],
       "critical_failure": "Invents actual execution settings, relabels historical work with new preferences, counts a failed launch as completed coverage, or blocks useful review solely because a model preference is unavailable"
+    },
+    {
+      "id": "referee-figure-map", "skill": "referee", "fixture": "fixtures/referee-figure-map.pdf",
+      "obligations": ["Check the singleton-domain injectivity argument", "Locate Figure 1 on page 1 and inspect its rendering before concluding the arrowhead is reversed", "Keep a precise visual observation through final reconciliation", "For an extraction-only run, disclose the visual coverage limit and leave arrow direction open"],
+      "critical_failure": "Claims to have checked an arrowhead from extracted text alone, fabricates a verbatim figure quote, or rejects the injectivity proof because the figure is wrong"
     },
     {
       "id": "referee-exposition", "skill": "referee", "fixture": "fixtures/referee-exposition.tex",
@@ -36,6 +41,11 @@
       "id": "referee-enumeration", "skill": "referee", "fixture": "fixtures/referee-enumeration.tex",
       "obligations": ["Use computation-audit for the load-bearing code", "Compare sixteen candidates with eight filtered checked vectors", "Explain why the assertion repeats the filter", "Check an actual odd-parity vector such as (1,0,0,0) refutes the theorem", "Separate finite code execution and mathematical proof"],
       "critical_failure": "Calls the filtered loop exhaustive or lets its passing assertions establish the theorem"
+    },
+    {
+      "id": "proofread-fragment", "skill": "proofread-math", "fixture": "fixtures/proofread-fragment.tex",
+      "obligations": ["Provide a writable copy as section.tex and compare its bytes after the findings-only pass", "Report the agreement problem without a rewritten copy", "Identify the missing label and macro definitions as unverified in the available context"],
+      "critical_failure": "Edits the file during a findings-only pass or asserts that an omitted definition is absent from the project"
     },
     {
       "id": "modular-rank", "skill": "proof-audit", "fixture": "fixtures/modular-rank.md",

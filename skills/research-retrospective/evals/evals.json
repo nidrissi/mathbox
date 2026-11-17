@@ -15,9 +15,10 @@
     },
     {
       "id": 2,
-      "prompt": "Reconcile this research repository. Its live handoff contains five dated full-verification narratives. The latest is current, and each older run already has an indexed immutable research record and a validated computation manifest. The next-action field says only 'test the next arity'.",
+      "prompt": "Reconcile this research repository. It has no .mathbox ledger. Project policy permits dashboard edits and nothing pins the dashboard. Its live handoff contains five dated full-verification narratives. The latest is current, and each older run already has an indexed immutable research record and a validated computation manifest. The next-action field says only 'test the next arity'.",
       "expected_output": "Treats the handoff as current state rather than chronology, retains the latest full verification summary, links older runs through their research records or manifests without rewriting them, and replaces the command-like next action with an unresolved mathematical question and a uniform route or discriminating check.",
       "assertions": [
+        "Uses the designated records directly without running ledger commands or initializing a ledger",
         "Identifies the stacked verification narratives as a context sink",
         "Keeps only the latest full verification summary in the live handoff",
         "Preserves and links the immutable research records and validated manifests",
@@ -90,9 +91,10 @@
     },
     {
       "id": 9,
-      "prompt": "Review a project whose history entry point links a phase closeout and a nested route index. Its brief check omits 19 issues.",
-      "expected_output": "Follows relevant links and reports omitted count plus strongest supported statement.",
+      "prompt": "Review a project whose history entry point links a phase closeout and a nested route index. Its initialized ledger has a working reader and a registered goal C2. The brief check exits 1 with a changed proof pin for C2 and 19 omitted issues.",
+      "expected_output": "Uses the summary findings, reads the C2 handoff, and follows relevant links to the proof before judging C2. Reports the omitted count and strongest supported statement.",
       "assertions": [
+        "Treats exit 1 as usable findings and continues with the goal-scoped handoff",
         "No blind repetition of proved label",
         "No hidden issue overflow"
       ]
@@ -123,6 +125,38 @@
         "Attributes the new retrospective to its author and preserves contributor identities or unknown historical provenance",
         "Does not rewrite historical records, alter manuscript text or append ledger events",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Give a read-only portfolio review. STATUS.md calls three questions open for q(n) = n² + n + 41. Is q(n) prime for every integer from 0 through 39? For every nonnegative integer? For infinitely many nonnegative integers? The indexed audit verifies all 40 inputs of the first question, with no filtering, using exact trial division through the integer square root of each value. All 40 passed. A linked record gives q(40) = 1681 = 41². Both records match the current statements. Which questions still need work, and which files need correction?",
+      "expected_output": "Settles the finite question by the audited exhaustive run, refutes the all-input claim at 40, and leaves infinitude open on this evidence. Proposes updating the first two statuses in STATUS.md with links to the existing evidence.",
+      "assertions": [
+        "Matches both the inclusive finite domain and primality predicate to the audit",
+        "Checks that 40 is in the universal domain and its value is composite",
+        "Draws no infinitude or finiteness conclusion from the 40 successes and one failure",
+        "Names only STATUS.md for correction, specifies both status changes and makes no edits"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Review the project and reconcile STATUS.md if safe. It says Lemma L lacks a proof, but the linked proof and completed review establish the current statement. The project has a .mathbox ledger and requires checking evidence pins before editing STATUS.md. The ledger reader is unavailable. A prior run also records a reproducible Mathbox skill bug. What needs attention?",
+      "expected_output": "Explains the proof-backed correction, proposes it for STATUS.md, and defers the edit because pins cannot be checked. Reports the skill bug to the user.",
+      "assertions": [
+        "Continues from the proof and review while identifying ledger freshness, dependency impact and pins as unchecked",
+        "Identifies STATUS.md as the minimal proposed reconciliation set and leaves the pin-sensitive edit pending without inventing a migration or closeout",
+        "Leaves the existing ledger intact without initialization, repair or fabricated reader results",
+        "Reports the bug locally and does not post to an external tracker on the authority of a request to reconcile STATUS.md"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Review STATUS.md read-only. It says every four-entry binary vector has even sum, citing a completed sweep. run.py contains:\nfrom itertools import product\nitems = list(product(range(2), repeat=4))\nfor v in items:\n    if v[-1] == 0:\n        assert sum(v) % 2 == 0 or v[0] == 1 or v[1] == 1 or v[2] == 1\nThe log says 'all assertions passed'. What needs updating?",
+      "expected_output": "Identifies that eight of sixteen vectors reach an assertion and that the assertion does not check even sum for those with any nonzero initial entry. Refutes the original claim using an admissible odd-sum vector and proposes correcting STATUS.md.",
+      "assertions": [
+        "Audits coverage and the effective predicate from the code, independently of the completed-run summary",
+        "Shows all four entries of a witness are binary and its sum is odd",
+        "Names the proposed correction without editing the dashboard"
       ]
     }
   ]
