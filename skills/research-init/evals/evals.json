@@ -268,6 +268,16 @@
         "Reports the unstaged /papers/local/ rule as pending tracking, not as verified tracked project coverage",
         "Does not open the cached PDF, untrack it, or stage the teammate's edit"
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "Plan the setup of this Git repository without editing files. Exclude .research-cache/ and vendor/monograph/papers/ from all reads. The latter is in a submodule. The root instructions designate navigation.md as the project map, and that symlink points to a file outside the repository.",
+      "expected_output": "Reports the effective status scope and the skipped map declaration. Keeps the cache-local ignore rules and cached papers outside all content reads.",
+      "assertions": [
+        "Names vendor/monograph as excluded from parent Git status and leaves the submodule cache's tracked-entry count unverified",
+        "Leaves ignore coverage for .research-cache/literature unverified without opening .research-cache/.gitignore",
+        "Reports navigation.md and its declaring source with the reason the external target was skipped"
+      ]
     }
   ]
 }

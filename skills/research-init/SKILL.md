@@ -49,7 +49,11 @@ exclusions. Keep authority unresolved if necessary coverage is unavailable.
 Resolve omitted current-path findings
 before authority/edit decisions; historical link overflow alone need not be
 loaded. Keep caches outside Git content comparisons as well as file reads.
-The inspector's Git status covers paths outside its cache exclusions.
+Use the inspector's reported Git status exclusions for later comparisons. When
+a cache is in a submodule, parent Git status excludes the whole submodule.
+Coverage and tracked-entry counts stay unverified for caches inside a nested
+repository or another excluded cache. Report a declared map that points outside
+the project with its declaration and the reason inspection was skipped.
 
 The inspector finds instructions, role aliases, declared paths, cache conventions,
 manifest/log classifications, skills, broken references and dashboard/handoff

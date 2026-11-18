@@ -50,7 +50,11 @@ manifests have their own schema versions, independent of the plugin version.
   instruction and ledger-config reads, reports skipped ledger metadata as
   unverified, and lists each declared project map it does not open with the
   reason. Declared project map paths may contain `..` when they stay within the
-  scan root, avoid symlinks, and resolve outside excluded directories.
+  scan root, avoid symlinks, and resolve outside excluded directories. Maps
+  reached through outward symlinks retain their declaration and skip reason.
+  Git status now excludes the whole submodule containing a cache. Overlapping
+  exclusions keep cache-local ignore files outside Git reads, and tracked
+  cache filenames containing non-UTF-8 bytes count toward the inventory.
 - Ledger workflows distinguish stale revisions from unsupported dependencies,
   preserve statement pins during revisions, and recover interrupted appends
   without rebinding evidence to changed contracts. Unchecked witnesses stay

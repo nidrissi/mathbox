@@ -52,11 +52,11 @@ DECLARED_PATH_LABELS = {
 }
 
 
-def git_run(root: Path, *args: str, stdin: str | None = None) -> subprocess.CompletedProcess | None:
+def git_run(root: Path, *args: str, stdin: str | None = None) -> subprocess.CompletedProcess[bytes] | None:
     """Run Git in root; None when it cannot start or times out."""
     try:
         return subprocess.run(
-            ["git", "-C", str(root), *args], text=True, input=stdin,
+            ["git", "-C", str(root), *args], input=os.fsencode(stdin) if stdin is not None else None,
             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
             timeout=10, check=False,
         )
@@ -67,7 +67,57 @@ def git_run(root: Path, *args: str, stdin: str | None = None) -> subprocess.Comp
 def git(root: Path, *args: str, stdin: str | None = None) -> str | None:
     """Return stdout for a successful Git invocation, otherwise None."""
     process = git_run(root, *args, stdin=stdin)
-    return process.stdout.strip() if process is not None and process.returncode == 0 else None
+    return os.fsdecode(process.stdout).strip() if process is not None and process.returncode == 0 else None
+
+
+def indexed_gitlinks(root: Path) -> set[Path] | None:
+    """Find submodule boundaries, including worktrees that are not populated."""
+    staged = git_run(root, "ls-files", "--stage", "-z")
+    if staged is None or staged.returncode:
+        return None
+    return {root / os.fsdecode(entry.partition(b"\t")[2]) for entry in staged.stdout.split(b"\0")
+            if entry.startswith(b"160000 ")}
+
+
+def scoped_status(root: Path, cache_paths: tuple[str, ...], gitlinks: list[str]) -> str | None:
+    """Read native tracked status and prune caches during untracked discovery."""
+    options = ("--no-optional-locks", "--no-literal-pathspecs")
+    exclusions = [f":(exclude,literal){path}" for path in cache_paths]
+    if not cache_paths:
+        status = git_run(root, *options, "status", "--short")
+        return os.fsdecode(status.stdout).rstrip("\n") if status and status.returncode == 0 else None
+
+    # -uno also suppresses untracked changes in submodules. Give in-scope
+    # gitlinks their own native status pass so Git applies their configured policy.
+    tracked = git_run(root, *options, "status", "--short", "-uno", "--", ".", *exclusions,
+                      *(f":(exclude,literal){path}" for path in gitlinks))
+    if tracked is None or tracked.returncode:
+        return None
+    output = tracked.stdout
+    if gitlinks:
+        modules = git_run(root, "--no-optional-locks", "--literal-pathspecs",
+                          "status", "--short", "--", *gitlinks)
+        if modules is None or modules.returncode:
+            return None
+        output += modules.stdout
+
+    mode = (git(root, "config", "--get", "status.showUntrackedFiles") or "normal").lower()
+    if mode != "no":
+        # A status pathspec alone can still open an excluded .gitignore. Use
+        # command-line ignore rules to prune Git's walk before it reads those files.
+        rules = ["--exclude=/" + re.sub(r"([\\*?\[])", r"\\\1", path) + "/" for path in cache_paths]
+        grouping = [] if mode == "all" else ["--directory", "--no-empty-directory"]
+        others = git_run(root, *options, "ls-files", "--others", "--exclude-standard",
+                         *rules, *grouping, "--", ".", *exclusions)
+        if others is None or others.returncode:
+            return None
+        untracked = []
+        for name in others.stdout.splitlines():
+            if b" " in name and not name.startswith(b'"'):
+                name = b'"' + name + b'"'
+            untracked.append(b"?? " + name + b"\n")
+        output += b"".join(untracked)
+    return os.fsdecode(output).rstrip("\n")
 
 
 def git_state(root: Path, cache_paths: tuple[str, ...] = ()) -> dict:
@@ -93,28 +143,24 @@ def git_state(root: Path, cache_paths: tuple[str, ...] = ()) -> dict:
             "state": "unavailable", "repository": False, "porcelain": None,
             "toplevel": None, "reason": "not a Git worktree",
         }
-    try:
-        exclusions = [f":(exclude,literal){path}" for path in cache_paths]
-        status = subprocess.run(
-            ["git", "-C", str(root), "--no-optional-locks", "--no-literal-pathspecs",
-             "status", "--short", "--", ".", *exclusions],
-            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            timeout=10, check=False,
-        )
-    except subprocess.TimeoutExpired:
-        return {
-            "state": "error", "repository": True, "porcelain": None,
-            "toplevel": probe.stdout.strip(), "reason": "git status timed out",
-        }
-    if status.returncode != 0:
-        return {
-            "state": "error", "repository": True, "porcelain": None,
-            "toplevel": probe.stdout.strip(), "reason": "git status failed",
-        }
-    porcelain = status.stdout.rstrip("\n")
+    gitlinks = indexed_gitlinks(root) if cache_paths else set()
+    if gitlinks is None:
+        reason = "submodule boundaries unavailable"
+        return {"state": "error", "repository": True, "porcelain": None,
+                "toplevel": probe.stdout.strip(), "reason": reason,
+                "skipped_cache_checks": dict.fromkeys(cache_paths, reason)}
+    exclusions, skipped = cache_git_scope(root, {root / path for path in cache_paths}, gitlinks)
+    excluded = {root / path for path in exclusions}
+    modules = sorted(link.relative_to(root).as_posix() for link in gitlinks
+                     if not any(link.is_relative_to(path) for path in excluded))
+    porcelain = scoped_status(root, exclusions, modules)
+    scope = {"status_excludes": list(exclusions), "skipped_cache_checks": skipped}
+    if porcelain is None:
+        return {**scope, "state": "error", "repository": True, "porcelain": None,
+                "toplevel": probe.stdout.strip(), "reason": "git status failed or timed out"}
     return {
         "state": "dirty" if porcelain else "clean", "repository": True,
-        "porcelain": porcelain, "toplevel": probe.stdout.strip(), "reason": None,
+        "porcelain": porcelain, "toplevel": probe.stdout.strip(), "reason": None, **scope,
     }
 
 
@@ -149,6 +195,25 @@ def indexed_ignore_files(root: Path, names: list[str]) -> tuple[set[str], set[st
     return tracked, {name for name, digest in zip(present, hashes) if blobs[name] == digest}
 
 
+def cache_git_scope(root: Path, paths: set[Path], gitlinks: set[Path]) -> tuple[tuple[str, ...], dict[str, str]]:
+    """Find the outermost safe status exclusions and caches Git cannot probe."""
+    exclusions = set()
+    skipped = {}
+    for path in paths:
+        parts = path.relative_to(root).parts
+        for end in range(1, len(parts) + 1):
+            boundary = root.joinpath(*parts[:end])
+            if boundary in paths and boundary != path:
+                skipped[path.relative_to(root).as_posix()] = "inside another excluded source cache"
+                break
+            if boundary in gitlinks or (boundary / ".git").exists():
+                # Parent Git can refresh the entire nested worktree for status.
+                skipped[path.relative_to(root).as_posix()] = "inside a nested repository or submodule"
+                break
+        exclusions.add(boundary.relative_to(root).as_posix())
+    return tuple(sorted(exclusions)), skipped
+
+
 def cache_ignore_coverage(root: Path, paths: list[str]) -> dict[str, dict]:
     """Check each cache directory's ignore coverage and whether the index carries its rule.
 
@@ -161,25 +226,22 @@ def cache_ignore_coverage(root: Path, paths: list[str]) -> dict[str, dict]:
     results = {}
     for path in paths:
         coverage = directory_ignore_coverage(root, path, indexed)
-        index = git(root, "--literal-pathspecs", "ls-files", "--cached", "-z", "--", path)
-        coverage["tracked_entries"] = index.count("\0") if index is not None else None
+        index = git_run(root, "--literal-pathspecs", "ls-files", "--cached", "-z", "--", path)
+        if index is not None and index.returncode == 0:
+            coverage["tracked_entries"] = index.stdout.count(b"\0")
         results[path] = coverage
     return results
 
 
 def directory_ignore_coverage(root: Path, path: str,
                               indexed: tuple[set[str], set[str]] | None) -> dict:
-    parts = Path(path).parts
-    if any((root.joinpath(*parts[:end]) / ".git").exists() for end in range(1, len(parts))):
-        # The enclosing repository's rules do not govern a nested repository.
-        return unverified_coverage("inside a nested repository or submodule")
     # --no-index: an already tracked entry must not hide the directory's rule.
     # A trailing slash can match an empty child in "dir/*", which still
     # permits exceptions among the children. Query the directory itself.
     process = git_run(root, "check-ignore", "--no-index", "-v", "-z", "--stdin", stdin=path + "\0")
     if process is None or process.returncode not in (0, 1):
         return unverified_coverage("git check-ignore failed")
-    fields = process.stdout.split("\0")
+    fields = os.fsdecode(process.stdout).split("\0")
     ignored = len(fields) >= 4 and not fields[2].startswith("!")
     if not ignored and not (root / path).is_dir():
         # A directory rule cannot match a directory that does not exist yet.
@@ -198,9 +260,14 @@ def root_of(path: Path) -> Path:
     return Path(found).resolve() if found else path
 
 
+def project_relative(value: str) -> bool:
+    return (bool(value) and not Path(value).anchor and not value.startswith("~")
+            and "://" not in value and "\0" not in value)
+
+
 def safe_relative(root: Path, value: str) -> Path | None:
     """Resolve a declared project-relative path without allowing path escape."""
-    if not value or value.startswith(("/", "~")) or "://" in value:
+    if not project_relative(value):
         return None
     try:
         candidate = (root / value).resolve()
@@ -263,15 +330,17 @@ def instruction_declarations(root: Path, skipped: set[str]) -> list[dict]:
             if target is None:
                 continue
             target = target.rstrip("/")
-            destination = safe_relative(root, target)
-            if (role == "verification" and Path(target).suffix.casefold() not in KNOWN_PATH_SUFFIXES
-                    and (destination is None or not destination.is_dir())):
+            if not role or not project_relative(target):
                 continue
-            if role and destination is not None:
-                found.append({
-                    "role": role, "path": target, "source": source.name,
-                    "line": number,
-                })
+            if role != "project_map":
+                destination = safe_relative(root, target)
+                if destination is None or (role == "verification" and Path(target).suffix.casefold()
+                                           not in KNOWN_PATH_SUFFIXES and not destination.is_dir()):
+                    continue
+            found.append({
+                "role": role, "path": target, "source": source.name,
+                "line": number,
+            })
     return found
 
 
@@ -293,7 +362,8 @@ def config_declarations(root: Path) -> list[dict]:
         for key, value in container.items():
             normalized = str(key).replace("_", " ").replace("-", " ").casefold()
             role = DECLARATION_LABELS.get(normalized)
-            if role and isinstance(value, str) and safe_relative(root, value.rstrip("/")) is not None:
+            if role and isinstance(value, str) and project_relative(value.rstrip("/")) and (
+                    role == "project_map" or safe_relative(root, value.rstrip("/")) is not None):
                 found.append({
                     "role": role, "path": value.rstrip("/"),
                     "source": ".mathbox/config.json", "line": None,
@@ -774,14 +844,16 @@ def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
     }
     cache_paths = tuple(sorted(path.relative_to(root).as_posix() for path in cache_exclusions))
     git_info = git_state(root, cache_paths)
-    git_info["status_excludes"] = list(cache_paths)
+    git_info.setdefault("status_excludes", [])
+    skipped_coverage = git_info.pop("skipped_cache_checks", {})
     standard = ".research-cache/literature"
     literature_cache = {"path": standard, "exists": False, **unverified_coverage()}
     checked = [cache for cache in caches if cache["confidence"] == "high"]
-    coverage = (cache_ignore_coverage(root, [cache["path"] for cache in checked])
+    eligible = [cache["path"] for cache in checked if cache["path"] not in skipped_coverage]
+    coverage = (cache_ignore_coverage(root, eligible)
                 if git_info["repository"] else {})
     for cache in checked:
-        result = coverage.get(cache["path"], unverified_coverage())
+        result = coverage.get(cache["path"], unverified_coverage(skipped_coverage.get(cache["path"])))
         cache.update(result)
         if cache["path"] == standard:
             literature_cache = {"path": standard, "exists": cache["exists"], **result}
@@ -850,7 +922,7 @@ def markdown(obj: dict) -> str:
         display = f"({git_info['state']}: {git_info['reason']})"
     lines += ["## Git status", "", "```text", display, "```", ""]
     if git_info["repository"] and git_info["status_excludes"]:
-        lines.append("Git status excludes source caches: " + ", ".join(git_info["status_excludes"]))
+        lines.append("Paths excluded from Git status: " + ", ".join(git_info["status_excludes"]))
     if obj["skipped_direct_paths"]:
         lines.append("Skipped symlinked or excluded paths: " + ", ".join(obj["skipped_direct_paths"]))
     for key, title in [
@@ -937,7 +1009,10 @@ def brief_markdown(obj: dict) -> str:
     git_info = obj["git"]
     lines.append(f"Git: {git_info['state']}.")
     if git_info["repository"] and git_info["status_excludes"]:
-        lines.append("Git status excludes source caches (see source-cache conventions).")
+        exclusions = git_info["status_excludes"]
+        lines.append("Paths excluded from Git status: " + ", ".join(exclusions[:8]))
+        if len(exclusions) > 8:
+            lines.append(f"- … {len(exclusions) - 8} more excluded paths; use --full or --format json.")
     if git_info["state"] == "dirty":
         changed = git_info["porcelain"].splitlines()
         lines.extend(f"- {entry}" for entry in changed[:8])

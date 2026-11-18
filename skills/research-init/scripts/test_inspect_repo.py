@@ -385,6 +385,28 @@ class InspectorTests(unittest.TestCase):
             "docs/missing.md": "declared in AGENTS.md; missing",
         })
 
+    def test_outward_map_declarations_keep_path_and_source_without_reading_target(self):
+        with tempfile.TemporaryDirectory() as external:
+            outside = Path(external) / "private.md"
+            outside.write_text("private map")
+            (self.root / "navigation.md").symlink_to(outside)
+            self.write("AGENTS.md", "# Rules\n- **Project map:** `navigation.md`\n")
+            self.write(".mathbox/config.json", json.dumps({"paths": {"code_map": "../external.md"}}))
+            real_open = Path.open
+
+            def guarded_open(path, *args, **kwargs):
+                self.assertTrue(path.resolve().is_relative_to(self.root), path)
+                return real_open(path, *args, **kwargs)
+
+            with patch.object(Path, "open", guarded_open):
+                result = inspect(self.root, 5)
+        self.assertEqual([(d["path"], d["source"], d["line"]) for d in result["declared_paths"]], [
+            ("../external.md", ".mathbox/config.json", None), ("navigation.md", "AGENTS.md", 2)])
+        self.assertEqual(len(result["project_maps"]), 2)
+        for entry in result["project_maps"]:
+            self.assertIn("not inspected: symlinked or outside the scan root", entry["basis"])
+            self.assertEqual(entry["bytes"], -1)
+
     @unittest.skipUnless(shutil.which("git"), "git is unavailable")
     def test_tracked_rule_must_match_the_index_and_survive_tracked_cache_entries(self):
         def git(*args):
@@ -486,6 +508,14 @@ class InspectorTests(unittest.TestCase):
         self.write(".gitignore", "/papers/local/\n!/papers/local/\n")
         self.assertFalse(alternate()["repository_ignore_rule"])
 
+    def watch_open(self, path):
+        libc = ctypes.CDLL(None, use_errno=True)
+        watcher = libc.inotify_init1(os.O_NONBLOCK | os.O_CLOEXEC)
+        self.assertGreaterEqual(watcher, 0)
+        self.addCleanup(os.close, watcher)
+        self.assertGreaterEqual(libc.inotify_add_watch(watcher, os.fsencode(path), 0x20), 0)  # IN_OPEN
+        return watcher
+
     @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
     def test_git_status_does_not_open_tracked_cache_file(self):
         def git(*args):
@@ -497,11 +527,7 @@ class InspectorTests(unittest.TestCase):
         git("init", "-q")
         git("add", "--", ".")
         os.utime(cached, (946684800, 946684800))  # Force a content comparison on an unscoped refresh.
-        libc = ctypes.CDLL(None, use_errno=True)
-        watcher = libc.inotify_init1(os.O_NONBLOCK | os.O_CLOEXEC)
-        self.assertGreaterEqual(watcher, 0)
-        self.addCleanup(os.close, watcher)
-        self.assertGreaterEqual(libc.inotify_add_watch(watcher, os.fsencode(cached), 0x20), 0)  # IN_OPEN
+        watcher = self.watch_open(cached)
         git("--no-optional-locks", "status", "--short")
         self.assertTrue(os.read(watcher, 4096))
         with patch.dict(os.environ, GIT_LITERAL_PATHSPECS="1"):
@@ -514,6 +540,86 @@ class InspectorTests(unittest.TestCase):
         self.assertIn("already tracked index entries: 1", brief_markdown(result))
         with self.assertRaises(BlockingIOError):
             os.read(watcher, 4096)
+
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
+    def test_status_excludes_submodule_containing_cache(self):
+        def git(root, *args):
+            subprocess.run(["git", "-C", root, *args], check=True, capture_output=True)
+
+        with tempfile.TemporaryDirectory() as upstream:
+            git(upstream, "init", "-q")
+            cache = Path(upstream) / "cache"
+            cache.mkdir()
+            (cache / "paper.pdf").write_text("synthetic")
+            git(upstream, "add", ".")
+            git(upstream, "-c", "user.name=Test", "-c", "user.email=test@example.org",
+                "commit", "-qm", "Add fixture")
+            git(self.root, "init", "-q")
+            git(self.root, "-c", "protocol.file.allow=always", "submodule", "add", upstream, "sub")
+            git(self.root, "-c", "protocol.file.allow=always", "submodule", "add", upstream, "other")
+            git(self.root, "-c", "user.name=Test", "-c", "user.email=test@example.org",
+                "commit", "-qm", "Add submodule")
+            self.write("STATUS.md")
+            self.write("other/untracked.md")
+            cached = self.root / "sub/cache/paper.pdf"
+            os.utime(cached, (946684800, 946684800))
+            watcher = self.watch_open(cached)
+            result = inspect(self.root, 5, ("sub/cache",))
+            with self.assertRaises(BlockingIOError):
+                os.read(watcher, 4096)
+        self.assertIn("STATUS.md", result["git_status"])
+        self.assertIn(" ? other", result["git_status"])
+        self.assertIn("sub", result["git"]["status_excludes"])
+        cache = next(c for c in result["source_cache_conventions"] if c["path"] == "sub/cache")
+        self.assertIsNone(cache["tracked_entries"])
+        self.assertIsNone(cache["git_ignored"])
+
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
+    def test_outer_cache_protects_ignore_files_from_nested_coverage_checks(self):
+        ignore = self.write(".research-cache/.gitignore", "literature/\n")
+        self.write(".research-cache/literature/paper.pdf")
+        subprocess.run(["git", "init", "-q", self.root], check=True)
+        subprocess.run(["git", "-C", self.root, "add", "-f", "--", ignore], check=True)
+        watcher = self.watch_open(ignore)
+        result = inspect(self.root, 5, (".research-cache",))
+        with self.assertRaises(BlockingIOError):
+            os.read(watcher, 4096)
+        self.assertEqual(result["git"]["status_excludes"], [".research-cache"])
+        self.assertIn("another excluded source cache", result["literature_cache"]["coverage_note"])
+        self.assertIsNone(result["literature_cache"]["repository_ignore_rule"])
+        outer = next(c for c in result["source_cache_conventions"] if c["path"] == ".research-cache")
+        self.assertEqual(outer["tracked_entries"], 1)
+
+    @unittest.skipUnless(os.name == "posix" and shutil.which("git"), "requires POSIX filenames and Git")
+    def test_non_utf8_tracked_cache_filename_is_counted(self):
+        (self.root / "papers").mkdir()
+        with open(os.fsencode(self.root / "papers") + b"/paper-\xff.pdf", "wb") as paper:
+            paper.write(b"synthetic")
+        subprocess.run(["git", "init", "-q", self.root], check=True)
+        subprocess.run(["git", "-C", self.root, "add", "-f", "--", "papers"], check=True)
+        result = inspect(self.root, 5, ("papers",))
+        cache = next(c for c in result["source_cache_conventions"] if c["path"] == "papers")
+        self.assertEqual(cache["tracked_entries"], 1)
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_scoped_status_preserves_visible_paths_and_untracked_modes(self):
+        def git(*args):
+            return subprocess.check_output(["git", "-C", self.root, *args], text=True)
+
+        git("init", "-q")
+        self.write("docs/[old]/private.md")
+        self.write("docs/o/public note.md")
+        self.write(".gitignore", "*.tmp\n")
+        self.write("local.tmp")
+        self.write("tracked.md")
+        git("add", "--", ".gitignore", "tracked.md")
+        self.write("tracked.md", "unstaged change")
+        for mode in ("normal", "all", "no"):
+            with self.subTest(mode=mode):
+                git("config", "status.showUntrackedFiles", mode)
+                expected = git("--no-optional-locks", "status", "--short", "--", ".",
+                               ":(exclude,literal)docs/[old]").rstrip("\n")
+                self.assertEqual(git_state(self.root, ("docs/[old]",))["porcelain"], expected)
 
     def test_depth_and_non_git_coverage_remain_explicit(self):
         self.write("a/b/c/d/e/f/STATUS.md")
