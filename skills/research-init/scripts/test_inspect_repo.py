@@ -281,7 +281,8 @@ class InspectorTests(unittest.TestCase):
         self.write("papers/local/map.json", "{}")
         declared_cache = self.root / "Local Papers"
         self.write("Local Papers/Extract.txt", "[private](some-source.md)")
-        self.write("AGENTS.md", "- **Project map:** `papers/local/map.json`\n"
+        (self.root / "docs").mkdir()
+        self.write("AGENTS.md", "- **Project map:** `docs/../papers/local/map.json`\n"
                    "- **Local literature cache:** `Local Papers/`\n")
         (self.root / "CLAUDE.md").symlink_to(private)
         (self.root / ".mathbox").symlink_to(outside, target_is_directory=True)
@@ -302,7 +303,7 @@ class InspectorTests(unittest.TestCase):
             self.assertIn("unverified; metadata inspection skipped", markdown(result))
             self.assertIn("Local Papers", [item["path"] for item in result["source_cache_conventions"]])
             self.assertEqual([(item["path"], item["basis"]) for item in result["project_maps"]],
-                             [("papers/local/map.json",
+                             [("docs/../papers/local/map.json",
                                "declared in AGENTS.md; not inspected: inside a source cache")])
             self.assertIn("not inspected: inside a source cache", brief_markdown(result))
             self.assertFalse(result["live_state_candidates"]["dashboard_candidates"])
@@ -357,17 +358,30 @@ class InspectorTests(unittest.TestCase):
         self.assertIn("Rejected source-cache declaration `.` (AGENTS.md:1)", brief_markdown(result))
         self.assertIn("Rejected source-cache declaration `notes/..`", markdown(result))
 
+    def test_declared_project_map_accepts_in_root_parent_component(self):
+        (self.root / "docs").mkdir()
+        self.write("navigation.json", "{}\n")
+        self.write("AGENTS.md", "- **Project map:** `docs/../navigation.json`\n")
+        self.assertEqual(inspect(self.root, 5)["project_maps"], [
+            {"path": "docs/../navigation.json", "bytes": 3, "lines": 1,
+             "basis": "declared in AGENTS.md"},
+        ])
+
     def test_declared_project_maps_outside_the_read_policy_stay_reported(self):
         self.write("docs/build/map.md")
         self.write("docs/real/map.md")
+        self.write("navigation.json", "{}\n")
         (self.root / "alias").symlink_to(self.root / "docs/real", target_is_directory=True)
-        self.write("AGENTS.md", "- **Project map:** `docs/build/map.md`\n"
+        (self.root / "docs_alias").symlink_to(self.root / "docs", target_is_directory=True)
+        self.write("AGENTS.md", "- **Project map:** `docs/real/../build/map.md`\n"
                    "- **Code map:** `alias/map.md`\n"
+                   "- **Project map:** `docs_alias/../navigation.json`\n"
                    "- **Repository map:** `docs/missing.md`\n")
         bases = {item["path"]: item["basis"] for item in inspect(self.root, 5)["project_maps"]}
         self.assertEqual(bases, {
-            "docs/build/map.md": "declared in AGENTS.md; not inspected: under an excluded directory",
+            "docs/real/../build/map.md": "declared in AGENTS.md; not inspected: under an excluded directory",
             "alias/map.md": "declared in AGENTS.md; not inspected: symlinked or outside the scan root",
+            "docs_alias/../navigation.json": "declared in AGENTS.md; not inspected: symlinked or outside the scan root",
             "docs/missing.md": "declared in AGENTS.md; missing",
         })
 

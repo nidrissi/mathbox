@@ -49,7 +49,8 @@ manifests have their own schema versions, independent of the plugin version.
   a nested repository or when Git cannot answer. The inspector skips symlinked
   instruction and ledger-config reads, reports skipped ledger metadata as
   unverified, and lists each declared project map it does not open with the
-  reason.
+  reason. Declared project map paths may contain `..` when they stay within the
+  scan root, avoid symlinks, and resolve outside excluded directories.
 - Ledger workflows distinguish stale revisions from unsupported dependencies,
   preserve statement pins during revisions, and recover interrupted appends
   without rebinding evidence to changed contracts. Unchecked witnesses stay

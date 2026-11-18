@@ -215,11 +215,23 @@ def read_refusal(root: Path, path: Path, excluded: set[Path], *, walk_rules: boo
     Symlinks (including parents) and source caches are always refused. With
     walk_rules, so are the walker's excluded directory names.
     """
-    if any(path.is_relative_to(cache) for cache in excluded):
+    destination = root
+    try:
+        for part in path.relative_to(root).parts:
+            if part == "..":
+                if destination == root:
+                    return "symlinked or outside the scan root"
+                destination = destination.parent
+                continue
+            # Check the component before a later `..` can hide a symlink.
+            destination /= part
+            if destination.is_symlink():
+                return "symlinked or outside the scan root"
+    except OSError:
+        return "could not verify the path"
+    if any(destination.is_relative_to(cache) for cache in excluded):
         return "inside a source cache"
-    if safe_relative(root, path.relative_to(root).as_posix()) != path:
-        return "symlinked or outside the scan root"
-    if walk_rules and EXCLUDE.intersection(path.relative_to(root).parts):
+    if walk_rules and EXCLUDE.intersection(destination.relative_to(root).parts):
         return "under an excluded directory"
     return None
 
