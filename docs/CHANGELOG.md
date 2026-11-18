@@ -15,7 +15,9 @@ manifests have their own schema versions, independent of the plugin version.
   verified witnesses, and the status of the exact claim or argument reviewed.
   Computation audits also check whether manifest pins cover the inputs used.
   A missing reproduction command leaves static review available, and
-  design-only reports leave execution observations unset.
+  design-only reports leave execution observations unset. Proof audits treat a
+  dependency supported only by a recorded label or stale evidence as an
+  unchecked assumption.
 - Literature checks distinguish unverified source attributions from checked
   conditional deductions, bound priority and novelty claims, and support
   cache-only requests. Manuscript integration keeps blocked items scoped to
@@ -24,8 +26,10 @@ manifests have their own schema versions, independent of the plugin version.
   prose, punctuation and grouping. Findings-only requests cover both pasted
   text and recently edited files. References and macros are reported as
   unverified when the defining material is unavailable.
-  Referee reviews clarify blind-pass isolation, evidence from rendered figures,
-  and ownership of delegated final reports.
+- Referee reviews clarify blind-pass isolation, evidence from rendered figures,
+  and ownership of delegated final reports. Coverage entries in
+  `findings.json` gain `blind` and `notes` fields, which record whether a pass
+  saw prior findings and name any it saw.
 - Bounded attempts record proved reductions, tested scope, and stopping points.
   Research programs close on verified refutations of the target and identify
   the actual inputs used across checkpoints. When a deferred packet is
@@ -37,9 +41,15 @@ manifests have their own schema versions, independent of the plugin version.
 - Repository setup respects subproject boundaries and verifies newly created
   files, designated cache paths, and authorized vendored skills. The inspector
   accepts repeatable `--cache-dir` exclusions for content scans and Git status.
-  It recognizes declared cache paths with spaces and verifies directory-level
-  ignore coverage. It skips symlinked instruction and ledger-config reads
-  and reports skipped ledger metadata as unverified.
+  It recognizes declared cache paths written with spaces, in angle brackets or
+  percent-encoded. It reports a declared cache that resolves to the scan root
+  instead of applying it. It verifies directory-level ignore coverage even when
+  the cache already has tracked files, and counts a rule as tracked only when
+  the applicable ignore files match the index. Coverage stays unverified inside
+  a nested repository or when Git cannot answer. The inspector skips symlinked
+  instruction and ledger-config reads, reports skipped ledger metadata as
+  unverified, and lists each declared project map it does not open with the
+  reason.
 - Ledger workflows distinguish stale revisions from unsupported dependencies,
   preserve statement pins during revisions, and recover interrupted appends
   without rebinding evidence to changed contracts. Unchecked witnesses stay

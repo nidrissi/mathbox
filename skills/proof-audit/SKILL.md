@@ -31,9 +31,12 @@ responsible for focused mathematical obligations delegated by that review.
 
 ## Build the dependency graph
 
-Consult a project's `.mathbox/` ledger through the available `research-state`
-skill only when an evidence revision bears on the audit or the task calls for
-freshness, downstream impact or recording. For a ledger review, identify the
+Inspect the raw argument even when a ledger, status file or claim card reports
+`proved`. A recorded label locates evidence; it establishes neither the claim
+nor its dependencies. Consult a project's `.mathbox/` ledger through the
+available `research-state` skill only when an evidence revision bears on the
+audit, including recorded evidence for a dependency the argument relies on, or
+when the task calls for freshness, downstream impact or recording. For a ledger review, identify the
 evidence ID, claim revision and pinned artifact. Inspect the raw artifact at
 that revision. If the bytes have changed, distinguish an audit of the current
 file from a review of the pinned version. If the pinned version is unavailable,
@@ -48,7 +51,8 @@ proposal is unapplied.
 
 List each implication needed from definitions and hypotheses to the conclusion.
 Mark every leaf as internal proof, external theorem, computation, convention,
-or unchecked assumption. Detect circular dependencies and claims whose evidence
+or unchecked assumption. A dependency supported only by a recorded label, or by
+stale evidence, is an unchecked assumption. Detect circular dependencies and claims whose evidence
 ultimately points back to the claim itself.
 
 ## Audit adversarially

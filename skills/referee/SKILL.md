@@ -99,8 +99,9 @@ through native controls, with fresh context when required. Allow context request
 
 Without authorized delegation or an isolated context for a blind pass,
 perform separate sequential passes for the affected scope and label them
-self-review. If findings were already visible, record the pass as non-blind
-in coverage and disclose the exposure in the report. Preserve raw returns and
+self-review. If findings were already visible, record `blind: false` in that
+pass's coverage entry, name the visible findings in its `notes`, and disclose
+the exposure in the report. Preserve raw returns and
 disclose failed, partial, unreviewed or reused scopes. Do not count a launch
 as completed coverage.
 Record requested settings, observed execution settings and fallback reasons

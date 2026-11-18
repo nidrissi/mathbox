@@ -52,7 +52,9 @@ class InspectorTests(unittest.TestCase):
 
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        # Resolve so path guards still match when the temporary directory sits
+        # behind a symlink (for example /var -> /private/var on macOS).
+        self.root = Path(self.temporary.name).resolve()
 
     def tearDown(self):
         self.temporary.cleanup()
@@ -270,7 +272,7 @@ class InspectorTests(unittest.TestCase):
     def test_designated_cache_and_symlinked_direct_sources_never_open(self):
         external = tempfile.TemporaryDirectory()
         self.addCleanup(external.cleanup)
-        outside = Path(external.name)
+        outside = Path(external.name).resolve()
         (outside / "config.json").write_text("{}")
         private = outside / "private.md"
         private.write_text("- **Status:** `private.md`\n")
@@ -299,7 +301,10 @@ class InspectorTests(unittest.TestCase):
             self.assertIn("Research ledger: unverified", brief_markdown(result))
             self.assertIn("unverified; metadata inspection skipped", markdown(result))
             self.assertIn("Local Papers", [item["path"] for item in result["source_cache_conventions"]])
-            self.assertEqual(result["project_maps"], [])
+            self.assertEqual([(item["path"], item["basis"]) for item in result["project_maps"]],
+                             [("papers/local/map.json",
+                               "declared in AGENTS.md; not inspected: inside a source cache")])
+            self.assertIn("not inspected: inside a source cache", brief_markdown(result))
             self.assertFalse(result["live_state_candidates"]["dashboard_candidates"])
             self.assertIn("CLAUDE.md", brief_markdown(result))
             (self.root / "AGENTS.md").unlink()
@@ -307,6 +312,130 @@ class InspectorTests(unittest.TestCase):
             result = inspect(self.root, 5, ("papers/local", "Local Papers"))
             self.assertIn("AGENTS.md", result["skipped_direct_paths"])
             self.assertFalse(result["declared_paths"])
+
+    def test_declared_cache_spellings_resolve_to_the_directory_and_are_pruned(self):
+        self.write("Local Papers/STATUS.md")
+        self.write("Literal%20Dir/STATUS.md")
+        real_open = Path.open
+
+        def guarded_open(path, *args, **kwargs):
+            for cache in ("Local Papers", "Literal%20Dir"):
+                self.assertFalse(path.resolve().is_relative_to(self.root / cache), path)
+            return real_open(path, *args, **kwargs)
+
+        for spelling in ("Local Papers/", "<Local Papers/>", "Local%20Papers/", "<Local%20Papers>"):
+            with self.subTest(spelling=spelling):
+                self.write("AGENTS.md", f"- **Literature cache:** `{spelling}`\n"
+                           "- **Source cache:** `Literal%20Dir/`\n")
+                with patch.object(Path, "open", guarded_open):
+                    result = inspect(self.root, 5)
+                caches = {item["path"]: item for item in result["source_cache_conventions"]}
+                self.assertTrue(caches["Local Papers"]["exists"])
+                self.assertTrue(caches["Local Papers"]["declared"])
+                self.assertTrue(caches["Literal%20Dir"]["exists"])
+                self.assertEqual(result["live_state_candidates"]["dashboard_candidates"], [])
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_cache_declared_as_scan_root_is_rejected_not_applied(self):
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True, capture_output=True)
+        self.write("AGENTS.md", "- **Literature cache:** `./`\n- **Paper cache:** `notes/..`\n")
+        self.write("STATUS.md")
+        self.write("notes/STATUS.md")
+        self.write(".mathbox/config.json", "{}")
+        result = inspect(self.root, 5)
+        self.assertEqual([(item["path"], item["line"], item["reason"])
+                          for item in result["rejected_cache_declarations"]],
+                         [(".", 1, "resolves to the scan root"),
+                          ("notes/..", 2, "resolves to the scan root")])
+        self.assertNotIn(".", [item["path"] for item in result["source_cache_conventions"]])
+        self.assertEqual(result["git"]["state"], "dirty")
+        self.assertEqual(result["git"]["status_excludes"], [".research-cache/literature"])
+        self.assertEqual(result["live_state_candidates"]["dashboard_candidates"],
+                         ["STATUS.md", "notes/STATUS.md"])
+        self.assertIn("AGENTS.md", {item["path"] for item in result["instructions"]})
+        self.assertEqual(result["research_ledger"]["status"], "present")
+        self.assertIn("Rejected source-cache declaration `.` (AGENTS.md:1)", brief_markdown(result))
+        self.assertIn("Rejected source-cache declaration `notes/..`", markdown(result))
+
+    def test_declared_project_maps_outside_the_read_policy_stay_reported(self):
+        self.write("docs/build/map.md")
+        self.write("docs/real/map.md")
+        (self.root / "alias").symlink_to(self.root / "docs/real", target_is_directory=True)
+        self.write("AGENTS.md", "- **Project map:** `docs/build/map.md`\n"
+                   "- **Code map:** `alias/map.md`\n"
+                   "- **Repository map:** `docs/missing.md`\n")
+        bases = {item["path"]: item["basis"] for item in inspect(self.root, 5)["project_maps"]}
+        self.assertEqual(bases, {
+            "docs/build/map.md": "declared in AGENTS.md; not inspected: under an excluded directory",
+            "alias/map.md": "declared in AGENTS.md; not inspected: symlinked or outside the scan root",
+            "docs/missing.md": "declared in AGENTS.md; missing",
+        })
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_tracked_rule_must_match_the_index_and_survive_tracked_cache_entries(self):
+        def git(*args):
+            subprocess.run(["git", "-C", str(self.root), *args], check=True, capture_output=True)
+
+        def coverage():
+            result = inspect(self.root, 5, ("papers/local",))
+            return next(item for item in result["source_cache_conventions"] if item["path"] == "papers/local")
+
+        git("init", "-q")
+        self.write("papers/local/a.pdf", "synthetic")
+        self.write(".gitignore", "/papers/local/\n")
+        git("add", "--", ".gitignore")
+        git("add", "-f", "--", "papers/local/a.pdf")
+        cache = coverage()
+        self.assertTrue(cache["git_ignored"])
+        self.assertTrue(cache["repository_ignore_rule"])
+        self.assertEqual(cache["ignore_rule_source"], ".gitignore")
+        self.assertEqual(cache["tracked_entries"], 1)
+
+        self.write(".gitignore", "*.log\n")
+        git("add", "--", ".gitignore")
+        self.write(".gitignore", "*.log\n/papers/local/\n")  # unstaged rule
+        cache = coverage()
+        self.assertTrue(cache["git_ignored"])
+        self.assertFalse(cache["repository_ignore_rule"])
+        git("add", "--", ".gitignore")
+        self.assertTrue(coverage()["repository_ignore_rule"])
+
+        self.write("papers/.gitignore", "*.tmp\n")
+        git("add", "--", "papers/.gitignore")
+        self.write("docs/.gitignore", "*.aux\n")
+        git("add", "--", "docs/.gitignore")
+        self.write("docs/.gitignore", "*.aux\n*.out\n")  # unrelated unstaged edit
+        self.assertTrue(coverage()["repository_ignore_rule"])
+        (self.root / "papers/.gitignore").unlink()  # an applicable tracked file now differs
+        self.assertFalse(coverage()["repository_ignore_rule"])
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_unanswerable_ignore_checks_stay_unverified(self):
+        import inspect_repo
+
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True, capture_output=True)
+        (self.root / "vendor2/cache").mkdir(parents=True)
+        subprocess.run(["git", "init", "-q", str(self.root / "vendor2")], check=True, capture_output=True)
+        result = inspect(self.root, 5, ("vendor2/cache",))
+        cache = next(item for item in result["source_cache_conventions"] if item["path"] == "vendor2/cache")
+        self.assertIsNone(cache["git_ignored"])
+        self.assertEqual(cache["coverage_note"], "inside a nested repository or submodule")
+        self.assertIn("Git ignore coverage unverified (inside a nested repository or submodule)",
+                      brief_markdown(result))
+
+        (self.root / "papers/local").mkdir(parents=True)
+        real = inspect_repo.git_run
+
+        def failing(root, *args, **kwargs):
+            if "check-ignore" in args:
+                return subprocess.CompletedProcess(args, 128, "", "")
+            return real(root, *args, **kwargs)
+
+        with patch.object(inspect_repo, "git_run", failing):
+            result = inspect(self.root, 5, ("papers/local",))
+        cache = next(item for item in result["source_cache_conventions"] if item["path"] == "papers/local")
+        self.assertIsNone(cache["git_ignored"])
+        self.assertEqual(cache["coverage_note"], "git check-ignore failed")
 
     @unittest.skipUnless(shutil.which("git"), "git is unavailable")
     def test_cache_directory_requires_effective_tracked_project_rule(self):

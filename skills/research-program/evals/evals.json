@@ -181,7 +181,7 @@
     },
     {
       "id": 17,
-      "prompt": "Two authorized delegated attempts finish in a non-writing host. The inspected latest event shows event_id E000009 and sha256 31aee06dcdf0c472f73cdc4ac441e185d24c8ffc9dbef3f8a04cdd592bf89ed68. The inspected config permits deferred artifacts under research/records. The open runs RUN_A on R_A and RUN_B on R_B share base E000007 and revision git:abc123. Return A: 'The recurrence's n=0 case holds; the induction transition at n>0 is unresolved. Next: derive the recurrence at n+1.' Return B: 'The two endpoints satisfy the inequality; the interior bound is unresolved. Next: test the midpoint.' Both returns propose preserving their records. Prepare the authorized coordinator packet against the supplied ledger state.",
+      "prompt": "Two authorized delegated attempts finish in a non-writing host. The inspected latest event shows event_id E000009 and sha256 31aee06dcdf0c472f73cdc4ac441e185d24c8ffc9dbef3f8a04cdd592bf89ed6. The inspected config permits deferred artifacts under research/records. The open runs RUN_A on R_A and RUN_B on R_B share base E000007 and revision git:abc123. Return A: 'The recurrence's n=0 case holds; the induction transition at n>0 is unresolved. Next: derive the recurrence at n+1.' Return B: 'The two endpoints satisfy the inequality; the interior bound is unresolved. Next: test the midpoint.' Both returns propose preserving their records. Prepare the authorized coordinator packet against the supplied ledger state.",
       "expected_output": "Coordinator emits one complete deferred packet including both continuation updates.",
       "assertions": [
         "No child packets or shared writes",

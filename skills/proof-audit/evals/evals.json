@@ -134,6 +134,16 @@
         "Reports the claim as externally proved and identifies the cycle in the submitted argument",
         "Assigns fail to the pinned proof E000012 for revision 2 even though the source supplies independent evidence for C"
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "Audit claim B in this .mathbox project: every integer n with n ≡ 3 (mod 4) is odd. The status page and the ledger both list B as proved. The proof of B reads: 'Write n = 4k+3 with k an integer. By Lemma 3, 4k+3 = 2(2k+1)+1, so n is odd.' Lemma 3 is recorded as proved, but the ledger freshness check reports that the pinned proof file for Lemma 3 has changed since its evidence revision.",
+      "expected_output": "Audits the proof text instead of the proved labels. Checks the identity attributed to Lemma 3 directly, or leaves that step conditional, and reports the stale Lemma 3 evidence separately from the verdict on B.",
+      "assertions": [
+        "Checks 4k+3 = 2(2k+1)+1 and the integrality of 2k+1 from the proof text rather than from B's proved label",
+        "Does not accept Lemma 3 on its recorded label while its evidence is stale; either settles the step it supplies directly or marks that obligation conditional",
+        "Reports the stale Lemma 3 evidence as a freshness issue separate from the verdict on B"
+      ]
     }
   ]
 }

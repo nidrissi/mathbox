@@ -92,7 +92,7 @@ candidate, the missing passage or translation and what would settle it.
 Retain any overlap established from other sources. Withhold an apparently-new
 verdict while a material candidate remains unresolved.
 
-For a completed comparison or bounded search, use these overlap labels:
+For a completed comparison or bounded search, use only these overlap labels:
 
 - known verbatim;
 - known after translation of notation;

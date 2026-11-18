@@ -111,10 +111,10 @@
     },
     {
       "id": 11,
-      "prompt": "Correct the transcription error in the second sentence only. ‘A singleton is a set with exactly one element. Equivalently, a singleton is a set with at most one element.’",
-      "expected_output": "Changes ‘at most one’ to ‘exactly one’ in the second sentence and lists this wording change under mathematical-token changes.",
+      "prompt": "Correct the transcription error in the second sentence only. ‘A singleton is a set with exactly one element. Equivalently, a singleton is a set of cardinality two.’",
+      "expected_output": "Changes ‘two’ to ‘one’ in the second sentence and lists this wording change under mathematical-token changes.",
       "assertions": [
-        "Uses the definition and the asserted equivalence to identify the uniquely forced local edit",
+        "Uses the definition and the asserted equivalence to identify the uniquely forced single-word edit",
         "Reports the exact before-and-after wording as a mathematical change"
       ]
     }

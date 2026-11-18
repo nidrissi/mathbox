@@ -258,6 +258,16 @@
         "Searches eligible dashboard filenames beyond the initial inspector summary within authorized boundaries",
         "Checks the deep dashboard and nested instructions without creating a competing dashboard"
       ]
+    },
+    {
+      "id": 23,
+      "prompt": "Plan the cache policy for our research repository. Our literature cache is papers/local/. One PDF there was force-added to Git before we adopted the cache. The tracked .gitignore does not mention papers/local/, but a teammate has added /papers/local/ to the working copy without staging it. Make no edits.",
+      "expected_output": "Checks the directory rule independently of the already tracked PDF, reports the unstaged rule as pending tracking rather than verified coverage, and reports the tracked entry separately while keeping the cache pruned.",
+      "assertions": [
+        "Checks the directory's ignore coverage without letting the already tracked PDF hide the rule, and reports that tracked entry separately",
+        "Reports the unstaged /papers/local/ rule as pending tracking, not as verified tracked project coverage",
+        "Does not open the cached PDF, untrack it, or stage the teammate's edit"
+      ]
     }
   ]
 }

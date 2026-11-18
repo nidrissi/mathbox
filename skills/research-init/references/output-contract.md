@@ -18,8 +18,10 @@
 - Any authorized local literature cache has a retention policy and a project
   ignore rule covering its designated path. For the standard location use
   `/.research-cache/`. In Git, verify the effective rule on the cache directory
-  itself and check that its source is a tracked project ignore file. Report a newly created,
-  untracked ignore file as pending tracking.
+  itself, regardless of entries already tracked inside it. Check that its source
+  is a tracked project ignore file and that every tracked ignore file applying to
+  the directory matches its index entry. Report a rule that exists only in a
+  newly created, untracked or unstaged ignore file as pending tracking.
 - Git status and both staged and unstaged comparisons exclude cached files,
   including any already tracked by Git.
 - No unexplained residue from another repository remains.

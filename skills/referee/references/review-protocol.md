@@ -9,7 +9,8 @@ the final referee. Lane references contain only their distinct obligations.
 Review the exact stated claim; do not weaken it and then object to the weaker
 paraphrase. For textual findings, give a precise manuscript locator and a short
 verbatim, searchable quotation. Copy source characters and whitespace exactly,
-normally one to three lines. For PDFs, quote reliable extracted text with its
+normally one to three lines; never reconstruct a quotation from memory or a
+paraphrase. For PDFs, quote reliable extracted text with its
 page/result locator and disclose extraction limits. File a concrete textual
 defect only when its supporting passage can be identified.
 
