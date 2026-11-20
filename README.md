@@ -215,7 +215,7 @@ mathbox/
 ├── .claude-plugin/       # Claude plugin manifest (explicit skill list) and marketplace
 ├── .codex-plugin/        # Codex package and presentation metadata
 ├── .github/workflows/    # CI: scripts/check.py on Python 3.10 and 3.13
-├── assets/mathbox.svg    # plugin icon
+├── assets/mathbox.{svg,png}  # plugin icon (SVG for Codex, PNG for Claude)
 ├── docs/                 # changelog, design notes and validation reports
 ├── evals/                # evaluation protocol, synthetic fixtures and recorded trials
 ├── scripts/check.py      # package and regression gate

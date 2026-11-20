@@ -11,6 +11,11 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [4.4.0] — 2026-11-20 — Evidence and workflow safeguards
 
+### Added
+
+- The Claude plugin now declares an icon: a 512×512 PNG rendering of the
+  existing Mathbox SVG icon used by Codex.
+
 ### Fixed
 
 - Computation and proof audits distinguish execution, implementation checks,

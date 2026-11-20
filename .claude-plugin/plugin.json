@@ -9,6 +9,7 @@
   "homepage": "https://github.com/nidrissi/mathbox",
   "repository": "https://github.com/nidrissi/mathbox",
   "license": "MIT",
+  "icon": "./assets/mathbox.png",
   "keywords": [
     "mathematics",
     "research",
