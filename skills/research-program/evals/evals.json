@@ -152,10 +152,10 @@
     },
     {
       "id": 14,
-      "prompt": "Continue program P for goal G in a read-only web host with no execution. The .mathbox config opens proofs/ and research/records/ to deferred files. Route R1 yields a lemma under an extra hypothesis; route R2 remains untried. Persistence is authorized.",
+      "prompt": "Continue program P for goal G in a read-only web host with no execution. You inspected its initialized, empty ledger and its .mathbox config, which opens proofs/ and research/records/ to deferred files. Route R1 yields a lemma under an extra hypothesis; route R2 remains untried. Persistence is authorized.",
       "expected_output": "Pursues the routes, returns a single complete deferred packet pinned to the inspected head rather than one per route, keeps R2 open with its next step, and does not treat the conditional lemma as reaching G. States that ingest remains pending.",
       "assertions": [
-        "Returns one packet, since every packet must pin the same inspected ledger head",
+        "Returns one packet with both base fields null for the inspected empty ledger and uses only authorized destinations",
         "States the lemma's extra hypothesis and does not declare G reached",
         "Keeps the untried R2 in the handoff rather than closing it",
         "States that ingest remains pending"
@@ -181,12 +181,13 @@
     },
     {
       "id": 17,
-      "prompt": "Two authorized delegated attempts return open continuations from the same checkpoint in a non-writing host. Persist the program findings.",
+      "prompt": "Two authorized delegated attempts finish in a non-writing host. The inspected latest event shows event_id E000009 and sha256 31aee06dcdf0c472f73cdc4ac441e185d24c8ffc9dbef3f8a04cdd592bf89ed6. The inspected config permits deferred artifacts under research/records. The open runs RUN_A on R_A and RUN_B on R_B share base E000007 and revision git:abc123. Return A: 'The recurrence's n=0 case holds; the induction transition at n>0 is unresolved. Next: derive the recurrence at n+1.' Return B: 'The two endpoints satisfy the inequality; the interior bound is unresolved. Next: test the midpoint.' Both returns propose preserving their records. Prepare the authorized coordinator packet against the supplied ledger state.",
       "expected_output": "Coordinator emits one complete deferred packet including both continuation updates.",
       "assertions": [
         "No child packets or shared writes",
         "No closure of open routes",
-        "Actual inspected head hash"
+        "Copies E000009 and the exact observed hash into the packet base without substituting the workers' execution checkpoint",
+        "Keeps both unresolved obligations and next actions in the packet, with proposals targeting the correct runs and routes"
       ]
     },
     {
@@ -217,6 +218,66 @@
         "Does not assign the coordinator ID to historical work with missing provenance",
         "Leaves the original records unchanged and separates historical cutoff from current assessment",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Settle whether every finite group satisfying x² = 1 for all x is cyclic. Two proof routes are queued. A third route returns pairs of bits under componentwise addition modulo two. Decide the program outcome.",
+      "expected_output": "Checks the witness and ends the program with a refutation of the target.",
+      "assertions": [
+        "Shows the group has four elements and each element squares to the identity in multiplicative notation",
+        "Shows no element generates the group and reports the universal target refuted",
+        "Stops the proof search even though queued routes remain"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Settle whether every finite group satisfying x² = 1 for all x is abelian. One route tries to prove all such groups cyclic first. It returns pairs of bits under componentwise addition modulo two. Another route considers the inverse of a product. Continue.",
+      "expected_output": "Uses the witness to refute the cyclicity lemma and settles the target by the independent product argument.",
+      "assertions": [
+        "Checks that the four-element witness satisfies the hypothesis and is noncyclic but abelian",
+        "Drops the deduction through universal cyclicity",
+        "Derives xy = (xy)⁻¹ = y⁻¹x⁻¹ = yx for arbitrary group elements"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Both workers used Git revision a3d91c7. One read the committed recurrence, a₀ = 0 and aₙ₊₁ = aₙ + 1. The other used a modified recurrence.txt containing ‘aₙ₊₁ = aₙ + 2’ and an untracked initial.txt containing ‘a₀ = 1’. Reconcile their formulas and hand off the program.",
+      "expected_output": "Associates each result with its actual inputs and preserves both derivations from the common revision.",
+      "assertions": [
+        "Derives aₙ = n and aₙ = 2n + 1 under the respective input sets",
+        "Records a3d91c7 together with the paths and actual contents or verified hashes of both working-tree inputs",
+        "Does not treat the common revision as evidence that the second worker tested the committed recurrence"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Close out the parity phase and preserve the result for the project. This read-only project uses neither Git nor a ledger. Bundle parity-A contains claim.txt (‘n² − n is even for all integers n’) and proof.txt (‘n(n − 1) is a product of consecutive integers’). These are the records at the cutoff and assessment.",
+      "expected_output": "Checks the recorded proof, identifies parity-A and its exact inputs, and supplies the closeout in chat.",
+      "assertions": [
+        "Explains why a factor is even for every integer n",
+        "Uses parity-A as the shared cutoff and assessment snapshot with identities for both files",
+        "Names pending filing without inventing a revision, ledger head or deferred packet or requiring initialization"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "Prepare separate handoffs for three read-only copies of a program. Each authorizes saving a new proof in proofs/ that two consecutive integers have even product. All have initialized ledgers. In A the config permits proofs/ but the events directory is unreadable. In B the latest event is readable but the config is inaccessible. In C the head and config are readable but the only permitted artifact root is reviews/. No direct writes are possible.",
+      "expected_output": "Returns the mathematical finding and outstanding filing step in chat for each copy, identifying the specific missing prerequisite or disallowed destination.",
+      "assertions": [
+        "Does not substitute an empty base for A's unknown head",
+        "Does not assume write policy for B or relocate the requested proof into reviews/ for C",
+        "Preserves the parity argument in each handoff without emitting a deferred packet or claiming persistence"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "Close out a parity phase from a read-only host. The initialized ledger's head and its config permitting research/closeouts are readable. The current proof and passing review are already recorded: for integer n, n(n+1) is divisible by 2 because precisely one of the consecutive factors is even. This is a synthesis of the recorded state with no new claim, evidence, review or route result. Prepare the requested closeout.",
+      "expected_output": "Produces the closeout text and identifies pending local filing. Does not create a ledger event merely to make a deferred packet nonempty.",
+      "assertions": [
+        "Gives the checked parity argument and carries the existing review status into the report",
+        "Distinguishes complete closeout text from pending persistence",
+        "Emits no empty packet and invents no ledger proposal"
       ]
     }
   ]

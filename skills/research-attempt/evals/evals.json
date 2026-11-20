@@ -115,6 +115,8 @@
       "prompt": "Run only one bounded coefficient-construction attempt for route R. At its resource boundary the comparison equations remain unresolved. The program also lists a recurrence continuation, outside this work package. Report and persist the outcome.",
       "expected_output": "Reports this attempt as inconclusive, states the unresolved equations, and returns the untried recurrence to the program while leaving R open.",
       "assertions": [
+        "Sets the stopping point at the coefficient construction before executing the attempt",
+        "Records the planned bound and actual stopping reason in the durable handoff",
         "Does not extend the bounded authorization to execute the recurrence",
         "Does not close the whole route from one unresolved construction",
         "Separates attempt outcome and route disposition in the durable record",
@@ -123,7 +125,7 @@
     },
     {
       "id": 12,
-      "prompt": "In a web host that can read the repository and its .mathbox ledger but cannot execute or write, run one bounded attempt on route R for lemma L. The config opens research/records/ to deferred files and research/index.md to deferred index entries. Persistence is authorized. The attempt reduces L to one unresolved estimate and stops at its resource boundary.",
+      "prompt": "In a web host that can read the repository and its .mathbox ledger but cannot execute or write, run one bounded attempt on route R for lemma L. The config opens research/records/ to deferred files and research/index.md to deferred index entries. Persistence is authorized. The attempt proposes an estimate and stops at its resource boundary before establishing that the estimate implies L.",
       "expected_output": "Reports the attempt as inconclusive with the exact unresolved estimate and returns one deferred packet with the complete route record, a guarded entry for the configured index, and only ledger proposals whose state changed, leaving R open. States that local ingest has not recorded them.",
       "assertions": [
         "Does not close route R or settle L from one inconclusive attempt",
@@ -200,6 +202,34 @@
         "Attributes the new proof, route record and JSON assessment; the compact index line carries no Model ID",
         "Preserves the prior record and its contributor ID rather than substituting the current author",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "For positive semidefinite Hermitian matrices A and B of the same size, attack the claim that tr(AB) is nonnegative. Work only on the route using a common orthonormal eigenbasis. Report exactly what this route establishes.",
+      "expected_output": "In a common orthonormal eigenbasis the trace is a sum of products of nonnegative eigenvalues. Commuting Hermitian matrices admit such a basis. The route proves the claim under commutation and leaves the general case open within this attempt.",
+      "assertions": [
+        "Derives the trace inequality under the stated restriction",
+        "Distinguishes the commutation condition for the common-basis construction from necessity for the inequality"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "For the Collatz map on positive integers (halve even n, send odd n to 3n+1), try one reduction of the claim that all orbits reach 1. Can it suffice to establish that every odd n greater than 1 eventually drops below its starting value? Stop after justifying or rejecting the reduction.",
+      "expected_output": "Proves sufficiency by strong induction: 1 is the base, an even n drops immediately, and the proposed obligation sends an odd n>1 to a smaller positive integer whose orbit reaches 1. The reduction succeeds and the odd descent obligation remains open.",
+      "assertions": [
+        "Records the proved implication from odd descent to global convergence with the base and even cases justified",
+        "Stops at the authorized reduction and gives the open obligation without promoting global convergence"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Attack the claim that n²+n+41 is prime for every nonnegative integer n. The only authorized search cases are n=0, 20, 40, in that order. Report what these samples establish.",
+      "expected_output": "The value at 40 is 1681=41². This exact in-domain witness refutes the universal claim despite the skipped cases.",
+      "assertions": [
+        "Verifies domain membership and compositeness of the witness",
+        "Does not require a coverage lemma to accept the witness or claim global minimality from the sample",
+        "Keeps the search within the three authorized cases"
       ]
     }
   ]

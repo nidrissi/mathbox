@@ -13,7 +13,7 @@ authorial voice, language variant, and project conventions.
 
 - **Edit mode:** the caller explicitly asks to correct a file or pasted text.
 - **Review-only mode:** the caller asks for findings, comments, or a check
-  without edits.
+  without edits. This takes precedence even for hunks you just edited.
 - **Self-review mode:** invoked after a broader edit; inspect only the changed
   hunks and enough context to resolve notation, references, and prose. Correct
   routine issues only inside changed hunks; report issues elsewhere.
@@ -30,7 +30,10 @@ If coverage is partial, state the exact scope reviewed.
    conventions.
 3. Review prose and display integration.
 4. Review LaTeX structure, environments, delimiters, labels, references,
-   citations, and custom commands.
+   citations, and custom commands. If the material defining a reference or
+   macro is unavailable, report it as unverified and identify the missing
+   context. An excerpt alone cannot establish that a target or command is
+   undefined elsewhere.
 5. Review local mathematical consistency without auditing correctness, which
    belongs to `proof-audit`.
 6. Apply only minimal, high-confidence edits; do not normalize equivalent LaTeX
@@ -49,11 +52,14 @@ The detailed checklist is in [checklist.md](references/checklist.md).
 
 A change to an operator, relation, sign, coefficient, variable, index, exponent,
 subscript, superscript, quantifier, hypothesis, conclusion, domain, codomain, or
-proof step is a **mathematical-token change**.
+proof step is a **mathematical-token change**. Apply the same policy to wording,
+punctuation, and grouping whenever an edit would change mathematical meaning,
+such as the scope of a condition or which terms an operator acts on.
 
 Make one only when the intended correction is uniquely forced by immediate
 context, isolated and typographical, and does not require a new argument or
-alter downstream reasoning. List every such change explicitly.
+alter downstream reasoning. List every such change explicitly under
+“Mathematical-token changes,” including edits made entirely in prose.
 
 Otherwise leave the source unchanged and report the issue. A repeated pattern
 alone does not justify changing a sign or index. An unbound symbol may signal a
@@ -78,6 +84,11 @@ them.
 Before saving a durable record, proof, report or authored JSON, follow
 [attribution.md](references/attribution.md).
 
+In review-only mode, return findings for either pasted text or files. Leave
+the source untouched and omit a rewritten copy. Order findings by
+mathematical/meaning-changing risk, LaTeX errors, then language/typography.
+If there are no objective findings, say so.
+
 For edited repository files, report:
 
 ```text
@@ -89,7 +100,5 @@ Proofread: [file or scope]
 - Coverage: [only when partial]
 ```
 
-For pasted text, return corrected source first, then the same categories. For
-review-only mode, order findings by mathematical/meaning-changing risk, LaTeX
-errors, then language/typography. If no objective issue remains, say so and make
-no change.
+In edit mode for pasted text, return corrected source first, then the same
+categories. Leave correct text as supplied.

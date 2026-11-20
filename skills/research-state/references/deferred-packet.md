@@ -150,12 +150,22 @@ Dry-run takes the writer lock and validates the whole packet without leaving
 files or events. Ingest validates everything under that lock, creates each
 artifact exclusively so that no existing entry is replaced, replaces the index
 atomically with its old bytes plus the new entry, then appends the prepared
-events. If a failure occurs before the first event is written, ingest deletes
-each artifact it created and restores the index, provided they still hold the
-bytes it wrote, and names anything left in place; the unchanged packet can then
-be retried. A later failure leaves the artifacts, the index entry, and a valid
-prefix of events. Inspect the journal head before any retry: the original
-packet then fails its base guard.
+events. Before the first event, a handled failure attempts to remove newly
+created artifacts and restore the prior index while their bytes still match
+the writes. An interruption can leave those writes in place even when zero
+events landed. Retry the unchanged packet only after verifying the original
+head and the complete rollback of its file and index writes.
+
+Otherwise, match the recorded prefix, artifact bytes and index entry to the
+original packet. Leave verified writes in place. Build a packet against the
+observed head with only outstanding writes and proposals, substituting actual
+event IDs for aliases in the prefix. Check that each outstanding proposal still
+applies to the intended claim contract, dependencies and artifact bytes.
+For each surviving file used by a proposal, include the exact observed
+`sha256` in its artifact reference so ingest checks the bytes again.
+Revalidate affected proposals if those inputs have changed or cannot be
+matched. Resolve unexpected writes before appending. If all work landed,
+report the verified receipts.
 
 ## Response shape
 

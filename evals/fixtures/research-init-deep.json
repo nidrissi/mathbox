@@ -1,0 +1,5 @@
+{
+  "AGENTS.md": "Plan changes before editing repository instructions. Preserve existing research records.\n",
+  "notes/a/b/c/d/e/f/AGENTS.md": "STATUS.md is the live dashboard for this repository. Preserve its path and contents.\n",
+  "notes/a/b/c/d/e/f/STATUS.md": "# Current research status\n\nGoal: prove the sum of the first n positive integers. A finite check through n = 12 is recorded. The induction step remains open.\n"
+}

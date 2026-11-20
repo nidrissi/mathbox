@@ -90,5 +90,9 @@
   {
     "query": "Check this .mathbox deferred packet: its index append would restore a truncated registered archive to the pinned bytes.",
     "should_trigger": true
+  },
+  {
+    "query": "A .mathbox packet stopped after appending its evidence event. Inspect the journal and finish recording the remaining review.",
+    "should_trigger": true
   }
 ]

@@ -196,6 +196,88 @@
         "Leaves the charter, status, claims, conventions, literature and verification records, history entry, AGENTS.md and any CLAUDE.md without Model ID fields",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
       ]
+    },
+    {
+      "id": 17,
+      "prompt": "Plan agent setup only for projects/descent/ within our monorepo. Read inherited instructions, but leave sibling projects private. Our dashboard is declared under notes/a/b/c/d/e/f/STATUS.md, beside a nested AGENTS.md. There is no permission to inspect siblings.",
+      "expected_output": "Uses a subtree-scoped inventory, applies inherited and nested instructions, inspects the declared dashboard and keeps the plan read-only.",
+      "assertions": [
+        "Compares the requested directory with the Git top level before choosing an inspection method",
+        "Does not run the Git-root-resolving inspector or enumerate sibling projects",
+        "Uses the declared dashboard and its governing instructions even though they lie beyond default scan depth"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "Implement the approved project setup in this Git worktree. A collaborator has staged an AGENTS.md update and has unstaged corrections in CHARTER.md. Our changes should build on those edits and add new STATUS.md and CLAIMS.md files. Leave everything unstaged that starts unstaged and preserve the collaborator's index.",
+      "expected_output": "Verifies the setup against the starting state, inspecting both Git diffs and both new files without changing the index.",
+      "assertions": [
+        "Accounts separately for pre-existing staged and unstaged work and final in-scope changes",
+        "Checks both staged and unstaged diffs and reads each new deliverable before reporting completion",
+        "Compares the collaborator's original index mode/blob IDs and working content with the final state, preserving staged bytes and pre-existing edits and leaving new files untracked"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Apply the approved agent setup in this standalone directory outside Git. Keep the existing CONVENTIONS.md and create the charter and dashboard. Verify the result without initializing Git.",
+      "expected_output": "Inventories the starting directory, verifies actual files against the plan and reports unavailable Git checks.",
+      "assertions": [
+        "Compares the original CONVENTIONS.md bytes or hash with the final file and checks both generated files",
+        "Bases the output inventory on observed before and after state",
+        "Leaves Git uninitialized and does not claim a clean diff"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Retrofit our research repository. We already retain papers in papers/local/. A global Git ignore file ignores PDFs but the tracked project rule only excludes /.research-cache/. The institution requires the version-controlled .agents/skills/proof-audit/ copy, with its approved release and checksum available. A separate .claude/skills/proof-audit/ wrapper has the same name.",
+      "expected_output": "Retains papers/local/, verifies effective project ignore coverage there, accepts the matching approved vendored package after checking it and flags the wrapper for review.",
+      "assertions": [
+        "Prunes papers/local/ before scanning and excludes it from Git status and diff comparisons; check subprocess as well as agent file accesses when a tracked cache file's stat data is stale",
+        "Verifies effective directory-wide coverage by a tracked project rule or reports the gap until an authorized fix is rechecked; creates no second cache",
+        "Does not mistake a global PDF rule or the unused standard-path rule for coverage of the designated cache",
+        "Checks the authorized vendored package against its version and checksum",
+        "Flags the same-name wrapper separately and preserves existing files pending any required approval"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Plan an agent retrofit of this entire Git repository. The root AGENTS.md names notes/a/b/c/d/e/f/STATUS.md as its dashboard. At that location a nested AGENTS.md requires the current dashboard to remain byte-for-byte unchanged. The existing dashboard should stay authoritative. Make no edits.",
+      "expected_output": "Starts with repository-wide inspection, follows the declared path beyond default scan depth, and preserves the designated dashboard under its local instruction.",
+      "assertions": [
+        "Distinguishes all reported findings at depth five from coverage of the entire project",
+        "Reads the deep dashboard and its governing instruction before proposing any file changes",
+        "Reflects the protection in the plan and does not propose a competing live dashboard"
+      ]
+    },
+    {
+      "id": 22,
+      "fixture_setup": "Create the files in evals/fixtures/research-init-deep.json in a temporary Git repository. Supply only the resulting files and the prompt to the solver.",
+      "prompt": "Plan an agent retrofit across this repository. Keep any existing live dashboard and follow the applicable instructions. Make no edits.",
+      "expected_output": "Finds the undeclared active dashboard beyond the default scan depth, reads its governing instructions and retains it in the plan.",
+      "assertions": [
+        "Searches eligible dashboard filenames beyond the initial inspector summary within authorized boundaries",
+        "Checks the deep dashboard and nested instructions without creating a competing dashboard"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Plan the cache policy for our research repository. Our literature cache is papers/local/. One PDF there was force-added to Git before we adopted the cache. The tracked .gitignore does not mention papers/local/, but a teammate has added /papers/local/ to the working copy without staging it. Make no edits.",
+      "expected_output": "Checks the directory rule independently of the already tracked PDF, reports the unstaged rule as pending tracking rather than verified coverage, and reports the tracked entry separately while keeping the cache pruned.",
+      "assertions": [
+        "Checks the directory's ignore coverage without letting the already tracked PDF hide the rule, and reports that tracked entry separately",
+        "Reports the unstaged /papers/local/ rule as pending tracking, not as verified tracked project coverage",
+        "Does not open the cached PDF, untrack it, or stage the teammate's edit"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "Plan the setup of this Git repository without editing files. Exclude .research-cache/ and vendor/monograph/papers/ from all reads. The latter is in a submodule. The root instructions designate navigation.md as the project map, and that symlink points to a file outside the repository.",
+      "expected_output": "Reports the effective status scope and the skipped map declaration. Keeps the cache-local ignore rules and cached papers outside all content reads.",
+      "assertions": [
+        "Names vendor/monograph as excluded from parent Git status and leaves the submodule cache's tracked-entry count unverified",
+        "Leaves ignore coverage for .research-cache/literature unverified without opening .research-cache/.gitignore",
+        "Reports navigation.md and its declaring source with the reason the external target was skipped"
+      ]
     }
   ]
 }

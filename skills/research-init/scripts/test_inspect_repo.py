@@ -3,12 +3,16 @@
 
 from __future__ import annotations
 
+import ctypes
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from inspect_repo import brief_markdown, classify_research_log, git_state, inspect, markdown, unfenced_lines
 
@@ -48,7 +52,9 @@ class InspectorTests(unittest.TestCase):
 
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        # Resolve so path guards still match when the temporary directory sits
+        # behind a symlink (for example /var -> /private/var on macOS).
+        self.root = Path(self.temporary.name).resolve()
 
     def tearDown(self):
         self.temporary.cleanup()
@@ -262,6 +268,370 @@ class InspectorTests(unittest.TestCase):
         self.write("CLAUDE.md", "# Separate duplicated instructions\n")
         result = inspect(self.root, 5)
         self.assertEqual(result["claude_bridge"]["issue"], "CLAUDE.md does not import @AGENTS.md")
+
+    def test_designated_cache_and_symlinked_direct_sources_never_open(self):
+        external = tempfile.TemporaryDirectory()
+        self.addCleanup(external.cleanup)
+        outside = Path(external.name).resolve()
+        (outside / "config.json").write_text("{}")
+        private = outside / "private.md"
+        private.write_text("- **Status:** `private.md`\n")
+        cache = self.root / "papers/local"
+        self.write("papers/local/STATUS.md")
+        self.write("papers/local/map.json", "{}")
+        declared_cache = self.root / "Local Papers"
+        self.write("Local Papers/Extract.txt", "[private](some-source.md)")
+        (self.root / "docs").mkdir()
+        self.write("AGENTS.md", "- **Project map:** `docs/../papers/local/map.json`\n"
+                   "- **Local literature cache:** `Local Papers/`\n")
+        (self.root / "CLAUDE.md").symlink_to(private)
+        (self.root / ".mathbox").symlink_to(outside, target_is_directory=True)
+
+        real_open = Path.open
+        def guarded_open(path, *args, **kwargs):
+            self.assertFalse(path.resolve().is_relative_to(cache), path)
+            self.assertFalse(path.resolve().is_relative_to(outside), path)
+            self.assertFalse(path.resolve().is_relative_to(declared_cache), path)
+            return real_open(path, *args, **kwargs)
+
+        with patch.object(Path, "open", guarded_open):
+            result = inspect(self.root, 5, ("papers/local",))
+            self.assertEqual(result["skipped_direct_paths"], [".mathbox/config.json", "CLAUDE.md"])
+            self.assertIsNone(result["research_ledger"]["exists"])
+            self.assertEqual(result["research_ledger"]["status"], "unverified")
+            self.assertIn("Research ledger: unverified", brief_markdown(result))
+            self.assertIn("unverified; metadata inspection skipped", markdown(result))
+            self.assertIn("Local Papers", [item["path"] for item in result["source_cache_conventions"]])
+            self.assertEqual([(item["path"], item["basis"]) for item in result["project_maps"]],
+                             [("docs/../papers/local/map.json",
+                               "declared in AGENTS.md; not inspected: inside a source cache")])
+            self.assertIn("not inspected: inside a source cache", brief_markdown(result))
+            self.assertFalse(result["live_state_candidates"]["dashboard_candidates"])
+            self.assertIn("CLAUDE.md", brief_markdown(result))
+            (self.root / "AGENTS.md").unlink()
+            (self.root / "AGENTS.md").symlink_to(private)
+            result = inspect(self.root, 5, ("papers/local", "Local Papers"))
+            self.assertIn("AGENTS.md", result["skipped_direct_paths"])
+            self.assertFalse(result["declared_paths"])
+
+    def test_declared_cache_spellings_resolve_to_the_directory_and_are_pruned(self):
+        self.write("Local Papers/STATUS.md")
+        self.write("Literal%20Dir/STATUS.md")
+        real_open = Path.open
+
+        def guarded_open(path, *args, **kwargs):
+            for cache in ("Local Papers", "Literal%20Dir"):
+                self.assertFalse(path.resolve().is_relative_to(self.root / cache), path)
+            return real_open(path, *args, **kwargs)
+
+        for spelling in ("Local Papers/", "<Local Papers/>", "Local%20Papers/", "<Local%20Papers>"):
+            with self.subTest(spelling=spelling):
+                self.write("AGENTS.md", f"- **Literature cache:** `{spelling}`\n"
+                           "- **Source cache:** `Literal%20Dir/`\n")
+                with patch.object(Path, "open", guarded_open):
+                    result = inspect(self.root, 5)
+                caches = {item["path"]: item for item in result["source_cache_conventions"]}
+                self.assertTrue(caches["Local Papers"]["exists"])
+                self.assertTrue(caches["Local Papers"]["declared"])
+                self.assertTrue(caches["Literal%20Dir"]["exists"])
+                self.assertEqual(result["live_state_candidates"]["dashboard_candidates"], [])
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_cache_declared_as_scan_root_is_rejected_not_applied(self):
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True, capture_output=True)
+        self.write("AGENTS.md", "- **Literature cache:** `./`\n- **Paper cache:** `notes/..`\n")
+        self.write("STATUS.md")
+        self.write("notes/STATUS.md")
+        self.write(".mathbox/config.json", "{}")
+        result = inspect(self.root, 5)
+        self.assertEqual([(item["path"], item["line"], item["reason"])
+                          for item in result["rejected_cache_declarations"]],
+                         [(".", 1, "resolves to the scan root"),
+                          ("notes/..", 2, "resolves to the scan root")])
+        self.assertNotIn(".", [item["path"] for item in result["source_cache_conventions"]])
+        self.assertEqual(result["git"]["state"], "dirty")
+        self.assertEqual(result["git"]["status_excludes"], [".research-cache/literature"])
+        self.assertEqual(result["live_state_candidates"]["dashboard_candidates"],
+                         ["STATUS.md", "notes/STATUS.md"])
+        self.assertIn("AGENTS.md", {item["path"] for item in result["instructions"]})
+        self.assertEqual(result["research_ledger"]["status"], "present")
+        self.assertIn("Rejected source-cache declaration `.` (AGENTS.md:1)", brief_markdown(result))
+        self.assertIn("Rejected source-cache declaration `notes/..`", markdown(result))
+
+    def test_declared_project_map_accepts_in_root_parent_component(self):
+        (self.root / "docs").mkdir()
+        self.write("navigation.json", "{}\n")
+        self.write("AGENTS.md", "- **Project map:** `docs/../navigation.json`\n")
+        self.assertEqual(inspect(self.root, 5)["project_maps"], [
+            {"path": "docs/../navigation.json", "bytes": 3, "lines": 1,
+             "basis": "declared in AGENTS.md"},
+        ])
+
+    def test_declared_project_maps_outside_the_read_policy_stay_reported(self):
+        self.write("docs/build/map.md")
+        self.write("docs/real/map.md")
+        self.write("navigation.json", "{}\n")
+        (self.root / "alias").symlink_to(self.root / "docs/real", target_is_directory=True)
+        (self.root / "docs_alias").symlink_to(self.root / "docs", target_is_directory=True)
+        self.write("AGENTS.md", "- **Project map:** `docs/real/../build/map.md`\n"
+                   "- **Code map:** `alias/map.md`\n"
+                   "- **Project map:** `docs_alias/../navigation.json`\n"
+                   "- **Repository map:** `docs/missing.md`\n")
+        bases = {item["path"]: item["basis"] for item in inspect(self.root, 5)["project_maps"]}
+        self.assertEqual(bases, {
+            "docs/real/../build/map.md": "declared in AGENTS.md; not inspected: under an excluded directory",
+            "alias/map.md": "declared in AGENTS.md; not inspected: symlinked or outside the scan root",
+            "docs_alias/../navigation.json": "declared in AGENTS.md; not inspected: symlinked or outside the scan root",
+            "docs/missing.md": "declared in AGENTS.md; missing",
+        })
+
+    def test_outward_map_declarations_keep_path_and_source_without_reading_target(self):
+        with tempfile.TemporaryDirectory() as external:
+            outside = Path(external) / "private.md"
+            outside.write_text("private map")
+            (self.root / "navigation.md").symlink_to(outside)
+            self.write("AGENTS.md", "# Rules\n- **Project map:** `navigation.md`\n")
+            self.write(".mathbox/config.json", json.dumps({"paths": {"code_map": "../external.md"}}))
+            real_open = Path.open
+
+            def guarded_open(path, *args, **kwargs):
+                self.assertTrue(path.resolve().is_relative_to(self.root), path)
+                return real_open(path, *args, **kwargs)
+
+            with patch.object(Path, "open", guarded_open):
+                result = inspect(self.root, 5)
+        self.assertEqual([(d["path"], d["source"], d["line"]) for d in result["declared_paths"]], [
+            ("../external.md", ".mathbox/config.json", None), ("navigation.md", "AGENTS.md", 2)])
+        self.assertEqual(len(result["project_maps"]), 2)
+        for entry in result["project_maps"]:
+            self.assertIn("not inspected: symlinked or outside the scan root", entry["basis"])
+            self.assertEqual(entry["bytes"], -1)
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_tracked_rule_must_match_the_index_and_survive_tracked_cache_entries(self):
+        def git(*args):
+            subprocess.run(["git", "-C", str(self.root), *args], check=True, capture_output=True)
+
+        def coverage():
+            result = inspect(self.root, 5, ("papers/local",))
+            return next(item for item in result["source_cache_conventions"] if item["path"] == "papers/local")
+
+        git("init", "-q")
+        self.write("papers/local/a.pdf", "synthetic")
+        self.write(".gitignore", "/papers/local/\n")
+        git("add", "--", ".gitignore")
+        git("add", "-f", "--", "papers/local/a.pdf")
+        cache = coverage()
+        self.assertTrue(cache["git_ignored"])
+        self.assertTrue(cache["repository_ignore_rule"])
+        self.assertEqual(cache["ignore_rule_source"], ".gitignore")
+        self.assertEqual(cache["tracked_entries"], 1)
+
+        self.write(".gitignore", "*.log\n")
+        git("add", "--", ".gitignore")
+        self.write(".gitignore", "*.log\n/papers/local/\n")  # unstaged rule
+        cache = coverage()
+        self.assertTrue(cache["git_ignored"])
+        self.assertFalse(cache["repository_ignore_rule"])
+        git("add", "--", ".gitignore")
+        self.assertTrue(coverage()["repository_ignore_rule"])
+
+        self.write("papers/.gitignore", "*.tmp\n")
+        git("add", "--", "papers/.gitignore")
+        self.write("docs/.gitignore", "*.aux\n")
+        git("add", "--", "docs/.gitignore")
+        self.write("docs/.gitignore", "*.aux\n*.out\n")  # unrelated unstaged edit
+        self.assertTrue(coverage()["repository_ignore_rule"])
+        (self.root / "papers/.gitignore").unlink()  # an applicable tracked file now differs
+        self.assertFalse(coverage()["repository_ignore_rule"])
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_unanswerable_ignore_checks_stay_unverified(self):
+        import inspect_repo
+
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True, capture_output=True)
+        (self.root / "vendor2/cache").mkdir(parents=True)
+        subprocess.run(["git", "init", "-q", str(self.root / "vendor2")], check=True, capture_output=True)
+        result = inspect(self.root, 5, ("vendor2/cache",))
+        cache = next(item for item in result["source_cache_conventions"] if item["path"] == "vendor2/cache")
+        self.assertIsNone(cache["git_ignored"])
+        self.assertEqual(cache["coverage_note"], "inside a nested repository or submodule")
+        self.assertIn("Git ignore coverage unverified (inside a nested repository or submodule)",
+                      brief_markdown(result))
+
+        (self.root / "papers/local").mkdir(parents=True)
+        real = inspect_repo.git_run
+
+        def failing(root, *args, **kwargs):
+            if "check-ignore" in args:
+                return subprocess.CompletedProcess(args, 128, "", "")
+            return real(root, *args, **kwargs)
+
+        with patch.object(inspect_repo, "git_run", failing):
+            result = inspect(self.root, 5, ("papers/local",))
+        cache = next(item for item in result["source_cache_conventions"] if item["path"] == "papers/local")
+        self.assertIsNone(cache["git_ignored"])
+        self.assertEqual(cache["coverage_note"], "git check-ignore failed")
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_cache_directory_requires_effective_tracked_project_rule(self):
+        def git(*args):
+            subprocess.run(["git", "-C", str(self.root), *args], check=True, capture_output=True)
+
+        def alternate():
+            result = inspect(self.root, 5, ("papers/local",))
+            return next(item for item in result["source_cache_conventions"] if item["path"] == "papers/local")
+
+        git("init", "-q")
+        rules = self.write("global-ignore", "*.pdf\n")
+        git("config", "core.excludesFile", str(rules))
+        self.write(".gitignore", "/papers/local/\n")
+        self.assertIsNone(alternate()["git_ignored"])
+        self.write(".gitignore", "")
+        (self.root / "papers/local").mkdir(parents=True)
+        self.assertFalse(alternate()["git_ignored"])
+        rules.write_text("papers/local/\n")
+        self.assertTrue(alternate()["git_ignored"])
+        self.assertFalse(alternate()["repository_ignore_rule"])
+        self.write(".gitignore", "/papers/local/\n")
+        self.assertFalse(alternate()["repository_ignore_rule"])
+        git("add", "--", ".gitignore")
+        self.assertTrue(alternate()["repository_ignore_rule"])
+        self.write(".gitignore", "/papers/local/*\n!/papers/local/keep.txt\n")
+        rules.write_text("")
+        git("add", "--", ".gitignore")
+        git("check-ignore", "--", "papers/local/new.pdf")
+        keep_check = subprocess.run(["git", "-C", str(self.root), "check-ignore", "-q",
+                                     "--", "papers/local/keep.txt"])
+        self.assertEqual(keep_check.returncode, 1)
+        self.assertFalse(alternate()["repository_ignore_rule"])
+        self.write(".gitignore", "/papers/local/\n!/papers/local/\n")
+        self.assertFalse(alternate()["repository_ignore_rule"])
+
+    def watch_open(self, path):
+        libc = ctypes.CDLL(None, use_errno=True)
+        watcher = libc.inotify_init1(os.O_NONBLOCK | os.O_CLOEXEC)
+        self.assertGreaterEqual(watcher, 0)
+        self.addCleanup(os.close, watcher)
+        self.assertGreaterEqual(libc.inotify_add_watch(watcher, os.fsencode(path), 0x20), 0)  # IN_OPEN
+        return watcher
+
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
+    def test_git_status_does_not_open_tracked_cache_file(self):
+        def git(*args):
+            return subprocess.check_output(["git", "-C", str(self.root), *args], text=True)
+
+        cache_dir = "papers/[private]"
+        cached = self.write(f"{cache_dir}/paper.pdf", "synthetic cached content")
+        self.write("STATUS.md")
+        git("init", "-q")
+        git("add", "--", ".")
+        os.utime(cached, (946684800, 946684800))  # Force a content comparison on an unscoped refresh.
+        watcher = self.watch_open(cached)
+        git("--no-optional-locks", "status", "--short")
+        self.assertTrue(os.read(watcher, 4096))
+        with patch.dict(os.environ, GIT_LITERAL_PATHSPECS="1"):
+            result = inspect(self.root, 5, (cache_dir,))
+        self.assertIn("STATUS.md", result["git_status"])
+        self.assertNotIn("paper.pdf", result["git_status"])
+        self.assertIn(cache_dir, result["git"]["status_excludes"])
+        cache = next(item for item in result["source_cache_conventions"] if item["path"] == cache_dir)
+        self.assertEqual(cache["tracked_entries"], 1)
+        self.assertIn("already tracked index entries: 1", brief_markdown(result))
+        with self.assertRaises(BlockingIOError):
+            os.read(watcher, 4096)
+
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
+    def test_status_excludes_submodule_containing_cache(self):
+        def git(root, *args):
+            subprocess.run(["git", "-C", root, *args], check=True, capture_output=True)
+
+        with tempfile.TemporaryDirectory() as upstream:
+            git(upstream, "init", "-q")
+            cache = Path(upstream) / "cache"
+            cache.mkdir()
+            (cache / "paper.pdf").write_text("synthetic")
+            git(upstream, "add", ".")
+            git(upstream, "-c", "user.name=Test", "-c", "user.email=test@example.org",
+                "commit", "-qm", "Add fixture")
+            git(self.root, "init", "-q")
+            git(self.root, "-c", "protocol.file.allow=always", "submodule", "add", upstream, "sub")
+            git(self.root, "-c", "protocol.file.allow=always", "submodule", "add", upstream, "other")
+            git(self.root, "-c", "user.name=Test", "-c", "user.email=test@example.org",
+                "commit", "-qm", "Add submodule")
+            self.write("STATUS.md")
+            self.write("other/untracked.md")
+            cached = self.root / "sub/cache/paper.pdf"
+            os.utime(cached, (946684800, 946684800))
+            watcher = self.watch_open(cached)
+            result = inspect(self.root, 5, ("sub/cache",))
+            with self.assertRaises(BlockingIOError):
+                os.read(watcher, 4096)
+        self.assertIn("STATUS.md", result["git_status"])
+        self.assertIn(" ? other", result["git_status"])
+        self.assertIn("sub", result["git"]["status_excludes"])
+        cache = next(c for c in result["source_cache_conventions"] if c["path"] == "sub/cache")
+        self.assertIsNone(cache["tracked_entries"])
+        self.assertIsNone(cache["git_ignored"])
+
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("git"), "requires Linux inotify and Git")
+    def test_outer_cache_protects_ignore_files_from_nested_coverage_checks(self):
+        ignore = self.write(".research-cache/.gitignore", "literature/\n")
+        self.write(".research-cache/literature/paper.pdf")
+        subprocess.run(["git", "init", "-q", self.root], check=True)
+        subprocess.run(["git", "-C", self.root, "add", "-f", "--", ignore], check=True)
+        watcher = self.watch_open(ignore)
+        result = inspect(self.root, 5, (".research-cache",))
+        with self.assertRaises(BlockingIOError):
+            os.read(watcher, 4096)
+        self.assertEqual(result["git"]["status_excludes"], [".research-cache"])
+        self.assertIn("another excluded source cache", result["literature_cache"]["coverage_note"])
+        self.assertIsNone(result["literature_cache"]["repository_ignore_rule"])
+        outer = next(c for c in result["source_cache_conventions"] if c["path"] == ".research-cache")
+        self.assertEqual(outer["tracked_entries"], 1)
+
+    @unittest.skipUnless(os.name == "posix" and shutil.which("git"), "requires POSIX filenames and Git")
+    def test_non_utf8_tracked_cache_filename_is_counted(self):
+        (self.root / "papers").mkdir()
+        with open(os.fsencode(self.root / "papers") + b"/paper-\xff.pdf", "wb") as paper:
+            paper.write(b"synthetic")
+        subprocess.run(["git", "init", "-q", self.root], check=True)
+        subprocess.run(["git", "-C", self.root, "add", "-f", "--", "papers"], check=True)
+        result = inspect(self.root, 5, ("papers",))
+        cache = next(c for c in result["source_cache_conventions"] if c["path"] == "papers")
+        self.assertEqual(cache["tracked_entries"], 1)
+
+    @unittest.skipUnless(shutil.which("git"), "git is unavailable")
+    def test_scoped_status_preserves_visible_paths_and_untracked_modes(self):
+        def git(*args):
+            return subprocess.check_output(["git", "-C", self.root, *args], text=True)
+
+        git("init", "-q")
+        self.write("docs/[old]/private.md")
+        self.write("docs/o/public note.md")
+        self.write(".gitignore", "*.tmp\n")
+        self.write("local.tmp")
+        self.write("tracked.md")
+        git("add", "--", ".gitignore", "tracked.md")
+        self.write("tracked.md", "unstaged change")
+        for mode in ("normal", "all", "no"):
+            with self.subTest(mode=mode):
+                git("config", "status.showUntrackedFiles", mode)
+                expected = git("--no-optional-locks", "status", "--short", "--", ".",
+                               ":(exclude,literal)docs/[old]").rstrip("\n")
+                self.assertEqual(git_state(self.root, ("docs/[old]",))["porcelain"], expected)
+
+    def test_depth_and_non_git_coverage_remain_explicit(self):
+        self.write("a/b/c/d/e/f/STATUS.md")
+        self.write("AGENTS.md", "- **Status:** `a/b/c/d/e/f/STATUS.md`\n")
+        result = inspect(self.root, 5)
+        self.assertIsNone(result["literature_cache"]["git_ignored"])
+        self.assertIn("Git ignore coverage unverified", brief_markdown(result))
+        self.assertIn("scan depth 5", brief_markdown(result))
+        self.assertEqual(result["live_state_candidates"]["dashboard_candidates"], [])
+        self.assertEqual(result["declared_paths"][0]["path"], "a/b/c/d/e/f/STATUS.md")
+        self.assertEqual(inspect(self.root, 6)["live_state_candidates"]["dashboard_candidates"],
+                         ["a/b/c/d/e/f/STATUS.md"])
 
     def test_symlinked_files_are_not_read_or_classified(self):
         outside = tempfile.TemporaryDirectory()

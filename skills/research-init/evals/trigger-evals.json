@@ -74,5 +74,13 @@
   {
     "query": "Use research-init to inspect and plan a repository retrofit, distinguishing verification commands from paths and fenced examples from real research history.",
     "should_trigger": true
+  },
+  {
+    "query": "Use research-init to plan the agent architecture for this research subproject only, respecting its inherited instructions and approved vendored skills.",
+    "should_trigger": true
+  },
+  {
+    "query": "Check whether Git ignores the PDFs under papers/local/ and show the rule source.",
+    "should_trigger": false
   }
 ]

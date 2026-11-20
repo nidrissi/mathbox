@@ -85,11 +85,12 @@
     },
     {
       "id": 9,
-      "prompt": "Reproduce the existing rank computation. No execution or build command is documented, and no new experiment is requested.",
-      "expected_output": "Stops reproduction and reports reproduction command unavailable.",
+      "prompt": "Reproduce the sweep in evals/fixtures/sampled-enumeration.md and audit its claim of exhaustive coverage. The fixture is the only available artifact and gives no execution or build command.",
+      "expected_output": "Reports reproduction command unavailable and completes the static audit. The stride selects 16 of 64 words. The assertion can stop the loop early, and actual visits and outcomes are unknown.",
       "assertions": [
         "Does not guess argv or build",
-        "Reports proposed next information needed"
+        "Requests the documented reproduction command",
+        "Derives the 16 selected positions from the loop without claiming all 16 were visited or verified"
       ]
     },
     {
@@ -105,10 +106,11 @@
     {
       "id": 11,
       "prompt": "Design, but do not execute, a finite-field rank experiment over GF(5).",
-      "expected_output": "Returns contract, code design and proposed argv without run directories.",
+      "expected_output": "Returns the proposed contract, code design, argv, input pins, checks and output paths. Identifies observations to collect at execution.",
       "assertions": [
         "Honors design-only scope",
-        "No runner invocation"
+        "No runner invocation or run directory",
+        "Distinguishes proposed manifest fields from observed status, runtime, hashes and results"
       ]
     },
     {
@@ -148,6 +150,27 @@
         "Does not patch deterministic runner manifests, result files or logs to add a model ID",
         "Preserves the finite range and does not infer a universal proof from execution",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "A numerical search reports three singular matrices against the claim that every symmetric 2-by-2 integer matrix with strictly positive entries is nonsingular. Before timing out, it logs [[1,0],[0,0]], [[N,N+1],[N+1,N+2]] for N=10^16, and [[1,2],[2,4]]. Audit each discrepancy from these entries.",
+      "expected_output": "The first matrix is outside the positive-entry domain. The second is in domain but has exact determinant -1. The third satisfies every hypothesis and has exact determinant zero, refuting the claim.",
+      "assertions": [
+        "Checks domain membership even for an exactly singular candidate",
+        "Computes N(N+2)-(N+1)^2 and distinguishes the numerical discrepancy from singularity",
+        "Exhibits the positive symmetric integer witness and verifies its determinant exactly",
+        "Reports an unfinished search and separates the erroneous singularity classification from the verified mathematical refutation"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Audit this run from the supplied excerpts without rerunning it.\n\nContract: execution_artifacts = [checks/run.py, data/A.csv].\nManifest: run.status = completed; argv = [python3, checks/run.py]; declared input paths = [checks/run.py, data/A.csv].\nValidator result: all declared input hashes match.\nstdout.log: rank: 3\n\nchecks/run.py:\nfrom reader import load, exact_rank\nprint('rank:', exact_rank(load('config.json')))\n\nchecks/reader.py (excerpt):\nimport csv, json\nfrom pathlib import Path\ndef load(config):\n    path = json.loads(Path(config).read_text())['matrix']\n    with open(path) as source:\n        return list(csv.reader(source))\n\nconfig.json: {\"matrix\": \"data/B.csv\"}",
+      "expected_output": "Reports recorded completion and the logged rank. Traces the current read path through checks/reader.py and config.json to data/B.csv. Matching declared lists and hashes leave the helper, config and selected data unpinned, so historical inputs and rank are unverified.",
+      "assertions": [
+        "Identifies all three missing pins and explains why the pin for data/A.csv does not cover the selected matrix",
+        "Does not assume the unpinned current config was the one used in the recorded run",
+        "Distinguishes completed execution, limited implementation evidence and the unverified rank claim"
       ]
     }
   ]

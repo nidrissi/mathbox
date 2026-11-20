@@ -29,17 +29,24 @@ executions. Each coverage entry has:
 {
   "pass_id": "corr-s3", "lanes": ["correctness"], "scope": "Section 3",
   "unit_ids": [], "context": [], "executor": "coordinator",
-  "method": "self-review", "status": "complete",
+  "method": "self-review", "blind": true, "status": "complete",
   "model_assignment": {
     "assignment_source": null, "requested_model": null,
     "requested_reasoning": null, "actual_model": null,
     "actual_reasoning": null, "fallback_reason": null
-  }
+  },
+  "notes": []
 }
 ```
 
 Fill actual unit IDs and context locators/hashes. Status is `complete`, `partial`,
-`not_reviewed` or `reused`; a launch alone is not complete. `model_assignment`
+`not_reviewed` or `reused`; a launch alone is not complete. `blind` is `true`
+only when the executor had no prior findings or leads for the pass's scope in
+its inputs or context. Otherwise it is `false`, and `notes` names each visible
+finding or lead by ID or verbatim text. Whole-paper lanes that received leads
+are therefore `false`. `notes` holds strings recording exposure, pass-reported
+settings, conflicts and other coverage explanations; it may be empty.
+`model_assignment`
 uses the following object for new coverage, including default inheritance.
 
 For prescribed settings, fill this object, also used for final reconciliation:
@@ -76,12 +83,13 @@ invent them from a request, reviewer name or an agent's unsupported
 self-description. See
 [model-assignments.md](model-assignments.md).
 
-These provenance fields are additive within schema version 1. Historical
-artifacts need not be rewritten. Reused coverage keeps the original pass's
-settings, treats absent historical fields as unknown, and notes deviations
+These provenance fields, `blind` and `notes` are additive within schema
+version 1. Historical artifacts need not be rewritten. Reused coverage keeps the
+original pass's settings, records `blind: null` when the historical artifact
+does not establish it, treats absent historical fields as unknown, and notes deviations
 from the current assignment without claiming a new execution.
 
-Children use the return schema in [review-protocol.md](review-protocol.md).
+Lane reviewers use the return schema in [review-protocol.md](review-protocol.md).
 The coordinator gathers every pass's issues without renumbering them; each
 issue's `reviewer` is its coverage `pass_id`.
 
@@ -117,6 +125,11 @@ For new reviews, `reconciliation.json` top-level `executor`, `method` and
 `model_assignment` describe the pass that actually performed final reconciliation, including self-review
 or a delegated final referee. Preserve its native execution evidence too.
 
+A delegated final referee owns `reconciliation.json` and, when assigned,
+`report.md`. The coordinator checks the returned artifacts and authors the
+report if it retained that task. Each artifact identifies its actual author.
+The lane reviewers' pass-file restriction applies only to their lane work.
+
 A dismissal reason identifies the actual earlier definition, excluded case,
 valid inference or unsupported objection. A merge reason identifies the shared
 defect. Specialist artifacts need exact checked obligations and versions,
@@ -146,7 +159,8 @@ Summary: central objects/results, principal technique, reviewed revision and
 exact coverage, including preparation limits and unfinished checks.
 Summarize model/delegation fallbacks and unexposed execution settings without
 turning them into manuscript concerns or claiming the requested models ran.
-Mathematical concerns: exact locators and searchable evidence, the defect or
+Mathematical concerns: exact locators and searchable quotations or checked
+PDF-only visual observations as in [review-protocol.md](review-protocol.md), the defect or
 gap, its dependency impact and calibrated status; prioritize critical/major
 confirmed concerns, then local mathematical concerns. Group minor notation
 issues by convention, without inflating them into invalidity.

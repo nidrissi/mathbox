@@ -9,6 +9,61 @@ manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
 
+## [4.4.0] — 2026-11-20 — Evidence and workflow safeguards
+
+### Fixed
+
+- Computation and proof audits distinguish execution, implementation checks,
+  verified witnesses, and the status of the exact claim or argument reviewed.
+  Computation audits also check whether manifest pins cover the inputs used.
+  A missing reproduction command leaves static review available, and
+  design-only reports leave execution observations unset. Proof audits treat a
+  dependency supported only by a recorded label or stale evidence as an
+  unchecked assumption.
+- Literature checks distinguish unverified source attributions from checked
+  conditional deductions, bound priority and novelty claims, and support
+  cache-only requests. Manuscript integration keeps blocked items scoped to
+  their dependents and preserves durable proof revisions that still apply.
+- Mathematical proofreading applies its edit safeguards to meaning-changing
+  prose, punctuation and grouping. Findings-only requests cover both pasted
+  text and recently edited files. References and macros are reported as
+  unverified when the defining material is unavailable.
+- Referee reviews clarify blind-pass isolation, evidence from rendered figures,
+  and ownership of delegated final reports. Coverage entries in
+  `findings.json` gain `blind` and `notes` fields, which record whether a pass
+  saw prior findings and name any it saw.
+- Bounded attempts record proved reductions, tested scope, and stopping points.
+  Research programs close on verified refutations of the target and identify
+  the actual inputs used across checkpoints. When a deferred packet is
+  unavailable, findings and pending filing steps are returned in chat.
+  Retrospectives recognize audited exhaustive finite checks and verified
+  counterexamples, report proposed reconciliation in read-only mode, and
+  support projects without a readable ledger. Filing an external issue requires
+  explicit authorization.
+- Repository setup respects subproject boundaries and verifies newly created
+  files, designated cache paths, and authorized vendored skills. The inspector
+  accepts repeatable `--cache-dir` exclusions for content scans and Git status.
+  It recognizes declared cache paths written with spaces, in angle brackets or
+  percent-encoded. It reports a declared cache that resolves to the scan root
+  instead of applying it. It verifies directory-level ignore coverage even when
+  the cache already has tracked files, and counts a rule as tracked only when
+  the applicable ignore files match the index. Coverage stays unverified inside
+  a nested repository or when Git cannot answer. The inspector skips symlinked
+  instruction and ledger-config reads, reports skipped ledger metadata as
+  unverified, and lists each declared project map it does not open with the
+  reason. Declared project map paths may contain `..` when they stay within the
+  scan root, avoid symlinks, and resolve outside excluded directories. Maps
+  reached through outward symlinks retain their declaration and skip reason.
+  Git status now excludes the whole submodule containing a cache. Overlapping
+  exclusions keep cache-local ignore files outside Git reads, and tracked
+  cache filenames containing non-UTF-8 bytes count toward the inventory.
+- Ledger workflows distinguish stale revisions from unsupported dependencies,
+  preserve statement pins during revisions, and recover interrupted appends
+  without rebinding evidence to changed contracts. Unchecked witnesses stay
+  outside counterexample events.
+
+[Pull request #23](https://github.com/nidrissi/mathbox/pull/23)
+
 ## [4.3.0] — 2026-10-30 — Research artifact model attribution
 
 ### Added
@@ -462,7 +517,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.3.0...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.4.0...HEAD
+[4.4.0]: https://github.com/nidrissi/mathbox/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/nidrissi/mathbox/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/nidrissi/mathbox/compare/v4.1.0...v4.2.0
 [4.1.0]: https://github.com/nidrissi/mathbox/compare/v4.0.2...v4.1.0

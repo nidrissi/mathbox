@@ -78,23 +78,32 @@ required, obtain it or use disclosed sequential self-review. Honor existing
 authorization without asking again.
 
 For each pass assign a unique `pass_id` and issue prefix, e.g. `corr-s3` and
-`corr-s3-F`. A child writes only `passes/<pass_id>.json`. Give it resolved paths
-for [review-protocol.md](references/review-protocol.md), its lane file and snapshot
-unit files (paste text only if it cannot read files), exact source revision,
+`corr-s3-F`. A lane reviewer writes only its assigned `passes/<pass_id>.json`.
+Give it resolved paths for [review-protocol.md](references/review-protocol.md),
+its lane file and snapshot unit files (paste text only if it cannot read files), exact source revision,
 necessary dependencies, its disjoint scope and its resolved `model_assignment`
-request fields. Withhold prior findings from
-correctness/adversarial passes; whole-paper lanes may receive unverified leads.
+request fields. Correctness and adversarial passes review the manuscript blind
+to prior findings. When the parent conversation or a reused reviewer has seen
+findings, start a fresh reviewer without inherited history and supply only the
+brief and permitted source materials. Keep prior leads and other returns out
+of its inputs. Whole-paper lanes may receive leads for checking.
 Children return exact specialist obligations; the coordinator arranges fresh
 confirmation. They do not launch specialists unless explicitly assigned.
 
-Several compatible lanes may share a pass and coupled units may share an agent.
+Group lanes or coupled units only when their resolved settings are compatible
+and every lane may see the same evidence. Keep a lane receiving leads separate
+from a blind pass even when both use the same model.
 Bound concurrency by host capacity and mathematical usefulness; five-dimensional
 coverage, rather than agent count, is the invariant. Apply model preferences
 through native controls, with fresh context when required. Allow context requests.
 
-Without delegation, perform separate sequential passes and label their
-provenance as self-review. Preserve raw returns and disclose failed, partial,
-unreviewed or reused scopes. Do not count a launch as completed coverage.
+Without authorized delegation or an isolated context for a blind pass,
+perform separate sequential passes for the affected scope and label them
+self-review. If findings were already visible, record `blind: false` in that
+pass's coverage entry, name the visible findings in its `notes`, and disclose
+the exposure in the report. Preserve raw returns and
+disclose failed, partial, unreviewed or reused scopes. Do not count a launch
+as completed coverage.
 Record requested settings, observed execution settings and fallback reasons
 alongside coverage and structured findings using
 [output-contract.md](references/output-contract.md). An empty issue list is
@@ -138,10 +147,12 @@ Before saving a durable record, proof, report or authored JSON, follow
 
 Follow [final-referee.md](references/final-referee.md) and
 [output-contract.md](references/output-contract.md) for dispositions, concerns
-and the ordered report. Recheck raw findings against full source and specialist
-evidence; reviewer agreement is not proof. Keep raw returns separate from final
-conclusions, and disclose partial coverage. Absence of findings certifies neither
-whole-paper correctness nor novelty.
+and the ordered report. The coordinator normally owns reconciliation and the
+report. When delegating final synthesis, explicitly assign its artifacts and
+check the returned work before delivery. Recheck raw findings against full
+source and specialist evidence. Preserve raw returns and disclose partial
+coverage. Reviewer agreement does not prove a finding. Absence of findings
+certifies neither whole-paper correctness nor novelty.
 
 For a revised manuscript, use the modest comparison/reuse rules in
 [preparation.md](references/preparation.md). Unchanged unit text is only a

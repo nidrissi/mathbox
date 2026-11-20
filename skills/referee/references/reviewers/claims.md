@@ -19,9 +19,11 @@ question while making this textual comparison.
 - `thin-contribution`: a specifically identified result is an immediate
   consequence of a cited input, with no explained additional difficulty.
 
-For a mismatch quote the promise in `quote` and the delivered theorem
-verbatim in `analysis`, with both locations. Identify the exact quantifier,
-hypothesis or conclusion that differs. Normal abstract compression is fair;
+For a mismatch locate both the promise and the delivered theorem. Put the
+searchable promise in `quote` and quote the searchable theorem in `analysis`.
+For either one expressed only visually, describe the relevant feature after
+inspecting the rendering, following the shared protocol for `quote`. Identify
+the exact quantifier, hypothesis or conclusion that differs. Normal abstract compression is fair;
 file omissions that change an expert reader's assessment of what was achieved.
 An unestablished material headline claim may be critical; duplicated
 contribution language is usually minor.

@@ -10,7 +10,11 @@ and relevant conditions into the handoff; do not paste its route history.
 For continuation:
 
 - When saved, its author's Model ID per [attribution.md](attribution.md).
-- Checkpoint identifier and base Git revision or ledger event.
+- Checkpoint identifier, base Git revision or ledger event, and paths and hashes
+  or preserved copies of dirty or untracked inputs used. When neither a Git
+  revision nor a ledger event identifies the inputs, name the snapshot and
+  identify each input by path and hash or content. Report a verified empty head
+  separately when relevant.
 - Goal and definition of done; current strongest result.
 - Exact missing implication and dependency status.
 - Relevant proof/source/computation paths and their checked versions.

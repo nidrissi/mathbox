@@ -54,5 +54,13 @@
   {
     "query": "Use literature-check to correct the cached arXiv version for an authorized PDF while preserving its DOI and revision metadata.",
     "should_trigger": true
+  },
+  {
+    "query": "The citation is unavailable. Assess what we can attribute to it and whether our claim would follow from the draft's paraphrase.",
+    "should_trigger": true
+  },
+  {
+    "query": "Assume the kernel is torsion and the domain is torsion-free. Check my deduction of injectivity using only these premises.",
+    "should_trigger": false
   }
 ]

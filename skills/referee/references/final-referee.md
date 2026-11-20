@@ -4,9 +4,11 @@ Read the [shared protocol](review-protocol.md), full manuscript, coverage invent
 and the specialist evidence bearing on important concerns. These are evidence,
 not verdicts. Final synthesis must inspect the manuscript itself.
 
-1. Search for each important finding's exact quote and read its surrounding
-   definitions, hypotheses, argument and dependencies. If it cannot be
-   located, resolve the revision/quote mismatch rather than endorsing it.
+1. Locate each important finding on the reviewed revision. Search for exact
+   textual quotations. For a PDF-only visual observation, reopen the cited
+   page and inspect the indicated figure or display. Read surrounding
+   definitions, hypotheses, argument and dependencies. Resolve mismatches
+   before endorsing a finding.
 2. Independently reconstruct the alleged failed implication or admissible
    case. Read serious `proof-audit`, source and computation checks; an audit
    label alone is not confirmation. Preserve conditional external leaves.
@@ -28,8 +30,9 @@ not verdicts. Final synthesis must inspect the manuscript itself.
 7. Record retained/dismissed/merged/conditional/stale dispositions, checked
    locations and reasons using [output-contract.md](output-contract.md).
    Preserve raw returns. Do not change them to match the final report.
-8. Synthesize the report. Confirmed mathematical concerns from any lane of critical/major
-   severity lead the mathematical concerns; local mathematical defects go in
+8. Synthesize the report if assigned to write it. Otherwise return the checked
+   reconciliation to the report author. Confirmed critical or major mathematical
+   concerns from any lane lead the mathematical concerns. Local defects go in
    other mathematical concerns. Exposition always stays in exposition;
    claim calibration in claim/scope assessment, cross-linked to mathematical
    impact when needed. Unsettled substantive obligations belong in questions

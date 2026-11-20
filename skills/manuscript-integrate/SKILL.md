@@ -27,14 +27,19 @@ supply mathematical validation or human review.
    (`mathbox:proof-audit` in plugin installations) and new arguments through the
    available `research-attempt` skill (`mathbox:research-attempt` in plugin
    installations); if unavailable, return the exact obligation. Do not repair
-   proofs here. Stop on source/status conflicts or an ambiguous manuscript.
+   proofs here. Block an item when conflicting sources leave its validated
+   statement or revision unresolved. When the validated revision is clear,
+   correct authorized downstream records that disagree with it. Stop if the
+   authoritative manuscript is ambiguous.
 5. Route unchecked external inputs through the available `literature-check` skill
    (`mathbox:literature-check` in plugin installations), or check the exact source
-   directly if unavailable. Do not integrate an unverified result unless the
-   user explicitly asks for a conditional statement; then carry the missing
-   hypothesis/dependency and conditional status into the manuscript. Otherwise
-   report integration blocked with status unchanged. Continue independent
-   validated work already authorized.
+   directly if unavailable. When a premise remains unverified, integrate a
+   conditional statement only on explicit request and only if current durable
+   evidence establishes the exact conclusion assuming that premise. Read and
+   link that evidence, state the premise explicitly and mark the result
+   conditional. For any blocked item, report the missing obligation, preserve
+   the existing status of the item and its dependents, and continue authorized
+   edits with independent support.
 6. Validated citation changes, corrections and removals need support for the
    change, not positive proof evidence for a claim no longer asserted.
 
@@ -79,12 +84,16 @@ load-bearing theorem changes.
 Before saving a durable record, proof, report or authored JSON, follow
 [attribution.md](references/attribution.md).
 
-When integration changes a claim's statement, scope or status (not its prose),
-and the project keeps research records, update its durable proof, claims/status,
-one standalone record and compact route-index entry together. Use designated
-paths, or `research/records/` and `RESEARCH_LOG.md` when records already exist. Do not put route details in the index, rewrite indexed history, or
-log routine prose or formatting. Keep any specialist or human-review obligation
-open until it has actually occurred.
+When integration changes a claim's statement, scope or status and the project
+keeps research records, update only the durable artifacts made stale by the
+change. Link the existing validated proof revision when its content still
+supports the integrated statement. Bring affected claims/status entries up to
+date and record the change once in a standalone record with a compact linked
+route-index entry. Reuse current records and index entries that already capture
+the change. Use designated paths, or `research/records/` and `RESEARCH_LOG.md`
+when records already exist. Do not put route details in the index, rewrite
+indexed history, or log routine prose or formatting. Keep any specialist or
+human-review obligation open until it has actually occurred.
 
 ## Verify
 

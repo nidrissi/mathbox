@@ -73,10 +73,14 @@ commit, so use batch aliases rather than copying preview IDs into later fields.
 The helper takes one writer lock and replays the existing journal once. It
 validates every proposal before appending any event, while still writing a
 separate hash-chained file for each event. A filesystem interruption during
-the append can leave a valid prefix of the batch. Inspect the current ledger
-head before retrying; do not blindly replay the whole input. The default output
-gives the event range, counts by type, and at most eight receipts with an
-omitted count. Each receipt lists up to eight pinned paths and hashes, with a
+the append can leave a valid prefix of the batch. Match the recorded events to
+the input and retry only the outstanding proposals. Compare the intended claim
+contracts, dependency revisions and artifact bytes with the observed state before
+retrying evidence. Use guarded ingest for supported recovery proposals or
+coordinate a single writer from inspection through append. A batch dry-run does
+not guard the head of a later batch append. The default output gives the event
+range, counts by type, and at most eight receipts with an omitted count. Each
+receipt lists up to eight pinned paths and hashes, with a
 `pins_omitted` count beyond that. `--json` prints every complete event; capture or inspect
 that output selectively for a large batch.
 
@@ -405,10 +409,13 @@ authenticated reviewer or theorem certification. Translate these mechanical
 states through the repository's own approval policy; do not rename them to
 `proved` automatically.
 
-Changes in a claim's transitive revision snapshot or artifact bytes make evidence
-stale. Dependency evidence being retracted or counterexample-supported instead makes downstream
-arguments conditional. Re-record after mathematical revalidation, never just
-to refresh bookkeeping.
+Changes in a claim's transitive revision snapshot or pinned artifact bytes make
+its evidence stale. If claim B depends on A and A's sole proof file changes,
+the file's pin goes stale. B's otherwise current proof becomes conditional and
+lists A under `blocked_by`. Once A recovers qualifying support, that blocker
+clears without replacing B's proof. If another qualifying proof or source
+still supports A, losing one supporting record alone adds no blocker to B.
+Re-record stale evidence only after mathematical revalidation.
 
 New evidence can include `supersedes`, an array of prior evidence event IDs for
 the same claim. Use this after actually revalidating a changed proof or contract.

@@ -19,6 +19,8 @@ least two occurrences; a section-only suspicion does not establish it.
   ultimately needs the first; trace establishment, not just statement order.
 
 Quote both occurrences verbatim with both locators for a drift or mismatch.
+For a PDF-only visual occurrence, use the shared protocol's located visual
+observation and check the other occurrence too.
 For absence claims quote the use and record where you searched, checking
 preamble macros, global conventions, earlier sections and appendices. Do not
 report a section pass's missing definition when the full source supplies it.

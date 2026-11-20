@@ -20,8 +20,10 @@ installed skill. All artifact paths are relative to the project supplied with
 ## Read before changing state
 
 For initialized state, start with `check --summary`, then `handoff --goal CLAIM`
-for a registered goal. Without a registered goal use `status`, or an unfiltered
-`handoff`. Check summaries contain counts and sampled issues with omitted counts;
+for a registered goal. Exit 1 from `check` returns usable issue data. Continue to
+the requested handoff with those findings. On exit 2, diagnose the command or
+ledger error before interpreting state. Without a registered goal use `status`
+or an unfiltered `handoff`. Check summaries give sample issues and omitted counts;
 brief status/handoff views also list live, stale and unreconciled runs needing
 attention. Open `--full` details only for relevant contracts, reviews or issues;
 compare complete issue lists when a change could hide a new issue in the sample.
@@ -42,17 +44,23 @@ python3 "$TOOL" --root PROJECT ingest PACKET.json
 `status`, `check`, `impact`, `pin-impact`, `next` and `handoff` are read-only and
 never initialize state. Create an authorized new project, initialize and register
 claims before querying its goal. Inspect actual proof/source/computation artifacts
-behind important labels. Changed proofs or dependencies invalidate snapshots;
-retracted dependency evidence or current counterexamples block downstream proofs
-without rewriting history. Run `impact CLAIM` before revising a load-bearing
-statement and `pin-impact PATH` before editing a pinned file.
+behind important labels. Revising a claim stales evidence whose snapshot includes
+its old revision. Changing a proof file stales evidence that pins it. If a
+dependency loses its last qualifying support or becomes disputed or
+counterexample-recorded, a consumer's otherwise current proof becomes
+conditional. Inspect `blocked_by` and the evidence's own issues
+before deciding what needs revalidation. Run `impact CLAIM` before revising a
+load-bearing statement and `pin-impact PATH` before editing a pinned file.
 
 ## When state is writable only later
 
 When persistence is authorized and the host can inspect the exact ledger head
 but cannot execute or write, follow [deferred-packet.md](references/deferred-packet.md).
 Never invent IDs or hashes. Return the complete packet in the final JSON fence
-and say it is unapplied; obey the inspected local write policy.
+and say it is unapplied; obey the inspected local write policy. After interrupted
+local ingest, inspect the journal, artifact bytes and index tail before retrying.
+Recover only the outstanding work against the observed head as described in
+the packet reference.
 
 ## Record only material changes
 
@@ -65,13 +73,25 @@ returns or sessions.
 
 Write ordinary proposals with `type`, `actor` and `payload`; use `record FILE`,
 or preview a dependency-ordered `record-batch` before appending distinct events.
+After an interrupted append, match any recorded prefix to the proposals and
+retry only the remainder, replacing references to committed aliases with their
+actual event IDs. Before replaying evidence, compare the intended claim contract,
+transitive revisions and artifact bytes with the observed state. Revalidate
+any proposal whose mathematical inputs changed or cannot be matched.
+Apply recovered evidence against a guarded head with proposals-only `ingest`
+when supported. For local-only proposals, coordinate a single writer through
+the checks and append. Pin the verified artifact hashes in the proposals.
 Unknown payload keys are rejected on new writes; existing journals still replay.
 Register dependency claims before consumers and exact claims before evidence.
 Bind authoritative wording with `statement_artifact` and locator when useful.
 The helper hashes durable artifacts and captures transitive claim revisions;
 never supply generated snapshots. Source evidence needs exact identifier,
-version, locator and translation. Computation evidence needs assertion, bounds
-and non-claims; successful execution is not a universal proof.
+version, locator and translation. Computation evidence supports its checked
+assertion and needs bounds and non-claims. For new counterexample evidence,
+verify that the witness satisfies every hypothesis and violates the exact
+conclusion before appending
+the event. Record the admissibility check in `hypothesis_check`. Keep a candidate
+with an unresolved check in a research note or route record.
 
 A `manifest` links a version-2 computation record, its hashed input/output closure,
 matching `claim_id`, and completed run. Validate it with computation-audit first:
@@ -100,9 +120,12 @@ When a file returns to its original path, register a return; when the original
 path was deliberately reused, mark only the affected pins `release_original`.
 Inspect `relocations` separately from unresolved issues and count references,
 not files. Do not recreate old paths or edit pinned manifests to silence warnings.
-Revise a claim with a new revision and reason. After real revalidation, record new
-evidence with `supersedes: [old IDs]`; retract only erroneous evidence or review
-records. Keep proof details outside the ledger. Never edit/delete numbered events,
+Revise a claim by restating its complete contract under the same ID with a reason.
+Include any retained `statement_artifact` and locator. Use a separate claim ID
+for a restricted theorem or a formulation whose equivalence still needs proof.
+After real revalidation, record new evidence with `supersedes: [old IDs]`.
+Retract only erroneous evidence or review records. Keep proof details outside
+the ledger. Never edit/delete numbered events,
 refresh hashes to silence warnings, or treat a changed statement as already proved.
 
 ## Use routes to support decisions

@@ -22,6 +22,7 @@ Write each durable route as a standalone Markdown file:
 - **Success criterion:**
 - **Failure/no-go criterion:**
 - **Cheapest decisive check:**
+- **Planned stopping point and actual stopping reason:**
 - **Attempt outcome:**
 - **Route disposition and scope:** <open (continuations may be deferred) or closed as succeeded/failed/blocked/inconclusive; scope and reason>
 - **Continuations:** <tried, untried, obstructed with evidence, or deferred with resumption condition>

@@ -68,7 +68,9 @@ an invalid model ID, block otherwise useful review, or treat a fallback as a
 mathematical defect. A failed launch is not completed coverage; rerun the
 affected scope with the fallback or leave it explicitly unreviewed.
 
-Group lanes only when their resolved settings are compatible. Different
+Group lanes only when their resolved settings and permitted evidence are
+compatible. A blind reviewer needs a fresh context whenever inherited
+history would reveal prior findings, even with default model settings. Different
 preferences can use separate agents sequentially when concurrency is limited.
 Without authorized delegation, perform distinct sequential passes and label
 them self-review, including their model-selection limitations.
@@ -77,8 +79,9 @@ For `final-referee`, apply the preference to the actual reconciliation
 executor. If a prescribed setting requires a different executor, delegate
 reconciliation to a compatible isolated agent when supported, supplying the
 full source, protocol, [final-referee.md](final-referee.md),
-[output-contract.md](output-contract.md), coverage, raw findings and specialist artifacts. Check
-the returned reconciliation and report before delivery. Otherwise reconcile
+[output-contract.md](output-contract.md), coverage, raw findings, prior leads
+and specialist artifacts. Assign reconciliation and specify who writes the
+report. Check the delegated artifacts before delivery. Otherwise reconcile
 directly and disclose the inherited settings as the fallback. Do not claim
 that the coordinator changed models because its prompt requested a different
 one.

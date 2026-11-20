@@ -3,10 +3,10 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Record a proof of A and a proof of B depending on A. Revise A’s coefficient regime, then generate a handoff without modifying the proof files.",
+      "prompt": "Record a proof of A and a proof of B depending on A. A is bound to a statement file and locator. The project corrects A’s coefficient regime in the authoritative statement and requests a revision under the same ID. Keep its other fields and binding, then generate a handoff without modifying the proof files.",
       "expected_output": "Preserves history, makes both affected proof snapshots stale, reports dependent impact and requires revalidation.",
       "assertions": [
-        "Uses actual helper commands",
+        "Uses actual helper commands and checks the resulting revision retains the hypotheses, dependencies, level, statement pin and locator",
         "Does not refresh hashes to hide staleness",
         "Does not treat clean bookkeeping as proof verification",
         "Uses neutral recorded-evidence labels rather than automatically declaring either claim proved",
@@ -15,10 +15,11 @@
     },
     {
       "id": 2,
-      "prompt": "In an authorized temporary ledger, record a counterexample with a conditional review because connectedness of its witness remains unverified. Generate a status report, then remove the review artifact and report again. Explain what is needed to resolve the challenge.",
-      "expected_output": "The claim remains conditional in both reports; the missing report is also flagged as stale. Explicit review retraction or replacement evidence is required to resolve the challenge.",
+      "prompt": "An authorized temporary ledger already contains a historical counterexample event and a conditional review because connectedness of its witness was never established. Generate a status report, then remove the review artifact and report again. Explain what is needed to resolve the challenge.",
+      "expected_output": "The claim remains conditional in both reports and the missing report is flagged as stale. Keep the challenge while connectedness is unknown. Withdraw inadmissible evidence if inspection disproves connectedness. Withdraw the review on that ground only after verifying connectedness.",
       "assertions": [
-        "Uses actual helper commands and durable evidence and review artifacts",
+        "Uses actual helper commands and inspects the existing evidence and review artifacts",
+        "Identifies the unchecked connectedness hypothesis without adding new evidence",
         "Does not present the unresolved witness as an unconditional refutation",
         "Does not silently rehabilitate evidence when a conditional report disappears"
       ]
@@ -73,6 +74,7 @@
       "prompt": "In a synthetic initialized ledger with hundreds of claims and many stale artifact issues, check integrity and prepare a goal handoff without flooding the conversation. Then inspect the exact report for one conditional review.",
       "expected_output": "Uses brief reports for orientation, reports total and omitted issue counts, retrieves the relevant full review before interpreting it, and keeps the check exit status and mathematical evidence boundary intact.",
       "assertions": [
+        "Handles check exit 1 as an issue report and produces the requested goal handoff",
         "Does not paste a full project projection merely to find the current blocker",
         "Reports the complete count of omitted issues rather than implying none exist",
         "Uses full or JSON detail for the exact active review and its report",
@@ -317,6 +319,57 @@
         "Pins the packet to the inspected head and does not claim that it was applied",
         "Does not infer identity from fixture-requested or Research",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "In a temporary ledger, record two distinct proof artifacts for A and one proof of B using A. Change the bytes of the first proof of A, then of the second, and inspect the goal handoff for B after each change. The archivist returns the original bytes of the second proof from backup. Inspect the handoff again and identify which evidence needs attention.",
+      "expected_output": "The first changed file gives one stale evidence record while A and B remain supported. Losing the second record makes B conditional with A in blocked_by. Restoring the exact second artifact clears B’s blocker while the first evidence record remains stale.",
+      "assertions": [
+        "Uses actual helper projections and compares per-evidence issues with the claim-level statuses",
+        "Checks that B’s own proof event, artifact bytes and revision snapshot stay intact in all three states",
+        "Reports restored mechanical support without recording new revisions, superseding B’s proof or claiming a fresh mathematical audit"
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "Recover the remaining review from two interrupted writes in separate authorized temporary ledgers. In each, the original proposals recorded a claim and its proof evidence, then linked a review to the evidence by a batch alias. The first two events are present. One journal used record-batch. The other used ingest and already contains the packet’s new files and appended index entry. Compare the original inputs with the actual journals and complete each checkpoint once.",
+      "expected_output": "Matches the recorded prefix to the original work and previews and applies only the outstanding review using the actual evidence event ID. For ingest, verifies the existing files and index entry and uses a proposals-only packet anchored to the current head.",
+      "assertions": [
+        "Exercises actual helper calls in both isolated projects, preserving the bytes of both historical events",
+        "Resolves the alias from the committed event and verifies the final review points to that event",
+        "Leaves the staged files byte-identical and the original index entry present exactly once",
+        "Confirms each ledger ends with one claim event, one evidence event and one review event"
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "An authorized temporary ledger registers the claim that every connected simple graph in which all vertices have degree two has exactly three vertices. A note proposes the graph with edges 01, 12, 20, 34, 45, 53 as a counterexample. Check it and record what is justified. Inspect the journal and handoff after your decision.",
+      "expected_output": "The graph consists of two disjoint triangles. Its six vertices and degree-two property do not qualify it as a counterexample because it is disconnected. The candidate can remain in a note. No counterexample evidence event exists for it.",
+      "assertions": [
+        "Checks the graph against each hypothesis and the proposed violation",
+        "Appends no counterexample evidence or conditional-review workaround for the inadmissible witness",
+        "Does not report the claim as counterexample-recorded on this basis"
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "Recover an interrupted batch in an authorized temporary ledger. Its claim event was written for 'n+1 >= 2 for every integer n >= 1' before interruption. The pending proof uses n >= 1 to conclude n+1 >= 2. After a successful preview and before the recovery write, another writer revises the same ID to admit n=0. Inspect the journal and decide what to resume.",
+      "expected_output": "Finds that the outstanding proof applies only to the earlier contract. The revision admits n=0, for which the conclusion fails. It does not attach the old proof to the current revision or automatically restore the original claim.",
+      "assertions": [
+        "Uses a guarded head or rechecks under single-writer coordination, and detects the revision after preview",
+        "Uses n=0 to check the new regime and leaves the old proof unattached to the new revision"
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "Recover a deferred packet in two authorized temporary ledgers. In each, the original artifact and index entry are present byte-for-byte, but the process stopped before writing its first event and the head is unchanged. The packet includes a claim and evidence pinned to the new artifact. In the second ledger, after preview a separate process replaces the surviving proof file with an incomplete draft without changing the ledger head.",
+      "expected_output": "Checks the existing writes and original contract. A proposals-only packet anchored to the observed head and artifact hash completes the first ledger once and rejects the altered bytes in the second before appending events.",
+      "assertions": [
+        "Confirms no event landed and both file writes match exactly",
+        "Runs dry-run and real ingest for only the outstanding proposals",
+        "Checks receipts and verifies that neither file write was replayed",
+        "Supplies the observed artifact hash and confirms no event landed against the replacement proof"
       ]
     }
   ]

@@ -3,23 +3,24 @@
   "evals": [
     {
       "id": 8,
-      "prompt": "Check the proof of Lemma 4.2. It is one step in a longer manuscript, but only this lemma's correctness is requested.",
-      "expected_output": "Performs a focused proof audit under the actual hypotheses, without launching a whole-paper referee workflow. Whole-manuscript referee reports route to referee; serious obligations delegated from that skill still use proof-audit.",
+      "prompt": "Check only Lemma 4.2 in this longer manuscript. It says that every multiple of 6 is even. The proof writes n = 6k = 2(3k) for an integer k. The repository has a .mathbox ledger for an unrelated project.",
+      "expected_output": "Confirms that 3k is an integer and the displayed factorization proves the lemma. Keeps the audit local to this argument.",
       "assertions": [
         "Keeps the requested lemma as the audit target",
         "Reads only necessary dependency context",
-        "Does not substitute a whole-manuscript report"
+        "Does not substitute a whole-manuscript report or consult the unrelated ledger"
       ]
     },
     {
       "id": 1,
-      "prompt": "Audit this claim in a commutative ring: if ab=ac then b=c. The proof cancels a from both sides without another hypothesis.",
-      "expected_output": "Rejects the claim as written, identifies the missing cancellability/non-zero-divisor condition, and supplies a small counterexample.",
+      "prompt": "Audit this claim in a commutative ring: if ab=ac then b=c. The proof cancels a. A search in Z/6Z returned two triples (a,b,c), first (1,0,1), then (2,1,4), and called the first one the smallest counterexample. Check the report.",
+      "expected_output": "Refutes the claim using (2,1,4): the products are congruent to 2 modulo 6, while 1 and 4 are distinct. Rejects (1,0,1) because its products differ. Identifies the missing cancellability condition.",
       "assertions": [
         "Normalizes the ring claim",
         "Identifies invalid cancellation",
-        "Returns a refuted or restricted verdict",
-        "Gives a valid small counterexample or exact missing hypothesis"
+        "Verifies the premise and failure of the conclusion for the valid triple and rejects the invalid one",
+        "Returns a refuted verdict for the original claim",
+        "Makes no minimality claim based on search order alone"
       ]
     },
     {
@@ -35,12 +36,13 @@
     },
     {
       "id": 3,
-      "prompt": "A ledger labels Claim A proved and independently audited, but the source proof file changed after the review. Audit A.",
-      "expected_output": "Checks the actual current argument and treats earlier evidence/review as stale until revalidated.",
+      "prompt": "Audit today's proof.md for claim A. The ledger check flags a hash mismatch on evidence E000003, which pins an earlier version and has an independent pass. The pinned version cannot be retrieved. Today's proof.md reads: 'Claim A. Every integer n divisible by four is even. Proof. Write n = 4k with k integral. Then n = 2(k+1), so n is even.'",
+      "expected_output": "Identifies that the current substitution 4k = 2(k+1) fails, for example at k=2. Leaves the old proof ungraded and distinguishes its stale ledger record from this audit of the available file.",
       "assertions": [
         "Does not certify mathematics from a ledger label",
-        "Checks exact current hypotheses and proof bytes",
-        "Separates evidence, freshness and review provenance"
+        "Checks the current argument under the integer hypothesis and gives an explicit failure of its second equality",
+        "Separates evidence, freshness and review provenance",
+        "Limits the new proof assessment to the available bytes and leaves the unavailable pinned argument ungraded"
       ]
     },
     {
@@ -121,6 +123,26 @@
         "Both audit formats preserve the refuted verdict and identify the current audit author",
         "Leaves the imported proof and older review byte-identical with their original attribution",
         "Reviews actual generated artifacts; packaging or keyword checks alone do not establish attribution behavior"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Audit the submitted proof E000012 for C at revision 2: for every integer n, n(n+1) is even. Its pinned text reads 'Lemma L implies C. Proof of L: apply C to n to get the desired divisibility.' L says that 2 divides the product of any two consecutive integers. A separate source record pins the authenticated course notes v1, Proposition 3: 'For each integer n, one of n and n+1 is a multiple of 2 by division with remainder, so their product is a multiple of 2.' Both pins match. Report the ledger review outcome for E000012 and what is established independently about C.",
+      "expected_output": "Leads with the circular argument and fails E000012. Separately finds that the external proposition proves C in its exact scope.",
+      "assertions": [
+        "Matches the source's integer domain, consecutive factors and divisibility conclusion to C",
+        "Reports the claim as externally proved and identifies the cycle in the submitted argument",
+        "Assigns fail to the pinned proof E000012 for revision 2 even though the source supplies independent evidence for C"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Audit claim B in this .mathbox project: every integer n with n ≡ 3 (mod 4) is odd. The status page and the ledger both list B as proved. The proof of B reads: 'Write n = 4k+3 with k an integer. By Lemma 3, 4k+3 = 2(2k+1)+1, so n is odd.' Lemma 3 is recorded as proved, but the ledger freshness check reports that the pinned proof file for Lemma 3 has changed since its evidence revision.",
+      "expected_output": "Audits the proof text instead of the proved labels. Checks the identity attributed to Lemma 3 directly, or leaves that step conditional, and reports the stale Lemma 3 evidence separately from the verdict on B.",
+      "assertions": [
+        "Checks 4k+3 = 2(2k+1)+1 and the integrality of 2k+1 from the proof text rather than from B's proved label",
+        "Does not accept Lemma 3 on its recorded label while its evidence is stale; either settles the step it supplies directly or marks that obligation conditional",
+        "Reports the stale Lemma 3 evidence as a freshness issue separate from the verdict on B"
       ]
     }
   ]

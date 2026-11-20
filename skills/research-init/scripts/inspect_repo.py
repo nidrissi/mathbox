@@ -52,20 +52,75 @@ DECLARED_PATH_LABELS = {
 }
 
 
-def git(root: Path, *args: str) -> str | None:
-    """Return stdout for a successful Git invocation, otherwise None."""
+def git_run(root: Path, *args: str, stdin: str | None = None) -> subprocess.CompletedProcess[bytes] | None:
+    """Run Git in root; None when it cannot start or times out."""
     try:
-        process = subprocess.run(
-            ["git", "-C", str(root), *args], text=True,
+        return subprocess.run(
+            ["git", "-C", str(root), *args], input=os.fsencode(stdin) if stdin is not None else None,
             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
             timeout=10, check=False,
         )
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return None
-    return process.stdout.strip() if process.returncode == 0 else None
 
 
-def git_state(root: Path) -> dict:
+def git(root: Path, *args: str, stdin: str | None = None) -> str | None:
+    """Return stdout for a successful Git invocation, otherwise None."""
+    process = git_run(root, *args, stdin=stdin)
+    return os.fsdecode(process.stdout).strip() if process is not None and process.returncode == 0 else None
+
+
+def indexed_gitlinks(root: Path) -> set[Path] | None:
+    """Find submodule boundaries, including worktrees that are not populated."""
+    staged = git_run(root, "ls-files", "--stage", "-z")
+    if staged is None or staged.returncode:
+        return None
+    return {root / os.fsdecode(entry.partition(b"\t")[2]) for entry in staged.stdout.split(b"\0")
+            if entry.startswith(b"160000 ")}
+
+
+def scoped_status(root: Path, cache_paths: tuple[str, ...], gitlinks: list[str]) -> str | None:
+    """Read native tracked status and prune caches during untracked discovery."""
+    options = ("--no-optional-locks", "--no-literal-pathspecs")
+    exclusions = [f":(exclude,literal){path}" for path in cache_paths]
+    if not cache_paths:
+        status = git_run(root, *options, "status", "--short")
+        return os.fsdecode(status.stdout).rstrip("\n") if status and status.returncode == 0 else None
+
+    # -uno also suppresses untracked changes in submodules. Give in-scope
+    # gitlinks their own native status pass so Git applies their configured policy.
+    tracked = git_run(root, *options, "status", "--short", "-uno", "--", ".", *exclusions,
+                      *(f":(exclude,literal){path}" for path in gitlinks))
+    if tracked is None or tracked.returncode:
+        return None
+    output = tracked.stdout
+    if gitlinks:
+        modules = git_run(root, "--no-optional-locks", "--literal-pathspecs",
+                          "status", "--short", "--", *gitlinks)
+        if modules is None or modules.returncode:
+            return None
+        output += modules.stdout
+
+    mode = (git(root, "config", "--get", "status.showUntrackedFiles") or "normal").lower()
+    if mode != "no":
+        # A status pathspec alone can still open an excluded .gitignore. Use
+        # command-line ignore rules to prune Git's walk before it reads those files.
+        rules = ["--exclude=/" + re.sub(r"([\\*?\[])", r"\\\1", path) + "/" for path in cache_paths]
+        grouping = [] if mode == "all" else ["--directory", "--no-empty-directory"]
+        others = git_run(root, *options, "ls-files", "--others", "--exclude-standard",
+                         *rules, *grouping, "--", ".", *exclusions)
+        if others is None or others.returncode:
+            return None
+        untracked = []
+        for name in others.stdout.splitlines():
+            if b" " in name and not name.startswith(b'"'):
+                name = b'"' + name + b'"'
+            untracked.append(b"?? " + name + b"\n")
+        output += b"".join(untracked)
+    return os.fsdecode(output).rstrip("\n")
+
+
+def git_state(root: Path, cache_paths: tuple[str, ...] = ()) -> dict:
     """Distinguish a clean worktree from unavailable or failed Git metadata."""
     if shutil.which("git") is None:
         return {
@@ -88,36 +143,115 @@ def git_state(root: Path) -> dict:
             "state": "unavailable", "repository": False, "porcelain": None,
             "toplevel": None, "reason": "not a Git worktree",
         }
-    try:
-        status = subprocess.run(
-            ["git", "-C", str(root), "status", "--short"],
-            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            timeout=10, check=False,
-        )
-    except subprocess.TimeoutExpired:
-        return {
-            "state": "error", "repository": True, "porcelain": None,
-            "toplevel": probe.stdout.strip(), "reason": "git status timed out",
-        }
-    if status.returncode != 0:
-        return {
-            "state": "error", "repository": True, "porcelain": None,
-            "toplevel": probe.stdout.strip(), "reason": "git status failed",
-        }
-    porcelain = status.stdout.rstrip("\n")
+    gitlinks = indexed_gitlinks(root) if cache_paths else set()
+    if gitlinks is None:
+        reason = "submodule boundaries unavailable"
+        return {"state": "error", "repository": True, "porcelain": None,
+                "toplevel": probe.stdout.strip(), "reason": reason,
+                "skipped_cache_checks": dict.fromkeys(cache_paths, reason)}
+    exclusions, skipped = cache_git_scope(root, {root / path for path in cache_paths}, gitlinks)
+    excluded = {root / path for path in exclusions}
+    modules = sorted(link.relative_to(root).as_posix() for link in gitlinks
+                     if not any(link.is_relative_to(path) for path in excluded))
+    porcelain = scoped_status(root, exclusions, modules)
+    scope = {"status_excludes": list(exclusions), "skipped_cache_checks": skipped}
+    if porcelain is None:
+        return {**scope, "state": "error", "repository": True, "porcelain": None,
+                "toplevel": probe.stdout.strip(), "reason": "git status failed or timed out"}
     return {
         "state": "dirty" if porcelain else "clean", "repository": True,
-        "porcelain": porcelain, "toplevel": probe.stdout.strip(), "reason": None,
+        "porcelain": porcelain, "toplevel": probe.stdout.strip(), "reason": None, **scope,
     }
 
 
-def ignore_rule_source(root: Path, path: Path) -> str | None:
-    """Return the ignore-rule file excluding path, or None if Git does not ignore it."""
-    out = git(root, "check-ignore", "-v", "--", str(path))
-    if out is None:
+def unverified_coverage(note: str | None = None) -> dict:
+    return {"git_ignored": None, "ignore_rule_source": None, "repository_ignore_rule": None,
+            "tracked_entries": None, "coverage_note": note}
+
+
+def applicable_ignore_files(path: str) -> list[str]:
+    """Project .gitignore files whose rules can match the directory itself."""
+    return [(parent / ".gitignore").as_posix() for parent in Path(path).parents]
+
+
+def indexed_ignore_files(root: Path, names: list[str]) -> tuple[set[str], set[str]] | None:
+    """Return (tracked, unchanged-from-index) among names, reading only those files."""
+    staged = git(root, "--literal-pathspecs", "ls-files", "--stage", "-z", "--", *names)
+    if staged is None:
         return None
-    lines = out.splitlines()
-    return lines[0].split(":", 1)[0] if lines else ""
+    tracked, blobs = set(), {}
+    for entry in filter(None, staged.split("\0")):
+        meta, _, name = entry.partition("\t")
+        tracked.add(name)
+        fields = meta.split()
+        if len(fields) == 3 and fields[2] == "0":
+            blobs[name] = fields[1]
+    present = sorted(name for name in blobs
+                     if (root / name).is_file() and not (root / name).is_symlink())
+    output = git(root, "hash-object", "--", *present) if present else ""
+    hashes = output.split() if output is not None else []
+    if len(hashes) != len(present):
+        return None
+    return tracked, {name for name, digest in zip(present, hashes) if blobs[name] == digest}
+
+
+def cache_git_scope(root: Path, paths: set[Path], gitlinks: set[Path]) -> tuple[tuple[str, ...], dict[str, str]]:
+    """Find the outermost safe status exclusions and caches Git cannot probe."""
+    exclusions = set()
+    skipped = {}
+    for path in paths:
+        parts = path.relative_to(root).parts
+        for end in range(1, len(parts) + 1):
+            boundary = root.joinpath(*parts[:end])
+            if boundary in paths and boundary != path:
+                skipped[path.relative_to(root).as_posix()] = "inside another excluded source cache"
+                break
+            if boundary in gitlinks or (boundary / ".git").exists():
+                # Parent Git can refresh the entire nested worktree for status.
+                skipped[path.relative_to(root).as_posix()] = "inside a nested repository or submodule"
+                break
+        exclusions.add(boundary.relative_to(root).as_posix())
+    return tuple(sorted(exclusions)), skipped
+
+
+def cache_ignore_coverage(root: Path, paths: list[str]) -> dict[str, dict]:
+    """Check each cache directory's ignore coverage and whether the index carries its rule.
+
+    A rule counts as tracked only when its ignore file is in the index and every
+    applicable tracked ignore file matches its index entry, so the coverage
+    observed here is what a checkout of the index would see.
+    """
+    rule_files = sorted({name for path in paths for name in applicable_ignore_files(path)})
+    indexed = indexed_ignore_files(root, rule_files) if paths else None
+    results = {}
+    for path in paths:
+        coverage = directory_ignore_coverage(root, path, indexed)
+        index = git_run(root, "--literal-pathspecs", "ls-files", "--cached", "-z", "--", path)
+        if index is not None and index.returncode == 0:
+            coverage["tracked_entries"] = index.stdout.count(b"\0")
+        results[path] = coverage
+    return results
+
+
+def directory_ignore_coverage(root: Path, path: str,
+                              indexed: tuple[set[str], set[str]] | None) -> dict:
+    # --no-index: an already tracked entry must not hide the directory's rule.
+    # A trailing slash can match an empty child in "dir/*", which still
+    # permits exceptions among the children. Query the directory itself.
+    process = git_run(root, "check-ignore", "--no-index", "-v", "-z", "--stdin", stdin=path + "\0")
+    if process is None or process.returncode not in (0, 1):
+        return unverified_coverage("git check-ignore failed")
+    fields = os.fsdecode(process.stdout).split("\0")
+    ignored = len(fields) >= 4 and not fields[2].startswith("!")
+    if not ignored and not (root / path).is_dir():
+        # A directory rule cannot match a directory that does not exist yet.
+        return unverified_coverage()
+    source = fields[0] if ignored else None
+    relevant = set(applicable_ignore_files(path))
+    tracked = bool(ignored and indexed is not None and source in relevant
+                   and source in indexed[0] and (relevant & indexed[0]) <= indexed[1])
+    return {"git_ignored": ignored, "ignore_rule_source": source,
+            "repository_ignore_rule": tracked, "tracked_entries": None, "coverage_note": None}
 
 
 def root_of(path: Path) -> Path:
@@ -126,20 +260,57 @@ def root_of(path: Path) -> Path:
     return Path(found).resolve() if found else path
 
 
+def project_relative(value: str) -> bool:
+    return (bool(value) and not Path(value).anchor and not value.startswith("~")
+            and "://" not in value and "\0" not in value)
+
+
 def safe_relative(root: Path, value: str) -> Path | None:
     """Resolve a declared project-relative path without allowing path escape."""
-    if not value or value.startswith(("/", "~")) or "://" in value:
+    if not project_relative(value):
         return None
-    candidate = (root / value).resolve()
+    try:
+        candidate = (root / value).resolve()
+    except (OSError, RuntimeError):
+        return None
     return candidate if candidate.is_relative_to(root.resolve()) else None
 
 
-def declared_paths(root: Path) -> list[dict]:
-    """Read only explicit, labeled path declarations from root instructions/config."""
+def read_refusal(root: Path, path: Path, excluded: set[Path], *, walk_rules: bool) -> str | None:
+    """Why a direct read of path is refused, or None. Every direct read uses this policy.
+
+    Symlinks (including parents) and source caches are always refused. With
+    walk_rules, so are the walker's excluded directory names.
+    """
+    destination = root
+    try:
+        for part in path.relative_to(root).parts:
+            if part == "..":
+                if destination == root:
+                    return "symlinked or outside the scan root"
+                destination = destination.parent
+                continue
+            # Check the component before a later `..` can hide a symlink.
+            destination /= part
+            if destination.is_symlink():
+                return "symlinked or outside the scan root"
+    except OSError:
+        return "could not verify the path"
+    if any(destination.is_relative_to(cache) for cache in excluded):
+        return "inside a source cache"
+    if walk_rules and EXCLUDE.intersection(destination.relative_to(root).parts):
+        return "under an excluded directory"
+    return None
+
+
+DECLARATION_LABELS = {alias.casefold(): role for role, aliases in DECLARED_PATH_LABELS.items() for alias in aliases}
+
+
+def instruction_declarations(root: Path, skipped: set[str]) -> list[dict]:
+    """Read only explicit, labeled path declarations from root instructions."""
     found: list[dict] = []
-    labels = {alias.casefold(): role for role, aliases in DECLARED_PATH_LABELS.items() for alias in aliases}
     for source in (root / "AGENTS.md", root / "CLAUDE.md"):
-        if not source.is_file():
+        if source.name in skipped or not source.is_file():
             continue
         try:
             text = source.read_text(encoding="utf-8")
@@ -153,50 +324,72 @@ def declared_paths(root: Path) -> list[dict]:
             if not match:
                 continue
             label = re.sub(r"\s+", " ", match.group(1).strip()).casefold()
-            role = labels.get(label)
-            target = clean_reference(match.group(2))
+            role = DECLARATION_LABELS.get(label)
+            value = match.group(2)
+            target = cache_reference(root, value) if role == "source_cache" else clean_reference(value)
             if target is None:
                 continue
             target = target.rstrip("/")
-            destination = safe_relative(root, target)
-            if (role == "verification" and Path(target).suffix.casefold() not in KNOWN_PATH_SUFFIXES
-                    and (destination is None or not destination.is_dir())):
+            if not role or not project_relative(target):
                 continue
-            if role and destination is not None:
-                found.append({
-                    "role": role, "path": target, "source": source.name,
-                    "line": number,
-                })
-    config = root / ".mathbox" / "config.json"
-    if config.is_file():
-        try:
-            data = json.loads(config.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError):
-            data = None
-        if isinstance(data, dict):
-            containers = [data.get("paths"), data.get("roles")]
-            for container in containers:
-                if not isinstance(container, dict):
+            if role != "project_map":
+                destination = safe_relative(root, target)
+                if destination is None or (role == "verification" and Path(target).suffix.casefold()
+                                           not in KNOWN_PATH_SUFFIXES and not destination.is_dir()):
                     continue
-                for key, value in container.items():
-                    normalized = str(key).replace("_", " ").replace("-", " ").casefold()
-                    role = labels.get(normalized)
-                    if role and isinstance(value, str) and safe_relative(root, value.rstrip("/")) is not None:
-                        found.append({
-                            "role": role, "path": value.rstrip("/"),
-                            "source": ".mathbox/config.json", "line": None,
-                        })
+            found.append({
+                "role": role, "path": target, "source": source.name,
+                "line": number,
+            })
+    return found
+
+
+def config_declarations(root: Path) -> list[dict]:
+    """Read path roles from the ledger config; the caller decides whether it may be read."""
+    found: list[dict] = []
+    config = root / ".mathbox" / "config.json"
+    if not config.is_file():
+        return found
+    try:
+        data = json.loads(config.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return found
+    if not isinstance(data, dict):
+        return found
+    for container in (data.get("paths"), data.get("roles")):
+        if not isinstance(container, dict):
+            continue
+        for key, value in container.items():
+            normalized = str(key).replace("_", " ").replace("-", " ").casefold()
+            role = DECLARATION_LABELS.get(normalized)
+            if role and isinstance(value, str) and project_relative(value.rstrip("/")) and (
+                    role == "project_map" or safe_relative(root, value.rstrip("/")) is not None):
+                found.append({
+                    "role": role, "path": value.rstrip("/"),
+                    "source": ".mathbox/config.json", "line": None,
+                })
+    return found
+
+
+def unique_declarations(found: list[dict]) -> list[dict]:
     unique = {(item["role"], item["path"], item["source"], item["line"]): item for item in found}
     return sorted(unique.values(), key=lambda item: (item["role"], item["path"], item["source"]))
 
 
-def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]:
+def root_cache_declarations(root: Path, declarations: list[dict]) -> list[dict]:
+    """Declared caches that resolve to the scan root, which cannot be excluded."""
+    return [dict(item, reason="resolves to the scan root")
+            for item in declarations
+            if item["role"] == "source_cache" and safe_relative(root, item["path"]) == root]
+
+
+def source_cache_conventions(root: Path, declarations: list[dict], requested: set[Path]) -> list[dict]:
     """Report standard, explicit, and unmistakably named cache conventions."""
     records: dict[str, dict] = {}
 
     def add(value: str, basis: str, confidence: str, declared: bool = False):
         path = safe_relative(root, value.rstrip("/"))
-        if path is None:
+        if path is None or path == root:
             return
         relative = path.relative_to(root).as_posix()
         existing = records.get(relative)
@@ -211,6 +404,8 @@ def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]
     for item in declarations:
         if item["role"] == "source_cache":
             add(item["path"], f"declared in {item['source']}", "high", True)
+    for path in requested:
+        add(path.relative_to(root).as_posix(), "designated in request", "high", True)
     for name in (".literature-cache", "literature-cache", ".source-cache", "source-cache", ".paper-cache", "paper-cache"):
         if (root / name).is_dir():
             add(name, "cache-specific directory name", "high")
@@ -218,7 +413,7 @@ def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]
     # no source bytes are opened.
     for name in ("papers", "refs", "references", "sources"):
         path = root / name
-        if not path.is_dir() or name in records:
+        if path.is_symlink() or not path.is_dir() or name in records:
             continue
         try:
             has_sources = any(child.is_file() and child.suffix.casefold() in {".pdf", ".djvu", ".epub"}
@@ -232,14 +427,15 @@ def source_cache_conventions(root: Path, declarations: list[dict]) -> list[dict]
 
 def walk(root: Path, depth: int, excluded_paths: set[Path] | None = None):
     excluded_paths = {path.resolve() for path in (excluded_paths or set())}
+    if root in excluded_paths:
+        return
     for current, dirs, files in os.walk(root):
         path = Path(current)
         rel = path.relative_to(root)
         kept = []
         for name in sorted(dirs):
             unresolved_child = path / name
-            child = unresolved_child.resolve()
-            if unresolved_child.is_symlink() or name in EXCLUDE or child in excluded_paths:
+            if unresolved_child.is_symlink() or name in EXCLUDE or unresolved_child in excluded_paths:
                 continue
             kept.append(name)
         dirs[:] = kept
@@ -392,6 +588,27 @@ def computation_manifest(root: Path, path: Path) -> dict | None:
     )
 
 
+def cache_reference(root: Path, value: str) -> str | None:
+    """Read a declared cache path, where spaces are expected rather than suspicious.
+
+    Accept the Markdown angle-bracket form. Percent-decoding is a fallback that
+    applies only when the decoded path names an existing directory, because
+    "%" can occur in a real directory name.
+    """
+    value = value.strip()
+    if value.startswith("<") and value.endswith(">"):
+        value = value[1:-1].strip()
+    if not value:
+        return None
+    decoded = unquote(value)
+    if decoded != value:
+        literal = safe_relative(root, value.rstrip("/"))
+        candidate = safe_relative(root, decoded.rstrip("/"))
+        if not (literal is not None and literal.is_dir()) and candidate is not None and candidate.is_dir():
+            return decoded
+    return value
+
+
 def clean_reference(value: str) -> str | None:
     value = value.strip()
     if value.startswith("<") and value.endswith(">"):
@@ -437,8 +654,8 @@ def path_exists(root: Path, source: Path, value: str, *, backtick: bool) -> bool
             base = base.parent
     else:
         bases = [source.parent]
-    candidates = [(base / cleaned).resolve() for base in bases]
-    inside = [candidate for candidate in candidates if candidate.is_relative_to(root.resolve())]
+    inside = [path for base in bases
+              if (path := safe_relative(root, (base / cleaned).relative_to(root).as_posix())) is not None]
     if not inside:
         return None
     return any(candidate.exists() for candidate in inside)
@@ -491,30 +708,59 @@ def broken_references(root: Path, files: list[Path]) -> list[dict]:
     return findings
 
 
-def claude_bridge(root: Path) -> dict:
+def claude_bridge(root: Path, skipped: set[str]) -> dict:
     agents = root / "AGENTS.md"
     claude = root / "CLAUDE.md"
     imports = False
-    if claude.is_file():
+    agents_exists = "AGENTS.md" not in skipped and agents.is_file()
+    claude_exists = "CLAUDE.md" not in skipped and claude.is_file()
+    if claude_exists:
         try:
             imports = bool(re.search(r"(?m)^\s*@AGENTS\.md\s*$", claude.read_text(encoding="utf-8")))
         except (OSError, UnicodeError):
             imports = False
     issue = None
-    if agents.is_file() and claude.is_file() and not imports:
+    if skipped.intersection({"AGENTS.md", "CLAUDE.md"}):
+        issue = "Root instruction outside the inspection boundary or symlinked; bridge unverified"
+    elif agents_exists and claude_exists and not imports:
         issue = "CLAUDE.md does not import @AGENTS.md"
     return {
-        "agents_exists": agents.is_file(), "claude_exists": claude.is_file(),
+        "agents_exists": agents_exists, "claude_exists": claude_exists,
         "imports_agents": imports, "issue": issue,
     }
 
 
-def inspect(root: Path, depth: int) -> dict:
-    declarations = declared_paths(root)
-    caches = source_cache_conventions(root, declarations)
+def inspect(root: Path, depth: int, cache_dirs: tuple[str, ...] = ()) -> dict:
+    root = root.resolve()
+    requested = set()
+    for value in cache_dirs:
+        path = safe_relative(root, value)
+        if path is None or path == root:
+            raise ValueError(f"Cache directory must resolve inside the scan root: {value}")
+        if path.exists() and not path.is_dir():
+            raise ValueError(f"Designated cache is not a directory: {value}")
+        requested.add(path)
+    direct_paths = ("AGENTS.md", "CLAUDE.md", ".mathbox/config.json")
+    skipped = {name for name in direct_paths
+               if read_refusal(root, root / name, requested, walk_rules=False)}
+    declarations = instruction_declarations(root, skipped)
+    rejected_caches = root_cache_declarations(root, declarations)
+    declared_caches = {
+        path for item in declarations if item["role"] == "source_cache"
+        for path in [safe_relative(root, item["path"])] if path not in (None, root)
+    }
+    config = root / ".mathbox" / "config.json"
+    if any(config.is_relative_to(cache) for cache in declared_caches):
+        skipped.add(".mathbox/config.json")
+    if ".mathbox/config.json" not in skipped:
+        config_found = config_declarations(root)
+        declarations += config_found
+        rejected_caches += root_cache_declarations(root, config_found)
+    declarations = unique_declarations(declarations)
+    caches = source_cache_conventions(root, declarations, requested)
     cache_exclusions = {
         path for item in caches
-        if item["exists"] and (item["declared"] or item["confidence"] == "high")
+        if item["declared"] or item["confidence"] == "high"
         for path in [safe_relative(root, item["path"])] if path is not None
     }
     files = list(walk(root, depth, cache_exclusions))
@@ -558,13 +804,16 @@ def inspect(root: Path, depth: int) -> dict:
     for declaration in declarations:
         if declaration["role"] != "project_map" or declaration["path"] in known_map_paths:
             continue
-        candidate = safe_relative(root, declaration["path"])
-        if candidate is not None:
-            project_maps.append(dict(info(root, candidate), basis=f"declared in {declaration['source']}")
-                                if candidate.is_file() else {
-                                    "path": declaration["path"], "bytes": -1, "lines": None,
-                                    "basis": f"declared in {declaration['source']}; missing",
-                                })
+        candidate = root / declaration["path"]
+        basis = f"declared in {declaration['source']}"
+        refusal = read_refusal(root, candidate, cache_exclusions, walk_rules=True)
+        if refusal is None and candidate.is_file():
+            project_maps.append(dict(info(root, candidate), basis=basis))
+            continue
+        project_maps.append({
+            "path": declaration["path"], "bytes": -1, "lines": None,
+            "basis": f"{basis}; not inspected: {refusal}" if refusal else f"{basis}; missing",
+        })
     local_names = []
     for entry in skills:
         parts = Path(entry["path"]).parts
@@ -593,24 +842,32 @@ def inspect(root: Path, depth: int) -> dict:
                                checkpoint_markers=checkpoint_markers(root / path))
                           for path in sorted(set(dashboard + handoff))],
     }
-    git_info = git_state(root)
-    standard_cache = next(item for item in caches if item["path"] == ".research-cache/literature")
-    cache_root = Path(".research-cache")
-    cache_path = cache_root / "literature"
-    source = ignore_rule_source(root, cache_path / "pdf" / f"{'0' * 64}.pdf")
-    literature_cache = {
-        "path": str(cache_path), "exists": standard_cache["exists"],
-        "git_ignored": source is not None, "ignore_rule_source": source,
-        "repository_ignore_rule": bool(ignore_rule_source(root, cache_root))
-        or (source is not None and not source.startswith(f"{cache_root.as_posix()}/")),
-    }
+    cache_paths = tuple(sorted(path.relative_to(root).as_posix() for path in cache_exclusions))
+    git_info = git_state(root, cache_paths)
+    git_info.setdefault("status_excludes", [])
+    skipped_coverage = git_info.pop("skipped_cache_checks", {})
+    standard = ".research-cache/literature"
+    literature_cache = {"path": standard, "exists": False, **unverified_coverage()}
+    checked = [cache for cache in caches if cache["confidence"] == "high"]
+    eligible = [cache["path"] for cache in checked if cache["path"] not in skipped_coverage]
+    coverage = (cache_ignore_coverage(root, eligible)
+                if git_info["repository"] else {})
+    for cache in checked:
+        result = coverage.get(cache["path"], unverified_coverage(skipped_coverage.get(cache["path"])))
+        cache.update(result)
+        if cache["path"] == standard:
+            literature_cache = {"path": standard, "exists": cache["exists"], **result}
+    config_skipped = ".mathbox/config.json" in skipped
+    ledger_exists = None if config_skipped else (root / ".mathbox/config.json").is_file()
     return {
         "root": str(root),
+        "max_depth": depth,
+        "skipped_direct_paths": sorted(skipped),
         "git": git_info,
         # Backward-compatible field: empty string means clean; None means unavailable.
         "git_status": git_info["porcelain"],
         "instructions": instructions,
-        "claude_bridge": claude_bridge(root),
+        "claude_bridge": claude_bridge(root, skipped),
         "research_role_files": role_entries,
         "semantic_roles": {key: sorted(value, key=lambda item: item["path"]) for key, value in sorted(role_map.items())},
         "live_state_candidates": live_state,
@@ -625,20 +882,49 @@ def inspect(root: Path, depth: int) -> dict:
         "build_manifests": build_manifests,
         "literature_cache": literature_cache,
         "source_cache_conventions": caches,
-        "research_ledger": {"path": ".mathbox", "exists": (root / ".mathbox/config.json").is_file()},
+        "rejected_cache_declarations": rejected_caches,
+        "research_ledger": {"path": ".mathbox", "exists": ledger_exists,
+                            "status": "unverified" if config_skipped else "present" if ledger_exists else "absent"},
     }
+
+
+def cache_status(cache: dict) -> str:
+    if cache["repository_ignore_rule"]:
+        status = f"directory covered by tracked rule in `{cache['ignore_rule_source']}`"
+    elif cache["git_ignored"] is None:
+        status = "Git ignore coverage unverified"
+    elif cache["git_ignored"]:
+        status = f"directory ignored by `{cache['ignore_rule_source']}`; tracked project coverage unverified"
+    else:
+        status = "no directory-wide Git ignore coverage verified"
+    if cache.get("coverage_note"):
+        status += f" ({cache['coverage_note']})"
+    if cache["tracked_entries"]:
+        status += f"; already tracked index entries: {cache['tracked_entries']}"
+    return status
+
+
+def rejected_cache_lines(obj: dict) -> list[str]:
+    return [f"Rejected source-cache declaration `{item['path']}` "
+            f"({item['source']}{':' + str(item['line']) if item['line'] else ''}): "
+            f"{item['reason']}; not excluded from inspection or Git status."
+            for item in obj["rejected_cache_declarations"]]
 
 
 def markdown(obj: dict) -> str:
     lines = [f"# Repository inspection: `{obj['root']}`", ""]
     git_info = obj["git"]
     if git_info["state"] == "clean":
-        display = "(clean Git worktree)"
+        display = "(clean within inspected paths)"
     elif git_info["state"] == "dirty":
         display = git_info["porcelain"]
     else:
         display = f"({git_info['state']}: {git_info['reason']})"
     lines += ["## Git status", "", "```text", display, "```", ""]
+    if git_info["repository"] and git_info["status_excludes"]:
+        lines.append("Paths excluded from Git status: " + ", ".join(git_info["status_excludes"]))
+    if obj["skipped_direct_paths"]:
+        lines.append("Skipped symlinked or excluded paths: " + ", ".join(obj["skipped_direct_paths"]))
     for key, title in [
         ("instructions", "Instruction files"),
         ("research_role_files", "Research role files and aliases"),
@@ -653,7 +939,8 @@ def markdown(obj: dict) -> str:
         if not items:
             lines.append("- None found within scan depth.")
         else:
-            lines.extend(f"- `{item['path']}` — {item['lines']} lines, {item['bytes']} bytes" for item in items)
+            lines.extend(f"- `{item['path']}` — {item['lines']} lines, {item['bytes']} bytes"
+                         + (f"; {item['basis']}" if "basis" in item else "") for item in items)
         lines.append("")
     lines += ["## Semantic roles and computation classifications", "", "```json",
               json.dumps({"semantic_roles": obj["semantic_roles"],
@@ -698,21 +985,17 @@ def markdown(obj: dict) -> str:
     lines.append("")
     cache = obj["literature_cache"]
     lines += ["## Local literature cache", ""]
-    if cache["git_ignored"] and not cache["repository_ignore_rule"]:
-        coverage = (f"ignored only by `{cache['ignore_rule_source']}` "
-                    "(the cache's own rule); add `/.research-cache/` to the project .gitignore")
-    elif cache["git_ignored"]:
-        coverage = f"ignored by a project rule in `{cache['ignore_rule_source']}`"
-    else:
-        coverage = "not ignored; add `/.research-cache/` to the project .gitignore"
-    lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {coverage}")
+    lines.append(f"`{cache['path']}` — {'present' if cache['exists'] else 'not found'}; {cache_status(cache)}")
     alternates = [item for item in obj["source_cache_conventions"] if item["path"] != cache["path"]]
     for item in alternates:
-        lines.append(f"`{item['path']}` — alternate {item['confidence']} candidate ({item['basis']}); do not inspect contents during initialization")
+        coverage = cache_status(item) if "git_ignored" in item else "tentative candidate"
+        lines.append(f"`{item['path']}` — {item['basis']}; {coverage}")
+    lines.extend(rejected_cache_lines(obj))
     lines.append("")
     ledger = obj["research_ledger"]
-    lines += ["## Research ledger", "",
-              f"`{ledger['path']}` — {'present; use research-state for integrity and freshness checks' if ledger['exists'] else 'not found; optional'}", ""]
+    ledger_detail = {"present": "present; use research-state for integrity and freshness checks",
+                     "absent": "not found; optional", "unverified": "unverified; metadata inspection skipped"}
+    lines += ["## Research ledger", "", f"`{ledger['path']}` — {ledger_detail[ledger['status']]}", ""]
     lines += ["", "Declared paths and source-cache conventions:",
               "```json", json.dumps({"declared_paths": obj["declared_paths"],
                                       "source_cache_conventions": obj["source_cache_conventions"]}, indent=2),
@@ -725,6 +1008,11 @@ def brief_markdown(obj: dict) -> str:
     lines = [f"# Repository inspection: `{obj['root']}`", ""]
     git_info = obj["git"]
     lines.append(f"Git: {git_info['state']}.")
+    if git_info["repository"] and git_info["status_excludes"]:
+        exclusions = git_info["status_excludes"]
+        lines.append("Paths excluded from Git status: " + ", ".join(exclusions[:8]))
+        if len(exclusions) > 8:
+            lines.append(f"- … {len(exclusions) - 8} more excluded paths; use --full or --format json.")
     if git_info["state"] == "dirty":
         changed = git_info["porcelain"].splitlines()
         lines.extend(f"- {entry}" for entry in changed[:8])
@@ -732,6 +1020,8 @@ def brief_markdown(obj: dict) -> str:
             lines.append(f"- … {len(changed) - 8} more worktree entries.")
     elif git_info["reason"]:
         lines.append(f"Git detail: {git_info['reason']}.")
+    if obj["skipped_direct_paths"]:
+        lines.append("Skipped symlinked or excluded paths: " + ", ".join(obj["skipped_direct_paths"]))
 
     absent = []
 
@@ -765,7 +1055,7 @@ def brief_markdown(obj: dict) -> str:
     items("Research role files", obj["research_role_files"])
     items("Computation manifests", obj["computation_manifests"], detail="classification")
     items("Research logs", obj["research_logs"], detail="classification")
-    items("Project maps", obj["project_maps"])
+    items("Project maps", obj["project_maps"], detail="basis")
     items("Project skill files", obj["skill_files"])
     items("Misplaced root skills", obj["misplaced_root_skills"])
     if obj["misplaced_root_skills"]:
@@ -792,24 +1082,20 @@ def brief_markdown(obj: dict) -> str:
     if historical:
         lines.append("Historical candidates are preserved in the full report; their location does not prove a live link is broken.")
     cache = obj["literature_cache"]
-    if cache["git_ignored"] and not cache["repository_ignore_rule"]:
-        cache_status = "ignored only by a cache-local rule; add a project ignore rule"
-    elif cache["git_ignored"]:
-        cache_status = "ignored by a project rule"
-    else:
-        cache_status = "not Git-ignored"
     lines.extend(["", f"Literature cache: `{cache['path']}`; "
                   f"{'present' if cache['exists'] else 'absent'}; "
-                  f"{cache_status}.",
-                  f"Research ledger: {'present' if obj['research_ledger']['exists'] else 'absent'}.",
-                  "Use --full or --format json for the complete read-only inventory."])
+                  f"{cache_status(cache)}.",
+                  *rejected_cache_lines(obj),
+                  f"Research ledger: {obj['research_ledger']['status']}.",
+                  f"Use --full or --format json for all findings at scan depth {obj['max_depth']}."])
     for key, title in (("declared_paths", "Declared paths"),
                        ("source_cache_conventions", "Source-cache conventions")):
         entries = obj[key]
         lines += ["", f"{title}: {len(entries)}."]
         for item in entries[:8]:
             label = item.get("role", item.get("basis", "candidate"))
-            lines.append(f"- {label}: `{item['path']}`")
+            coverage = f" — {cache_status(item)}" if "git_ignored" in item else ""
+            lines.append(f"- {label}: `{item['path']}`{coverage}")
         if len(entries) > 8:
             lines.append(f"- … {len(entries) - 8} more; inspect --full or --format json before decisions.")
     return "\n".join(lines)
@@ -819,10 +1105,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".", help="scan root; resolves to Git top level when available (default: current directory)")
     parser.add_argument("--max-depth", type=int, default=5, help="maximum directory scan depth (default: %(default)s)")
+    parser.add_argument("--cache-dir", action="append", default=[], help="exclude a designated cache relative to the scan root (repeatable)")
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
-    parser.add_argument("--full", action="store_true", help="complete Markdown inventory")
+    parser.add_argument("--full", action="store_true", help="all Markdown findings at the selected depth")
     arguments = parser.parse_args()
-    obj = inspect(root_of(Path(arguments.root)), arguments.max_depth)
+    try:
+        obj = inspect(root_of(Path(arguments.root)), arguments.max_depth, tuple(arguments.cache_dir))
+    except ValueError as error:
+        parser.error(str(error))
     print(json.dumps(obj, indent=2) if arguments.format == "json" else
           markdown(obj) if arguments.full else brief_markdown(obj))
     return 0

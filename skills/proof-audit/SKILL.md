@@ -26,20 +26,33 @@ responsible for focused mathematical obligations delegated by that review.
    - the project's recorded evidence label, dependencies, and cited computation or source.
 3. If the statement cannot be typed unambiguously, return the ill-typed verdict;
    continue only under explicitly labelled readings.
+4. Identify whether the primary target is the claim, a submitted argument or a
+   specific evidence revision.
 
 ## Build the dependency graph
 
-When the project has a `.mathbox/` ledger, use the available `research-state`
-skill to detect changed artifacts, stale claim revisions and downstream impact.
-Inspect the raw current proof even when the ledger reports `proved`. Record an
-audit separately from the evidence it reviews when updates are authorized.
-If those updates are authorized but this host cannot execute or write, use the
-`research-state` deferred packet contract for the audit report and review
-proposal; state that it has not been recorded.
+Inspect the raw argument even when a ledger, status file or claim card reports
+`proved`. A recorded label locates evidence; it establishes neither the claim
+nor its dependencies. Consult a project's `.mathbox/` ledger through the
+available `research-state` skill only when an evidence revision bears on the
+audit, including recorded evidence for a dependency the argument relies on, or
+when the task calls for freshness, downstream impact or recording. For a ledger review, identify the
+evidence ID, claim revision and pinned artifact. Inspect the raw artifact at
+that revision. If the bytes have changed, distinguish an audit of the current
+file from a review of the pinned version. If the pinned version is unavailable,
+leave its argument ungraded and identify the missing artifact. If the exact
+archived bytes are available, assess them against their hash and report any
+remaining ledger freshness issue. Record an authorized review separately from
+its evidence. Check that the exact evidence revision is current before appending
+or proposing the review. If it is stale, report the assessment without a review
+event. When an authorized review of current evidence can only be recorded
+later, follow the `research-state` deferred packet contract and state that the
+proposal is unapplied.
 
 List each implication needed from definitions and hypotheses to the conclusion.
 Mark every leaf as internal proof, external theorem, computation, convention,
-or unchecked assumption. Detect circular dependencies and claims whose evidence
+or unchecked assumption. A dependency supported only by a recorded label, or by
+stale evidence, is an unchecked assumption. Detect circular dependencies and claims whose evidence
 ultimately points back to the claim itself.
 
 ## Audit adversarially
@@ -82,7 +95,10 @@ universal statement.
 
 ## Verdict
 
-Return exactly one primary verdict:
+Give one primary verdict for the requested audit target. For an argument or
+evidence audit, lead with what that exact artifact establishes and identify
+its decisive step or gap. Report independently established support for the
+claim separately. When judging the claim under its stated hypotheses, choose:
 
 - proved as written;
 - correct only after a stated restriction;
@@ -90,8 +106,12 @@ Return exactly one primary verdict:
 - conditional on a named input;
 - computationally verified only in a stated range;
 - incomplete, with the smallest missing implication;
-- refuted, with the smallest valid counterexample;
+- refuted, with a verified counterexample;
 - ill-typed or internally inconsistent.
+
+For a refutation, verify that the witness satisfies every hypothesis and show
+where the conclusion fails. Call the witness minimal only if you justify the
+ordering and rule out every smaller counterexample under it.
 
 Default to no edits. Never close a gap with a new argument. Requested corrections
 may only restrict the statement or fix a forced local step, after reviewing
@@ -103,16 +123,21 @@ through the available `manuscript-integrate` skill (`mathbox:manuscript-integrat
 in plugin installations), or preserve its validation/edit boundaries directly.
 Convention changes require the project's normal approval.
 
-For ledger reviews, use `pass` only when the verdict supports the evidence's
-exact claim, `conditional` for a conditional verdict, and `fail` otherwise.
-A restriction or finite range does not pass evidence asserting the full claim.
+For a ledger review, grade what the reviewed evidence revision purports to
+establish. Use `pass` when that evidence establishes its exact assertion,
+`conditional` when it depends on a named unresolved input, and `fail` for a
+defective argument or unsupported scope. A circular proof receives `fail` even
+when separate source evidence proves the claim. A restriction or finite range
+supports only evidence asserting that scope.
 
 ## Output
 
 Before saving a durable record, proof, report or authored JSON, follow
 [attribution.md](references/attribution.md).
 
-Lead with the normalized claim and verdict. Then give:
+Lead with the normalized claim and the verdict for the audit target. Include a
+separate assessment when both the claim and its submitted argument are in scope.
+Then give:
 
 1. dependency graph;
 2. obligation matrix;

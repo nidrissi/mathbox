@@ -26,9 +26,13 @@ ambiguity from sources or the user.
 Record what would count as a proof or a counterexample and what would only be
 partial progress. Retain this contract after compaction and user status queries.
 “By any means” expands mathematical methods, not tool permissions or access.
-For work that may cross sessions, branches or delegated agents, record a
-checkpoint identifier and the exact Git revision or ledger event from which the
-work starts. A timestamp or display order is not a reliable ancestry relation.
+For work that may cross sessions, branches or delegated agents, name the
+checkpoint and record its exact Git revision or ledger event. Identify each
+dirty or untracked input actually used by path and content hash or preserved
+copy. If neither a Git revision nor a ledger event identifies the inputs,
+use a named snapshot with paths and hashes or preserved content. Record a
+verified empty ledger head separately when relevant. Use checkpoint identity
+to determine ancestry.
 
 Use existing project records, starting with the current summary and nearest
 relevant records rather than the complete status/history archive. When an
@@ -54,13 +58,13 @@ identify a route's resolved sub-obligation without changing its owner.
 Run the decisive check, then pursue the promising route to a substantive
 checkpoint using the available `research-attempt` skill (`mathbox:research-attempt` in
 plugin installations) if host invocation rules permit. Otherwise follow the
-minimal route-record and evidence contract in the program protocol. Its one-route boundary applies
-to each work package, not to the whole program. Honor requested breadth:
-execute every proposed route if requested.
+minimal route-record and evidence contract in the program protocol. Apply its
+one-route boundary to each work package. Execute the breadth requested, including
+any independent deliverables that remain useful after the target is resolved.
 
 For parallel work, assign an owner, base checkpoint and disjoint write scope;
 require actual inputs and hashes in each return. The coordinator checks and
-reconciles proposed updates, then appends shared state or one deferred packet.
+reconciles proposed updates and handles persistence as described below.
 Preserve incompatible evidence; arrival order establishes no supersession.
 
 Allocate effort by expected information gain, relevance to the goal and cost.
@@ -82,6 +86,11 @@ After a route checkpoint, ask what mathematical information changed. Preserve
 the strongest surviving statement and distinguish a false lemma, a failed
 method, an implementation bug, and an inaccessible source.
 
+- For a candidate counterexample, check the witness against every hypothesis
+  and verify that it violates the exact conclusion under the target's
+  quantifiers. Once certified, report the target as refuted and stop trying to
+  prove it. If the witness refutes only an auxiliary lemma, revisit only routes and
+  deductions that rely on it and continue viable work on the target.
 - On success, extract a structural mechanism and attack the remaining gap to
   the actual goal. Do not silently replace that goal with the weaker result.
 - On failure, save a reusable obstruction and revise the portfolio. A failed
@@ -138,9 +147,15 @@ Before saving a durable record, proof, report or authored JSON, follow
 
 Keep proofs in durable mathematical files, finite runs in computation records,
 failed mechanisms in linked route records, and current status in one live view.
-When persistence is authorized but this host cannot execute or write, use the
-`research-state` deferred packet contract for new durable artifacts, at most one
-guarded index entry, and ledger proposals; state that ingest remains pending.
+When persistence is authorized but this host cannot execute or write, propose
+one `research-state` deferred packet only when there is a valid ledger proposal
+and you have verified an initialized ledger and inspected its head and policy in
+`.mathbox/config.json`. Pin the observed event ID and digest (both null for a
+verified empty ledger). Use only permitted destinations for new artifacts and
+at most one guarded index entry. Include the ledger proposals and state that
+ingest is pending. If a prerequisite is unavailable, the required writes fall
+outside policy, or the work calls for no new ledger event, return the findings
+or closeout, input identities and pending filing steps in a chat handoff.
 Update only state that actually changed; replace old dashboard checkpoint prose
 with links only once it has a durable home and the project permits, and do not
 rewrite indexed history.

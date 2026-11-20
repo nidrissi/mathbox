@@ -7,11 +7,19 @@ the final referee. Lane references contain only their distinct obligations.
 ## Evidence and scope
 
 Review the exact stated claim; do not weaken it and then object to the weaker
-paraphrase. Give a precise manuscript locator and a short verbatim, searchable
-quotation. Copy source characters and whitespace exactly, normally one to three
-lines; never reconstruct a quotation from memory. If the relevant text cannot
-be identified, do not file a concrete defect. For PDFs, retain exact extracted
-text plus a page/result locator and disclose unreliable extraction.
+paraphrase. For textual findings, give a precise manuscript locator and a short
+verbatim, searchable quotation. Copy source characters and whitespace exactly,
+normally one to three lines; never reconstruct a quotation from memory or a
+paraphrase. For PDFs, quote reliable extracted text with its
+page/result locator and disclose extraction limits. File a concrete textual
+defect only when its supporting passage can be identified.
+
+For a PDF-only visual defect that searchable text cannot capture, inspect the
+rendered page. In `location` give the page and the figure, display or region.
+In `analysis` describe the visible feature and its consequence. Use `quote`
+for any relevant exact text, or the empty string if none applies. A description
+of geometry or a reconstructed formula is never a quotation. If the evidence
+cannot be located and checked, keep the issue conditional.
 
 Distinguish invalid inference, an inference not justified here, unresolved
 context, exposition, and external-source uncertainty. State what evidence
@@ -55,7 +63,7 @@ Use a number in $[0,1]$ calibrated to evidence, not importance or votes:
 
 | Confidence | Evidence |
 |---|---|
-| $0.9$–$1.0$ | Quotation and analysis demonstrate the defect directly |
+| $0.9$–$1.0$ | Located quotation or checked visual observation and analysis demonstrate the defect directly |
 | $0.7$–$0.9$ | Strong evidence, with residual doubt about convention or unavailable context |
 | $0.5$–$0.7$ | A plausible question not yet ruled out, rather than an asserted defect |
 | Below $0.5$ | A consequential lead only; specify the decisive missing check |
@@ -73,8 +81,10 @@ or obligation; "clarify" alone is not actionable. Use the lane's type slugs
 or `other`; do not proliferate synonyms that impede reconciliation.
 
 Prefer few strong findings. Empty issues are common and valid. Group recurring
-occurrences of one defect and retain their additional locations. Withhold prior findings from correctness and adversarial passes; whole-paper
-lanes may receive them as unverified leads. They are neither inventory nor proof. Independent reviewers may return
+occurrences of one defect and retain their additional locations. Correctness
+and adversarial reviewers use only their blind brief and manuscript materials.
+Record any prior findings already visible to a reviewer in the pass checks.
+Whole-paper lanes may receive unverified leads. Independent reviewers may return
 duplicates; the final referee reconciles them rather than counting agreement.
 
 No lane may invent prior art or infer novelty from an unsuccessful search.
@@ -89,7 +99,7 @@ comparison, an unchanged dashboard or an agent's confidence is not verification.
 
 ## Return format
 
-Return `passes/<pass_id>.json` with `pass_id`, `issues` and `checks` (actual
+For a lane pass, return `passes/<pass_id>.json` with `pass_id`, `issues` and `checks` (actual
 commands/derivations, inputs, reviewed units/context and partial/unreviewed scopes).
 Include `model_assignment` as specified for pass files in
 [output-contract.md](output-contract.md): copy the request fields from your
@@ -125,4 +135,5 @@ of `correctness`, `adversarial`, `exposition`, `notation`, `claims`, or
 lane taxonomy or `other`. Record secondary quotations and locators in analysis
 for comparisons, and an actual derivation for numerical disagreements.
 Reviewer identity does not establish independence; coverage describes what
-inputs and context the executor received. Write only the assigned pass file; return specialist obligations to the coordinator.
+inputs and context the executor received. Lane reviewers write only their
+assigned pass files and return specialist obligations to the coordinator.

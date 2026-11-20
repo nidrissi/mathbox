@@ -11,8 +11,10 @@ canonical common workflows; the repository supplies local data and rules.
 - a remote/cloud environment cannot install the `mathbox` plugin; or
 - an institutional policy requires repository-contained configuration.
 
-Record the `mathbox` version and checksum. Do not edit vendored canonical skill
-bodies.
+With authorization, record the `mathbox` version and checksum of the exact
+vendored package. Keep the canonical files unmodified and verify the local copy
+against that release. Report an unverified or modified copy for review before
+replacing or archiving it.
 
 ## Create a new project skill only when all are true
 
