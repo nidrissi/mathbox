@@ -24,22 +24,20 @@ supply mathematical validation or human review.
    verified within the stated range, with no active failed review. A label alone
    is insufficient. Block promotion of stale, heuristic, unvalidated or gappy
    input. Route correctness questions through the available `proof-audit` skill
-   (`mathbox:proof-audit` in plugin installations) and new arguments through the
-   available `research-attempt` skill (`mathbox:research-attempt` in plugin
-   installations); if unavailable, return the exact obligation. Do not repair
+   and new arguments through the available `research-attempt` skill. If the
+   relevant skill is unavailable, return the exact obligation. Do not repair
    proofs here. Block an item when conflicting sources leave its validated
    statement or revision unresolved. When the validated revision is clear,
    correct authorized downstream records that disagree with it. Stop if the
    authoritative manuscript is ambiguous.
-5. Route unchecked external inputs through the available `literature-check` skill
-   (`mathbox:literature-check` in plugin installations), or check the exact source
-   directly if unavailable. When a premise remains unverified, integrate a
-   conditional statement only on explicit request and only if current durable
-   evidence establishes the exact conclusion assuming that premise. Read and
-   link that evidence, state the premise explicitly and mark the result
-   conditional. For any blocked item, report the missing obligation, preserve
-   the existing status of the item and its dependents, and continue authorized
-   edits with independent support.
+5. Route unchecked external inputs through the available `literature-check` skill,
+   or check the exact source directly if unavailable. When a premise remains
+   unverified, integrate a conditional statement only on explicit request and
+   only if current durable evidence establishes the exact conclusion assuming
+   that premise. Read and link that evidence, state the premise explicitly and
+   mark the result conditional. For any blocked item, report the missing
+   obligation, preserve the existing status of the item and its dependents,
+   and continue authorized edits with independent support.
 6. Validated citation changes, corrections and removals need support for the
    change, not positive proof evidence for a claim no longer asserted.
 
@@ -97,9 +95,8 @@ human-review obligation open until it has actually occurred.
 
 ## Verify
 
-1. Use the available `proofread-math` skill (`mathbox:proofread-math` in plugin
-   installations) over changed TeX and context, or apply conservative proofreading
-   directly if unavailable.
+1. Use the available `proofread-math` skill over changed TeX and context,
+   or apply conservative proofreading directly if unavailable.
 2. Run the targeted mathematical verifier when documented; otherwise report not run.
 3. Run the documented manuscript build; otherwise report not run.
 4. Inspect undefined references/citations, warnings in the changed region,

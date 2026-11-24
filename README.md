@@ -1,8 +1,8 @@
 # Mathbox
 
-`mathbox` is a plugin for Claude Code and Codex with eleven Agent Skills for
-sustained, auditable mathematical research, plus optional standard-library
-Python tools.
+`mathbox` is a plugin for Claude Code, Codex, and Antigravity with eleven Agent
+Skills for sustained, auditable mathematical research, plus optional
+standard-library Python tools.
 
 Each skill handles one job: research, verification, computation, literature
 work, manuscript refereeing and integration, or proofreading. Each job has
@@ -82,6 +82,32 @@ $skill-installer Install every skill under skills/ from https://github.com/nidri
 This installs standalone skills rather than the plugin, so you invoke them by
 bare names such as `$proof-audit`.
 
+### Antigravity
+
+Install the plugin directly from GitHub with the Antigravity CLI (`agy`):
+
+```bash
+agy plugin install https://github.com/nidrissi/mathbox
+```
+
+The repository root is also the Antigravity plugin root via
+[`.antigravity-plugin/plugin.json`](.antigravity-plugin/plugin.json), which
+exposes all eleven skills under `skills/` without duplicating them. To install
+from a local checkout:
+
+```bash
+git clone https://github.com/nidrissi/mathbox.git
+agy plugin install ./mathbox
+```
+
+To verify the plugin layout locally, run `agy plugin validate ./mathbox`.
+
+Invoke a skill with its slash command.
+
+```text
+/proof-audit Audit the proof of Lemma 3.2 and isolate the first unproved implication.
+```
+
 ### Standalone skills
 
 You need Git and a host that supports Agent Skills. Python 3.10+ is needed
@@ -95,18 +121,20 @@ skills_dir="$HOME/.local/share/mathbox/skills"
 Then link one skill, or all of them, into each host you use:
 
 ```bash
-mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
+mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills" "$HOME/.gemini/config/skills"
 
 # One skill
-ln -s "$skills_dir/proof-audit" "$HOME/.agents/skills/proof-audit"   # Codex
-ln -s "$skills_dir/proof-audit" "$HOME/.claude/skills/proof-audit"   # Claude Code
+ln -s "$skills_dir/proof-audit" "$HOME/.agents/skills/proof-audit"         # Codex
+ln -s "$skills_dir/proof-audit" "$HOME/.claude/skills/proof-audit"         # Claude Code
+ln -s "$skills_dir/proof-audit" "$HOME/.gemini/config/skills/proof-audit"  # Antigravity
 
-# All skills, both hosts
+# All skills, all three hosts
 for skill_file in "$skills_dir"/*/SKILL.md; do
   skill_dir=${skill_file%/SKILL.md}
   skill_name=${skill_dir##*/}
   ln -s "$skill_dir" "$HOME/.agents/skills/$skill_name"
   ln -s "$skill_dir" "$HOME/.claude/skills/$skill_name"
+  ln -s "$skill_dir" "$HOME/.gemini/config/skills/$skill_name"
 done
 ```
 
@@ -150,13 +178,15 @@ Mathbox does not install SageMath, LaTeX, or other project dependencies.
 A host may select an **automatic** skill for a matching task. Codex enforces
 **explicit** skills through `allow_implicit_invocation: false` in
 `agents/openai.yaml`; request `$mathbox:<skill>` (or its standalone name) to
-load one. Claude Code uses the description/body's explicit-request boundary.
+load one. Claude Code and Antigravity use the description/body's explicit-request
+boundary.
 A plain task matching an explicit-only skill may therefore have no directly
 loaded skill in Codex. Other workflows can use their documented direct fallback
 when host invocation rules do not permit loading a specialist.
 
-Use `/mathbox:<skill>` in Claude Code or `$mathbox:<skill>` in Codex; standalone
-names omit `mathbox:`. Invocation policy does not override host tool or delegation
+Use `/mathbox:<skill>` in Claude Code, `$mathbox:<skill>` in Codex, or `/<skill>`
+in Antigravity. Standalone skills use bare names with the host's invocation
+prefix. Invocation policy does not override host tool or delegation
 authorization. See the [routing evaluation protocol](evals/README.md#routing-protocol).
 
 ### Safeguards
@@ -185,8 +215,8 @@ collector or hook is added. Each skill carries the identical rule in
 
 ### Example prompts
 
-Each line below is a separate Codex prompt. In Claude Code, write
-`/mathbox:` instead of `$mathbox:`.
+Each line below is a separate Codex prompt. Use `/mathbox:` in Claude Code
+and `/` in Antigravity as the prefix before the skill name.
 
 ```text
 $mathbox:research-program Pursue this conjecture through distinct proof and counterexample routes. Preserve the original goal and continue after failed attempts.
@@ -212,10 +242,11 @@ them.
 ```text
 mathbox/
 ├── .agents/plugins/marketplace.json  # Codex marketplace (repository-root plugin)
+├── .antigravity-plugin/  # Antigravity plugin manifest
 ├── .claude-plugin/       # Claude plugin manifest (explicit skill list) and marketplace
 ├── .codex-plugin/        # Codex package and presentation metadata
 ├── .github/workflows/    # CI: scripts/check.py on Python 3.10 and 3.13
-├── assets/mathbox.{svg,png}  # plugin icon (SVG for Codex, PNG for Claude)
+├── assets/mathbox.{svg,png}  # plugin icon (SVG for Codex/Antigravity, PNG for Claude)
 ├── docs/                 # changelog, design notes and validation reports
 ├── evals/                # evaluation protocol, synthetic fixtures and recorded trials
 ├── scripts/check.py      # package and regression gate
@@ -231,11 +262,11 @@ mathbox/
 ```
 
 The repository keeps exactly one copy of each skill. The Codex manifest points
-to `skills/`, and the Claude manifest lists each skill directory. Relative
-links therefore keep working whether a skill is copied, linked, loaded as a
-plugin, or converted by OpenAI. Skill directory names are bare (for example,
-`proof-audit`); the plugin adds the `mathbox:` namespace. `SKILL.md`
-frontmatter uses only the portable `name` and `description` fields.
+to `skills/`, the Claude manifest lists each skill directory, and Antigravity
+discovers the skills under `skills/`. Relative links keep working whether a
+skill is copied, linked, loaded as a plugin, or converted by OpenAI. Claude
+Code and Codex add the `mathbox:` namespace when loading the plugin.
+`SKILL.md` frontmatter uses only the portable `name` and `description` fields.
 
 ## Development
 
@@ -256,6 +287,7 @@ contributor and validation rules are in [`AGENTS.md`](AGENTS.md).
 
 Upstream references:
 [Agent Skills specification](https://agentskills.io/specification) ·
+[Antigravity plugins](https://antigravity.google/docs/plugins) ·
 [Claude Code plugins](https://code.claude.com/docs/en/plugins) ·
 [ChatGPT and Codex plugins](https://learn.chatgpt.com/docs/build-plugins) ·
 [Plugin packaging and marketplaces](https://developers.openai.com/plugins/build/plugins#package-and-distribute-plugins) ·

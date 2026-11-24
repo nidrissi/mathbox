@@ -44,15 +44,14 @@ Default to no edits unless the user asks to reconcile files.
 Leave ledger initialization, repair and migration outside the retrospective.
 
 Do not start broad literature searches to fill a retrospective. Use available
-`literature-check` (`mathbox:literature-check` in plugin installations), or an
-exact-source fallback if unavailable, only for a necessary bounded source question;
-otherwise propose it as a next route.
+`literature-check`, or an exact-source fallback if unavailable, only for a
+necessary bounded source question. Propose other source questions as next routes.
 
 If `RESEARCH_LOG.md` still contains long-form legacy entries, read only the
 relevant embedded entries and support a mixture of legacy prose and new links.
-Report the pending migration through the available `research-init` skill
-(`mathbox:research-init` in plugin installations), or report it pending if unavailable, but do not perform or
-require it as a precondition for the retrospective.
+Report the pending migration through the available `research-init` skill,
+or report it pending if unavailable. Do not perform or require it as a
+precondition for the retrospective.
 
 ## Build the portfolio
 
@@ -144,5 +143,5 @@ Lead with a concise project verdict. Then provide:
    none is needed. If edits were requested, distinguish completed changes from
    pending proposals;
 6. the best next prompt for available `research-attempt` or, for multiple routes,
-   `research-program` (`mathbox:<name>` in plugin installations); if unavailable,
-   give an equivalent self-contained research prompt.
+   `research-program`, using the current host's invocation syntax. If the skill
+   is unavailable, give an equivalent self-contained research prompt.

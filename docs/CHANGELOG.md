@@ -3,11 +3,28 @@
 All notable changes to Mathbox are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases use
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). The version is the
-one declared in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and
-`.claude-plugin/marketplace.json`. The research-state ledger and computation
+one declared in `.antigravity-plugin/plugin.json`, `.claude-plugin/plugin.json`,
+`.codex-plugin/plugin.json` and `.claude-plugin/marketplace.json`. The
+research-state ledger and computation
 manifests have their own schema versions, independent of the plugin version.
 
 ## [Unreleased]
+
+## [4.5.0] — 2026-11-24 — Antigravity plugin support
+
+### Added
+
+- Native Google Antigravity plugin support via `.antigravity-plugin/plugin.json`,
+  exposing the eleven canonical skills under `skills/` with the existing SVG
+  logo and starter prompts, validated by `scripts/check.py` and documented in
+  `README.md`.
+
+### Fixed
+
+- Mathbox workflows resolve specialist skills using the names exposed by the
+  current host, including bare skill names in Antigravity.
+- The Antigravity manifest follows the published schema. Package checks catch
+  non-object manifests and malformed extra skill directory declarations.
 
 ## [4.4.0] — 2026-11-20 — Evidence and workflow safeguards
 
@@ -522,7 +539,8 @@ This history predates versioned releases; the project was first called
 - August 2026: packaged as a plugin, renamed `mathbox`, and prepared for
   release as 2.0.0.
 
-[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.4.0...HEAD
+[Unreleased]: https://github.com/nidrissi/mathbox/compare/v4.5.0...HEAD
+[4.5.0]: https://github.com/nidrissi/mathbox/compare/v4.4.0...v4.5.0
 [4.4.0]: https://github.com/nidrissi/mathbox/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/nidrissi/mathbox/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/nidrissi/mathbox/compare/v4.1.0...v4.2.0

@@ -43,8 +43,7 @@ If coverage is partial, state the exact scope reviewed.
    build or install dependencies.
 
 Citation syntax is proofreading; substantive source questions use available
-`literature-check` (`mathbox:literature-check` in plugin installations), or return
-the exact source obligation if unavailable.
+`literature-check`, or return the exact source obligation if unavailable.
 
 The detailed checklist is in [checklist.md](references/checklist.md).
 
@@ -64,8 +63,7 @@ alter downstream reasoning. List every such change explicitly under
 Otherwise leave the source unchanged and report the issue. A repeated pattern
 alone does not justify changing a sign or index. An unbound symbol may signal a
 missing definition. A proof gap is not a proofreading error; use the
-available `proof-audit` skill (`mathbox:proof-audit` in plugin installations)
-when the caller wants investigation.
+available `proof-audit` skill when the caller wants investigation.
 
 ## Reviewer notes
 

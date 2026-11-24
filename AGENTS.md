@@ -15,6 +15,9 @@ convert during submission. Keep the skills portable across both hosts.
   must be referenced with paths relative to the skill directory.
 - `agents/openai.yaml` contains OpenAI-specific presentation and invocation
   metadata; do not duplicate the workflow there.
+- `.antigravity-plugin/plugin.json` contains Antigravity package and presentation
+  metadata; keep its identity and version aligned with the Claude and Codex
+  plugin manifests.
 - `.codex-plugin/plugin.json` contains Codex package and presentation metadata;
   keep its identity and version aligned with the Claude plugin manifest.
 - `.claude-plugin/plugin.json` contains the package metadata and explicit list
@@ -59,8 +62,9 @@ convert during submission. Keep the skills portable across both hosts.
   output contracts, helper commands, schemas, and packaging. Describe what
   changed for users, not how the diff is organized, and link the pull request
   when one exists.
-- When releasing, bump the version in `.claude-plugin/plugin.json`,
-  `.codex-plugin/plugin.json`, and `.claude-plugin/marketplace.json` together.
+- When releasing, bump the version in `.antigravity-plugin/plugin.json`,
+  `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, and
+  `.claude-plugin/marketplace.json` together.
   Move the Unreleased entries under a heading of the form
   `## [X.Y.Z] — YYYY-MM-DD — Short theme`, and update the comparison links at
   the bottom of the changelog. Title the GitHub release `vX.Y.Z — Short theme`
@@ -91,16 +95,23 @@ Run checks proportionate to the files changed. At minimum, run:
 ```bash
 for file in \
   .agents/plugins/marketplace.json \
+  .antigravity-plugin/*.json \
   .codex-plugin/*.json \
   .claude-plugin/*.json \
   skills/*/evals/*.json \
   skills/*/assets/*.json; do
   python3 -m json.tool "$file" >/dev/null || exit 1
 done
+agy plugin validate .
 claude plugin validate .claude-plugin/plugin.json
 claude plugin validate --strict .claude-plugin/marketplace.json
 git diff --check
 ```
+
+`agy plugin validate .` reports one expected warning for root `AGENTS.md`
+because Antigravity plugins only load rules from `rules/`, and Mathbox
+intentionally keeps root `AGENTS.md` as repository context rather than a plugin
+rule.
 
 Keep all plugin behavior under `skills/`; root instructions are repository
 context, not plugin context.

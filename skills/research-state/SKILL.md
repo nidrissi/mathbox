@@ -170,5 +170,5 @@ brief view when migration is authorized; do not create a parallel manual dashboa
 Report changed claims, active review conditions/conflicts, stale evidence,
 dependents and route-only context. A clean check establishes bookkeeping integrity.
 Use available `proof-audit`, `computation-audit` or `literature-check` skills
-(`mathbox:<name>` in plugin installations) for correctness decisions, or perform
-the relevant bounded check directly and disclose limits if unavailable.
+for correctness decisions. If the relevant skill is unavailable, perform the
+bounded check directly and disclose its limits.

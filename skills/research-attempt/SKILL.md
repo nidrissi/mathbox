@@ -8,9 +8,8 @@ description: >-
 
 Pursue one route to a durable result, precise obstruction or next implication.
 A bounded package does not end a broader authorized investigation. Continue with
-available `research-program` (`mathbox:research-program` in plugin installations),
-or directly if unavailable. Honor existing authority; do not turn the log into
-a transcript.
+available `research-program`, or directly if unavailable. Honor existing
+authority. Do not turn the log into a transcript.
 
 ## Resolve project context
 
@@ -18,10 +17,10 @@ Read applicable instructions and current summary; search large files for the
 target rather than loading them wholesale. Resolve designated paths, or use
 [project-context.md](references/project-context.md); paths are project-relative,
 never skill-relative. Follow history entry points to relevant route indexes.
-Use available `research-state` (`mathbox:research-state` in plugin installations)
-for brief checks and registered-goal handoffs, inspecting relevant contracts,
-reviews and dependency closure before trusting labels. If unavailable, inspect
-prose evidence directly. Clean bookkeeping is not mathematical verification.
+Use available `research-state` for brief checks and registered-goal handoffs,
+inspecting relevant contracts, reviews and dependency closure before trusting
+labels. If unavailable, inspect prose evidence directly. Clean bookkeeping is
+not mathematical verification.
 
 ## Open the route
 
@@ -66,9 +65,8 @@ into a specific comparison, obstruction or discriminating invariant.
   a unit, augmentation, suspension or induction boundary is involved.
 - Do not repair a failed type, sign, variance, normalization, or completion
   check by silently changing the statement or convention.
-- Use the available `literature-check` skill (`mathbox:literature-check` in plugin
-  installations) for external theorem questions and `computation-audit`
-  (`mathbox:computation-audit`) for finite evidence. If unavailable, perform the
+- Use the available `literature-check` skill for external theorem questions and
+  `computation-audit` for finite evidence. If unavailable, perform the
   exact-source or finite-evidence checks directly and disclose limits. Record
   computational domain, bounds, seed, versions, inputs, runtime and non-claims;
   leave unverified sources conditional.
@@ -108,10 +106,10 @@ promoting claims. Outcome describes this attempt; evidence label describes the
 strongest surviving statement. An unsuccessful construction adding no evidence
 against an independently supported target leaves its label intact. If the target
 itself is ill-typed or its support invalidated, report the defect, affected evidence
-and dependents; use available `proof-audit` (`mathbox:proof-audit` in plugin
-installations), or audit directly if unavailable, and correct authorized durable
-status. Do not treat the old label as reliable or infer refutation from a failed
-construction. Never upgrade evidence for effort or persuasive prose.
+and dependents. Use available `proof-audit`, or audit directly if unavailable,
+and correct authorized durable status. Do not treat the old label as reliable
+or infer refutation from a failed construction. Never upgrade evidence for
+effort or persuasive prose.
 
 Classify this attempt separately from the route's disposition. If a construction
 is unresolved, say what you could not establish; do not infer that it is
@@ -143,9 +141,9 @@ material blocker, a convention decision, or a claim-supporting computation.
   pending program closeout or repository migration.
 - In a ledger, record changed contracts, evidence, reviews and route outcomes;
   for an open continuation that must outlive the session, also record a run result
-  with a `continue` reconciliation through available `research-state`
-  (`mathbox:research-state` in plugin installations). If unavailable, preserve
-  equivalent prose fields and disclose that no events were recorded.
+  with a `continue` reconciliation through available `research-state`. If
+  unavailable, preserve equivalent prose fields and disclose that no events
+  were recorded.
 - When delegated or parallel, write only in assigned scope. Return the route
   record and proposed index/status/ledger updates, base checkpoint, actual inputs
   and artifact hashes to the coordinator; do not edit shared live state or emit
@@ -156,8 +154,7 @@ material blocker, a convention decision, or a claim-supporting computation.
   in a new file with a `Corrects:` link and append it to the same designated
   route index. Do not create a program closeout for each attempt.
 - Preserve legacy long-form entries; use the new format prospectively. Route
-  migration to available `research-init` (`mathbox:research-init` in plugin
-  installations), or report it pending if unavailable.
+  migration to available `research-init`, or report it pending if unavailable.
 - Do not integrate into a manuscript unless that is separately requested.
 
 ## Verify and report

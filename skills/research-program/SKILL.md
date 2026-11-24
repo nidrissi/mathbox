@@ -10,9 +10,9 @@ Own the user's mathematical objective across route changes. A route ending does
 not end the assignment. Produce mathematics, not unexecuted suggestions. Do not
 promise solutions to open problems or relabel exhausted attempts.
 For closeout-only requests reconcile recorded results; start new routes only
-if requested. Repository-wide history restructuring belongs to available
-`research-init` (`mathbox:research-init` in plugin installations); if unavailable,
-report migration pending and preserve existing history.
+if requested. Route repository-wide history restructuring to available
+`research-init`. If unavailable, report migration pending and preserve existing
+history. Resolve specialist skills using the names exposed by the current host.
 
 ## Establish the target once
 
@@ -56,11 +56,11 @@ implication, the cheapest discriminating check, and success/failure criteria.
 Treat alternatives as routes and jointly required lemmas as dependencies;
 identify a route's resolved sub-obligation without changing its owner.
 Run the decisive check, then pursue the promising route to a substantive
-checkpoint using the available `research-attempt` skill (`mathbox:research-attempt` in
-plugin installations) if host invocation rules permit. Otherwise follow the
-minimal route-record and evidence contract in the program protocol. Apply its
-one-route boundary to each work package. Execute the breadth requested, including
-any independent deliverables that remain useful after the target is resolved.
+checkpoint using the available `research-attempt` skill if host invocation rules
+permit. Otherwise follow the minimal route-record and evidence contract in the
+program protocol. Apply the one-route boundary to each work package. Execute the
+breadth requested, including independent deliverables that remain useful after
+the target is resolved.
 
 For parallel work, assign an owner, base checkpoint and disjoint write scope;
 require actual inputs and hashes in each return. The coordinator checks and
@@ -73,12 +73,11 @@ dependencies before polishing downstream consequences. Formulate auxiliary
 lemmas that remove shared bottlenecks. Transfer techniques across fields only
 after writing the actual source-to-target dictionary.
 
-Use the available `literature-check` and `computation-audit` skills
-(`mathbox:<name>` in plugin installations) for source-dependent implications and
-load-bearing experiments. If a specialist skill is unavailable, carry out
-the relevant exact-source or finite-evidence check directly with available
-tools and disclose its limits; an absent workflow package is not a mathematical
-obstruction.
+Use the available `literature-check` and `computation-audit` skills for
+source-dependent implications and load-bearing experiments. If a specialist
+skill is unavailable, carry out the relevant exact-source or finite-evidence
+check directly with available tools and disclose its limits. Continue the
+mathematical work within those limits.
 
 ## Change direction on evidence
 

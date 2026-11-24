@@ -23,8 +23,8 @@ replacing or archiving it.
 3. It cannot be represented by a `mathbox` plugin skill plus `AGENTS.md`,
    conventions, verification commands, templates, or scripts.
 4. It has a distinct project-qualified name.
-5. Correct recognized paths are used: `.agents/skills/<name>` for Codex and/or
-   `.claude/skills/<name>` for Claude Code.
+5. Correct recognized paths are used: `.agents/skills/<name>` for Codex and
+   Antigravity, and/or `.claude/skills/<name>` for Claude Code.
 6. Trigger and behavior evals are supplied.
 7. The user approves the proposal.
 

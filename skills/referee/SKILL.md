@@ -111,8 +111,8 @@ valid. Keep low-confidence leads distinct from demonstrated defects.
 
 ## Confirm focused obligations with Mathbox
 
-Resolve available skills by name (`mathbox:<name>` in plugin installations,
-bare names when standalone). Read and follow the selected specialist contract.
+Resolve each specialist using the name exposed by the current host.
+Read and follow the selected specialist contract.
 Keep this package independently installable: if a specialist is absent, perform
 the bounded check directly with available tools, report that fallback, and
 leave anything not settled conditional.

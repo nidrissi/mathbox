@@ -144,6 +144,36 @@ def codex_marketplace_contract(marketplace, manifest, marketplace_name):
         raise ValueError("Codex marketplace category differs from manifest")
 
 
+def antigravity_manifest_contract(antigravity, claude, codex, root):
+    """Keep the Antigravity manifest aligned with the canonical plugin manifests."""
+    if not isinstance(antigravity, dict):
+        raise ValueError("Antigravity manifest must be a JSON object")
+    for field in ("name", "version", "description", "author", "homepage", "repository", "license", "keywords"):
+        if antigravity.get(field) != claude.get(field):
+            raise ValueError(f"Antigravity manifest {field} differs from Claude manifest")
+    if antigravity.get("displayName") != codex["interface"]["displayName"]:
+        raise ValueError("Antigravity manifest displayName differs from Codex manifest")
+    if "skills" in antigravity:
+        paths = antigravity["skills"]
+        if isinstance(paths, str):
+            paths = [paths]
+        if not isinstance(paths, list) or any(
+            not isinstance(path, str) or not path.strip() for path in paths
+        ):
+            raise ValueError("Antigravity manifest skills must be a path string or an array of path strings")
+    logo = antigravity.get("logo")
+    if not isinstance(logo, str) or not logo.strip() or logo.startswith(("/", "~")):
+        raise ValueError("Antigravity manifest logo must be a relative path")
+    logo_path = (root / logo).resolve()
+    if (not logo_path.is_relative_to(root.resolve()) or not logo_path.is_file()
+            or logo_path.suffix.lower() not in {".png", ".svg", ".jpg", ".jpeg", ".webp"}):
+        raise ValueError(f"Antigravity manifest logo missing or unsupported: {logo}")
+    prompts = antigravity.get("suggestedPrompts")
+    if (not isinstance(prompts, list) or not 1 <= len(prompts) <= 3
+            or any(not isinstance(prompt, str) or not prompt.strip() for prompt in prompts)):
+        raise ValueError("Antigravity manifest suggestedPrompts must contain 1..3 nonempty strings")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--static", action="store_true", help="skip executable regression suites")
@@ -169,6 +199,10 @@ def main():
         codex_marketplace_contract(
             json.loads((root / ".agents/plugins/marketplace.json").read_text(encoding="utf-8")),
             codex, market["name"],
+        )
+        antigravity_manifest_contract(
+            json.loads((root / ".antigravity-plugin/plugin.json").read_text(encoding="utf-8")),
+            claude, codex, root,
         )
         releases = re.findall(r"^## \[([0-9]+\.[0-9]+\.[0-9]+)\] — \d{4}-\d{2}-\d{2} — .+$",
                               (root / "docs/CHANGELOG.md").read_text(encoding="utf-8"), re.M)

@@ -1,8 +1,15 @@
 """Mechanical contract checks, independent of model behavior and math grading."""
 import copy
+from pathlib import Path
+import tempfile
 import unittest
 
-from check import codex_marketplace_contract, skill_frontmatter, trigger_contract
+from check import (
+    antigravity_manifest_contract,
+    codex_marketplace_contract,
+    skill_frontmatter,
+    trigger_contract,
+)
 
 
 class PackageContractTests(unittest.TestCase):
@@ -42,6 +49,63 @@ class PackageContractTests(unittest.TestCase):
             target[key] = value
             with self.subTest(path=path, key=key, value=value), self.assertRaises(ValueError):
                 codex_marketplace_contract(bad, manifest, "sample-market")
+
+    def test_antigravity_manifest_preserves_identity_logo_and_prompts(self):
+        claude = {
+            "name": "sample",
+            "version": "1.2.3",
+            "description": "Sample plugin.",
+            "author": {"name": "Author", "url": "https://example.com"},
+            "homepage": "https://example.com/sample",
+            "repository": "https://example.com/sample",
+            "license": "MIT",
+            "keywords": ["math"],
+        }
+        codex = {
+            **claude,
+            "interface": {"displayName": "Sample"},
+        }
+        antigravity = {
+            **claude,
+            "displayName": "Sample",
+            "logo": "assets/sample.svg",
+            "suggestedPrompts": ["Prompt one."],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "assets").mkdir()
+            (root / "assets/sample.svg").write_text("<svg/>", encoding="utf-8")
+            antigravity_manifest_contract(antigravity, claude, codex, root)
+            for paths in ("extras", ["extras"], []):
+                with self.subTest(paths=paths):
+                    antigravity_manifest_contract({**antigravity, "skills": paths}, claude, codex, root)
+            for invalid in (None, [], "sample"):
+                with self.subTest(manifest=invalid), self.assertRaisesRegex(ValueError, "JSON object"):
+                    antigravity_manifest_contract(invalid, claude, codex, root)
+            mutations = (
+                ("name", "other"),
+                ("version", "9.9.9"),
+                ("description", "Other."),
+                ("displayName", "Other"),
+                ("skills", 1),
+                ("skills", None),
+                ("skills", ""),
+                ("skills", ["extras", " "]),
+                ("skills", ["extras", 1]),
+                ("logo", "/abs/sample.svg"),
+                ("logo", "../outside.svg"),
+                ("logo", "assets/missing.svg"),
+                ("logo", "assets/sample.txt"),
+                ("suggestedPrompts", []),
+                ("suggestedPrompts", ["a", "b", "c", "d"]),
+                ("suggestedPrompts", [""]),
+            )
+            (root / "assets/sample.txt").write_text("not an image", encoding="utf-8")
+            for key, value in mutations:
+                bad = copy.deepcopy(antigravity)
+                bad[key] = value
+                with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                    antigravity_manifest_contract(bad, claude, codex, root)
 
     def test_frontmatter_allows_only_portable_fields_once(self):
         valid = "---\nname: sample\ndescription: >-\n  A bounded task.\n---\n"

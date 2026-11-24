@@ -23,9 +23,9 @@ requested static audit without guessing how to run the code. For authorized
 design or new experiments, establish the contract, code and command first.
 Design permission alone does not authorize execution.
 
-Route external theorem questions through the available `literature-check` skill
-(`mathbox:literature-check` in plugin installations), or check the exact source
-directly if unavailable. An unverified source leaves interpretation conditional.
+Route external theorem questions through the available `literature-check` skill,
+or check the exact source directly if unavailable. An unverified source leaves
+interpretation conditional.
 
 ## Audit the implementation
 
@@ -106,8 +106,8 @@ Before saving a durable record, proof, report or authored JSON, follow
 When authorized, store reusable scripts in the designated computation area and
 update status only for material changes. Keep justified raw outputs or hashes
 and regeneration commands. If an initialized `.mathbox/` ledger is in use,
-record finite evidence through the available `research-state` skill (`mathbox:research-state` in plugin installations); if
-unavailable, use the project's existing evidence format.
+record finite evidence through the available `research-state` skill. If the
+skill is unavailable, use the project's existing evidence format.
 
 Report:
 

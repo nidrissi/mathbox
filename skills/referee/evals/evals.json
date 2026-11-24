@@ -275,6 +275,16 @@
         "Does not claim the arrow points in either direction based on the order of extracted labels",
         "Reports the missing rendering as a coverage limit in the final reconciliation"
       ]
+    },
+    {
+      "id": 23,
+      "prompt": "Referee evals/fixtures/referee-enumeration.tex with Mathbox installed as an Antigravity plugin. You may execute the supplied standard-library code in a temporary directory.",
+      "expected_output": "Uses the installed computation-audit skill to check the enumeration, then reconciles its findings with the manuscript's universal claim.",
+      "assertions": [
+        "Host trace or observed file reads show that the installed computation-audit skill was loaded for the specialist check",
+        "Identifies sixteen candidates and eight checked, and verifies an admissible odd-parity witness",
+        "Carries the discrepancy and checked counterexample into final reconciliation"
+      ]
     }
   ]
 }

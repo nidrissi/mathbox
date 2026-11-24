@@ -125,7 +125,7 @@ or attribution; update status/history only for changed live research state.
 Preserve old checks when versions or interpretations change and inspect dependents.
 
 When persistence is authorized in a `.mathbox/` project, use the available
-`research-state` skill (`mathbox:research-state` in plugin installations).
+`research-state` skill.
 Record or propose `source` evidence only for the claim the inspected text
 establishes under its checked hypotheses and translation. Pin the source
 record. Put a checked conditional deduction and its outstanding premise in

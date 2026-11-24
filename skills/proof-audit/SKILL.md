@@ -10,8 +10,8 @@ Audit the claim actually stated, under its stated hypotheses. Do not rescue it
 by changing definitions, conventions, or scope.
 
 For a referee-style assessment of an entire manuscript, use the available
-`referee` skill (`mathbox:referee` in plugin installations). This skill remains
-responsible for focused mathematical obligations delegated by that review.
+`referee` skill. This skill remains responsible for focused mathematical
+obligations delegated by that review.
 
 ## Establish the target
 
@@ -78,12 +78,11 @@ For every applicable obligation:
   omitted cases;
 - search prior logs or archived claims for a known failed version.
 
-Route unchecked external leaves through the available `literature-check` skill
-(`mathbox:literature-check` in plugin installations), or check exact sources
-directly if unavailable; mark the obligation conditional if unverifiable.
-Route load-bearing computations through the available `computation-audit` skill
-(`mathbox:computation-audit` in plugin installations), or apply the finite-assertion,
-range and coverage checks above directly.
+Route unchecked external leaves through the available `literature-check` skill,
+or check exact sources directly if unavailable. Mark the obligation conditional
+if unverifiable.
+Route load-bearing computations through the available `computation-audit` skill,
+or apply the finite-assertion, range and coverage checks above directly.
 
 Load the relevant domain sections of
 [obligation-checklists.md](references/obligation-checklists.md); do not apply
@@ -116,11 +115,10 @@ ordering and rule out every smaller counterexample under it.
 Default to no edits. Never close a gap with a new argument. Requested corrections
 may only restrict the statement or fix a forced local step, after reviewing
 downstream dependents. Label other repairs unaudited, retain the verdict and
-route new arguments through the available `research-attempt` skill
-(`mathbox:research-attempt` in plugin installations), or return the exact research
-obligation if unavailable. Propagate into a manuscript only on explicit request
-through the available `manuscript-integrate` skill (`mathbox:manuscript-integrate`
-in plugin installations), or preserve its validation/edit boundaries directly.
+route new arguments through the available `research-attempt` skill,
+or return the exact research obligation if unavailable. Propagate into a
+manuscript only on explicit request through the available `manuscript-integrate`
+skill, or preserve its validation/edit boundaries directly.
 Convention changes require the project's normal approval.
 
 For a ledger review, grade what the reviewed evidence revision purports to

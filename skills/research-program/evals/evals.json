@@ -279,6 +279,16 @@
         "Distinguishes complete closeout text from pending persistence",
         "Emits no empty packet and invents no ledger proposal"
       ]
+    },
+    {
+      "id": 26,
+      "prompt": "Continue the program in evals/fixtures/inconclusive-continuation.md in a temporary project with Mathbox installed as an Antigravity plugin. Use the installed research-attempt skill for the next bounded continuation.",
+      "expected_output": "Uses the host's research-attempt entry to execute the untried recurrence continuation and records the resulting uniform proof.",
+      "assertions": [
+        "Host trace or observed file reads show that the installed research-attempt skill was loaded for the next route",
+        "Proves the identity over the full stated range by checking the base case and determinant recurrence",
+        "Records the new continuation and result while preserving the inconclusive return"
+      ]
     }
   ]
 }

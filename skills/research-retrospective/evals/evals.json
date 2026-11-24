@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "The status file says Claim C3 is proved, the proof obligations call it conditional, and the log records a counterexample to the old formulation. Review the project and recommend the next route.",
+      "prompt": "The status file says Claim C3 is proved, the proof obligations call it conditional, and the log records a counterexample to the old formulation. Review the project and recommend the next route. Mathbox is installed as a Codex plugin.",
       "expected_output": "Exposes the authority conflict, reconstructs the strongest safe claim, recommends a bounded next check rather than averaging the summaries, and provides a next prompt for the mathbox:research-attempt plugin skill.",
       "assertions": [
         "Does not trust the newest or strongest summary automatically",
@@ -157,6 +157,16 @@
         "Audits coverage and the effective predicate from the code, independently of the completed-run summary",
         "Shows all four entries of a witness are binary and its sum is odd",
         "Names the proposed correction without editing the dashboard"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Review the recurrence program in evals/fixtures/inconclusive-continuation.md read-only and give me a paste-ready prompt for the single best next route. Mathbox is installed as an Antigravity plugin.",
+      "expected_output": "Keeps the identity open on the recorded evidence and gives a usable /research-attempt prompt for the untried determinant continuation.",
+      "assertions": [
+        "Separates the inconclusive first continuation from the untried one",
+        "Includes the exact recurrence, target and next mathematical check in a single /research-attempt prompt",
+        "Preserves the read-only review scope"
       ]
     }
   ]

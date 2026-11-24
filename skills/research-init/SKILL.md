@@ -72,10 +72,9 @@ Sizes, filenames and dated-marker counts are review prompts, not verdicts about
 mathematical status or permission to remove history. Produce a fact sheet of
 observations, tentative inferences, conflicts and missing information.
 
-Inventory source policies only; substantive checks belong to the available
-`literature-check` skill (`mathbox:literature-check` in plugin installations),
-or exact-source checking if unavailable. If also requested, execute those checks
-as subsequent work packages; setup does not leave authorized verification undone.
+Inventory source policies only. If substantive checks are also requested, use
+the available `literature-check` skill in a subsequent work package, or check
+the exact source directly if the skill is unavailable.
 
 ## Phase 2 — interview adaptively
 
@@ -110,9 +109,9 @@ inspector class: `long-form-legacy`/`mixed` needs reviewed extraction;
 never authorizes rewriting. A plan-only request ends at the reviewable plan.
 A plugin upgrade alone does not authorize a project migration or hash refresh.
 
-Use available `research-state` (`mathbox:research-state` in plugin installations)
-for optional ledger adoption or evidence revisions; if unavailable preserve
-prose records and report the limitation. Never import confident prose as proof.
+Use available `research-state` for optional ledger adoption or evidence revisions.
+If unavailable, preserve prose records and report the limitation.
+Never import confident prose as proof.
 
 ## Phase 4 — write the authorized project layer
 
